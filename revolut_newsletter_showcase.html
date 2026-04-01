@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Revolut Newsletter Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#ffffff;--bg2:#f5f5f3;--bg3:#efefec;
+  --text:#1a1a18;--muted:#6b6b66;
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.18);
+  --rev:#191c1f;--rev-blue:#0066ff;--rev-blue-light:#e6f0ff;
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --purple:#5B4FE9;--purple-light:#EEEDFE;--purple-dark:#3C3489;
+}
+html,body{width:100%;margin:0;padding:0;background:var(--bg3);}
+body{font-family:'Figtree',sans-serif;color:var(--text);padding:36px 16px;}
+
+.page-header{max-width:740px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+
+.sf-wrap{max-width:740px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg2);}
+.toggle-btn.active{background:var(--text);color:#fff;border-color:var(--text);}
+
+.email-shell{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg2);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border);}
+.meta-row{font-size:12px;color:var(--muted);line-height:1.9;}
+.meta-row span{color:var(--text);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text);margin-top:4px;}
+
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── BEFORE ── */
+.bef-header{background:#191c1f;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:22px;font-weight:600;color:#fff;letter-spacing:-.02em;}
+.bef-hero{padding:36px 28px 28px;text-align:center;border-bottom:1px solid var(--border);}
+.bef-badge{display:inline-block;background:#f0f0f0;color:#555;font-size:11px;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+.bef-h1{font-size:24px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.3;}
+.bef-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.65;max-width:420px;margin-left:auto;margin-right:auto;}
+.bef-cta{background:#0066ff;color:#fff;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:500;display:inline-block;margin-bottom:8px;}
+.bef-terms{font-size:10px;color:#aaa;margin-top:6px;}
+
+.bef-section{padding:24px 28px;border-bottom:1px solid var(--border);}
+.bef-section-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.bef-section-body{font-size:13px;color:var(--muted);line-height:1.7;}
+
+.bef-how{padding:24px 28px;border-bottom:1px solid var(--border);background:var(--bg2);}
+.bef-how-title{font-size:14px;font-weight:600;margin-bottom:10px;}
+.bef-how-body{font-size:12px;color:var(--muted);line-height:1.75;}
+
+.bef-footer2{padding:20px 28px;font-size:10px;color:#bbb;line-height:1.7;border-top:1px solid var(--border);}
+
+.bef-issues{margin:16px 22px 22px;padding:14px 16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:5px;display:flex;gap:8px;line-height:1.5;}
+
+/* ── AFTER ── */
+.aft-header{background:#191c1f;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;}
+.aft-logo{font-family:'Figtree',sans-serif;font-size:22px;font-weight:600;color:#fff;letter-spacing:-.02em;}
+.aft-badge-header{font-family:'DM Mono',monospace;font-size:10px;color:#888;letter-spacing:.08em;text-transform:uppercase;}
+
+.aft-hero{padding:40px 28px 32px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#0a0e1a 0%,#0d1635 100%);}
+.aft-kicker{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#6b9fff;font-family:'DM Mono',monospace;margin-bottom:16px;}
+.aft-h1{font-family:'DM Serif Display',serif;font-size:34px;line-height:1.2;color:#fff;margin-bottom:14px;}
+.aft-h1 em{font-style:italic;color:#6b9fff;}
+.aft-lead{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.75;max-width:480px;margin-bottom:28px;}
+.aft-deadline{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:10px 16px;margin-bottom:24px;}
+.aft-deadline-label{font-size:11px;color:rgba(255,255,255,0.5);font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.aft-deadline-val{font-size:13px;font-weight:500;color:#fff;}
+.aft-cta-primary{background:#0066ff;color:#fff;padding:14px 28px;border-radius:8px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;font-family:'Figtree',sans-serif;}
+.aft-cta-primary:hover{background:#0052cc;}
+
+.aft-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.aft-stat{background:var(--bg);padding:20px 16px;text-align:center;}
+.aft-stat-num{font-family:'DM Serif Display',serif;font-size:30px;color:var(--purple);line-height:1;}
+.aft-stat-label{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4;}
+
+.aft-benefits{padding:28px;border-bottom:1px solid var(--border);}
+.aft-benefits-title{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:20px;}
+.benefit-card{display:flex;gap:16px;align-items:flex-start;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.benefit-card:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.benefit-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.benefit-icon.blue{background:#e6f0ff;}
+.benefit-icon.purple{background:#EEEDFE;}
+.benefit-icon.green{background:#E1F5EE;}
+.benefit-body{flex:1;}
+.benefit-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px;}
+.benefit-desc{font-size:13px;color:var(--muted);line-height:1.65;}
+.benefit-highlight{display:inline-block;background:var(--purple-light);color:var(--purple-dark);font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px;margin-top:6px;font-family:'DM Mono',monospace;}
+.benefit-highlight.green{background:#E1F5EE;color:#085041;}
+.benefit-highlight.blue{background:#e6f0ff;color:#003d99;}
+
+.aft-proof{padding:24px 28px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;gap:20px;align-items:flex-start;}
+.proof-quote{flex:1;}
+.proof-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text);}
+.proof-attr{font-size:11px;color:var(--muted);margin-top:8px;font-family:'DM Mono',monospace;}
+.proof-divider{width:1px;background:var(--border);align-self:stretch;}
+.proof-stats{min-width:160px;}
+.proof-stat{margin-bottom:14px;}
+.proof-val{font-size:20px;font-weight:500;color:var(--text);}
+.proof-label{font-size:11px;color:var(--muted);}
+
+.aft-terms-block{padding:20px 28px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.terms-badge{display:inline-block;background:var(--text);color:#fff;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:3px 8px;border-radius:4px;margin-bottom:10px;}
+.terms-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.terms-body{font-size:11px;color:var(--muted);line-height:1.7;}
+
+.aft-footer{padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--border);}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+/* ── NOTES ── */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--muted);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text);}
+.upgrade-item{padding:14px;background:var(--bg2);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--muted);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+
+.page-footer{max-width:740px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .aft-stat-row{grid-template-columns:1fr;}
+  .aft-proof{flex-direction:column;}
+  .proof-divider{display:none;}
+  body{padding:16px 10px;}
+  .aft-h1{font-size:26px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Revolut Premium — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--muted);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Revolut &lt;no-reply@revolut.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Adrian-Alexandru</div>
+        <div class="subject-line">2 months of Premium, from us, to you</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Revolut</div>
+        <div style="font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;">PREMIUM OFFER</div>
+      </div>
+
+      <div class="bef-hero">
+        <div class="bef-badge">Limited time offer</div>
+        <div class="bef-h1">2 months of Premium,<br>from us, to you</div>
+        <div class="bef-sub">Try out new subscriptions, higher limits, lower fees, and double the RevPoints, if you upgrade by 4/2/26. T&amp;Cs apply.</div>
+        <div class="bef-cta">Claim my free trial</div>
+        <div class="bef-terms">T&amp;Cs apply</div>
+      </div>
+
+      <div class="bef-section">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Hi Adrian-Alexandru,<br><br>This is your chance to experience 2 months of Premium benefits, at no additional cost.<br><br>Upgrade by 4/2/26 to unlock included subscriptions, higher limits on exchanges and ATMs than Standard, and more RevPoints to elevate your everyday spending.</div>
+      </div>
+
+      <div class="bef-section">
+        <div class="bef-section-title">Subscriptions, included</div>
+        <div class="bef-section-body">From fitness to security — Premium gives you sought-after subscriptions, included with the plan. Make new habits stick with Freeletics and Headspace, or find your match with Tinder Plus. Plan Partnerships T&amp;Cs apply.</div>
+      </div>
+
+      <div class="bef-section">
+        <div class="bef-section-title">Ramp up your RevPoints</div>
+        <div class="bef-section-body">Pick up 1 point per €4 spent with Premium (compared to your current rate of 1 point per €10) to make your spend go further.<br><br>The RevPoints you collect can be redeemed 1:1 for Airline Miles, or on discounts on accommodation, shopping, or experiences. RevPoints T&amp;Cs apply.</div>
+      </div>
+
+      <div class="bef-section">
+        <div class="bef-section-title">Bigger limits, better discounts</div>
+        <div class="bef-section-body">No more checking limits — exchange unlimited amounts of money in 35+ currencies, compared to the €1,000 limit on Standard.<br><br>You can withdraw up to €400 at ATMs with no fees charged by us, each rolling month.<br><br>And, if you're sending money around the world, Premium gets you 20% off international transfer fees.</div>
+      </div>
+
+      <div class="bef-how">
+        <div class="bef-how-title">How it works</div>
+        <div class="bef-how-body">Claim your offer by 4/2/26. Our Paid Plan Terms will apply to your account. This is a rolling monthly plan, meaning your plan will renew monthly on the day you originally signed up. Monthly Premium plan fees will apply after the trial period ends. You can cancel at any point before the end of the free trial, but you'll be charged for any ordered Premium card and delivery. If you downgrade after the trial ends, you may be charged a fee.</div>
+      </div>
+
+      <div style="text-align:center;padding:24px;">
+        <div class="bef-cta">Claim my free trial</div>
+        <div style="font-size:11px;color:#aaa;margin-top:8px;">— Team Revolut</div>
+      </div>
+
+      <div class="bef-footer2">
+        © 2026 Revolut Bank UAB<br><br>
+        Revolut Bank UAB is authorised by the Bank of Lithuania in the Republic of Lithuania and the European Central Bank and is regulated by the Bank of Spain for conduct of business rules. Registered address: Konstitucijos ave. 21B, Vilnius, 08130, the Republic of Lithuania...<br><br>
+        <span style="color:#0066ff;cursor:pointer;">Unsubscribe</span>
+      </div>
+
+      <div class="bef-issues">
+        <div class="issue-item"><span>⚠</span> Subject line is a gift-wrapping cliché — "from us, to you" sounds corporate, not personal</div>
+        <div class="issue-item"><span>⚠</span> "Hi Adrian-Alexandru" buried after two CTAs — personalisation arrives too late</div>
+        <div class="issue-item"><span>⚠</span> 2.5x RevPoints buried in body text — the biggest hook is hidden in paragraph 3</div>
+        <div class="issue-item"><span>⚠</span> Benefits listed as walls of text — no visual hierarchy, hard to scan</div>
+        <div class="issue-item"><span>⚠</span> "How it works" section is actually legal terms in disguise</div>
+        <div class="issue-item"><span>⚠</span> Legal footer is longer than the entire offer — kills momentum before the second CTA</div>
+        <div class="issue-item"><span>⚠</span> Deadline (4/2/26) mentioned 4 times but never given visual weight</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Revolut &lt;premium@revolut.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Adrian-Alexandru</div>
+        <div class="subject-line">🔵 Adrian, 2 free months of Premium — your points are earning at half speed</div>
+      </div>
+
+      <div class="aft-header">
+        <div class="aft-logo">Revolut</div>
+        <div class="aft-badge-header">Premium offer · Expires 4 Feb</div>
+      </div>
+
+      <div class="aft-hero">
+        <div class="aft-kicker">Personal offer for Adrian-Alexandru</div>
+        <div class="aft-h1">Your money works harder<br>on <em>Premium.</em></div>
+        <div class="aft-lead">Right now you earn 1 RevPoint per €10. Upgrade to Premium and that becomes 1 per €4 — instantly. For free. For 2 months.</div>
+        <div class="aft-deadline">
+          <div>
+            <div class="aft-deadline-label">Free trial expires</div>
+            <div class="aft-deadline-val">4 February 2026 at midnight</div>
+          </div>
+        </div>
+        <div>
+          <a href="#" class="aft-cta-primary">Start my 2 free months →</a>
+        </div>
+      </div>
+
+      <div class="aft-stat-row">
+        <div class="aft-stat">
+          <div class="aft-stat-num">2.5×</div>
+          <div class="aft-stat-label">more RevPoints<br>per euro spent</div>
+        </div>
+        <div class="aft-stat">
+          <div class="aft-stat-num">€400</div>
+          <div class="aft-stat-label">free ATM withdrawals<br>per month</div>
+        </div>
+        <div class="aft-stat">
+          <div class="aft-stat-num">35+</div>
+          <div class="aft-stat-label">currencies, unlimited<br>exchange</div>
+        </div>
+      </div>
+
+      <div class="aft-benefits">
+        <div class="aft-benefits-title">What you unlock today</div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon purple">💎</div>
+          <div class="benefit-body">
+            <div class="benefit-title">RevPoints at 2.5× your current rate</div>
+            <div class="benefit-desc">You're on 1 point per €10 today. Premium moves that to 1 per €4 — redeem for airline miles, hotels, shopping, or experiences at 1:1.</div>
+            <span class="benefit-highlight">Currently: 1pt / €10 → Premium: 1pt / €4</span>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon blue">🌍</div>
+          <div class="benefit-body">
+            <div class="benefit-title">Unlimited currency exchange + 20% off transfers</div>
+            <div class="benefit-desc">No more watching the €1,000 monthly limit. Exchange freely in 35+ currencies and cut international transfer fees by 20%.</div>
+            <span class="benefit-highlight blue">Standard limit: €1,000 → Premium: Unlimited</span>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon green">🏧</div>
+          <div class="benefit-body">
+            <div class="benefit-title">€400 fee-free ATM withdrawals monthly</div>
+            <div class="benefit-desc">Pull out cash anywhere in the world without Revolut fees eating into it — up to €400 every rolling month.</div>
+            <span class="benefit-highlight green">No Revolut fees. Ever.</span>
+          </div>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon" style="background:#FFF0F3;font-size:20px;">🎁</div>
+          <div class="benefit-body">
+            <div class="benefit-title">Subscriptions included — Headspace, Freeletics, Tinder Plus</div>
+            <div class="benefit-desc">Premium comes bundled with apps worth more than the plan itself. Build new habits, stay fit, or meet someone new — included.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="aft-proof">
+        <div class="proof-quote">
+          <div class="proof-text">"I redeemed my Premium RevPoints for flights to Lisbon. The upgrade paid for itself in the first month."</div>
+          <div class="proof-attr">— Verified Revolut Premium user, Jan 2026</div>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-stats">
+          <div class="proof-stat">
+            <div class="proof-val">4.8★</div>
+            <div class="proof-label">Premium user rating</div>
+          </div>
+          <div class="proof-stat">
+            <div class="proof-val">€0</div>
+            <div class="proof-label">cost for 2 months</div>
+          </div>
+          <div class="proof-stat">
+            <div class="proof-val">Cancel</div>
+            <div class="proof-label">anytime before trial ends</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;padding:28px;border-bottom:1px solid var(--border);">
+        <a href="#" class="aft-cta-primary" style="font-size:15px;padding:16px 36px;">Start my 2 free months →</a>
+        <div style="font-size:11px;color:var(--muted);margin-top:10px;font-family:'DM Mono',monospace;">Offer expires 4 Feb 2026 · Cancel anytime · No charge during trial</div>
+      </div>
+
+      <div class="aft-terms-block">
+        <div class="terms-badge">PLAN DETAILS</div>
+        <div class="terms-title">How the free trial works</div>
+        <div class="terms-body">
+          Claim before 4/2/26. After the 2-month trial, the rolling monthly Premium fee applies automatically — you'll see the exact amount in-app before you confirm. Cancel any time before the trial ends at zero cost. If you've ordered a Premium card, delivery costs still apply. Downgrading after the trial may incur a fee — see Paid Plan Terms for full details.
+        </div>
+      </div>
+
+      <div class="aft-footer">
+        <div class="footer-links">
+          <span class="footer-link">Manage plan</span>
+          <span class="footer-link">Fees page</span>
+          <span class="footer-link">Privacy policy</span>
+          <span class="footer-link">Unsubscribe</span>
+        </div>
+        <div class="footer-note">© 2026 Revolut Bank UAB</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> 2 months of Premium, from us, to you<br><br>Sounds like a corporate gift announcement. No emotion, no personal hook, no reason to open right now.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> 🔵 Adrian, 2 free months of Premium — your points are earning at half speed<br><br>Name + loss framing ("half speed") + curiosity gap = opens itself.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 7 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject line: loss framing beats gift framing</div>
+          <div class="upgrade-desc">"Your points are earning at half speed" makes the reader feel they're already losing value every day they stay on Standard. That tension pulls the open. "From us, to you" is passive — it asks nothing of the reader.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Name first, not buried after two CTAs</div>
+          <div class="upgrade-desc">The original greets you in paragraph 3. The rewrite opens with "Personal offer for Adrian-Alexandru" as the kicker — before the headline. Personalisation works at the top, not the bottom.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · The real hook (2.5× RevPoints) leads the email</div>
+          <div class="upgrade-desc">The original buried this in paragraph 3. It's the most concrete, emotionally resonant benefit — the rewrite makes it the opening argument: "you earn at half speed right now." That's the entire email in one line.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Stat cards replace wall-of-text benefits</div>
+          <div class="upgrade-desc">2.5× / €400 / 35+ gives the eye three anchor points in seconds. The reader understands the upgrade before they've read a single sentence. Numbers beat adjectives every time.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Benefit cards with before/after tags</div>
+          <div class="upgrade-desc">"Standard limit: €1,000 → Premium: Unlimited" shows the upgrade visually. The original describes it in a sentence — the rewrite makes you feel the difference at a glance.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Deadline given visual weight, not just text</div>
+          <div class="upgrade-desc">The original mentions 4/2/26 four times in running text. The rewrite puts it in a dedicated deadline block inside the hero — the reader can't miss it, and it creates natural urgency without screaming.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">7 · Legal text contained, not dominant</div>
+          <div class="upgrade-desc">The original's footer is longer than the offer. The rewrite compresses all legal requirements into a single "Plan Details" block — clear, honest, and after the value has already landed. The 400-word regulatory footer is replaced with four footer links.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Every word earns its place. The biggest benefit leads. The CTA uses ownership language. The fine print informs without dominating. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original email'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>

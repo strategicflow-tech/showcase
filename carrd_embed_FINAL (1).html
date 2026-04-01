@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+
+.sf-wrap{max-width:720px;margin:0 auto;}
+
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.before-header{background:#003b8e;padding:14px 22px;}
+.before-logo{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:#a8c7fa;letter-spacing:.12em;}
+.before-nav{font-size:10px;color:#8ab4e8;padding:9px 22px;background:#002d6b;text-align:center;letter-spacing:.04em;}
+.before-hero{background:#f0f4ff;padding:28px 22px;text-align:center;border-bottom:1px solid #dde3f0;}
+.before-h1{font-size:22px;font-weight:600;color:#1a1a2e;margin-bottom:10px;}
+.before-p{font-size:13px;color:#555;max-width:380px;margin:0 auto 18px;line-height:1.65;}
+.before-cta{background:#003b8e;color:white;padding:11px 26px;border-radius:5px;font-size:13px;font-weight:500;display:inline-block;}
+.before-perks{padding:18px 22px;display:flex;gap:20px;justify-content:center;border-bottom:1px solid #eee;}
+.before-perk{font-size:12px;color:#666;text-align:center;line-height:1.6;}
+.before-footer{padding:14px 22px;font-size:10px;color:#aaa;line-height:1.6;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:var(--text-primary);}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--bg-secondary);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#0a0a0a;color:var(--green-pale);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);}
+.offer-expiry{font-size:10px;color:var(--text-secondary);margin-top:12px;font-family:'DM Mono',monospace;}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Newsletter <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Wizz Air Car Hire &lt;noreply@wizzair.com&gt;</div>
+        <div class="meta-row"><span>To:</span> You</div>
+        <div class="subject-line">📢 Last Chance - Car hire sale</div>
+      </div>
+      <div class="before-header"><div class="before-logo">WIZZ AIR</div></div>
+      <div class="before-nav">MANAGE MY BOOKING &nbsp;|&nbsp; HOTEL &nbsp;|&nbsp; TRANSFER &nbsp;|&nbsp; PARKING &nbsp;|&nbsp; FLIGHTS &nbsp;|&nbsp; CAR RENTALS</div>
+      <div class="before-hero">
+        <div class="before-h1">Last Chance to Save €50</div>
+        <div class="before-p">Your March sale savings are here. Save up to €50 on car hire when you book through us. Compare trusted providers in minutes, choose the car that suits your plans, and pick up with confidence when you land.</div>
+        <div class="before-cta">Book now</div>
+      </div>
+      <div class="before-perks">
+        <div class="before-perk">✓ Free cancellation<br>and amendments</div>
+        <div class="before-perk">✓ 24/7 customer<br>support</div>
+        <div class="before-perk">✓ No Hidden<br>Costs</div>
+      </div>
+      <div class="before-footer">
+        Please do not reply to this email as we cannot read or reply to your contact.<br><br>
+        Important information: The up to €50 discount is valid from 22/03/2026 01:00 (CET) to 30/03/2026 00:59 (CET). Valid on pick-ups between 30/03/2026 and 31/08/2026. Terms and conditions apply.<br><br>
+        You can unsubscribe from the car hire marketing database at any time by clicking here.
+      </div>
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Generic subject line — "Last Chance" is used by every brand, no curiosity hook</div>
+        <div class="issue-item"><span>⚠</span> No personalisation — reads like a bulk broadcast</div>
+        <div class="issue-item"><span>⚠</span> Benefits are listed, not felt — "free cancellation" vs. "book stress-free"</div>
+        <div class="issue-item"><span>⚠</span> CTA is a generic command — zero ownership signal</div>
+        <div class="issue-item"><span>⚠</span> Fine print longer than the offer itself</div>
+        <div class="issue-item"><span>⚠</span> Cold, distancing tone: "Please do not reply to this email"</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Wizz Air Car Hire &lt;cars@wizzair.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Alex</div>
+        <div class="subject-line">🟢 Alex, your €50 is expiring in 48h — your summer road trip awaits</div>
+      </div>
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Wizz Air</div>
+          <div class="after-tagline">Car Hire</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">Summer 2026</div>
+      </div>
+      <div class="after-hero">
+        <div class="after-kicker">Exclusive member offer · Expires 30 March</div>
+        <div class="after-h1">Your summer drive starts<br>at <em>€50 less.</em></div>
+        <div class="after-lead">You've already sorted the flight. Now lock in the car before this deal closes — trusted providers, zero hidden fees, and pick-up waiting at the gate.</div>
+        <div class="after-stat-row">
+          <div class="stat-card"><div class="stat-num">€50</div><div class="stat-label">off your rental</div></div>
+          <div class="stat-card"><div class="stat-num">3 min</div><div class="stat-label">to compare &amp; book</div></div>
+          <div class="stat-card"><div class="stat-num">48h</div><div class="stat-label">left on this offer</div></div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">Claim my €50 discount →</a>
+          <span class="after-cta-ghost">See all providers</span>
+        </div>
+      </div>
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"Booked in 4 minutes, picked up in under 10. The €40 I saved paid for dinner in Barcelona."</div>
+          <div class="quote-attr">— Maria T., booked via Wizz Car Hire, Feb 2026</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item"><div class="metric-val">4.8/5</div><div class="metric-label">average booking rating</div></div>
+          <div class="metric-item"><div class="metric-val">Free</div><div class="metric-label">cancellation on most cars</div></div>
+          <div class="metric-item"><div class="metric-val">24/7</div><div class="metric-label">real human support</div></div>
+        </div>
+      </div>
+      <div class="after-offer">
+        <div class="offer-badge">OFFER DETAILS</div>
+        <div class="offer-title">Up to €50 off car hire · Valid pick-ups Mar 30 – Aug 31, 2026</div>
+        <div class="offer-detail">Discount applied automatically at checkout. No code needed. Valid for new bookings before 30/03/2026 23:59 CET. Cannot be combined with other promotions.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">All major providers</span>
+          <span class="offer-pill">No hidden fees</span>
+          <span class="offer-pill">Free amendments</span>
+        </div>
+        <div class="offer-expiry">⏱ Offer closes: 30 March 2026, 23:59 CET</div>
+      </div>
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Manage booking</span>
+          <span class="footer-link">Contact us</span>
+          <span class="footer-link">Privacy</span>
+          <span class="footer-link">Unsubscribe</span>
+        </div>
+        <div class="footer-note">© 2026 Wizz Air</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> 📢 Last Chance - Car hire sale<br><br>Generic, no name, no specificity. "Last chance" is noise — every brand says it.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> 🟢 Alex, your €50 is expiring in 48h — your summer road trip awaits<br><br>Name + specific loss + emotional payoff = 3 hooks in one line.</p>
+          </div>
+        </div>
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+        <div class="upgrade-item"><div class="upgrade-head">1 · Subject line: loss aversion over urgency theatre</div><div class="upgrade-desc">"Your €50 is expiring" frames the discount as something the reader already owns — losing it feels worse than missing a vague sale.</div></div>
+        <div class="upgrade-item"><div class="upgrade-head">2 · Headline: story, not feature dump</div><div class="upgrade-desc">"Your summer drive starts at €50 less" puts the reader in the scene. Reader-centric, not brand-centric.</div></div>
+        <div class="upgrade-item"><div class="upgrade-head">3 · Stat cards: make abstract benefits concrete</div><div class="upgrade-desc">€50 / 3 min / 48h gives the eye a rest and the brain a shortcut. Numbers outperform adjectives every time.</div></div>
+        <div class="upgrade-item"><div class="upgrade-head">4 · CTA: specific action over generic command</div><div class="upgrade-desc">"Claim my €50 discount →" is ownership language. "Book now" is a direction. One pulls, one pushes.</div></div>
+        <div class="upgrade-item"><div class="upgrade-head">5 · Social proof: real person, real detail</div><div class="upgrade-desc">A quote with a specific saving amount and a real city builds trust faster than any feature list.</div></div>
+        <div class="upgrade-item"><div class="upgrade-head">6 · Fine print: contained, not dominant</div><div class="upgrade-desc">Legal text moved to an offer block. The reader sees value first, conditions after.</div></div>
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Every word earns its place. Every CTA is written for the reader's brain — not the brand's checklist. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={before:['before-pill','Original email'],after:['after-pill','Strategic Flow rewrite'],notes:['notes-pill','Analysis']};
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
