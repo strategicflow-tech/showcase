@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Flow — Memrise Newsletter Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0a0a0a; color: #e5e5e5; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .header { border-bottom: 1px solid #222; padding: 1.5rem; }
+    .header-inner { max-width: 72rem; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .header-title { font-size: 0.875rem; letter-spacing: 0.1em; color: #888; }
+    .hero { padding: 4rem 1.5rem; border-bottom: 1px solid #222; }
+    .hero-inner { max-width: 56rem; margin: 0 auto; text-align: center; }
+    .hero h1 { font-size: 2.5rem; font-weight: 300; letter-spacing: -0.025em; margin-bottom: 1rem; }
+    .hero h1 .orange { color: #f97316; }
+    .hero h1 .gray { color: #666; }
+    .hero p { color: #888; font-size: 1.125rem; }
+    @media (min-width: 768px) { .hero h1 { font-size: 3rem; } }
+    .section { padding: 4rem 1.5rem; }
+    .section-divider { border-top: 1px solid #222; }
+    .section-inner { max-width: 72rem; margin: 0 auto; }
+    .section-inner-narrow { max-width: 56rem; margin: 0 auto; }
+    .grid-2 { display: grid; gap: 2rem; }
+    @media (min-width: 768px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+    .email-card { background: #111; border: 1px solid #222; border-radius: 0.5rem; overflow: hidden; }
+    .email-card.optimized { border-color: #1a3d1a; }
+    .email-header { background: #1a1a1a; padding: 1rem 1.5rem; border-bottom: 1px solid #222; }
+    .email-header.optimized { background: #0a1a0a; border-color: #1a3d1a; }
+    .email-label { font-size: 0.75rem; color: #666; margin-bottom: 0.25rem; }
+    .email-label.optimized { color: #22c55e; }
+    .email-meta { font-size: 0.875rem; color: #888; }
+    .email-subject { font-size: 0.875rem; color: #f97316; }
+    .email-subject.optimized { color: #22c55e; font-weight: 500; }
+    .email-body { padding: 1.5rem; }
+    .brand { text-align: center; margin-bottom: 1.5rem; }
+    .brand-name { font-size: 1.5rem; font-weight: 700; color: #fbbf24; margin-bottom: 0.25rem; }
+    .brand-subtitle { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1rem; }
+    .tag { font-size: 0.75rem; background: #1a1a1a; padding: 0.25rem 0.75rem; border-radius: 9999px; color: #888; }
+    .content-title { font-size: 1.125rem; font-weight: 500; color: #e5e5e5; margin-bottom: 1rem; }
+    .content-text { font-size: 0.875rem; color: #888; margin-bottom: 0.75rem; }
+    .headline-primary { font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; }
+    .headline-secondary { font-size: 1.25rem; color: #fbbf24; text-align: center; margin-bottom: 1rem; }
+    .offer-box { background: #1a1a1a; padding: 1rem; border-radius: 0.5rem; text-align: center; margin-bottom: 1rem; }
+    .offer-label { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .offer-value { font-size: 1.25rem; font-weight: 700; color: #fbbf24; }
+    .offer-deadline { font-size: 0.875rem; color: #f97316; margin-top: 0.5rem; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .stat-card { background: #1a1a1a; padding: 1rem; border-radius: 0.5rem; text-align: center; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; color: #fbbf24; }
+    .stat-label { font-size: 0.75rem; color: #666; }
+    .btn { display: block; width: 100%; padding: 0.75rem; border-radius: 0.5rem; font-weight: 500; text-align: center; border: none; cursor: pointer; font-size: 1rem; font-family: inherit; }
+    .btn-primary { background: #fbbf24; color: #000; }
+    .btn-secondary { background: transparent; border: 1px solid #333; color: #888; font-size: 0.875rem; padding: 0.5rem; margin-top: 0.5rem; }
+    .testimonial { background: #1a1a1a; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; }
+    .testimonial-text { font-size: 0.875rem; color: #e5e5e5; font-style: italic; margin-bottom: 0.5rem; }
+    .testimonial-author { font-size: 0.75rem; color: #666; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .feature-item { text-align: center; }
+    .feature-value { font-size: 0.875rem; font-weight: 500; color: #e5e5e5; }
+    .feature-label { font-size: 0.75rem; color: #666; }
+    .how-it-works { border-top: 1px solid #222; padding-top: 1rem; margin-bottom: 1rem; }
+    .how-it-works-label { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .how-it-works-text { font-size: 0.875rem; color: #888; }
+    .footer-meta { display: flex; gap: 1rem; justify-content: center; font-size: 0.75rem; color: #666; }
+    .email-footer { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #222; text-align: center; font-size: 0.75rem; color: #666; }
+    .panels { display: flex; flex-direction: column; gap: 1rem; }
+    .panel { padding: 1rem; border-radius: 0.5rem; }
+    .panel-issue { background: #1a0a0a; border: 1px solid #3d1515; }
+    .panel-improvement { background: #0a1a0a; border: 1px solid #1a3d1a; }
+    .panel-inner { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .panel-icon { font-size: 1.125rem; }
+    .panel-icon.warning { color: #f97316; }
+    .panel-icon.success { color: #22c55e; }
+    .panel-title { font-weight: 500; color: #e5e5e5; margin-bottom: 0.25rem; }
+    .panel-text { font-size: 0.875rem; color: #888; }
+    .comparison-box { padding: 1.5rem; border-radius: 0.5rem; }
+    .comparison-box.before { background: #1a0a0a; border: 1px solid #3d1515; }
+    .comparison-box.after { background: #0a1a0a; border: 1px solid #1a3d1a; }
+    .comparison-label { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; }
+    .comparison-label.before { color: #f97316; }
+    .comparison-label.after { color: #22c55e; }
+    .comparison-subject { font-size: 1.125rem; color: #e5e5e5; margin-bottom: 1rem; }
+    .comparison-text { font-size: 0.875rem; color: #888; }
+    .upgrades-title { font-size: 1.875rem; font-weight: 300; text-align: center; margin-bottom: 3rem; }
+    .upgrades-list { display: flex; flex-direction: column; gap: 3rem; }
+    .upgrade-item { border-left: 2px solid #fbbf24; padding-left: 1.5rem; }
+    .upgrade-label { font-size: 0.875rem; font-weight: 500; color: #fbbf24; margin-bottom: 0.5rem; }
+    .upgrade-text { color: #888; }
+    .cta-section { max-width: 42rem; margin: 0 auto; text-align: center; }
+    .cta-title { font-size: 1.5rem; font-weight: 300; margin-bottom: 1rem; }
+    .cta-text { color: #888; margin-bottom: 2rem; }
+    .cta-link { display: inline-block; background: #fbbf24; color: #000; font-weight: 500; padding: 0.75rem 2rem; border-radius: 0.5rem; text-decoration: none; }
+    .footer { border-top: 1px solid #222; padding: 2rem 1.5rem; }
+    .footer-inner { max-width: 56rem; margin: 0 auto; text-align: center; font-size: 0.75rem; color: #666; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-title">Strategic Flow — Memrise Newsletter Showcase</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1><span class="orange">Before</span> <span class="gray">After</span> — Strategic Flow</h1>
+      <p>What changed &amp; why</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="grid-2">
+        <div class="email-card">
+          <div class="email-header">
+            <p class="email-label">Original email</p>
+            <p class="email-meta">From: Memrise</p>
+            <p class="email-meta">To: Subscriber</p>
+            <p class="email-subject">Subject: Memrise offer</p>
+          </div>
+          <div class="email-body">
+            <div class="brand">
+              <div class="brand-name">Memrise</div>
+              <p class="brand-subtitle">Language Learning</p>
+            </div>
+            <p class="content-title">Last day of March</p>
+            <p class="content-text">A good moment to decide what the next month looks like.</p>
+            <p class="content-text">Hey there,</p>
+            <p class="content-text">A few days ago we said the end of a month does something to people. That it has a way of making things feel more possible.</p>
+            <p class="content-text">Well, tomorrow it's April. A clean slate, a new month, four weeks that don't exist yet.</p>
+            <p class="content-text">If the language has been on your list, whether you've been loosely at it, or thinking about getting back to it, there's an offer closing today that makes going PRO a pretty easy call.</p>
+            <p class="content-text">Doesn't April sound like a good time to recommit?</p>
+            <div class="offer-box">
+              <p class="offer-label">Offer Unlocked:</p>
+              <p class="offer-value">65% off Lifetime PRO</p>
+              <p class="offer-deadline">Ends Tuesday</p>
+            </div>
+            <button class="btn btn-primary">Get offer</button>
+            <div class="email-footer">
+              <p>No longer need our help? Unsubscribe here</p>
+              <p style="margin-top:0.5rem;">2024 Memrise Ltd · 27 Old Gloucester Street · London · WC1N 3AX</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panels">
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">⚠</span>
+              <div>
+                <p class="panel-title">Generic subject line</p>
+                <p class="panel-text">"Memrise offer" is feature-first, not outcome-first — no hook, no personalisation, no urgency</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">⚠</span>
+              <div>
+                <p class="panel-title">Philosophical opening wastes prime real estate</p>
+                <p class="panel-text">"A clean slate, a new month" — three paragraphs of preamble before the actual value proposition</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">⚠</span>
+              <div>
+                <p class="panel-title">Passive CTA creates hesitation</p>
+                <p class="panel-text">"Get offer" is permission-based language — ownership language converts measurably better</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">⚠</span>
+              <div>
+                <p class="panel-title">Zero social proof</p>
+                <p class="panel-text">No testimonials, no user counts, no specificity — just vague adjectives like "pretty easy call"</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">⚠</span>
+              <div>
+                <p class="panel-title">Vague urgency without specificity</p>
+                <p class="panel-text">"Ends Tuesday" lacks concrete proof — no time, no timezone, no countdown</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="grid-2">
+        <div class="email-card optimized">
+          <div class="email-header optimized">
+            <p class="email-label optimized">Optimized email</p>
+            <p class="email-meta">From: Memrise</p>
+            <p class="email-meta">To: Subscriber</p>
+            <p class="email-subject optimized">Subject: Subscriber, speak conversational by summer — 65% off PRO today</p>
+          </div>
+          <div class="email-body">
+            <div class="brand">
+              <div class="brand-name">Memrise</div>
+              <p class="brand-subtitle">Language Learning PRO · 2024</p>
+            </div>
+            <div class="tags">
+              <span class="tag">New offer</span>
+              <span class="tag">All languages</span>
+              <span class="tag">Lifetime access</span>
+            </div>
+            <h2 class="headline-primary">Fluent in April.</h2>
+            <h3 class="headline-secondary">At 65% off.</h3>
+            <p class="content-text" style="text-align:center;margin-bottom:1.5rem;">15 minutes a day. Conversational in 90 days. Unlock lifetime PRO access before Tuesday 11:59 PM PT.</p>
+            <div class="stat-grid">
+              <div class="stat-card"><p class="stat-value">65%</p><p class="stat-label">off lifetime</p></div>
+              <div class="stat-card"><p class="stat-value">90</p><p class="stat-label">days to fluent</p></div>
+              <div class="stat-card"><p class="stat-value">40+</p><p class="stat-label">languages</p></div>
+            </div>
+            <button class="btn btn-primary">Start my PRO journey →</button>
+            <button class="btn btn-secondary">See what PRO includes</button>
+            <div class="testimonial" style="margin-top:1.5rem;">
+              <p class="testimonial-text">"I committed in January, hit conversational Spanish by April. PRO cuts your timeline in half."</p>
+              <p class="testimonial-author">— Verified Memrise user · App Store · March 2024</p>
+            </div>
+            <div class="features-grid">
+              <div class="feature-item"><p class="feature-value">$104</p><p class="feature-label">one-time payment</p></div>
+              <div class="feature-item"><p class="feature-value">Offline</p><p class="feature-label">mode included</p></div>
+              <div class="feature-item"><p class="feature-value">200K+</p><p class="feature-label">PRO users</p></div>
+            </div>
+            <div class="how-it-works">
+              <p class="how-it-works-label">How it works</p>
+              <p class="how-it-works-text">Click → Choose your language → Start learning immediately. No contracts, no renewals, just lifetime access.</p>
+            </div>
+            <div class="footer-meta">
+              <span>All languages included</span><span>•</span>
+              <span>Cancel anytime</span><span>•</span>
+              <span>30-day guarantee</span>
+            </div>
+            <div class="email-footer">
+              <p>About Us · Help Center · Privacy Policy · Unsubscribe</p>
+              <p style="margin-top:0.5rem;">© 2026 Memrise</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panels">
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">✓</span>
+              <div>
+                <p class="panel-title">Outcome-first subject line</p>
+                <p class="panel-text">"Speak conversational by summer" — name + outcome + value = 3 hooks before the email even opens</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">✓</span>
+              <div>
+                <p class="panel-title">Sensation before specification</p>
+                <p class="panel-text">"Fluent in April. At 65% off." — result lands before any philosophical preamble</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">✓</span>
+              <div>
+                <p class="panel-title">Ownership language CTA</p>
+                <p class="panel-text">"Start my PRO journey" — reader becomes the agent, not a passive recipient of permission</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">✓</span>
+              <div>
+                <p class="panel-title">Specific social proof</p>
+                <p class="panel-text">Real quote with a concrete timeline ("conversational Spanish by April") — specificity signals truth</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">✓</span>
+              <div>
+                <p class="panel-title">Hard deadline with timezone</p>
+                <p class="panel-text">"Tuesday 11:59 PM PT" — exact time creates real urgency, not vague pressure</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Subject Line Comparison -->
+  <section class="section">
+    <div class="section-inner-narrow">
+      <div class="grid-2">
+        <div class="comparison-box before">
+          <p class="comparison-label before">❌ Before</p>
+          <p class="comparison-subject">Subject: Memrise offer</p>
+          <p class="comparison-text">Generic, no name, no specificity. "Offer" tells the reader nothing about what they'll gain or lose — it's the copywriting equivalent of a blank page.</p>
+        </div>
+        <div class="comparison-box after">
+          <p class="comparison-label after">✅ After</p>
+          <p class="comparison-subject">Subject: Subscriber, speak conversational by summer — 65% off PRO today</p>
+          <p class="comparison-text">Name + outcome ("speak conversational by summer") + discount anchor + urgency signal = four conversion levers in one line.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- The 5 Upgrades -->
+  <section class="section">
+    <div class="section-inner-narrow">
+      <h2 class="upgrades-title">The 5 upgrades — and why they work</h2>
+      <div class="upgrades-list">
+        <div class="upgrade-item">
+          <p class="upgrade-label">1 · Subject line: reader outcome beats product name</p>
+          <p class="upgrade-text">"Speak conversational by summer" puts the reader inside the result before they open the email. "Memrise offer" tells the reader nothing — it's the brand's agenda, not theirs. The most-read line in any campaign should answer one question: what's in it for me, right now?</p>
+        </div>
+        <div class="upgrade-item">
+          <p class="upgrade-label">2 · Headline: sensation before specification</p>
+          <p class="upgrade-text">"Fluent in April. At 65% off." lands the emotional payoff before any rational justification. The original spends three paragraphs building philosophical momentum before revealing the offer. By then, most readers have already decided. Benefits before features, always — the brain commits emotionally first and justifies rationally after.</p>
+        </div>
+        <div class="upgrade-item">
+          <p class="upgrade-label">3 · CTA: ownership language over invitation</p>
+          <p class="upgrade-text">"Start my PRO journey →" makes the reader the agent of their own decision. "Get offer" is passive — it frames the reader as receiving something from the brand. Ownership CTAs ("my", "I", "Start") activate agency and reduce the psychological distance between reading and clicking. The arrow matters too: it signals continuation, not transaction.</p>
+        </div>
+        <div class="upgrade-item">
+          <p class="upgrade-label">4 · Social proof: specific over vague</p>
+          <p class="upgrade-text">"I committed in January, hit conversational Spanish by April" is a timeline the reader can project themselves into. The original email offered no proof at all — just the brand's assertion that this is "a pretty easy call." Specificity signals truth. Vague claims create doubt; concrete details eliminate it. The month, the language, the outcome — every detail adds credibility.</p>
+        </div>
+        <div class="upgrade-item">
+          <p class="upgrade-label">5 · Urgency: hard deadline with timezone</p>
+          <p class="upgrade-text">"Ends Tuesday" is soft urgency — it sets no mental anchor. "Tuesday 11:59 PM PT" forces the reader to translate the deadline into their own time, which creates genuine psychological pressure. The act of mental conversion makes the deadline feel real and personal, not like a marketing convention. Soft deadlines get ignored; exact deadlines get acted on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="cta-section">
+      <h2 class="cta-title">This is the Strategic Flow method.</h2>
+      <p class="cta-text">Every word earns its place. Every section has one job. Every CTA is written for the reader's brain — not the brand's checklist.</p>
+      <a href="https://strategicflow.carrd.co" class="cta-link">Get My Free Analysis</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>Strategic Flow © 2026 · <a href="https://strategicflow.carrd.co" style="color:#fbbf24;text-decoration:none;">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me" style="color:#888;text-decoration:none;">strategicflow@proton.me</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
