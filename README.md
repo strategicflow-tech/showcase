@@ -11,7 +11,6 @@ This repository hosts the live showcase files for [Strategic Flow](https://strat
 
 | File | Description |
 |------|-------------|
-| `strategic_flow_social_proof.html` | 6-slide social proof carousel - results, before/after rewrites, and client testimonial slots |
 | `carrd_embed_FINAL.html` | Wizz Air newsletter - before & after rewrite showcase with analysis |
 | `revolut_newsletter_showcase.html` | Revolut Premium newsletter - before & after rewrite showcase with analysis |
 
