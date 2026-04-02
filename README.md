@@ -11,7 +11,7 @@ This repository hosts the live showcase files for [Strategic Flow](https://strat
 
 | File | Description |
 |------|-------------|
-| `carrd_embed_FINAL.html` | Wizz Air newsletter - before & after rewrite showcase with analysis |
+| `wizzair-audit.html` | Wizz Air newsletter - before & after rewrite showcase with analysis |
 | `revolut_newsletter_showcase.html` | Revolut Premium newsletter - before & after rewrite showcase with analysis |
 
 ---
