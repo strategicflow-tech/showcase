@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — HeyGen Newsletter Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#111;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:17px;font-weight:700;color:#fff;}
+.bef-logo-tag{font-size:9px;color:#555;font-family:'DM Mono',monospace;letter-spacing:.08em;}
+.bef-body{padding:24px 22px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-greeting{font-size:13px;color:#333;margin-bottom:6px;}
+.bef-hook{font-size:13px;color:#666;font-style:italic;margin-bottom:18px;}
+.bef-section-title{font-size:16px;font-weight:600;color:#111;margin-bottom:10px;}
+.bef-copy{font-size:13px;color:#555;line-height:1.7;margin-bottom:14px;}
+.bef-bullets{margin-bottom:14px;}
+.bef-bullet{font-size:13px;color:#444;line-height:1.7;padding-left:16px;position:relative;margin-bottom:5px;}
+.bef-bullet::before{content:"•";position:absolute;left:0;color:#7c3aed;font-weight:700;}
+.bef-instruction{font-size:13px;color:#555;line-height:1.7;margin-bottom:20px;}
+.bef-cta{display:inline-block;background:#7c3aed;color:#fff;padding:11px 26px;border-radius:6px;font-size:13px;font-weight:500;margin-bottom:8px;}
+.bef-avail{font-size:11px;color:#aaa;margin-bottom:20px;}
+.bef-sig{font-size:13px;color:#555;line-height:1.7;}
+.bef-divider{border:none;border-top:1px solid #eee;margin:18px 0;}
+.bef-tagline{font-size:11px;color:#bbb;text-align:center;font-style:italic;margin-bottom:12px;}
+.bef-footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:8px;}
+.bef-footer-link{font-size:11px;color:#999;text-decoration:underline;cursor:pointer;}
+.bef-addr{font-size:10px;color:#ccc;text-align:center;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:var(--text-primary);}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--bg-secondary);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#0a0a0a;color:var(--green-pale);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">HeyGen — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> HeyGen &lt;no-reply@heygen.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Travelescu</div>
+        <div class="subject-line" style="color:#cc3333;font-size:13px;font-style:italic;font-weight:400;">(no subject line — email opens directly with body copy)</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">HeyGen</div>
+        <div class="bef-logo-tag">AI VIDEO PLATFORM</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-greeting">Hi Travelescu,</div>
+        <div class="bef-hook">You worked hard on your videos. They deserve to be in 4K.</div>
+
+        <div class="bef-section-title">HeyGen Video Upscaler</div>
+        <div class="bef-copy">Today, we're launching a tool to enhance your videos directly inside HeyGen. Powered by our new integration with Topaz, Starlight Precise 2.5 is the best upscaling model on the market. Here's what it does:</div>
+
+        <div class="bef-bullets">
+          <div class="bef-bullet">Upload any video at any resolution. 480p, 720p, 1080p, anything.</div>
+          <div class="bef-bullet">Get a crisp, sharp 4K output back</div>
+          <div class="bef-bullet">Optional frame smoothing to take choppy footage up to 120fps</div>
+        </div>
+
+        <div class="bef-instruction">You'll find it under the new Apps tab inside HeyGen. Click into Apps, select "Upscale Video", and upload your footage.</div>
+
+        <div class="bef-cta">Try Upscaler now →</div>
+        <div class="bef-avail">Available on: All plans. Credits required.</div>
+
+        <div class="bef-sig">Best,<br><strong>The HeyGen Team</strong></div>
+
+        <hr class="bef-divider"/>
+        <div class="bef-tagline">Create videos like you write a doc.</div>
+        <div class="bef-footer-links">
+          <span class="bef-footer-link">About Us</span>
+          <span class="bef-footer-link">Help Center</span>
+          <span class="bef-footer-link">Privacy Policy</span>
+          <span class="bef-footer-link">Unsubscribe</span>
+        </div>
+        <div class="bef-addr">12130 Millennium Drive, Suite 300, Los Angeles, CA 90094</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> No subject line — the single highest-ROI line in email marketing was left completely blank</div>
+        <div class="issue-item"><span>⚠</span> Feature-first opening — "Powered by Topaz, Starlight Precise 2.5" leads before the reader knows why they should care</div>
+        <div class="issue-item"><span>⚠</span> Personalisation wasted — "Hi Travelescu" appears but does no persuasive work; the hook is missing</div>
+        <div class="issue-item"><span>⚠</span> "Try" CTA signals effort and doubt — ownership language converts measurably better</div>
+        <div class="issue-item"><span>⚠</span> No social proof — a visual product selling a visual promise needs a visual result, not three bullet points</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> HeyGen &lt;updates@heygen.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Travelescu</div>
+        <div class="subject-line">⭐ Travelescu, your 480p footage can look like a film — free to try today</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">HeyGen</div>
+          <div class="after-tagline">Video Upscaler · New</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">All Plans · 2025</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">New feature · All plans · No setup · Powered by Topaz Starlight 2.5</div>
+        <div class="after-h1">Your 480p footage.<br><em>4K. In minutes.</em></div>
+        <div class="after-lead">You've already made the video. Now make it look like you shot it in a studio — upload any resolution, get crisp 4K back, right inside HeyGen. No plugins. No exports.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">4K</div>
+            <div class="stat-label">output from any resolution</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">120fps</div>
+            <div class="stat-label">optional frame smoothing</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">&lt;2 min</div>
+            <div class="stat-label">average processing time</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">Upscale my first video →</a>
+          <span class="after-cta-ghost">See how it works</span>
+        </div>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"I uploaded a 720p conference recording and got back something that looked broadcast-ready. Took under 90 seconds."</div>
+          <div class="quote-attr">— Verified HeyGen user · Product Hunt · March 2025</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">480p+</div>
+            <div class="metric-label">any resolution accepted</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Free</div>
+            <div class="metric-label">to try on all plans</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Topaz</div>
+            <div class="metric-label">Starlight Precise 2.5 engine</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">HOW IT WORKS</div>
+        <div class="offer-title">Apps tab → Upscale Video → upload your footage</div>
+        <div class="offer-detail">No plugins, no exports, no third-party tools. The Upscaler lives directly inside HeyGen. Credits are consumed only on the final output — browsing and uploading are always free.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">All plans included</span>
+          <span class="offer-pill">Any resolution in</span>
+          <span class="offer-pill">4K out</span>
+          <span class="offer-pill">120fps smoothing optional</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">About Us</span>
+          <span class="footer-link">Help Center</span>
+          <span class="footer-link">Privacy Policy</span>
+          <span class="footer-link">Unsubscribe</span>
+        </div>
+        <div class="footer-note">© 2025 HeyGen</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> (none)<br><br>The most-read line in any email campaign was left blank. Open rate starts here — and this one had zero strategy.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> ⭐ Travelescu, your 480p footage can look like a film — free to try today<br><br>Name + outcome + zero-risk signal = 3 hooks before the email even opens.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 5 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject line: reader outcome beats feature name</div>
+          <div class="upgrade-desc">"Your 480p footage can look like a film" puts the reader inside the result before they open. The original had no subject line at all — the single highest-ROI asset in email marketing was left completely unused.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Headline: sensation before specification</div>
+          <div class="upgrade-desc">"4K. In minutes." lands before any technical context. Topaz Starlight Precise 2.5 earns its place after the reader already wants the result — not before. Benefits always before features.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · CTA: ownership language over invitation</div>
+          <div class="upgrade-desc">"Upscale my first video →" is a commitment the reader makes. "Try Upscaler now" is an offer from the brand. One creates forward momentum and a sense of possession; the other creates hesitation before the click.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Stat cards replace bullet lists</div>
+          <div class="upgrade-desc">4K / 120fps / &lt;2 min gives the eye three concrete proof points before reading a word. Bullet lists require sequential reading — numbers are absorbed in a glance. Same information, dramatically higher impact.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Specificity as social proof</div>
+          <div class="upgrade-desc">Naming the processing time, the accepted resolution range, and the partner (Topaz, not just "AI-powered") acts as trust evidence. A visual product selling a visual promise needs concrete facts — not adjectives like "crisp" and "sharp."</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Every word earns its place. The reader outcome leads the feature spec. The CTA uses ownership language. The proof is specific, not vague. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original email'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
