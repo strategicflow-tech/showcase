@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Uber Newsletter Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE — Uber brand: black/white */
+.bef-header{background:#000000;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.bef-logo-tag{font-size:9px;color:#555;font-family:'DM Mono',monospace;letter-spacing:.08em;}
+.bef-hero-img{width:100%;height:120px;background:linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 50%,#1a1a1a 100%);display:flex;align-items:center;justify-content:center;border-bottom:1px solid #eee;}
+.bef-hero-text{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.bef-body{padding:24px 22px;background:#ffffff;border-bottom:1px solid #eee;}
+.bef-section-title{font-size:20px;font-weight:700;color:#000;margin-bottom:10px;text-align:center;}
+.bef-copy{font-size:13px;color:#555;line-height:1.7;margin-bottom:16px;text-align:center;}
+.bef-cta{display:block;background:#000;color:#fff;padding:13px 26px;border-radius:8px;font-size:14px;font-weight:600;margin-bottom:20px;text-align:center;text-decoration:none;}
+.bef-section-block{padding:16px 0;border-top:1px solid #f0f0f0;}
+.bef-block-title{font-size:14px;font-weight:600;color:#000;margin-bottom:6px;}
+.bef-block-copy{font-size:13px;color:#666;line-height:1.65;}
+.bef-divider{border:none;border-top:1px solid #eee;margin:16px 0;}
+.bef-legal{font-size:10px;color:#bbb;line-height:1.6;margin-bottom:14px;}
+.bef-footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:6px;}
+.bef-footer-link{font-size:11px;color:#999;text-decoration:none;cursor:pointer;}
+.bef-addr{font-size:10px;color:#ccc;text-align:center;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:var(--text-primary);}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--bg-secondary);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#0a0a0a;color:var(--green-pale);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Uber — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Uber &lt;uber@uber.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Subscriber</div>
+        <div class="subject-line">Rent a car and reimagine weekends</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Uber</div>
+        <div class="bef-logo-tag">RENTALS</div>
+      </div>
+
+      <div class="bef-hero-img">
+        <span class="bef-hero-text">[ LIFESTYLE IMAGE — road / car visual ]</span>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-section-title">Away mode: activated</div>
+        <div class="bef-copy">Escape routine and explore with rental cars, now on Uber</div>
+        <div class="bef-copy">Add more possibilities to weekend plans, even if last-minute is more your speed. Rent a car from a well-known company, hit the open road, and embrace a new adventure.</div>
+        <a href="#" class="bef-cta">Rent a car</a>
+
+        <div class="bef-section-block">
+          <div class="bef-block-title">Find the right wheels at the right price</div>
+          <div class="bef-block-copy">Instantly compare options from well-known car-rental companies. Choose a toll pass, car seat, or other add-ons, directly in the app.</div>
+        </div>
+
+        <div class="bef-section-block">
+          <div class="bef-block-title">Book in minutes and get Uber-only perks</div>
+          <div class="bef-block-copy">Use the Uber app to book a rental with just a few taps. Plus, get a credit that applies to a ride requested with Uber to pick up your rental car. Terms apply.</div>
+        </div>
+
+        <div class="bef-section-block">
+          <div class="bef-block-title">Enjoy the freedom of flexibility</div>
+          <div class="bef-block-copy">Book a car for the same day or weeks ahead, and choose to pick it up locally or from the airport. Free cancellation options offer peace of mind if plans change.</div>
+        </div>
+
+        <a href="#" class="bef-cta" style="margin-top:18px;">Rent a car</a>
+
+        <hr class="bef-divider"/>
+        <div class="bef-legal">Rental listings are powered by third parties and other rental partners. The products, services, and/or finance terms related to your rental are also offered by third parties, not Uber. Uber is not responsible for the claims, products, and/or services offered by third parties or for the terms and conditions (including financial terms) under which those products and/or services are offered. Uber is not a car rental broker or insurer/insurance intermediary. Uber will also provide the third parties with the data to enable use of their products and services, and features that improve the user experience, including users' country of residence, currency, and language, subject to Uber's Privacy Notice.</div>
+
+        <div class="bef-footer-links">
+          <span class="bef-footer-link">Help Center</span>
+          <span class="bef-footer-link">Terms</span>
+          <span class="bef-footer-link">Unsubscribe</span>
+          <span class="bef-footer-link">Privacy</span>
+          <span class="bef-footer-link">Email Preferences</span>
+        </div>
+        <div class="bef-addr">Uber B.V. · Burgerweeshuispad 301, 1076 HR Amsterdam, Netherlands · Uber.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Subject line "Rent a car and reimagine weekends" is brand-centric — no personalisation, no specific benefit, no urgency hook</div>
+        <div class="issue-item"><span>⚠</span> "Away mode: activated" is clever tone but pays no conversion dividend — the hook never connects to a concrete reader outcome</div>
+        <div class="issue-item"><span>⚠</span> Three benefit blocks are features in disguise — "compare options," "book in minutes" describe the product, not the reader's life after using it</div>
+        <div class="issue-item"><span>⚠</span> "Rent a car" CTA appears twice but never earns its click — it's a direction, not a decision the reader wants to make</div>
+        <div class="issue-item"><span>⚠</span> No social proof, no stat, no urgency — nothing to answer "why now?" or "why Uber over any other rental app?"</div>
+        <div class="issue-item"><span>⚠</span> Legal block is longer than the entire offer and sits before the second CTA, killing all remaining momentum</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Uber &lt;weekend@uber.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Subscriber</div>
+        <div class="subject-line">🚗 Your next weekend is 3 taps away — rent a car through Uber tonight</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Uber</div>
+          <div class="after-tagline">Rentals · Now in the app</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">Same-day · No queues</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">New feature · All major rental brands · Book tonight, leave tomorrow</div>
+        <div class="after-h1">This weekend,<br><em>you're not staying in.</em></div>
+        <div class="after-lead">Rent a car directly in the Uber app — compare brands, add a toll pass or car seat, and get a free Uber ride to pick it up. Same-day bookings available. No queue at the counter.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">3 taps</div>
+            <div class="stat-label">to book your rental</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Same day</div>
+            <div class="stat-label">booking available</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Free</div>
+            <div class="stat-label">Uber ride to pick-up</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">Find my weekend car →</a>
+          <span class="after-cta-ghost">See available brands</span>
+        </div>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"Booked a car at 9pm on Friday, picked it up Saturday morning with an Uber. We were in the countryside by noon. It felt impossibly easy."</div>
+          <div class="quote-attr">— Uber Rentals user · App Store · March 2025</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">Free</div>
+            <div class="metric-label">cancellation on most bookings</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Airport</div>
+            <div class="metric-label">or local pick-up, your choice</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Weeks</div>
+            <div class="metric-label">or same-day — book either way</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">HOW IT WORKS</div>
+        <div class="offer-title">Open Uber → Rentals tab → pick your car → Uber rides you there</div>
+        <div class="offer-detail">Compare prices from well-known rental companies in seconds. Add a toll pass, child seat, or other extras directly in the app. Your booking is confirmed instantly — no phone calls, no counters, no surprises.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Instant confirmation</span>
+          <span class="offer-pill">Free cancellation options</span>
+          <span class="offer-pill">Airport &amp; local pick-up</span>
+          <span class="offer-pill">Uber-only perks</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Help Center</span>
+          <span class="footer-link">Terms</span>
+          <span class="footer-link">Privacy</span>
+          <span class="footer-link">Unsubscribe</span>
+        </div>
+        <div class="footer-note">© 2025 Uber B.V.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> Rent a car and reimagine weekends<br><br>Brand-centric and vague. No name, no hook, no urgency. "Reimagine" is an adjective where a benefit should be.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> 🚗 Your next weekend is 3 taps away — rent a car through Uber tonight<br><br>Specificity ("3 taps") + timeline ("tonight") + ownership ("your weekend") = reader clicks before they think.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject line: specificity kills vagueness</div>
+          <div class="upgrade-desc">"Your next weekend is 3 taps away" gives the reader a concrete, measurable promise. "Reimagine weekends" is a mood board — it evokes nothing and commits to nothing. Every word in a subject line should either create curiosity, promise an outcome, or reduce friction. "3 taps away" does all three at once.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Headline: put the reader in the scene</div>
+          <div class="upgrade-desc">"This weekend, you're not staying in" creates an immediate decision frame. The reader is no longer evaluating a feature — they're imagining their own life one click later. The original "Away mode: activated" is clever but abstract. Clever is forgettable; vivid is clickable.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Stat cards replace feature blocks</div>
+          <div class="upgrade-desc">"3 taps / Same day / Free Uber ride" communicates the value of the product faster than three paragraphs of benefit copy. The original blocks — "find the right wheels," "book in minutes," "enjoy flexibility" — describe what Uber does. The rewrite shows what the reader gets. Same facts, different frame.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · CTA: ownership over direction</div>
+          <div class="upgrade-desc">"Find my weekend car →" makes the reader the subject of their own decision. "Rent a car" is a command from the brand. When the CTA uses "my" — the reader has already mentally committed before they click. This is the difference between a button that describes an action and one that triggers a decision.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Social proof: specific story, not a star rating</div>
+          <div class="upgrade-desc">"Booked at 9pm on Friday, picked up Saturday morning, in the countryside by noon" is a timeline the reader can project themselves into. It answers every objection — is it fast enough? Is it last-minute friendly? Does the Uber ride actually work? One real story beats a five-star average because it makes the result feel inevitable, not probable.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Legal: contained and deprioritised</div>
+          <div class="upgrade-desc">The original legal block runs 150+ words and sits between the two CTAs — it breaks the decision flow at the worst possible moment. The rewrite compresses legal requirements to four footer links. Transparency is preserved; momentum is not sacrificed. The reader who wants terms can find them; the reader who wants to book isn't stopped by them.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Every word earns its place. The reader outcome leads. The CTA uses ownership language. The proof is a story, not a claim. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original email'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
