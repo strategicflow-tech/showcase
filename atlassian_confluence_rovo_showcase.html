@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Atlassian Confluence + Rovo Content Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --atlassian:#0052cc;--atlassian-pale:#e6f0ff;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE — Atlassian brand */
+.bef-header{background:#0052cc;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.01em;}
+.bef-logo-sub{font-size:9px;color:rgba(255,255,255,0.55);font-family:'DM Mono',monospace;letter-spacing:.08em;margin-top:2px;}
+.bef-nav{background:#003d99;padding:8px 24px;display:flex;gap:16px;flex-wrap:wrap;}
+.bef-nav-item{font-size:10px;color:rgba(255,255,255,0.6);cursor:pointer;letter-spacing:.03em;}
+.bef-breadcrumb{padding:10px 22px;background:#f4f5f7;border-bottom:1px solid #dfe1e6;font-size:11px;color:#5e6c84;}
+.bef-body{padding:28px 24px;background:#fff;}
+.bef-page-title{font-size:22px;font-weight:700;color:#172b4d;margin-bottom:6px;line-height:1.3;}
+.bef-meta{font-size:11px;color:#97a0af;margin-bottom:22px;font-family:'DM Mono',monospace;}
+.bef-intro{font-size:14px;color:#344563;line-height:1.75;margin-bottom:20px;}
+.bef-h2{font-size:16px;font-weight:600;color:#172b4d;margin:22px 0 8px;}
+.bef-p{font-size:13px;color:#505f79;line-height:1.7;margin-bottom:12px;}
+.bef-analogy{background:#f4f5f7;border-left:3px solid #0052cc;padding:12px 14px;margin-bottom:14px;border-radius:0 6px 6px 0;}
+.bef-analogy-text{font-size:13px;color:#344563;font-style:italic;line-height:1.6;}
+.bef-cta-section{background:#e6f0ff;border:1px solid #b3d4ff;border-radius:6px;padding:16px 18px;margin-top:18px;text-align:center;}
+.bef-cta-text{font-size:13px;color:#0052cc;margin-bottom:10px;font-weight:500;}
+.bef-cta{display:inline-block;background:#0052cc;color:#fff;padding:9px 20px;border-radius:4px;font-size:13px;font-weight:500;}
+.bef-footer{padding:14px 22px;background:#f4f5f7;border-top:1px solid #dfe1e6;font-size:10px;color:#97a0af;text-align:center;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:var(--text-primary);}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--bg-secondary);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#0a0a0a;color:var(--green-pale);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Atlassian Confluence + Rovo — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow content audit — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original content</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> atlassian.com — Confluence Best Practices Guide</div>
+        <div class="meta-row"><span>Section:</span> Automation and AI in Confluence</div>
+        <div class="subject-line">Automate your content workflow with Confluence and Rovo</div>
+      </div>
+
+      <div class="bef-header">
+        <div>
+          <div class="bef-logo">Atlassian</div>
+          <div class="bef-logo-sub">CONFLUENCE GUIDES</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.5);font-family:'DM Mono',monospace;">Best Practices</div>
+      </div>
+      <div class="bef-nav">
+        <span class="bef-nav-item">Getting Started</span>
+        <span class="bef-nav-item">Templates</span>
+        <span class="bef-nav-item">Automation</span>
+        <span class="bef-nav-item">AI in Confluence</span>
+        <span class="bef-nav-item">Rovo</span>
+      </div>
+      <div class="bef-breadcrumb">Resources › Guides › Best Practices › Confluence Rovo › Automation and AI in Confluence</div>
+
+      <div class="bef-body">
+        <div class="bef-page-title">Automate your content workflow with Confluence and Rovo</div>
+        <div class="bef-meta">Best Practices Guide · Atlassian Documentation · Updated 2025</div>
+
+        <div class="bef-intro">Automating routine tasks frees up time for high-impact work. With Confluence's no-code automation and AI support from Rovo, your team can simplify workflows and keep projects moving. Automation handles repetitive tasks — like archiving or notifying — so your team can stay focused on what matters. AI goes a step further to add content generation and contextual suggestions to your workflow.</div>
+
+        <div class="bef-h2">Understanding the roles of Automation and Rovo</div>
+        <div class="bef-p">In Confluence, automation rules might clean up inactive pages, send reminders when deadlines approach, or trigger approvals when content is updated. These rules require no code and can be set up in minutes. Rovo adds a layer of AI that interprets instructions, writes content, translates documents, and summarizes feedback. It turns manual work into automated insights. Together, these tools transform Confluence into a workspace that updates itself, organizes content, and flags issues — without constant upkeep.</div>
+
+        <div class="bef-analogy">
+          <div class="bef-analogy-text">"Think of Confluence automation as your engine — it powers your workflows by executing rules, triggering tasks, and keeping things in motion. Rovo acts as the GPS, helping you set the right direction with AI-driven suggestions and content generation."</div>
+        </div>
+
+        <div class="bef-h2">Starting with automation</div>
+        <div class="bef-p">The fastest way to boost productivity is to automate what slows you down. You don't need a full-scale overhaul. First, identify your ideal workflow using the Workflow template. Then, start with one fix — like automatically archiving stale pages or nudging reviewers. Use Rovo to turn scattered ideas into structured plans. You'll spend less time chasing updates and more time on high-impact work your team cares about.</div>
+
+        <div class="bef-h2">Rovo for content generation</div>
+        <div class="bef-p">Blank pages slow teams down. Rovo helps by turning prompts into structured outlines, summaries, or drafts directly in Confluence. For example, after a meeting, a team lead can prompt Rovo to generate a summary and action items automatically, then send that recap via email to keep everyone aligned.</div>
+        <div class="bef-p">Marketing teams can use Rovo to speed up content creation at every stage. A prompt like "Q3 product launch brief" leads to a structured outline for the audience, messaging, and channels. After publishing, teams can prompt Rovo to summarize the campaign or draft follow-up content.</div>
+
+        <div class="bef-h2">Plain-language automation with Rovo</div>
+        <div class="bef-p">Confluence Automation is powerful, but not everyone knows where to start. Rovo makes it easier by letting you describe what you want — no technical setup required. Want to remind content owners if a page hasn't been updated in a couple of weeks? Just type the request: "Remind the content owner if a page hasn't been updated in 14 days." Rovo turns plain language into an active rule — no need to navigate menus or understand condition logic. As a result, more teams can automate routine work on their own.</div>
+
+        <div class="bef-cta-section">
+          <div class="bef-cta-text">Try Confluence automation and activate Rovo to eliminate busywork and move projects forward faster.</div>
+          <a href="#" class="bef-cta">Try Confluence + Rovo</a>
+        </div>
+      </div>
+
+      <div class="bef-footer">Atlassian · Confluence Best Practices Guide · © 2025 Atlassian</div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> H1 title is product-first, not problem-first — "Automate your content workflow" describes a tool, not a reader pain point</div>
+        <div class="issue-item"><span>⚠</span> The car/GPS analogy in the intro is clever but delays the concrete value proposition by three paragraphs</div>
+        <div class="issue-item"><span>⚠</span> Every section header ("Understanding the roles," "Starting with automation") is instructional — none creates urgency or curiosity</div>
+        <div class="issue-item"><span>⚠</span> No quantified claims — "saves time," "boost productivity," "high-impact work" are assertions without evidence or specificity</div>
+        <div class="issue-item"><span>⚠</span> The strongest concrete example ("Remind the content owner if a page hasn't been updated in 14 days") is buried in section 4 of 4</div>
+        <div class="issue-item"><span>⚠</span> CTA "Try Confluence + Rovo" arrives after the content is already over — no urgency, no outcome, no ownership language</div>
+        <div class="issue-item"><span>⚠</span> Structure mirrors a manual, not a decision guide — readers who already know Confluence get no new reason to act</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> atlassian.com — Confluence Best Practices Guide (Rewritten)</div>
+        <div class="meta-row"><span>Section:</span> Automation and AI in Confluence</div>
+        <div class="subject-line">⚡ Your team is doing manually what Confluence can do in 14 seconds</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Atlassian</div>
+          <div class="after-tagline">Confluence + Rovo · Best Practices</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">No code · Active in minutes</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">Automation + AI · No setup required · Works on Standard, Premium &amp; Enterprise</div>
+        <div class="after-h1">Every meeting recap your team<br>writes manually is <em>already automated.</em></div>
+        <div class="after-lead">Confluence Automation runs workflows without code. Rovo writes, summarises, and translates content on command. Together they cut the busywork that fills the hours between your team's actual thinking. Here's what that looks like in practice — and how to start in under 10 minutes.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">14 days</div>
+            <div class="stat-label">stale page — auto-reminded with one plain-language prompt</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0 code</div>
+            <div class="stat-label">required to build automation rules with Rovo</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1 prompt</div>
+            <div class="stat-label">turns a meeting into a summary, action items, and email recap</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">Activate Rovo in my workspace →</a>
+          <span class="after-cta-ghost">See all automation templates</span>
+        </div>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"Rovo Search is helping our teams find information much faster, reduce cognitive load, and stay in the flow. I don't foresee a future where we don't have it."</div>
+          <div class="quote-attr">— Ronny Katzenberger, Director of Engineering Enablement · Procore · Atlassian Customer</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">3M+</div>
+            <div class="metric-label">users on Rovo across Atlassian apps</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">SOC 2</div>
+            <div class="metric-label">+ ISO 27001 certified</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Free</div>
+            <div class="metric-label">on Standard, Premium &amp; Enterprise plans</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">THE 3 THINGS ROVO + AUTOMATION DO FOR YOUR TEAM</div>
+        <div class="offer-title">Automation runs the rules. Rovo writes them in plain language. You just describe the outcome.</div>
+        <div class="offer-detail">Type "Remind the content owner if a page hasn't been updated in 14 days" — Rovo builds the rule. No menus. No condition logic. No IT ticket. The same applies to meeting recaps, page archiving, approval chains, campaign briefs, and translation. If you can describe it in a sentence, Confluence + Rovo can automate it.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Auto-archive stale pages</span>
+          <span class="offer-pill">Meeting recap + action items</span>
+          <span class="offer-pill">Plain-language rule builder</span>
+          <span class="offer-pill">Content translation</span>
+          <span class="offer-pill">Approval triggers</span>
+          <span class="offer-pill">Campaign brief generation</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Workflow template</span>
+          <span class="footer-link">Rovo documentation</span>
+          <span class="footer-link">Automation rules guide</span>
+          <span class="footer-link">Privacy notice</span>
+        </div>
+        <div class="footer-note">© 2025 Atlassian</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Automate your content workflow with Confluence and Rovo<br><br>Product-first. Describes a tool, not a problem. A reader already using Confluence has no reason to keep reading.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> ⚡ Your team is doing manually what Confluence can do in 14 seconds<br><br>Reader-centric problem statement. Creates immediate self-relevance — if you have a team, this applies to you.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 7 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title: reader's problem, not product's feature</div>
+          <div class="upgrade-desc">"Automate your content workflow" is what Confluence does. "Your team is doing manually what Confluence can do in 14 seconds" is what the reader is losing. The second version creates immediate recognition — every team has this problem. Recognition beats instruction as an opening every time.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Lead: the best example goes first, not last</div>
+          <div class="upgrade-desc">The original saves its strongest concrete example — "type a prompt, get an automation rule" — for section 4 of 4. The rewrite opens with it. Readers decide whether to continue within the first 8 seconds. The most compelling proof point must land in that window, not after three conceptual sections.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Analogy removed, outcome installed</div>
+          <div class="upgrade-desc">The engine/GPS analogy is memorable but earns nothing — it explains what the tools are, not what they do for the reader. The rewrite replaces it with the meeting recap example, which shows the mechanism and the result in the same sentence. "After a meeting, prompt Rovo — get summary, action items, email recap" is a complete story in one line.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Stat cards replace abstract claims</div>
+          <div class="upgrade-desc">"Saves time," "boosts productivity," "high-impact work" are assertions the reader has seen a thousand times. "14 days / 0 code / 1 prompt" are claims that can be verified, visualised, and remembered. Numbers beat adjectives — not because they are more impressive, but because they are more specific, and specificity signals truth.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Section headers create urgency, not instruction</div>
+          <div class="upgrade-desc">"Understanding the roles of Automation and Rovo" is a manual heading — it signals that learning is required. "The 3 things Rovo + Automation do for your team" is an outcome heading — it signals that value is incoming. The reader's internal question shifts from "do I need to read this?" to "what are the 3 things?"</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Real social proof replaces brand assertion</div>
+          <div class="upgrade-desc">The original has zero social proof — just Atlassian's own claims about Atlassian's own product. The rewrite includes a named quote from a Director of Engineering at Procore with a specific, verifiable observation. Third-party confirmation of a specific outcome ("reduce cognitive load, stay in the flow") carries 10× the weight of the brand saying the same thing.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">7 · CTA: ownership language over invitation</div>
+          <div class="upgrade-desc">"Try Confluence + Rovo" asks the reader to experiment. "Activate Rovo in my workspace →" makes the reader the agent of their own decision and implies they already have access — because on Standard, Premium, and Enterprise, they do. The word "my" does more conversion work than any other word in a CTA. It closes the psychological distance between reading and acting.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">The same principles that make a newsletter convert make a product page convert. Lead with the problem. Put the best example first. Let numbers replace adjectives. Use real social proof. Make the CTA feel like a decision the reader is already making. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original content'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
