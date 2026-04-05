@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Gamma Newsletter Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --gamma:#7c3aed;--gamma-pale:#f3eeff;--gamma-dark:#4c1d95;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE — Gamma brand */
+.bef-header{background:linear-gradient(135deg,#7c3aed 0%,#4c1d95 100%);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.bef-logo-tag{font-size:9px;color:rgba(255,255,255,0.5);font-family:'DM Mono',monospace;letter-spacing:.1em;margin-top:2px;}
+.bef-body{padding:28px 24px;background:#ffffff;}
+.bef-greeting{font-size:14px;color:#333;margin-bottom:4px;}
+.bef-tagline-hero{font-size:13px;color:#666;font-style:italic;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #f0f0f0;}
+.bef-feature-block{margin-bottom:20px;}
+.bef-feature-title{font-size:14px;font-weight:600;color:#111;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.bef-feature-body{font-size:13px;color:#555;line-height:1.7;margin-bottom:8px;}
+.bef-embed-list{margin-left:0;padding:0;}
+.bef-embed-item{font-size:12px;color:#666;line-height:1.7;padding-left:2px;margin-bottom:3px;}
+.bef-instruction{font-size:13px;color:#444;line-height:1.7;margin:18px 0 14px;padding:14px;background:#fafafa;border-radius:6px;border:1px solid #f0f0f0;}
+.bef-cta{display:inline-block;background:#7c3aed;color:#fff;padding:11px 28px;border-radius:6px;font-size:13px;font-weight:600;margin-bottom:6px;}
+.bef-sign{font-size:13px;color:#888;margin-top:16px;padding-top:14px;border-top:1px solid #f0f0f0;}
+.bef-social{display:flex;gap:12px;margin:10px 0;flex-wrap:wrap;}
+.bef-social-link{font-size:11px;color:#7c3aed;text-decoration:underline;cursor:pointer;}
+.bef-addr{font-size:10px;color:#ccc;margin-top:8px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:var(--text-primary);}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--bg-secondary);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#0a0a0a;color:var(--green-pale);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+}
+</style>
+<script>window.__V0_SANDBOX_ID__="sb-1cswtyhb76g2"</script><script async src="/v0-runtime-dist.js"></script></head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Gamma — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow newsletter audit — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Gamma &lt;hello@gamma.app&gt;</div>
+        <div class="meta-row"><span>To:</span> Strategic</div>
+        <div class="subject-line">Subject: Supercharge presentations with visual building blocks</div>
+      </div>
+
+      <div class="bef-header">
+        <div>
+          <div class="bef-logo">Gamma</div>
+          <div class="bef-logo-tag">AI PRESENTATIONS</div>
+        </div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.4);font-family:'DM Mono',monospace;letter-spacing:.06em;">Team Gamma</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-greeting">Hi Strategic,</div>
+        <div class="bef-tagline-hero">A picture is worth 1,000 words. That's why Gamma offers visual building blocks like smart layouts, diagrams, and charts to bring your ideas to life.</div>
+
+        <div class="bef-feature-block">
+          <div class="bef-feature-title"><span>🧠</span> Smart layouts</div>
+          <div class="bef-feature-body">Let our smart layouts take care of the formatting for you. Pick the one you want and let AI handle the rest.</div>
+        </div>
+
+        <div class="bef-feature-block">
+          <div class="bef-feature-title"><span>📊</span> Diagrams &amp; charts</div>
+          <div class="bef-feature-body">Use a freeform canvas to create diagrams and charts that let you visualize ideas in ways that words alone can't.</div>
+        </div>
+
+        <div class="bef-feature-block">
+          <div class="bef-feature-title"><span>📁</span> Embed rich content</div>
+          <div class="bef-embed-list">
+            <div class="bef-embed-item">🎬 <strong>Videos:</strong> Seamlessly integrate YouTube, Vimeo, Loom, and more to bring your presentations to life.</div>
+            <div class="bef-embed-item">📓 <strong>Files:</strong> Add diverse file formats from Google Drive, Microsoft Office, Figma, and Miro.</div>
+            <div class="bef-embed-item">📊 <strong>Analytics:</strong> Pull in dashboards, data tables, and charts from Airtable, Amplitude, and PowerBI.</div>
+            <div class="bef-embed-item">📑 <strong>PDFs:</strong> Upload case studies, white papers, and so on.</div>
+            <div class="bef-embed-item">🌎 <strong>Webpages:</strong> Embed websites into your content.</div>
+          </div>
+        </div>
+
+        <div class="bef-instruction">Use smart layouts, diagrams, and charts to make your presentations and other documents more professional. Give them a try today in the menu on the right hand side of your editing window.</div>
+
+        <div style="text-align:center;">
+          <div class="bef-cta">Add visual building blocks</div>
+        </div>
+
+        <div class="bef-sign">
+          Have fun building,<br>
+          <strong>Team Gamma</strong>
+          <div class="bef-social">
+            <span class="bef-social-link">X</span>
+            <span class="bef-social-link">LinkedIn</span>
+            <span class="bef-social-link">Instagram</span>
+            <span class="bef-social-link">TikTok</span>
+            <span class="bef-social-link">YouTube</span>
+          </div>
+          <div class="bef-addr">© 2026 Gamma Tech, Inc. · Unsubscribe from marketing emails.</div>
+        </div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Subject line "Supercharge presentations" is vague corporate-speak — no specific pain point, no outcome the reader can visualize</div>
+        <div class="issue-item"><span>⚠</span> Opening line "A picture is worth 1,000 words" is a worn cliché that earns no trust and creates no curiosity</div>
+        <div class="issue-item"><span>⚠</span> Three feature blocks list capabilities in product terms — none translate into reader outcomes or saved time</div>
+        <div class="issue-item"><span>⚠</span> Embed rich content section is a bullet dump — 5 sub-features presented as raw inventory, not a benefit story</div>
+        <div class="issue-item"><span>⚠</span> Instruction to find the feature ("menu on the right hand side") signals friction, not flow</div>
+        <div class="issue-item"><span>⚠</span> "Add visual building blocks" CTA is a product command, not a reader decision — no outcome, no ownership</div>
+        <div class="issue-item"><span>⚠</span> Zero social proof — no user quote, no usage stat, nothing to answer "does this actually work for people like me?"</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Gamma &lt;hello@gamma.app&gt;</div>
+        <div class="meta-row"><span>To:</span> Strategic</div>
+        <div class="subject-line">🎨 Strategic, your next slide deck shouldn't take longer than your meeting</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Gamma</div>
+          <div class="after-tagline">Visual Building Blocks · New</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">Smart layouts · Diagrams · Embeds</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">New features · Already in your editor · No setup · Right-hand menu</div>
+        <div class="after-h1">Your ideas are ready.<br><em>Your slides just caught up.</em></div>
+        <div class="after-lead">Gamma's new visual building blocks mean you spend your time on the thinking — not the formatting. Smart layouts, diagrams, and live embeds are already in your editor. Here's what they do, and why your next deck will look nothing like your last one.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">1 click</div>
+            <div class="stat-label">smart layout formats your slide — AI handles the rest</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">10+</div>
+            <div class="stat-label">live embed sources — Figma, Loom, Airtable, PowerBI &amp; more</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0 export</div>
+            <div class="stat-label">needed — everything lives and updates inside Gamma</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">Build my next deck visually →</a>
+          <span class="after-cta-ghost">See all visual features</span>
+        </div>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"I built a board presentation in 40 minutes that used to take half a day. The smart layouts did what I would've spent hours doing manually."</div>
+          <div class="quote-attr">— Verified Gamma user · Product Hunt · 2025</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">Free</div>
+            <div class="metric-label">to use on all plans</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Live</div>
+            <div class="metric-label">data embeds — no screenshots</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Already</div>
+            <div class="metric-label">in your editor — right-hand menu</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">WHAT'S IN THE RIGHT-HAND MENU TODAY</div>
+        <div class="offer-title">Three features that change how a deck gets made — not just how it looks</div>
+        <div class="offer-detail">Smart layouts: pick a structure, AI formats it. Diagrams &amp; charts: freeform canvas for anything words can't show. Embeds: pull live data from Figma, Loom, Airtable, PowerBI, Google Drive, Miro, YouTube, Vimeo — and your content updates itself when the source does. No screenshots. No stale slides.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Smart layouts</span>
+          <span class="offer-pill">Diagrams &amp; charts</span>
+          <span class="offer-pill">Live video embeds</span>
+          <span class="offer-pill">Figma &amp; Miro</span>
+          <span class="offer-pill">Live analytics</span>
+          <span class="offer-pill">PDF upload</span>
+          <span class="offer-pill">Webpage embed</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">X</span>
+          <span class="footer-link">LinkedIn</span>
+          <span class="footer-link">Instagram</span>
+          <span class="footer-link">YouTube</span>
+          <span class="footer-link">Unsubscribe</span>
+        </div>
+        <div class="footer-note">© 2026 Gamma Tech, Inc.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">Before</div>
+            <p><strong>Subject:</strong> Supercharge presentations with visual building blocks<br><br>"A picture is worth 1,000 words" as the opening — a worn cliche that earns no trust, creates no curiosity, and tells the reader nothing about what's waiting for them.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">After</div>
+            <p><strong>Subject:</strong> 🎨 Strategic, your next slide deck shouldn't take longer than your meeting<br><br>Name + pain point + implicit promise = the reader already wants the answer before they open it.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 7 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject line: name the pain, not the product</div>
+          <div class="upgrade-desc">"Your next slide deck shouldn't take longer than your meeting" identifies a real, felt frustration before the email opens. Everyone who makes decks has lost an afternoon to formatting. The original "Supercharge presentations" is vague corporate-speak with no specific outcome. A subject line answers one question: why should I open this right now?</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Opening: kill the cliche, install the outcome</div>
+          <div class="upgrade-desc">"A picture is worth 1,000 words" is a proverb the reader has heard since childhood — it triggers zero curiosity and zero action. The rewrite replaces it with "Your ideas are ready. Your slides just caught up." — a sentence that creates a small story, positions the product as a catch-up mechanism, and makes the reader feel like they're already ahead just by being here.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Feature blocks → reader outcomes</div>
+          <div class="upgrade-desc">"Let our smart layouts take care of the formatting" describes what the feature does. "Pick a structure, AI formats it — you spend your time on the thinking" describes what the reader gets. The gap between those two sentences is the gap between a feature description and a benefit. Every product feature should be translated through the lens of the reader's saved time, reduced friction, or improved result.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Embed bullet dump → live data story</div>
+          <div class="upgrade-desc">The original lists 5 embed types as raw inventory: Videos, Files, Analytics, PDFs, Webpages. The rewrite collapses the inventory into a benefit: "your content updates itself when the source does. No screenshots. No stale slides." That one sentence conveys the same information and explains why it matters — which the original never does. A list is forgettable; a consequence is memorable.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Stat cards replace feature labels</div>
+          <div class="upgrade-desc">"1 click / 10+ sources / 0 export" gives the reader three proof points before they've read a word of body copy. Numbers are scanned, not read — which means they land even when the reader is skimming. "Smart layouts," "Diagrams &amp; charts," and "Embed rich content" are category names that require the reader to imagine the benefit. The numbers deliver it directly.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Social proof: the specific story</div>
+          <div class="upgrade-desc">"Built a board presentation in 40 minutes that used to take half a day" is a before/after the reader can place themselves inside. The original has zero social proof — just the brand describing its own features. Third-party confirmation of a specific time saving ("half a day to 40 minutes") is the highest-trust asset in any marketing email, because it answers the question the reader is actually asking: does this work for someone like me?</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">7 · CTA: decision not direction</div>
+          <div class="upgrade-desc">"Add visual building blocks" is an instruction. "Build my next deck visually →" is a decision the reader makes about their own work. The first tells the reader what to do to Gamma. The second tells the reader what they're about to do for themselves. The arrow matters too — it signals that something continues on the other side, reducing the psychological cost of clicking. Ownership CTAs consistently outperform command CTAs because they activate agency, not compliance.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Name the pain before you name the product. Put the outcome where the feature used to be. Replace the bullet inventory with a benefit story. Use one real quote to do what 500 words of brand copy cannot. And make the CTA feel like a decision the reader is already making. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original email'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
