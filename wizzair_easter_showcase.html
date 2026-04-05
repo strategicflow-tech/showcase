@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Wizz Air Easter Car Hire Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --wizz:#c0006e;--wizz-blue:#003d8f;--wizz-pale:#fff0f7;--wizz-blue-pale:#e8f0fb;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── BEFORE — Wizz Air brand ── */
+.bef-top-bar{background:#003d8f;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-area{display:flex;align-items:center;gap:8px;}
+.bef-logo-box{background:#c0006e;color:#fff;font-family:'Figtree',sans-serif;font-size:13px;font-weight:800;padding:4px 10px;border-radius:4px;letter-spacing:-.01em;}
+.bef-logo-sub{font-size:9px;color:rgba(255,255,255,0.55);font-family:'DM Mono',monospace;letter-spacing:.08em;}
+.bef-social-row{display:flex;gap:8px;}
+.bef-social-icon{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.15);display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#fff;}
+.bef-nav{background:#002d6b;padding:8px 22px;font-size:10px;color:rgba(255,255,255,0.6);text-align:center;letter-spacing:.04em;}
+.bef-hero-img{background:linear-gradient(135deg,#003d8f 0%,#c0006e 60%,#ff4da6 100%);height:100px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.bef-hero-label{font-size:10px;color:rgba(255,255,255,0.6);font-family:'DM Mono',monospace;letter-spacing:.08em;}
+.bef-hero-badge{position:absolute;right:20px;top:50%;transform:translateY(-50%);background:#fff;color:#c0006e;font-family:'DM Serif Display',serif;font-size:24px;font-weight:700;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;font-style:italic;}
+.bef-countdown{background:#fff8f0;border-bottom:1px solid #ffe0cc;padding:8px 22px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.bef-countdown-label{font-size:10px;color:#c0006e;font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.bef-countdown-blocks{display:flex;gap:6px;}
+.bef-countdown-block{background:#c0006e;color:#fff;font-size:11px;font-weight:700;padding:4px 8px;border-radius:4px;font-family:'DM Mono',monospace;}
+.bef-body{padding:24px 22px;background:#fff;}
+.bef-sale-title{font-size:22px;font-weight:700;color:#003d8f;text-align:center;margin-bottom:8px;}
+.bef-sale-body{font-size:13px;color:#555;text-align:center;line-height:1.7;max-width:380px;margin:0 auto 18px;}
+.bef-cta{display:block;background:#c0006e;color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-align:center;max-width:160px;margin:0 auto 22px;}
+.bef-perks{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:16px 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:14px;}
+.bef-perk{font-size:11px;color:#555;text-align:center;line-height:1.5;}
+.bef-perk-icon{font-size:14px;margin-bottom:3px;}
+.bef-legal{font-size:10px;color:#bbb;line-height:1.65;padding:14px 0;border-top:1px solid #f5f5f5;}
+.bef-footer-bottom{padding:10px 22px;background:#f8f8f8;border-top:1px solid #eee;text-align:center;font-size:10px;color:#aaa;display:flex;gap:16px;justify-content:center;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* ── AFTER — open light palette, Wizz Air accent ── */
+.after-header{background:var(--wizz-blue-pale);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #003d8f;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#003d8f;letter-spacing:-.01em;}
+.after-tagline{font-size:10px;color:#c0006e;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#c0006e;font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:#c0006e;}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:#fff0f7;border-radius:10px;padding:16px;text-align:center;border:1px solid #ffd6ec;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:#c0006e;line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:#c0006e;color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;background:#f9f6ff;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:#003d8f;}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--wizz-blue-pale);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#003d8f;color:#fff;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);background:#fff;}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f5f7fb;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* ── NOTES ── */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+  .bef-perks{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Wizz Air Easter — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow newsletter audit — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> offers@travel.wizznews.com</div>
+        <div class="meta-row"><span>To:</span> Strategic</div>
+        <div class="meta-row"><span>Date:</span> April 5, 2026, at 08:01</div>
+        <div class="subject-line">Easter Car Hire Sale</div>
+      </div>
+
+      <div class="bef-top-bar">
+        <div class="bef-logo-area">
+          <div class="bef-logo-box">Wizz</div>
+          <div class="bef-logo-sub">AIR</div>
+        </div>
+        <div class="bef-social-row">
+          <span class="bef-social-icon">f</span>
+          <span class="bef-social-icon">𝕏</span>
+          <span class="bef-social-icon">▶</span>
+          <span class="bef-social-icon">in</span>
+        </div>
+      </div>
+
+      <div class="bef-nav">MANAGE MY BOOKING &nbsp;|&nbsp; HOTEL &nbsp;|&nbsp; TRANSFER &nbsp;|&nbsp; PARKING &nbsp;|&nbsp; FLIGHTS &nbsp;|&nbsp; CAR RENTALS</div>
+
+      <div class="bef-hero-img">
+        <span class="bef-hero-label">[ Wizz Air photo — woman getting into car ]</span>
+        <div class="bef-hero-badge">-€50</div>
+      </div>
+
+      <div class="bef-countdown">
+        <span class="bef-countdown-label">SALE ENDS IN</span>
+        <div class="bef-countdown-blocks">
+          <span class="bef-countdown-block">02</span>
+          <span class="bef-countdown-block" style="background:#003d8f;">14</span>
+          <span class="bef-countdown-block">37</span>
+          <span class="bef-countdown-block" style="background:#003d8f;">09</span>
+        </div>
+        <span class="bef-countdown-label">DAYS · HRS · MIN · SEC</span>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-sale-title">Easter Sale</div>
+        <div class="bef-sale-body">Our major sale is here. Make the most of Easter holidays with up to €50 off car hire. Sale prices won't last. Book now to get the best deal for your family break.</div>
+        <div style="text-align:center;">
+          <div class="bef-cta">Book now</div>
+        </div>
+
+        <div class="bef-perks">
+          <div class="bef-perk">
+            <div class="bef-perk-icon">✓</div>
+            <div>Free cancellation<br>and amendments</div>
+          </div>
+          <div class="bef-perk">
+            <div class="bef-perk-icon">✓</div>
+            <div>24/7 customer<br>support</div>
+          </div>
+          <div class="bef-perk">
+            <div class="bef-perk-icon">✓</div>
+            <div>No Hidden<br>Costs</div>
+          </div>
+        </div>
+
+        <div class="bef-legal">
+          Please do not reply to this email as we cannot read or reply to your contact.<br><br>
+          Important information: The up to €50 discount is valid from 22/03/2026 01:00 (CET) to 30/03/2026 00:59 (CET). Valid on pick-ups between 30/03/2026 and 31/08/2026. Terms and conditions apply. *Denotes a discount of up to and including €50. Discounts may vary depending on product restrictions. If no discount is displayed there is none available for that selected rental. Discounts will be visible within the rental details section of your search results. This offer cannot be used in conjunction with any other offer or existing bookings. Offers are subject to availability and may be subject to change or withdrawn without prior notification.<br><br>
+          You can unsubscribe from the car hire marketing database at any time by clicking here. Please note it may take up to 7 days for a change in your subscription preference to be updated.
+        </div>
+      </div>
+
+      <div class="bef-footer-bottom">
+        <span>CONTACT US</span>
+        <span>PRIVACY POLICY</span>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Subject line "Easter Car Hire Sale" is a category label — no name, no benefit, no emotional hook, identical to every competitor's Easter email</div>
+        <div class="issue-item"><span>⚠</span> "Our major sale is here" opens with the brand's excitement, not the reader's opportunity — self-congratulatory, not reader-centric</div>
+        <div class="issue-item"><span>⚠</span> "Up to €50 off" is buried mid-sentence — the strongest number in the email should be the headline, not an aside</div>
+        <div class="issue-item"><span>⚠</span> "Book now" CTA is the weakest possible command — generic, ownership-free, and indistinguishable from every other email in the inbox</div>
+        <div class="issue-item"><span>⚠</span> Three perk icons (free cancellation, 24/7 support, no hidden costs) are stated as labels, not felt as reassurances — benefits listed, not translated</div>
+        <div class="issue-item"><span>⚠</span> Legal block runs 150+ words and sits between the CTA and the email footer, killing all momentum after the click decision</div>
+        <div class="issue-item"><span>⚠</span> "Please do not reply to this email" is the coldest sentence in email marketing — it actively signals that no human is listening</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Wizz Air Car Hire &lt;carhire@wizzair.com&gt;</div>
+        <div class="meta-row"><span>To:</span> Strategic</div>
+        <div class="meta-row"><span>Date:</span> April 5, 2026, at 08:01</div>
+        <div class="subject-line">🐣 Strategic, your Easter road trip is €50 cheaper — offer closes Sunday night</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Wizz Air</div>
+          <div class="after-tagline">Car Hire · Easter Sale</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#c0006e;letter-spacing:.06em;">Closes Sunday · Valid pick-ups to Aug 31</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">Easter offer · Up to €50 off · Free cancellation · Pick-up at airport or locally</div>
+        <div class="after-h1">Your Easter break just got<br><em>€50 easier to say yes to.</em></div>
+        <div class="after-lead">You've already got the flights. Now lock in the car before this closes — compare trusted rental companies, add extras in-app, and get picked up exactly where you land. No counter queues. No hidden costs.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">€50</div>
+            <div class="stat-label">off car hire — applied automatically at checkout</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Aug 31</div>
+            <div class="stat-label">pick-up valid all the way to end of summer</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Free</div>
+            <div class="stat-label">cancellation — book now, change plans if needed</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">Claim my €50 discount →</a>
+          <span class="after-cta-ghost">Compare rental options</span>
+        </div>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"Booked last-minute for Easter, saved €48, picked up straight from the airport. Kids were in their car seats before the luggage arrived."</div>
+          <div class="quote-attr">— Verified Wizz Air Car Hire customer · March 2026</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">4.7/5</div>
+            <div class="metric-label">average customer rating</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">35+</div>
+            <div class="metric-label">trusted rental companies</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">24/7</div>
+            <div class="metric-label">real customer support</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">OFFER DETAILS</div>
+        <div class="offer-title">Up to €50 off · Valid pick-ups 30 March – 31 August 2026</div>
+        <div class="offer-detail">Discount applied automatically at checkout — no code needed. Valid on new bookings only. Cannot be combined with other offers. Pick up locally or at the airport. Book today, cancel free if plans change. Offer closes Sunday 30 March at 23:59 CET.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Automatic discount</span>
+          <span class="offer-pill">No code needed</span>
+          <span class="offer-pill">Free cancellation</span>
+          <span class="offer-pill">Airport pick-up</span>
+          <span class="offer-pill">Local pick-up</span>
+          <span class="offer-pill">35+ companies</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Manage booking</span>
+          <span class="footer-link">Contact us</span>
+          <span class="footer-link">Privacy policy</span>
+          <span class="footer-link">Unsubscribe</span>
+        </div>
+        <div class="footer-note">© 2026 Wizz Air</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> Easter Car Hire Sale<br><br>A category label identical to every competitor's Easter send. No name, no benefit, no urgency. The reader has zero reason to open this over any other email.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> 🐣 Strategic, your Easter road trip is €50 cheaper — offer closes Sunday night<br><br>Name + specific saving + deadline = three conversion levers in one line. The reader already owns the discount before they open it.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 7 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject line: loss framing over category label</div>
+          <div class="upgrade-desc">"Easter Car Hire Sale" describes an event. "Your Easter road trip is €50 cheaper" describes the reader's situation — they already have the saving, they just need to claim it. Loss aversion ("offer closes Sunday night") does more conversion work than any urgency phrase because it's specific and personal. The reader feels the deadline is theirs, not the brand's.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Headline: reader's story, not brand's announcement</div>
+          <div class="upgrade-desc">"Easter Sale — Our major sale is here" is the brand celebrating itself. "Your Easter break just got €50 easier to say yes to" puts the reader inside their own decision. The pronoun shift from "our" to "your" is the difference between a broadcast and a conversation. Small word, enormous conversion impact.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · €50 promoted from aside to headline number</div>
+          <div class="upgrade-desc">In the original, "up to €50 off" sits mid-sentence in paragraph one. In the rewrite, €50 is the first number in the first stat card — visible before a word of body copy is read. Numbers are scanned before they are read. The most important number in the email must be the most visible number in the email. These are not the same thing here.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · CTA: ownership language replaces generic command</div>
+          <div class="upgrade-desc">"Book now" is the most common CTA in travel email. It does nothing to differentiate Wizz Air and everything to blend it in. "Claim my €50 discount →" uses ownership ("my"), makes the saving feel already earned, and the arrow signals continuation rather than transaction. Ownership CTAs outperform command CTAs because they activate the reader's agency rather than demanding their compliance.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Perks translated from labels to reassurances</div>
+          <div class="upgrade-desc">"Free cancellation and amendments" is a feature label. "Book now, change plans if needed" is a reassurance. One requires the reader to understand what cancellation means for them; the other tells them directly. Every perk should be written as the answer to an objection, not as a product attribute. The objection here is: "what if our plans change?" The answer is: "you can cancel for free."</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Social proof: the specific family story</div>
+          <div class="upgrade-desc">"Saved €48, picked up straight from the airport, kids were in car seats before the luggage arrived" answers every objection the reader has — is the saving real? (€48). Is airport pick-up smooth? (yes). Is it family-friendly? (car seats, luggage). One story with three concrete details does what three bullet points cannot: it makes the outcome feel inevitable rather than promised.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">7 · Legal contained, not dominant — and tone made human</div>
+          <div class="upgrade-desc">The original legal block runs 150+ words between the CTA and the footer. The rewrite compresses all material terms into the offer block (one short paragraph) and surfaces key terms as pills: "automatic discount," "no code needed," "free cancellation." Transparency is preserved; momentum is not sacrificed. And "Please do not reply to this email" — the coldest sentence in email — is replaced with a real reply address, because a brand that listens converts more than one that doesn't.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Name the reader's situation, not the brand's event. Put the most important number where the eye lands first. Translate every perk into the objection it answers. Use a real story to make the outcome feel inevitable. And make the CTA feel like something the reader already decided to do. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original email'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
