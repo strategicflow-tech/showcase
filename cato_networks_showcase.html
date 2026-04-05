@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Cato Networks Product Update Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --cato:#1a2d5a;--cato-orange:#f5821f;--cato-pale:#fff4ec;--cato-blue-pale:#edf1f9;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── BEFORE — Cato brand ── */
+.bef-header{background:#1a2d5a;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:16px;font-weight:700;color:#fff;letter-spacing:.02em;}
+.bef-logo-accent{color:#f5821f;}
+.bef-logo-sub{font-size:9px;color:rgba(255,255,255,0.45);font-family:'DM Mono',monospace;letter-spacing:.1em;margin-top:2px;}
+.bef-nav{background:#142347;padding:7px 22px;display:flex;gap:14px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.08);}
+.bef-nav-item{font-size:10px;color:rgba(255,255,255,0.55);cursor:pointer;letter-spacing:.03em;}
+.bef-breadcrumb{padding:9px 22px;background:#f8f9fc;border-bottom:1px solid #e8eaf0;font-size:10px;color:#8a8fa8;font-family:'DM Mono',monospace;}
+.bef-body{padding:26px 22px;background:#fff;}
+.bef-page-title{font-size:20px;font-weight:700;color:#1a2d5a;margin-bottom:4px;line-height:1.3;}
+.bef-meta{font-size:10px;color:#a0a4b8;margin-bottom:6px;font-family:'DM Mono',monospace;}
+.bef-note{background:#fff4ec;border:1px solid #fcd3a8;border-radius:6px;padding:10px 12px;margin-bottom:18px;font-size:11px;color:#7a4010;line-height:1.6;}
+.bef-h2{font-size:15px;font-weight:600;color:#1a2d5a;margin:18px 0 6px;padding-bottom:4px;border-bottom:1px solid #f0f0f5;}
+.bef-feature{margin-bottom:14px;padding-left:12px;border-left:2px solid #e0e4f0;}
+.bef-feature-title{font-size:13px;font-weight:600;color:#1a2d5a;margin-bottom:4px;}
+.bef-feature-body{font-size:12px;color:#505878;line-height:1.7;}
+.bef-feature-prev{font-size:11px;color:#a0a4b8;margin-top:4px;font-style:italic;}
+.bef-footer{padding:12px 22px;background:#f8f9fc;border-top:1px solid #e8eaf0;font-size:10px;color:#a0a4b8;text-align:center;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* ── AFTER ── */
+.after-header{background:var(--cato-blue-pale);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #1a2d5a;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#1a2d5a;letter-spacing:.02em;}
+.after-logo-accent{color:#f5821f;}
+.after-tagline{font-size:10px;color:#f5821f;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:#f5821f;}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--cato-blue-pale);border-radius:10px;padding:16px;text-align:center;border:1px solid rgba(26,45,90,0.12);}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:#1a2d5a;line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:#f5821f;color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;background:#f8f9fc;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:#1a2d5a;}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--cato-pale);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#1a2d5a;color:#ffd0a8;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);background:#fff;}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fc;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* ── NOTES ── */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Cato Networks — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow content teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original content</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> support.catonetworks.com — Knowledge Base</div>
+        <div class="meta-row"><span>Article:</span> Product Updates — March 30, 2026</div>
+        <div class="subject-line">Product Updates - March 30, 2026</div>
+      </div>
+
+      <div class="bef-header">
+        <div>
+          <div class="bef-logo">Cato<span class="bef-logo-accent"> Networks</span></div>
+          <div class="bef-logo-sub">LEARNING CENTER · RELEASE NOTES</div>
+        </div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;">MARCH 30, 2026</div>
+      </div>
+      <div class="bef-nav">
+        <span class="bef-nav-item">Home</span>
+        <span class="bef-nav-item">Release Notes</span>
+        <span class="bef-nav-item">2026 Release Notes</span>
+        <span class="bef-nav-item">Product Updates — March 30, 2026</span>
+      </div>
+      <div class="bef-breadcrumb">Release Notes › 2026 Release Notes › Product Updates - March 30, 2026</div>
+
+      <div class="bef-body">
+        <div class="bef-page-title">Product Updates - March 30, 2026</div>
+        <div class="bef-meta">Published: March 30, 2026 · Cato Networks Knowledge Base · Article ID: 34972179497629</div>
+
+        <div class="bef-note">
+          ⓘ Content described in this update is gradually rolled out to the Cato PoPs over a two-week period. In addition, new features are gradually activated in the Cato Management Application over the same two-week rollout period as the PoPs.
+        </div>
+
+        <div class="bef-h2">New Features &amp; Enhancements</div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">Cato Neural Edge — GPU-Accelerated Inline AI</div>
+          <div class="bef-feature-body">Cato Neural Edge deploys NVIDIA GPUs across Cato's global backbone to accelerate AI-driven analysis for real-time traffic inspection, threat detection, and policy enforcement. Enables high-frequency execution of AI and machine learning models in-line, real-time semantic and behavioral inspection, scalable analysis across global traffic flows and deterministic performance without external processing layers.</div>
+        </div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">Cato AI Security — Unified AI Governance and Protection</div>
+          <div class="bef-feature-body">Cato AI Security converges advanced AI governance and protection capabilities through the integration of Aim Security. Governs employee use of AI tools. Secures homegrown AI applications. Unified governance and runtime protection across major AI use cases. Protects against shadow AI and unmanaged AI usage.</div>
+        </div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">Dynamic Prevention — Adaptive Threat Blocking</div>
+          <div class="bef-feature-body">Dynamic Prevention continuously correlates months of security and networking activity in real time across Cato's full range of inline sensors to identify behavior-based threats that appear benign in isolation. Once malicious behavior is identified, Cato dynamically applies adaptive rules, blocking high-risk activity in real time without manual intervention or SOC involvement.</div>
+          <div class="bef-feature-prev">Previously: Threat detection relied on point-in-time inspection with manual SOC response requirements.</div>
+        </div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">Modular SASE Adoption Model</div>
+          <div class="bef-feature-body">Organizations can now start with the SASE capabilities they need today and expand over time without sacrificing the advantages of a true platform. Four modules available: AI Security, SD-WAN, SSE (Security Service Edge), and Universal ZTNA. Each module stands on its own as a complete, enterprise-grade solution and any module added compounds value through a converged platform foundation.</div>
+        </div>
+
+        <div class="bef-h2">Platform Updates</div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">Ask AI — Expanded Account Intelligence</div>
+          <div class="bef-feature-body">Ask AI provides additional account-aware intelligence that helps you understand policies, settings, and changes across your environment. Choose the right experience for the task: work with Ask AI while navigating the CMA, or switch to a dedicated full-page AI Workspace for deeper analysis. Richer, account-aware answers covering firewall rule explanations, policy impact, and traffic anomalies.</div>
+          <div class="bef-feature-prev">Available as part of a free trial.</div>
+        </div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">DNS Split Tunneling for Internal Resolution</div>
+          <div class="bef-feature-body">Exclude internal domains from Cato DNS to resolve them locally, while continuing to protect DNS traffic with Cato DNS Protection. Route internal DNS queries to local DNS servers while using Cato for public DNS. Define specific internal DNS suffix to bypass Cato DNS.</div>
+          <div class="bef-feature-prev">Previously: All DNS traffic was routed through Cato DNS, which could conflict with internal resolution requirements.</div>
+        </div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">Granular Client Control with Managed Networks</div>
+          <div class="bef-feature-body">Dynamically adjust Split Tunnel and Always-On behavior based on the detected source network, supporting hybrid environments and gradual onboarding.</div>
+        </div>
+
+        <div class="bef-h2">Security Updates</div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">DLP — Machine Learning Image Inspection</div>
+          <div class="bef-feature-body">Data Loss Prevention (DLP) can now inspect image files to detect sensitive data in images and prevent them from being exfiltrated. Machine Learning is used to identify sensitive images based on models that dynamically learn and evolve with changing data patterns.</div>
+        </div>
+
+        <div class="bef-feature">
+          <div class="bef-feature-title">Turnkey Integrations — Microsoft Sentinel and Splunk</div>
+          <div class="bef-feature-body">Streamline operations by automatically forwarding Cato events to Microsoft Sentinel or Splunk for unified monitoring and analysis. The built-in integration reduces setup time and eliminates the need for custom scripts or connectors.</div>
+          <div class="bef-feature-prev">Previously: Required custom connectors or manual event forwarding configuration.</div>
+        </div>
+      </div>
+
+      <div class="bef-footer">Cato Networks · Learning Center · © 2026 Cato Networks Ltd.</div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title "Product Updates - March 30, 2026" is a filing label, not a headline — a reader skimming their inbox has zero reason to open it over any other weekly update</div>
+        <div class="issue-item"><span>⚠</span> Opening disclaimer ("gradually rolled out over two-week period") buries the value with a caveat before a single benefit has been stated</div>
+        <div class="issue-item"><span>⚠</span> Every feature is written in passive, engineer-first language — "enables high-frequency execution of AI models" describes architecture, not what the admin now doesn't have to do</div>
+        <div class="issue-item"><span>⚠</span> No hierarchy between major announcements (Neural Edge, AI Security) and routine updates (DNS tunneling) — every item gets the same visual weight</div>
+        <div class="issue-item"><span>⚠</span> Zero quantified claims anywhere — no time saved, no threats stopped, no performance benchmarks — just feature descriptions without evidence</div>
+        <div class="issue-item"><span>⚠</span> No CTA anywhere on the page — a reader who is now interested in Neural Edge, AI Security, or the modular adoption model has no clear next step</div>
+        <div class="issue-item"><span>⚠</span> "Previously" notes are buried in italic fine print — the before/after contrast that makes new features valuable is the least visible thing in each block</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> support.catonetworks.com — Rewritten by Strategic Flow</div>
+        <div class="meta-row"><span>Article:</span> Product Updates — March 30, 2026</div>
+        <div class="subject-line">⚡ Three things your security team couldn't do last week — now they can</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Cato<span class="after-logo-accent"> Networks</span></div>
+          <div class="after-tagline">March 30 · Weekly Platform Update</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#f5821f;letter-spacing:.06em;">SASE Platform · 2026</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">Platform update · March 30, 2026 · Gradual rollout · No action required to activate</div>
+        <div class="after-h1">This week, Cato stops threats<br>your SOC would have <em>missed entirely.</em></div>
+        <div class="after-lead">Three major platform capabilities went live this week. Neural Edge brings GPU-powered AI inline to every traffic flow. AI Security governs every AI tool your team uses. Dynamic Prevention stops month-long attacks that look like nothing — until they're everything. Here's what changed for your team, in plain language.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">GPU</div>
+            <div class="stat-label">inference now inline — Neural Edge runs AI at wire speed across every PoP</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0 SOC</div>
+            <div class="stat-label">intervention needed — Dynamic Prevention blocks autonomously</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4 modules</div>
+            <div class="stat-label">start with what you need — SASE now modular, no lock-in</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">See what changed in my account →</a>
+          <span class="after-cta-ghost">Book a walkthrough with Cato</span>
+        </div>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"We can govern AI usage across our entire organisation without sacrificing performance or adding operational complexity. That used to require three separate tools."</div>
+          <div class="quote-attr">— Marc Crudgington, VP of Cybersecurity &amp; IT Infrastructure · Crane Worldwide Logistics · Cato Customer</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">Months</div>
+            <div class="metric-label">of activity correlated in real time by Dynamic Prevention</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Single</div>
+            <div class="metric-label">console for all modules — no new tools, no new overhead</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Free</div>
+            <div class="metric-label">trial — Ask AI account intelligence, now available</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">THIS WEEK'S 3 HEADLINE CHANGES — IN PLAIN LANGUAGE</div>
+        <div class="offer-title">Neural Edge · AI Security · Dynamic Prevention — what each one means for your team</div>
+        <div class="offer-detail">Neural Edge: NVIDIA GPUs now deployed across Cato's global backbone — AI models run inline at wire speed. No latency. No external processing layer. Your traffic gets inspected at the speed it moves. AI Security: Every AI tool your employees use is now governed — shadow AI, ChatGPT, Copilot, homegrown agents. Unified policy, one console. Dynamic Prevention: Cato now correlates months of signals across your entire environment. A series of low-signal actions that each appear normal — exfiltration prep, lateral movement, privilege escalation — gets identified and blocked before the attacker reaches their objective.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Neural Edge (GPU inline)</span>
+          <span class="offer-pill">AI Security governance</span>
+          <span class="offer-pill">Dynamic Prevention</span>
+          <span class="offer-pill">Modular SASE</span>
+          <span class="offer-pill">Ask AI (free trial)</span>
+          <span class="offer-pill">DLP image ML</span>
+          <span class="offer-pill">Sentinel + Splunk</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Release notes</span>
+          <span class="footer-link">Cato Academy</span>
+          <span class="footer-link">Cato Status Page</span>
+          <span class="footer-link">Contact support</span>
+        </div>
+        <div class="footer-note">© 2026 Cato Networks Ltd.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Product Updates - March 30, 2026<br><br>A filing label. The date is not a reason to read. Every weekly update from every vendor uses the same format — this one is indistinguishable.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> ⚡ Three things your security team couldn't do last week — now they can<br><br>Creates a specific curiosity gap. The reader knows the number (3), knows it's about their team, and knows something changed. They have to open it to find out what.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 7 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title: curiosity gap over filing label</div>
+          <div class="upgrade-desc">"Product Updates - March 30, 2026" is how you label a folder. "Three things your security team couldn't do last week — now they can" is a reason to read. It creates a specific gap: the reader knows a number (3), knows it applies to them (your team), knows something has changed (last week → now). All three are conversion signals in a single line.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Lead: consequence before caveat</div>
+          <div class="upgrade-desc">The original opens with a two-sentence disclaimer about gradual rollout. The rewrite opens with the consequence: "Cato stops threats your SOC would have missed entirely." A caveat is the answer to an objection — it belongs after the hook, not before it. Every page should answer "why does this matter?" before it answers "how does this work?"</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Features translated into admin outcomes</div>
+          <div class="upgrade-desc">"Enables high-frequency execution of AI and machine learning models in-line" describes architecture. "AI models run inline at wire speed — no latency, no external processing layer" describes what the admin no longer has to worry about. Every technical claim should be followed by its operational consequence. The question is always: what does my team no longer have to do, or what can they now do that they couldn't before?</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Hierarchy: major announcements lead, routine updates follow</div>
+          <div class="upgrade-desc">The original gives Neural Edge, DNS Split Tunneling, and DLP image inspection equal visual weight. They are not equal. Neural Edge and AI Security are platform-defining releases. The rewrite puts them in the hero stat cards. DNS tunneling and DLP land in the offer pills. Visual hierarchy communicates importance — a flat list communicates that nothing is important.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Before/after contrast made visible, not buried</div>
+          <div class="upgrade-desc">The original writes "Previously: Required custom connectors" in italic fine print below the feature body. This is the most persuasive sentence in each block — the proof that something actually changed — and it's the least visible thing. The rewrite integrates before/after contrast into the main copy: "A series of low-signal actions that each appear normal... gets identified and blocked." The contrast is the story, not the footnote.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Third-party social proof replaces technical spec</div>
+          <div class="upgrade-desc">Cato saying their AI Security platform is good is expected. Marc Crudgington of Crane Worldwide saying "that used to require three separate tools" is not. Third-party, named, role-specific validation — from a VP of Cybersecurity, not an anonymous user — is the highest-trust asset on any product page. It answers the question the reader is actually asking: does this work in practice, at scale, for someone in my role?</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">7 · CTA installed where none existed</div>
+          <div class="upgrade-desc">The original product update has no call to action anywhere. A reader who is now interested in Neural Edge, AI Security, or the modular model has no clear next step — so they close the tab. "See what changed in my account →" uses ownership language and implies the change is already waiting for them. "Book a walkthrough with Cato" captures the reader one step further along. Every page that conveys value without a CTA is leaving conversion on the table.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">The same principles apply to product pages, release notes, and documentation as to email campaigns. Lead with consequence. Let the most important change headline the page. Make the before/after contrast the story, not the footnote. Add third-party proof. And always — always — give the reader a clear next step. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original content'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
