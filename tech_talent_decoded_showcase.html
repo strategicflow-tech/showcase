@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Flow — Tech Talent Decoded Newsletter Teardown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      border-bottom: 1px solid #222;
+      padding: 1.5rem;
+    }
+
+    .header-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+      color: #888;
+    }
+
+    .hero {
+      padding: 4rem 1.5rem;
+      border-bottom: 1px solid #222;
+    }
+
+    .hero-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .orange { color: #f97316; }
+    .hero h1 .gray { color: #666; }
+    .hero p { color: #888; font-size: 1.125rem; }
+
+    @media (min-width: 768px) {
+      .hero h1 { font-size: 3rem; }
+    }
+
+    .section {
+      padding: 4rem 1.5rem;
+    }
+
+    .section-divider {
+      border-top: 1px solid #222;
+    }
+
+    .section-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .section-inner-narrow {
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .content-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .content-card.optimized {
+      border-color: #1a3d1a;
+    }
+
+    .content-header {
+      background: #1a1a1a;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #222;
+    }
+
+    .content-header.optimized {
+      background: #0a1a0a;
+      border-color: #1a3d1a;
+    }
+
+    .content-label {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 0.25rem;
+    }
+
+    .content-label.optimized {
+      color: #22c55e;
+    }
+
+    .content-meta {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .content-body {
+      padding: 1.5rem;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #3b82f6;
+      margin-bottom: 0.25rem;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .newsletter-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #e5e5e5;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .newsletter-intro {
+      font-size: 0.875rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .newsletter-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .newsletter-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e5e5e5;
+      margin-bottom: 0.5rem;
+    }
+
+    .newsletter-section p {
+      font-size: 0.875rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+
+    .toc-list {
+      list-style: disc;
+      padding-left: 1.5rem;
+      font-size: 0.875rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .toc-list li {
+      margin-bottom: 0.25rem;
+    }
+
+    .case-study-box {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .case-study-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #e5e5e5;
+      margin-bottom: 0.25rem;
+    }
+
+    .case-study-text {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .event-box {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .event-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #fbbf24;
+    }
+
+    .event-details {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.25rem;
+    }
+
+    .cta-weak {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      color: #888;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
+    /* Optimized styles */
+    .headline-primary {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: #e5e5e5;
+    }
+
+    .headline-secondary {
+      font-size: 1.125rem;
+      color: #3b82f6;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #3b82f6;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .insight-card {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .insight-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #e5e5e5;
+      margin-bottom: 0.5rem;
+    }
+
+    .insight-text {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .insight-takeaway {
+      font-size: 0.75rem;
+      color: #3b82f6;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .testimonial {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-text {
+      font-size: 0.875rem;
+      color: #e5e5e5;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+
+    .testimonial-author {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #333;
+      color: #888;
+      font-size: 0.875rem;
+      padding: 0.5rem;
+    }
+
+    /* Issue panels */
+    .panels {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .panel {
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .panel-issue {
+      background: #1a0a0a;
+      border: 1px solid #3d1515;
+    }
+
+    .panel-improvement {
+      background: #0a1a0a;
+      border: 1px solid #1a3d1a;
+    }
+
+    .panel-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .panel-icon {
+      font-size: 1.125rem;
+    }
+
+    .panel-icon.warning { color: #f97316; }
+    .panel-icon.success { color: #22c55e; }
+
+    .panel-title {
+      font-weight: 500;
+      color: #e5e5e5;
+      margin-bottom: 0.25rem;
+    }
+
+    .panel-text {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    /* Subject comparison */
+    .comparison-box {
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .comparison-box.before {
+      background: #1a0a0a;
+      border: 1px solid #3d1515;
+    }
+
+    .comparison-box.after {
+      background: #0a1a0a;
+      border: 1px solid #1a3d1a;
+    }
+
+    .comparison-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-label.before { color: #f97316; }
+    .comparison-label.after { color: #22c55e; }
+
+    .comparison-subject {
+      font-size: 1.125rem;
+      color: #e5e5e5;
+      margin-bottom: 1rem;
+    }
+
+    .comparison-text {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    /* Upgrades */
+    .upgrades-title {
+      font-size: 1.875rem;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .upgrades-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .upgrade-item {
+      border-left: 2px solid #3b82f6;
+      padding-left: 1.5rem;
+    }
+
+    .upgrade-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #3b82f6;
+      margin-bottom: 0.5rem;
+    }
+
+    .upgrade-text {
+      color: #888;
+    }
+
+    /* CTA section */
+    .cta-section {
+      max-width: 42rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .cta-text {
+      color: #888;
+      margin-bottom: 2rem;
+    }
+
+    .cta-link {
+      display: inline-block;
+      background: #3b82f6;
+      color: #fff;
+      font-weight: 500;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid #222;
+      padding: 2rem 1.5rem;
+    }
+
+    .footer-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .email-footer {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #222;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #666;
+    }
+  </style>
+<script>window.__V0_SANDBOX_ID__="sb-1c783f4uy9qu";window.__V0_CHAT_ID__="q3Tsz8MqA3I";window.__V0_APP_ORIGIN__="https://v0.app"</script><script async src="/v0-runtime-dist.js"></script></head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-title">Strategic Flow — Tech Talent Decoded Newsletter Teardown</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1><span class="orange">Before</span> <span class="gray">After</span> — Strategic Flow</h1>
+      <p>What changed & why</p>
+    </div>
+  </section>
+
+  <!-- Before/After Comparison -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="grid-2">
+
+        <!-- Original Newsletter -->
+        <div class="content-card">
+          <div class="content-header">
+            <p class="content-label">Original newsletter</p>
+            <p class="content-meta">Source: Damia Group Portugal via LinkedIn</p>
+            <p class="content-meta">Newsletter: Tech Talent Decoded — April 2026</p>
+          </div>
+          <div class="content-body">
+            <div class="brand">
+              <div class="brand-name">Damia Group</div>
+              <p class="brand-subtitle">Tech Talent Decoded</p>
+            </div>
+
+            <p class="newsletter-intro">April is here, the second quarter has just started, and here we are with the second monthly newsletter, as promised.</p>
+
+            <p class="newsletter-intro">This month, we're seeing something new. After two years of accelerating automation and AI adoption, the market is starting to feel... a bit disconnected.</p>
+
+            <p class="newsletter-intro">In this edition, we bring you:</p>
+
+            <ul class="toc-list">
+              <li>The "Connection Deficit" in hiring</li>
+              <li>The Junior Talent paradox</li>
+              <li>Sourcing beyond LinkedIn</li>
+              <li>Our case studies: strategy, insight & transparent growth</li>
+            </ul>
+
+            <div class="newsletter-section">
+              <h3>The "Connection Deficit" in hiring</h3>
+              <p>We might be automating ourselves into a paradox. Hiring teams can now reach more candidates, faster, with less effort than ever before. And yet conversion rates haven't followed...</p>
+            </div>
+
+            <div class="newsletter-section">
+              <h3>The Junior talent paradox</h3>
+              <p>We're optimizing for now and quietly defunding the future. AI is giving experienced developers superpowers. But somewhere in that equation, we've made it harder for the next generation...</p>
+            </div>
+
+            <div class="newsletter-section">
+              <h3>Sourcing is moving beyond LinkedIn</h3>
+              <p>The best candidates on LinkedIn have one thing in common right now: a very good reason to ignore your message...</p>
+            </div>
+
+            <div class="case-study-box">
+              <p class="case-study-title">Case Study: WellHub</p>
+              <p class="case-study-text">20 hires in 12 months, 89% offer acceptance rate</p>
+            </div>
+
+            <div class="event-box">
+              <p class="event-title">Tech Hiring Community Conference 2026</p>
+              <p class="event-details">May 7th · Unicorn Factory Stage · Lisbon</p>
+            </div>
+
+            <p class="cta-weak">If any of the previous topics and challenges sound familiar, let's talk.</p>
+
+            <div class="email-footer">
+              <p>Damia Group Portugal · LinkedIn Newsletter</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issues Panel -->
+        <div class="panels">
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Generic title reveals nothing</p>
+                <p class="panel-text">"Tech Talent Decoded" is a brand name, not a reason to read. It tells the reader nothing about what they'll learn or why this edition matters.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Opening wastes prime real estate on calendar talk</p>
+                <p class="panel-text">"April is here, the second quarter has just started" — readers don't need a date reminder. They need a reason to keep reading.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Table of contents instead of headlines</p>
+                <p class="panel-text">Listing "The Connection Deficit" without context gives no hook. A ToC is navigation, not persuasion. Each item should carry its own micro-headline.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Insights are essays, not actionable takeaways</p>
+                <p class="panel-text">Each section reads like thought leadership prose. No stats, no benchmarks, no "do this Monday" advice. Readers skim for value — they don't find it fast enough.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Case study buried with no visual weight</p>
+                <p class="panel-text">"20 hires, 89% acceptance" is the most concrete proof in the newsletter — but it's a footnote, not a headline. Social proof should lead, not follow.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Passive CTA creates zero urgency</p>
+                <p class="panel-text">"If any of the previous topics sound familiar, let's talk" is a shrug, not an invitation. No ownership language, no specific action, no reason to act now.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Event promo lacks urgency or value prop</p>
+                <p class="panel-text">"10 awesome speakers with the latest insights" — which insights? Why should I clear my calendar? Generic event copy gets ignored.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="section-divider"></div>
+
+  <!-- Optimized Version -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="grid-2">
+
+        <!-- Optimized Newsletter -->
+        <div class="content-card optimized">
+          <div class="content-header optimized">
+            <p class="content-label optimized">Optimized newsletter</p>
+            <p class="content-meta">Source: Damia Group Portugal — Rewritten by Strategic Flow</p>
+            <p class="content-meta">Newsletter: Tech Talent Decoded — April 2026</p>
+          </div>
+          <div class="content-body">
+            <div class="brand">
+              <div class="brand-name">Damia Group</div>
+              <p class="brand-subtitle">Tech Talent Decoded · April 2026</p>
+            </div>
+
+            <h2 class="headline-primary">Your competitors are hiring wrong.</h2>
+            <h3 class="headline-secondary">Here's the data that proves it — and what the winners do differently.</h3>
+
+            <!-- Stat Cards -->
+            <div class="stat-grid">
+              <div class="stat-card">
+                <p class="stat-value">89%</p>
+                <p class="stat-label">offer acceptance</p>
+              </div>
+              <div class="stat-card">
+                <p class="stat-value">20</p>
+                <p class="stat-label">hires in 12 months</p>
+              </div>
+              <div class="stat-card">
+                <p class="stat-value">20%</p>
+                <p class="stat-label">youth unemployment PT</p>
+              </div>
+            </div>
+
+            <!-- Insight Cards -->
+            <div class="insight-card">
+              <p class="insight-title">The Connection Deficit</p>
+              <p class="insight-text">Automation reaches more candidates. Conversion rates haven't followed. Top candidates are dropping off because first impressions feel like no one was home.</p>
+              <p class="insight-takeaway">Fix: Humans show up early. Personally. With intent.</p>
+            </div>
+
+            <div class="insight-card">
+              <p class="insight-title">The Junior Paradox</p>
+              <p class="insight-text">AI gives senior devs superpowers. Entry-level tasks are disappearing. Juniors are being held to output standards that were never the point.</p>
+              <p class="insight-takeaway">Fix: Hire for how they think, adapt, and grow under pressure.</p>
+            </div>
+
+            <div class="insight-card">
+              <p class="insight-title">LinkedIn Is Saturated</p>
+              <p class="insight-text">High-volume outreach is effortless — so everyone does it — so no one stands out. The best sourcers are in Discord servers and private Slack groups.</p>
+              <p class="insight-takeaway">Fix: Go where friction filters out lazy recruiters.</p>
+            </div>
+
+            <!-- Testimonial -->
+            <div class="testimonial">
+              <p class="testimonial-text">"Damia placed 20 hires in 12 months with 89% offer acceptance. They understood our market deeply enough to move fast in it."</p>
+              <p class="testimonial-author">— WellHub · Verified Damia Client · 2025</p>
+            </div>
+
+            <!-- CTAs -->
+            <a href="#" class="btn btn-primary">Book a hiring strategy call</a>
+            <a href="#" class="btn btn-secondary">See the WellHub case study</a>
+
+            <div class="event-box" style="margin-top: 1.5rem;">
+              <p class="event-title">Tech Hiring Conference · May 7 · Lisbon</p>
+              <p class="event-details">3 talks on AI hiring · 2 sourcing workshops · 200+ TA leaders</p>
+            </div>
+
+            <div class="email-footer">
+              <p>Damia Group Portugal · Tech Talent Decoded · April 2026</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Improvements Panel -->
+        <div class="panels">
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Headline creates competitive tension</p>
+                <p class="panel-text">"Your competitors are hiring wrong" — the reader now has a reason to read. It's about them, their market, and something they might be missing.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Stats lead, not follow</p>
+                <p class="panel-text">89% acceptance, 20 hires, 20% unemployment — concrete numbers in stat cards create instant credibility before any prose is read.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Each insight has a "Fix" takeaway</p>
+                <p class="panel-text">Instead of essays, each section ends with a one-line actionable takeaway. Readers can skim and still extract value.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Case study becomes testimonial proof</p>
+                <p class="panel-text">WellHub results are now a named, quoted testimonial — third-party validation beats self-reported claims every time.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">CTAs use ownership language</p>
+                <p class="panel-text">"Book a hiring strategy call" is specific and action-oriented. "See the WellHub case study" gives a lower-commitment option.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Event promo has specificity</p>
+                <p class="panel-text">"3 talks on AI hiring, 2 sourcing workshops, 200+ TA leaders" — now the reader knows exactly what they're getting.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="section-divider"></div>
+
+  <!-- Subject Line Comparison -->
+  <section class="section">
+    <div class="section-inner-narrow">
+      <h2 class="upgrades-title">Title Transformation</h2>
+      
+      <div class="grid-2">
+        <div class="comparison-box before">
+          <p class="comparison-label before">Before</p>
+          <p class="comparison-subject">Tech Talent Decoded</p>
+          <p class="comparison-text">A brand name. Not a headline. Tells the reader nothing about what's inside or why they should read this edition over any other.</p>
+        </div>
+
+        <div class="comparison-box after">
+          <p class="comparison-label after">After</p>
+          <p class="comparison-subject">Your competitors are hiring wrong. Here's the data that proves it.</p>
+          <p class="comparison-text">Competitive tension + data promise. The reader knows this is about them, their market, and something they might be missing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="section-divider"></div>
+
+  <!-- The 7 Upgrades -->
+  <section class="section">
+    <div class="section-inner-narrow">
+      <h2 class="upgrades-title">The 7 Strategic Upgrades</h2>
+
+      <div class="upgrades-list">
+        
+        <div class="upgrade-item">
+          <p class="upgrade-label">1. Title: competitive tension over brand label</p>
+          <p class="upgrade-text">"Tech Talent Decoded" is a series name — it's how you label a folder. "Your competitors are hiring wrong" is a reason to read. It creates stakes: the reader might be making a mistake their competitors aren't. That's a conversion signal in a single line.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">2. Lead: consequence before calendar</p>
+          <p class="upgrade-text">The original opens with "April is here, the second quarter has just started." The rewrite opens with consequence: "Your competitors are hiring wrong." Calendar references are filler. Every newsletter should answer "why does this matter?" before it answers "what's the date?"</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">3. Stats surfaced as visual hierarchy</p>
+          <p class="upgrade-text">"89% offer acceptance" and "20 hires in 12 months" are buried in the original. In the rewrite, they're stat cards at the top. Concrete numbers build credibility instantly — they're absorbed in a glance while prose requires sequential reading.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">4. Insights end with actionable takeaways</p>
+          <p class="upgrade-text">The original reads like thought leadership essays. The rewrite ends each insight with a "Fix:" — one line the reader can act on Monday. "Hire for how they think, adapt, and grow under pressure" is more useful than three paragraphs of philosophy.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">5. Case study becomes named testimonial</p>
+          <p class="upgrade-text">Damia saying "we placed 20 hires" is expected. WellHub saying "they understood our market deeply enough to move fast" is not. Third-party, named validation is the highest-trust asset on any marketing page. It answers the question readers actually ask: does this work?</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">6. CTA uses ownership language with tiered commitment</p>
+          <p class="upgrade-text">"If any of the previous topics sound familiar, let's talk" is passive. "Book a hiring strategy call" is specific and action-oriented. "See the WellHub case study" gives a lower-commitment option for readers not ready to talk yet. Two CTAs, two commitment levels.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">7. Event promo earns attention with specificity</p>
+          <p class="upgrade-text">"10 awesome speakers with the latest insights" is generic. "3 talks on AI hiring, 2 sourcing workshops, 200+ TA leaders" is specific. The reader now knows exactly what they're getting and can make a real decision about whether it's worth their time.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="section-divider"></div>
+
+  <!-- CTA Section -->
+  <section class="section">
+    <div class="cta-section">
+      <h2 class="cta-title">This is the Strategic Flow method</h2>
+      <p class="cta-text">Lead with consequence. Surface stats as visual hierarchy. End insights with actionable takeaways. Convert case studies into third-party proof. Use ownership language in CTAs. Make every word earn its place.</p>
+      <a href="https://strategicflow.carrd.co" class="cta-link">Visit Strategic Flow</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>Strategic Flow — Tech Talent Decoded Newsletter Teardown. Analysis demonstrates Strategic Flow methodology applied to a real LinkedIn newsletter.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
