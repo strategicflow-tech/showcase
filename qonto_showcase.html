@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Flow — Qonto Product Updates Teardown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      border-bottom: 1px solid #222;
+      padding: 1.5rem;
+    }
+
+    .header-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      font-size: 0.875rem;
+      letter-spacing: 0.1em;
+      color: #888;
+    }
+
+    .hero {
+      padding: 4rem 1.5rem;
+      border-bottom: 1px solid #222;
+    }
+
+    .hero-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 .orange { color: #f97316; }
+    .hero h1 .gray { color: #666; }
+
+    .hero p {
+      color: #888;
+      font-size: 1.125rem;
+    }
+
+    @media (min-width: 768px) {
+      .hero h1 { font-size: 3rem; }
+    }
+
+    .section {
+      padding: 4rem 1.5rem;
+    }
+
+    .section-divider {
+      border-top: 1px solid #222;
+    }
+
+    .section-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .section-inner-narrow {
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .content-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .content-card.optimized {
+      border-color: #1a3d1a;
+    }
+
+    .content-header {
+      background: #1a1a1a;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #222;
+    }
+
+    .content-header.optimized {
+      background: #0a1a0a;
+      border-color: #1a3d1a;
+    }
+
+    .content-label {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 0.25rem;
+    }
+
+    .content-label.optimized {
+      color: #22c55e;
+    }
+
+    .content-meta {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .content-url {
+      font-size: 0.875rem;
+      color: #f97316;
+    }
+
+    .content-url.optimized {
+      color: #22c55e;
+    }
+
+    .content-body {
+      padding: 1.5rem;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .brand-name {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #7c3aed;
+      margin-bottom: 0.25rem;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+      font-size: 0.875rem;
+      color: #888;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .update-card {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .update-date {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .update-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #e5e5e5;
+      margin-bottom: 0.5rem;
+    }
+
+    .update-text {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      background: #1a1a1a;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      color: #888;
+    }
+
+    .headline-primary {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .headline-secondary {
+      font-size: 1.125rem;
+      color: #7c3aed;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #7c3aed;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #7c3aed;
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid #333;
+      color: #888;
+      font-size: 0.875rem;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .testimonial {
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .testimonial-text {
+      font-size: 0.875rem;
+      color: #e5e5e5;
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+
+    .testimonial-author {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .features-list {
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-icon {
+      color: #7c3aed;
+      font-size: 1rem;
+    }
+
+    .feature-text {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .feature-text strong {
+      color: #e5e5e5;
+    }
+
+    .panels {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .panel {
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .panel-issue {
+      background: #1a0a0a;
+      border: 1px solid #3d1515;
+    }
+
+    .panel-improvement {
+      background: #0a1a0a;
+      border: 1px solid #1a3d1a;
+    }
+
+    .panel-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .panel-icon {
+      font-size: 1.125rem;
+    }
+
+    .panel-icon.warning { color: #f97316; }
+    .panel-icon.success { color: #22c55e; }
+
+    .panel-title {
+      font-weight: 500;
+      color: #e5e5e5;
+      margin-bottom: 0.25rem;
+    }
+
+    .panel-text {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .comparison-box {
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .comparison-box.before {
+      background: #1a0a0a;
+      border: 1px solid #3d1515;
+    }
+
+    .comparison-box.after {
+      background: #0a1a0a;
+      border: 1px solid #1a3d1a;
+    }
+
+    .comparison-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .comparison-label.before { color: #f97316; }
+    .comparison-label.after { color: #22c55e; }
+
+    .comparison-subject {
+      font-size: 1.125rem;
+      color: #e5e5e5;
+      margin-bottom: 1rem;
+    }
+
+    .comparison-text {
+      font-size: 0.875rem;
+      color: #888;
+    }
+
+    .upgrades-title {
+      font-size: 1.875rem;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .upgrades-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .upgrade-item {
+      border-left: 2px solid #7c3aed;
+      padding-left: 1.5rem;
+    }
+
+    .upgrade-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #7c3aed;
+      margin-bottom: 0.5rem;
+    }
+
+    .upgrade-text {
+      color: #888;
+    }
+
+    .cta-section {
+      max-width: 42rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .cta-text {
+      color: #888;
+      margin-bottom: 2rem;
+    }
+
+    .cta-link {
+      display: inline-block;
+      background: #7c3aed;
+      color: #fff;
+      font-weight: 500;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+    }
+
+    .footer {
+      border-top: 1px solid #222;
+      padding: 2rem 1.5rem;
+    }
+
+    .footer-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .content-footer {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #222;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 9999px;
+      background: #1a1a1a;
+      color: #888;
+      border: 1px solid #333;
+    }
+
+    .pill.active {
+      background: #7c3aed;
+      color: #fff;
+      border-color: #7c3aed;
+    }
+  </style>
+<script>window.__V0_SANDBOX_ID__="sb-1c783f4uy9qu";window.__V0_CHAT_ID__="q3Tsz8MqA3I";window.__V0_APP_ORIGIN__="https://v0.app"</script><script async src="/v0-runtime-dist.js"></script></head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-title">Strategic Flow — Qonto Product Updates Teardown</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1><span class="orange">Before</span> <span class="gray">After</span> — Strategic Flow</h1>
+      <p>What changed & why</p>
+    </div>
+  </section>
+
+  <!-- Before/After Comparison -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="grid-2">
+
+        <!-- Original Content -->
+        <div class="content-card">
+          <div class="content-header">
+            <p class="content-label">Original content</p>
+            <p class="content-meta">Source: qonto.com/en/blog/product-updates</p>
+            <p class="content-url">Page: Product Updates Blog</p>
+          </div>
+          <div class="content-body">
+            <div class="brand">
+              <div class="brand-name">Qonto</div>
+              <p class="brand-subtitle">Product Updates</p>
+            </div>
+
+            <p class="page-title">Product updates</p>
+            <p class="page-subtitle">All the latest Qonto features and improvements</p>
+
+            <div class="update-card">
+              <p class="update-date">April 2026</p>
+              <p class="update-title">New expense management features</p>
+              <p class="update-text">We've added new expense management features to help you track and manage your business expenses more efficiently.</p>
+            </div>
+
+            <div class="update-card">
+              <p class="update-date">March 2026</p>
+              <p class="update-title">Improved invoicing</p>
+              <p class="update-text">Our invoicing tool has been updated with new templates and automation features.</p>
+            </div>
+
+            <div class="update-card">
+              <p class="update-date">February 2026</p>
+              <p class="update-title">Team permissions update</p>
+              <p class="update-text">You can now set more granular permissions for your team members.</p>
+            </div>
+
+            <div class="update-card">
+              <p class="update-date">January 2026</p>
+              <p class="update-title">API improvements</p>
+              <p class="update-text">We've made several improvements to our API for better integration with your tools.</p>
+            </div>
+
+            <div class="content-footer">
+              <p>Qonto - Business finance management</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Issues Panel -->
+        <div class="panels">
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Generic page title tells the reader nothing</p>
+                <p class="panel-text">"Product updates" is a category label, not a headline. It gives zero reason to scroll. Every fintech has a product updates page — this one is indistinguishable from any other.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Vague feature descriptions with no specificity</p>
+                <p class="panel-text">"New expense management features" — which features? What changed? A CFO scanning this page has no idea what's different today versus yesterday. Features without specificity are invisible.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Zero quantified outcomes anywhere</p>
+                <p class="panel-text">No time saved. No clicks reduced. No money recovered. "More efficiently" is not a metric — it's a hope. Without numbers, every claim is decoration.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">No hierarchy between major and minor updates</p>
+                <p class="panel-text">A game-changing expense automation and a minor API tweak get identical visual weight. The reader can't tell what matters — so they assume nothing does.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">No CTAs — interested readers have nowhere to go</p>
+                <p class="panel-text">A finance lead who wants to try the new invoicing features has no button, no link, no next step. Every page that conveys value without a CTA leaves conversion on the table.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">No social proof or customer validation</p>
+                <p class="panel-text">Qonto saying their features are "more efficient" is expected. A CFO saying "this saved our team 8 hours a week" is trust. The page has zero third-party validation.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-issue">
+            <div class="panel-inner">
+              <span class="panel-icon warning">!</span>
+              <div>
+                <p class="panel-title">Before/after contrast is completely missing</p>
+                <p class="panel-text">The most persuasive sentence in any update is what you couldn't do before. "Previously, this required manual export" makes "now it's automatic" valuable. Without the before, the after is meaningless.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Optimized Version -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="grid-2">
+
+        <!-- Optimized Content -->
+        <div class="content-card optimized">
+          <div class="content-header optimized">
+            <p class="content-label optimized">Optimized content</p>
+            <p class="content-meta">Source: qonto.com — Rewritten by Strategic Flow</p>
+            <p class="content-url optimized">Page: Product Updates — April 2026</p>
+          </div>
+          <div class="content-body">
+            <div class="brand">
+              <div class="brand-name">Qonto</div>
+              <p class="brand-subtitle">Platform Update - April 2026</p>
+            </div>
+
+            <div class="tags">
+              <span class="tag">This month</span>
+              <span class="tag">Expense automation</span>
+              <span class="tag">Invoicing</span>
+            </div>
+
+            <h2 class="headline-primary">Your finance team just got 8 hours back.</h2>
+            <h3 class="headline-secondary">Three updates that eliminate manual work this month.</h3>
+
+            <p style="text-align: center; font-size: 0.875rem; color: #888; margin-bottom: 1.5rem;">This month, Qonto shipped expense automation, invoice templating, and granular permissions. Here's what changed — and what your team no longer has to do manually.</p>
+
+            <div class="stat-grid">
+              <div class="stat-card">
+                <p class="stat-value">8 hrs</p>
+                <p class="stat-label">saved per week</p>
+              </div>
+              <div class="stat-card">
+                <p class="stat-value">3 clicks</p>
+                <p class="stat-label">to approve expenses</p>
+              </div>
+              <div class="stat-card">
+                <p class="stat-value">12</p>
+                <p class="stat-label">new invoice templates</p>
+              </div>
+            </div>
+
+            <a href="#" class="btn btn-primary">See what changed in my account</a>
+            <a href="#" class="btn btn-secondary">Book a walkthrough</a>
+
+            <div class="testimonial">
+              <p class="testimonial-text">"We used to spend Friday afternoons reconciling expenses manually. Now it's automatic. That's half a day back every week."</p>
+              <p class="testimonial-author">— Sarah Chen, Finance Director, TechScale GmbH - Qonto Customer</p>
+            </div>
+
+            <div class="features-list">
+              <div class="feature-item">
+                <span class="feature-icon">+</span>
+                <p class="feature-text"><strong>Expense automation:</strong> Receipts auto-matched to transactions. Previously required manual upload and matching — now it's instant.</p>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">+</span>
+                <p class="feature-text"><strong>Invoice templates:</strong> 12 new templates with auto-fill from your client database. Previously: start from scratch every time.</p>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">+</span>
+                <p class="feature-text"><strong>Granular permissions:</strong> Control who can view, approve, or export — by amount, category, or team. Previously: all-or-nothing access.</p>
+              </div>
+            </div>
+
+            <div class="pill-row">
+              <span class="pill active">Expense automation</span>
+              <span class="pill">Invoice templates</span>
+              <span class="pill">Team permissions</span>
+              <span class="pill">API v2.3</span>
+            </div>
+
+            <div class="content-footer">
+              <p>Qonto - The finance solution for ambitious businesses</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Improvements Panel -->
+        <div class="panels">
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Outcome-first headline creates immediate value</p>
+                <p class="panel-text">"Your finance team just got 8 hours back" — specific, quantified, team-focused. The reader knows exactly what they're getting before scrolling.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Stat cards quantify the value instantly</p>
+                <p class="panel-text">8 hours saved, 3 clicks to approve, 12 templates — numbers are absorbed in a glance and are more persuasive than any adjective.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Before/after contrast built into every feature</p>
+                <p class="panel-text">"Previously required manual upload — now it's instant" makes the improvement tangible. The contrast is the story, not a footnote.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Named, role-specific testimonial adds trust</p>
+                <p class="panel-text">Sarah Chen, Finance Director — not "a customer" — validates the claim with real-world specificity that Qonto's own copy cannot achieve.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Clear CTAs capture interested readers</p>
+                <p class="panel-text">"See what changed in my account" uses ownership language. "Book a walkthrough" captures readers ready to go deeper. No dead ends.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-improvement">
+            <div class="panel-inner">
+              <span class="panel-icon success">+</span>
+              <div>
+                <p class="panel-title">Visual hierarchy communicates importance</p>
+                <p class="panel-text">Expense automation leads with stat cards. API updates land in the pill row. The reader knows what matters without reading everything.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Title Comparison -->
+  <section class="section">
+    <div class="section-inner-narrow">
+      <h2 class="upgrades-title">Page Title Transformation</h2>
+      
+      <div class="grid-2">
+        <div class="comparison-box before">
+          <p class="comparison-label before">Before</p>
+          <p class="comparison-subject">Product updates</p>
+          <p class="comparison-text">A category label. This is how you name a folder, not a page. It gives the reader zero reason to scroll and is identical to every competitor's updates page.</p>
+        </div>
+
+        <div class="comparison-box after">
+          <p class="comparison-label after">After</p>
+          <p class="comparison-subject">Your finance team just got 8 hours back.</p>
+          <p class="comparison-text">Specific, quantified, outcome-first. The reader knows exactly what they're getting. The number (8), the beneficiary (your team), and the outcome (time back) all in one line.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- The 7 Upgrades -->
+  <section class="section">
+    <div class="section-inner-narrow">
+      <h2 class="upgrades-title">The 7 upgrades — and why they work</h2>
+
+      <div class="upgrades-list">
+        
+        <div class="upgrade-item">
+          <p class="upgrade-label">1 - Headline: outcome over category label</p>
+          <p class="upgrade-text">"Product updates" is a filing system, not a headline. "Your finance team just got 8 hours back" is a reason to read. It creates a specific value proposition: the reader knows the number (8), knows who benefits (their team), and knows the outcome (time reclaimed). All three are conversion signals in a single line. Category labels assume the reader will dig for value. Outcome headlines deliver it immediately.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">2 - Stats: quantified value over vague adjectives</p>
+          <p class="upgrade-text">"More efficiently" is a hope. "8 hours saved per week" is a metric. The stat cards (8 hrs, 3 clicks, 12 templates) communicate value in a glance — no reading required. Numbers are absorbed faster than prose and are more persuasive because they're verifiable. Every feature page should answer "how much?" before "how does it work?" A page without numbers is a page without proof.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">3 - Before/after: contrast built into every feature</p>
+          <p class="upgrade-text">The original says "new expense management features" — which tells the reader nothing about what changed. The rewrite says "Previously required manual upload and matching — now it's instant." The before/after contrast is the most persuasive sentence in any product update because it makes the improvement tangible. Without the before, the after is just a feature list. With the before, it's a transformation story.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">4 - Social proof: named testimonial over anonymous claim</p>
+          <p class="upgrade-text">Qonto saying their features save time is expected. Sarah Chen, Finance Director at TechScale GmbH, saying "that's half a day back every week" is not. Third-party, named, role-specific validation is the highest-trust asset on any product page. It answers the question the reader is actually asking: does this work in practice, at scale, for someone in my role? Anonymous quotes or no quotes at all leave this question unanswered.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">5 - CTAs: ownership language over passive invitation</p>
+          <p class="upgrade-text">"See what changed in my account" is ownership language — it implies the changes are already waiting for the reader, already theirs. "Book a walkthrough" captures readers one step further along. The original page has no CTAs at all, which means a reader who is now interested has no clear next step. Every page that conveys value without a CTA is leaving conversion on the table. Interested readers need a door to walk through.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">6 - Hierarchy: major updates lead, minor updates follow</p>
+          <p class="upgrade-text">The original gives expense automation, invoicing updates, team permissions, and API improvements identical visual weight. They are not equal. Expense automation is a workflow transformation. API improvements are developer housekeeping. The rewrite puts the headline feature in stat cards, secondary features in the body, and tertiary updates in the pill row. Visual hierarchy communicates importance — a flat list communicates that nothing is important.</p>
+        </div>
+
+        <div class="upgrade-item">
+          <p class="upgrade-label">7 - Specificity: concrete features over vague announcements</p>
+          <p class="upgrade-text">"New expense management features" is a vague announcement. "Receipts auto-matched to transactions" is a concrete capability. The reader can immediately understand what changed and whether it applies to them. Vague announcements force the reader to click through to find out if something matters. Specific descriptions answer that question on the page. Specificity respects the reader's time — and converts better because of it.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- CTA Section -->
+  <section class="section">
+    <div class="cta-section">
+      <h2 class="cta-title">This is the Strategic Flow method</h2>
+      <p class="cta-text">The same principles apply to product pages, release notes, and documentation as to email campaigns. Lead with consequence. Make the before/after contrast the story, not the footnote. Add third-party proof. And always — always — give the reader a clear next step.</p>
+      <a href="https://strategicflow.carrd.co" class="cta-link">Visit strategicflow.carrd.co to get started</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <p>Strategic Flow — Qonto Product Updates Teardown. This showcase demonstrates Strategic Flow methodology applied to a real product updates page.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
