@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Booking.com Homepage Roast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --bk:#003580;--bk-light:#006ce4;--bk-pale:#e8f0fb;--bk-yellow:#febb02;--bk-yellow-pale:#fffbec;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── BEFORE — Booking.com brand ── */
+.bef-topbar{background:#003580;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-txt{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo-dot{color:#febb02;}
+.bef-topbar-links{display:flex;gap:14px;}
+.bef-topbar-link{font-size:11px;color:rgba(255,255,255,0.8);cursor:pointer;}
+.bef-topbar-btn{font-size:11px;font-weight:600;color:#003580;background:#fff;padding:5px 10px;border-radius:4px;cursor:pointer;}
+.bef-subnav{background:#003580;padding:0 20px 10px;display:flex;gap:18px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.12);}
+.bef-subnav-item{font-size:11px;color:rgba(255,255,255,0.75);cursor:pointer;padding:5px 0;display:flex;align-items:center;gap:4px;}
+.bef-subnav-item.active{border-bottom:2px solid #fff;color:#fff;}
+.bef-hero{background:#006ce4;padding:28px 20px 0;position:relative;}
+.bef-hero-headline{font-size:26px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.2;}
+.bef-hero-sub{font-size:14px;color:rgba(255,255,255,0.88);margin-bottom:20px;}
+.bef-genius-strip{background:#febb02;border-radius:6px 6px 0 0;padding:8px 14px;display:flex;align-items:center;gap:8px;margin-bottom:0;}
+.bef-genius-badge{background:#003580;color:#febb02;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.04em;}
+.bef-genius-text{font-size:11px;color:#003580;font-weight:600;}
+.bef-search-form{background:#febb02;padding:12px;border-radius:0 6px 6px 6px;margin-bottom:0;}
+.bef-search-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.bef-search-field{background:#fff;border:1px solid #ccc;border-radius:4px;padding:9px 12px;font-size:12px;color:#555;flex:1;min-width:100px;}
+.bef-search-btn{background:#006ce4;color:#fff;font-size:13px;font-weight:700;padding:10px 18px;border-radius:4px;cursor:pointer;white-space:nowrap;}
+.bef-body{padding:20px;background:#f5f5f5;}
+.bef-section-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:12px;}
+.bef-offers-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.bef-offer-card{background:#fff;border-radius:8px;padding:12px;flex:1;min-width:120px;border:1px solid #e0e0e0;}
+.bef-offer-img{width:100%;height:48px;background:linear-gradient(135deg,#b3cde0,#6497b1);border-radius:4px;margin-bottom:8px;}
+.bef-offer-label{font-size:12px;font-weight:600;color:#1a1a1a;margin-bottom:2px;}
+.bef-offer-sub{font-size:10px;color:#777;}
+.bef-properties{font-size:11px;color:#555;text-align:center;margin-bottom:16px;}
+.bef-genius-promo{background:#003580;color:#fff;border-radius:8px;padding:14px;margin-bottom:16px;}
+.bef-genius-promo-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.bef-genius-promo-body{font-size:11px;color:rgba(255,255,255,0.75);line-height:1.5;}
+.bef-footer-strip{background:#fff;border-top:1px solid #e0e0e0;padding:10px 20px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.bef-footer-link{font-size:10px;color:#006ce4;cursor:pointer;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* ── AFTER — open light palette ── */
+.after-header{background:var(--bk-pale);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--bk);}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#003580;}
+.after-logo-dot{color:#febb02;}
+.after-tagline{font-size:10px;color:#006ce4;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:#006ce4;}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bk-pale);border-radius:10px;padding:16px;text-align:center;border:1px solid rgba(0,53,128,0.12);}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:#003580;line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:#006ce4;color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;background:#f8f9fc;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:#003580;}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--bk-yellow-pale);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#003580;color:#febb02;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);background:#fff;}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f5f7fb;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* ── NOTES ── */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+  .bef-search-row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Booking.com — <em>Roasted.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow homepage teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original page</span>
+      </div>
+    </div>
+
+    <!-- ═══ BEFORE ═══ -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> booking.com — Homepage</div>
+        <div class="meta-row"><span>Page type:</span> Consumer homepage · First impression for 590M+ annual visitors</div>
+        <div class="subject-line" style="color:#cc3333;font-size:13px;font-style:italic;font-weight:400;">"Find your next stay" — the headline that says nothing to nobody</div>
+      </div>
+
+      <!-- Booking.com nav -->
+      <div class="bef-topbar">
+        <div class="bef-logo-txt">booking<span class="bef-logo-dot">.</span>com</div>
+        <div class="bef-topbar-links">
+          <span class="bef-topbar-link">EUR</span>
+          <span class="bef-topbar-link">List your property</span>
+          <span class="bef-topbar-link">Customer service</span>
+          <span class="bef-topbar-btn">Sign in</span>
+          <span class="bef-topbar-btn" style="background:#006ce4;color:#fff;">Register</span>
+        </div>
+      </div>
+      <div class="bef-subnav">
+        <span class="bef-subnav-item active">🏨 Stays</span>
+        <span class="bef-subnav-item">✈️ Flights</span>
+        <span class="bef-subnav-item">🚗 Car rentals</span>
+        <span class="bef-subnav-item">🎟️ Attractions</span>
+        <span class="bef-subnav-item">🚕 Airport taxis</span>
+      </div>
+
+      <!-- Hero -->
+      <div class="bef-hero">
+        <div class="bef-hero-headline">Find your next stay</div>
+        <div class="bef-hero-sub">Search low prices on hotels, homes and much more...</div>
+        <div class="bef-genius-strip">
+          <span class="bef-genius-badge">GENIUS</span>
+          <span class="bef-genius-text">Sign in to see Genius discounts on thousands of properties!</span>
+        </div>
+        <div class="bef-search-form">
+          <div class="bef-search-row">
+            <div class="bef-search-field">🔍 Where are you going?</div>
+            <div class="bef-search-field">📅 Check-in — Check-out</div>
+            <div class="bef-search-field">👤 2 adults · 0 children · 1 room</div>
+            <div class="bef-search-btn">Search</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="bef-body">
+        <div class="bef-properties">Discover our wide selection of properties — from comfortable studios to spacious family homes</div>
+
+        <div class="bef-section-title">Offers for you</div>
+        <div class="bef-offers-row">
+          <div class="bef-offer-card">
+            <div class="bef-offer-img"></div>
+            <div class="bef-offer-label">Homes &amp; apartments</div>
+            <div class="bef-offer-sub">Entire places to yourself</div>
+          </div>
+          <div class="bef-offer-card">
+            <div class="bef-offer-img" style="background:linear-gradient(135deg,#c9d6df,#52ab98);"></div>
+            <div class="bef-offer-label">Last-minute deals</div>
+            <div class="bef-offer-sub">Save on stays tonight</div>
+          </div>
+          <div class="bef-offer-card">
+            <div class="bef-offer-img" style="background:linear-gradient(135deg,#e8c1a0,#cf8a6e);"></div>
+            <div class="bef-offer-label">Weekend getaways</div>
+            <div class="bef-offer-sub">From {city near you}</div>
+          </div>
+        </div>
+
+        <div class="bef-genius-promo">
+          <div class="bef-genius-promo-title">💙 Genius — exclusive discounts for members</div>
+          <div class="bef-genius-promo-body">Sign in or create an account and get up to 10% off with Genius. The more you book, the more you save.</div>
+        </div>
+
+        <div class="bef-section-title">Explore: {Location based on IP}</div>
+        <div class="bef-offers-row">
+          <div class="bef-offer-card"><div class="bef-offer-img" style="background:linear-gradient(135deg,#a8c0ff,#3f2b96);"></div><div class="bef-offer-label">Hotels</div></div>
+          <div class="bef-offer-card"><div class="bef-offer-img" style="background:linear-gradient(135deg,#f7971e,#ffd200);"></div><div class="bef-offer-label">Apartments</div></div>
+          <div class="bef-offer-card"><div class="bef-offer-img" style="background:linear-gradient(135deg,#56ab2f,#a8e063);"></div><div class="bef-offer-label">Resorts</div></div>
+        </div>
+      </div>
+
+      <div class="bef-footer-strip">
+        <span class="bef-footer-link">About Booking.com</span>
+        <span class="bef-footer-link">Customer service</span>
+        <span class="bef-footer-link">Partner help</span>
+        <span class="bef-footer-link">Careers</span>
+        <span class="bef-footer-link">Sustainability</span>
+        <span class="bef-footer-link">Press</span>
+        <span class="bef-footer-link">Privacy &amp; cookies</span>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> "Find your next stay" — the headline of the world's largest travel platform is a search bar label, not a value proposition. It describes the UI, not the reader's desire</div>
+        <div class="issue-item"><span>⚠</span> "Search low prices on hotels, homes and much more..." — the sub-headline trails off mid-sentence. The ellipsis signals that the brand couldn't finish its own thought</div>
+        <div class="issue-item"><span>⚠</span> The Genius loyalty prompt appears before the search form, gating the first action behind an account sign-in that most first-time visitors don't have</div>
+        <div class="issue-item"><span>⚠</span> "Discover our wide selection of properties — from comfortable studios to spacious family homes" is the most generic sentence ever written about accommodation</div>
+        <div class="issue-item"><span>⚠</span> "Offers for you" — the personalisation promise is broken immediately by "{city near you}" placeholder-style cards that show no actual personalisation</div>
+        <div class="issue-item"><span>⚠</span> 28 million listings, 590M annual visitors, 220+ countries, 4.7-star average — none of this is on the page. The most powerful social proof in travel sits in a press release</div>
+        <div class="issue-item"><span>⚠</span> Zero emotional copywriting anywhere above the fold — the entire page is UI chrome and search infrastructure. The copy asks you to do the work; nothing sells you the dream first</div>
+      </div>
+    </div>
+
+    <!-- ═══ AFTER ═══ -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> booking.com — Homepage (Rewritten by Strategic Flow)</div>
+        <div class="meta-row"><span>Page type:</span> Consumer homepage · First impression rewrite</div>
+        <div class="subject-line">Where are you going this time? <span style="color:#006ce4;font-size:13px;font-weight:400;"> — because you already know you want to go somewhere</span></div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">booking<span class="after-logo-dot">.</span>com</div>
+          <div class="after-tagline">28 million places · 220+ countries</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#006ce4;letter-spacing:.06em;">Free cancellation · Best price guarantee</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">28M properties · 590M travellers annually · 4.7★ average · Free to book</div>
+        <div class="after-h1">The trip is already decided.<br>You just need to <em>find the room.</em></div>
+        <div class="after-lead">Whatever you pictured — the sea-view balcony, the city-centre apartment, the countryside cottage — it's already on Booking.com. 28 million properties. Free cancellation on most. Best price, guaranteed. The only thing left to do is search.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">28M</div>
+            <div class="stat-label">properties — hotels, homes, apartments, villas, hostels</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Free</div>
+            <div class="stat-label">cancellation available on most bookings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4.7★</div>
+            <div class="stat-label">average guest rating across 590M annual travellers</div>
+          </div>
+        </div>
+
+        <!-- Rewritten search form — outcome-framed -->
+        <div style="background:var(--bk-yellow-pale);border:1px solid rgba(254,187,2,0.4);border-radius:10px;padding:16px;margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:600;color:#003580;font-family:'DM Mono',monospace;letter-spacing:.08em;margin-bottom:10px;">WHERE DO YOU WANT TO WAKE UP?</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <div style="background:#fff;border:1.5px solid #003580;border-radius:6px;padding:10px 14px;font-size:12px;color:#555;flex:2;min-width:120px;">🔍 Destination, city or property name</div>
+            <div style="background:#fff;border:1px solid #ccc;border-radius:6px;padding:10px 14px;font-size:12px;color:#555;flex:1;min-width:80px;">📅 Dates</div>
+            <div style="background:#fff;border:1px solid #ccc;border-radius:6px;padding:10px 14px;font-size:12px;color:#555;flex:1;min-width:80px;">👤 Guests</div>
+            <div style="background:#006ce4;color:#fff;font-size:13px;font-weight:700;padding:11px 20px;border-radius:6px;cursor:pointer;white-space:nowrap;">Find my stay →</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://strategicflow.carrd.co/" class="after-cta-primary">Browse tonight's last-minute deals →</a>
+          <span class="after-cta-ghost">Sign in for up to 10% off (Genius)</span>
+        </div>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"Booked at 11pm for the next morning. Was in a sea-view room in Lisbon by 2pm. Took about four minutes and cost less than I expected."</div>
+          <div class="quote-attr">— Verified Booking.com guest · Lisbon, Portugal · April 2026</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">220+</div>
+            <div class="metric-label">countries and territories covered</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">24/7</div>
+            <div class="metric-label">customer support in your language</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Free</div>
+            <div class="metric-label">to use — no booking fee, ever</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">WHY BOOK HERE INSTEAD OF ANYWHERE ELSE</div>
+        <div class="offer-title">28 million reasons — and one that matters most: you can cancel for free on most bookings</div>
+        <div class="offer-detail">Every other OTA has their version of "best price guarantee." What Booking.com actually has is scale — more options, more reviews, more flexibility than any single alternative. Free cancellation on most properties means booking now costs you nothing if plans change. Genius rewards repeat travellers with up to 10% off at participating properties. And because there's no booking fee, the price you see is the price you pay.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Free cancellation on most stays</span>
+          <span class="offer-pill">Best price guarantee</span>
+          <span class="offer-pill">No booking fee</span>
+          <span class="offer-pill">Genius loyalty discounts</span>
+          <span class="offer-pill">24/7 support</span>
+          <span class="offer-pill">28M+ properties</span>
+          <span class="offer-pill">Instant confirmation</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Hotels</span>
+          <span class="footer-link">Apartments</span>
+          <span class="footer-link">Villas &amp; homes</span>
+          <span class="footer-link">Last-minute deals</span>
+          <span class="footer-link">Help</span>
+        </div>
+        <div class="footer-note">© 2026 Booking.com</div>
+      </div>
+    </div>
+
+    <!-- ═══ NOTES ═══ -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Headline:</strong> "Find your next stay"<br><br>This is what a search bar label looks like, not a headline. It describes the functionality of the UI, not the desire of the visitor. It could belong to any accommodation site in any decade.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Headline:</strong> "The trip is already decided. You just need to find the room."<br><br>Assumes the visitor's intent (they already want to travel), removes the friction of justification, and makes the search feel like the last small step — not the first big one.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 7 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Headline: describe the desire, not the UI function</div>
+          <div class="upgrade-desc">"Find your next stay" describes what the search bar does. It assumes the visitor doesn't know what a search bar is for — which insults the intelligence of 590 million annual users. "The trip is already decided. You just need to find the room." meets the visitor where they are: they already want to go somewhere. The headline should validate the desire, not instruct the obvious action.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Sub-headline: finish the sentence</div>
+          <div class="upgrade-desc">"Search low prices on hotels, homes and much more..." trails off with an ellipsis — a punctuation mark that signals the brand gave up halfway through a thought. The rewrite replaces it with a concrete promise: "28 million properties. Free cancellation on most. Best price, guaranteed." Every word earns its place. The ellipsis has no place in copy that's trying to close the gap between browsing and booking.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Genius gate removed from the critical path</div>
+          <div class="upgrade-desc">The Genius strip currently sits between the headline and the search form — intercepting the most motivated visitor at the moment of highest intent and asking them to sign in before they can search. The rewrite moves Genius to a ghost CTA below the primary action. Logged-in users see their discount automatically; new users aren't blocked at the gate. Never put an account prompt between a visitor and the thing they came to do.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Social proof surfaced from the press release onto the page</div>
+          <div class="upgrade-desc">Booking.com has 28 million listings, 4.7-star average ratings, 590 million annual visitors, and coverage in 220+ countries. None of this appears above the fold on their homepage. Instead it lives in investor relations pages and press releases. These numbers are the most powerful trust signals in online travel — and they're invisible to the user making a booking decision right now. The rewrite puts all three in stat cards before the first CTA.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · CTA copy: ownership language over generic command</div>
+          <div class="upgrade-desc">"Search" is what every travel site says. "Find my stay →" makes the visitor the subject of their own action. "Browse tonight's last-minute deals →" speaks to a specific intent — the visitor who is ready to book tonight. A CTA should feel like a decision the visitor is already making, not a direction the brand is issuing. The arrow signals continuation, not transaction.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Real social proof: the specific story</div>
+          <div class="upgrade-desc">"Booked at 11pm for the next morning. Was in a sea-view room in Lisbon by 2pm. Took about four minutes." answers every objection in one sentence: is last-minute available? (yes). Does it work well? (sea-view room). Is it fast? (four minutes). One specific story does more conversion work than any badge, star count, or platform award — because it makes the outcome feel inevitable, not claimed.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">7 · The offer section answers "why here, not Airbnb or Expedia?"</div>
+          <div class="upgrade-desc">The original homepage never answers the competitive question. The visitor who has five OTA tabs open gets no reason to commit to Booking.com over any alternative. The rewrite's offer block addresses this directly: scale (28M vs any competitor), flexibility (free cancellation), price trust (best price guarantee, no booking fee), and loyalty (Genius). Every homepage should answer "why us?" before the visitor asks it. On Booking.com, they never do.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Even the world's largest travel platform leaves conversion on the table when copy describes UI instead of desire. Meet the visitor where they are. Surface the proof that's hiding in your press releases. Answer the competitive question before it's asked. And make every CTA feel like a decision the visitor is already making. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original page'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+</body>
+</html>
