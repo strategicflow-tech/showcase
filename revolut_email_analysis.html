@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revolut Premium Email — Strategic Flow Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0c10;
+    --surface: #13151c;
+    --surface2: #1c1f2b;
+    --border: #2a2d3a;
+    --revolut-navy: #191c3a;
+    --accent: #7b61ff;
+    --accent2: #00d4aa;
+    --accent3: #ff6b6b;
+    --warn: #f5a623;
+    --text: #e8eaf0;
+    --muted: #7c8099;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(123,97,255,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(0,212,170,0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.1s forwards;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 6vw, 4.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 820px;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.3s forwards;
+  }
+
+  .meta-strip {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s forwards;
+  }
+
+  .meta-item {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .meta-item span {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── STAT CARDS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .stat-card.purple::after { background: var(--accent); }
+  .stat-card.teal::after   { background: var(--accent2); }
+  .stat-card.red::after    { background: var(--accent3); }
+  .stat-card.gold::after   { background: var(--warn); }
+
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-card.purple .stat-number { color: var(--accent); }
+  .stat-card.teal   .stat-number { color: var(--accent2); }
+  .stat-card.red    .stat-number { color: var(--accent3); }
+  .stat-card.gold   .stat-number { color: var(--warn); }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* ── SECTION WRAPPERS ── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 32px;
+  }
+
+  /* ── BEFORE / AFTER SPLIT ── */
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 700px) {
+    .ba-grid { grid-template-columns: 1fr; }
+  }
+
+  .ba-panel {
+    background: var(--surface);
+    padding: 40px 36px;
+  }
+
+  .ba-panel.after { background: var(--surface2); }
+
+  .ba-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .ba-badge.before {
+    background: rgba(255,107,107,0.12);
+    color: var(--accent3);
+    border: 1px solid rgba(255,107,107,0.2);
+  }
+
+  .ba-badge.after {
+    background: rgba(0,212,170,0.12);
+    color: var(--accent2);
+    border: 1px solid rgba(0,212,170,0.2);
+  }
+
+  .ba-subject {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .ba-panel.after .ba-subject { color: var(--accent2); }
+  .ba-panel.before .ba-subject { color: var(--muted); }
+
+  .ba-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── FLAW CARDS ── */
+  .flaws-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .flaw-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent3);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  .flaw-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent3);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .flaw-title {
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .flaw-body {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── UPGRADE CARDS ── */
+  .upgrades-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .upgrade-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  .upgrade-num {
+    width: 40px;
+    height: 40px;
+    background: rgba(123,97,255,0.15);
+    border: 1px solid rgba(123,97,255,0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .upgrade-content h3 {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .upgrade-content p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .upgrade-content .before-pill {
+    display: inline-block;
+    background: rgba(255,107,107,0.1);
+    border: 1px solid rgba(255,107,107,0.2);
+    color: var(--accent3);
+    font-size: 12px;
+    font-family: var(--mono);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  .upgrade-content .after-pill {
+    display: inline-block;
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.2);
+    color: var(--accent2);
+    font-size: 12px;
+    font-family: var(--mono);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-left: 6px;
+    margin-bottom: 8px;
+  }
+
+  /* ── REWRITTEN SECTION ── */
+  .rewrite-box {
+    background: var(--surface2);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 16px;
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rewrite-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .rewrite-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 20px;
+  }
+
+  .rewrite-headline {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    color: var(--accent2);
+  }
+
+  .rewrite-body {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .rewrite-cta {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 14px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  .email-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 16px;
+  }
+
+  .email-meta .key { color: var(--muted); }
+  .email-meta .val { color: var(--text); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    max-width: 1100px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 60px 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    background: rgba(123,97,255,0.06);
+    border-radius: 0 8px 8px 0;
+    margin: 32px 0;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .quote-block cite {
+    display: block;
+    font-style: normal;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--muted);
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <p class="hero-eyebrow">Strategic Flow · Email Teardown · April 7, 2026</p>
+  <h1>Revolut Premium — <em>Rewritten.</em></h1>
+  <p class="hero-sub">A Strategic Flow content teardown of Revolut's promotional email. Before, after, and every decision explained.</p>
+  <div class="meta-strip">
+    <div class="meta-item">From: <span>no-reply@revolut.com</span></div>
+    <div class="meta-item">Subject: <span>Unlock subscriptions worth €600 a year…</span></div>
+    <div class="meta-item">Date: <span>April 7, 2026</span></div>
+    <div class="meta-item">Recipient: <span>Adrian-Alexandru</span></div>
+  </div>
+</section>
+
+<!-- ── STAT CARDS ── -->
+<div class="stats-grid" style="max-width:1100px;margin:0 auto 80px;padding:0 24px;">
+  <div class="stats-row">
+    <div class="stat-card purple reveal">
+      <div class="stat-number">7</div>
+      <div class="stat-label">structural flaws identified in the original email</div>
+    </div>
+    <div class="stat-card teal reveal">
+      <div class="stat-number">€600</div>
+      <div class="stat-label">annual value buried under weak copy</div>
+    </div>
+    <div class="stat-card gold reveal">
+      <div class="stat-number">0</div>
+      <div class="stat-label">quantified claims in the original body copy</div>
+    </div>
+    <div class="stat-card red reveal">
+      <div class="stat-number">4/10</div>
+      <div class="stat-label">days to claim — urgency never made visceral</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BEFORE / AFTER HEADLINE ── -->
+<div class="section reveal">
+  <p class="section-label">01 · Subject Line</p>
+  <h2 class="section-title">The subject line buries its own best argument</h2>
+  <div class="ba-grid">
+    <div class="ba-panel">
+      <span class="ba-badge before">❌ Before</span>
+      <div class="ba-subject">Unlock subscriptions worth €600 a year, all in one</div>
+      <p class="ba-body">The €600 figure is real value — but it's followed by a vague phrase ("all in one") that deflates the punch. The reader clocks a number, then loses the thread. There's no verb, no urgency, no personalisation.</p>
+    </div>
+    <div class="ba-panel after">
+      <span class="ba-badge after">✅ After</span>
+      <div class="ba-subject">Adrian-Alexandru — €600 in subscriptions, 2 months free. Offer ends 10 April.</div>
+      <p class="ba-body">Opens with the recipient's name (highest open-rate signal in consumer email). Leads with the number. Names the trial length. Closes with a hard deadline. Every word is doing conversion work.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── FLAWS ── -->
+<div class="section reveal">
+  <p class="section-label">02 · Structural Audit</p>
+  <h2 class="section-title">7 flaws — and what each one costs you</h2>
+  <div class="flaws-grid">
+    <div class="flaw-card reveal">
+      <div class="flaw-num">FLAW 01</div>
+      <div class="flaw-title">Generic subject line</div>
+      <div class="flaw-body">No personalisation, no action verb, no deadline signal. "Unlock subscriptions worth €600" competes with every other promotional email in the inbox at a disadvantage — it doesn't say who it's for or why now.</div>
+    </div>
+    <div class="flaw-card reveal">
+      <div class="flaw-num">FLAW 02</div>
+      <div class="flaw-title">No consequence before the hook</div>
+      <div class="flaw-body">The hero copy ("Try 2 months of Premium, on us") describes the offer mechanism, not the outcome. The reader needs to know what their life looks like after upgrading — before they're told what to do.</div>
+    </div>
+    <div class="flaw-card reveal">
+      <div class="flaw-num">FLAW 03</div>
+      <div class="flaw-title">Benefits listed, never felt</div>
+      <div class="flaw-body">"Fitness addict, meditation enthusiast, or sleep lover" is three buckets with no names. Perplexity is mentioned once in the subject but never called out in the body. The subscriptions are the value — they should lead every section.</div>
+    </div>
+    <div class="flaw-card reveal">
+      <div class="flaw-num">FLAW 04</div>
+      <div class="flaw-title">Zero quantified claims</div>
+      <div class="flaw-body">The email states "35+ currencies" but never quantifies how much a user saves. No exchange-fee comparison. No monthly plan fee stated. No benchmark against buying subscriptions separately. The €600 number does all the heavy lifting alone.</div>
+    </div>
+    <div class="flaw-card reveal">
+      <div class="flaw-num">FLAW 05</div>
+      <div class="flaw-title">Urgency never made visceral</div>
+      <div class="flaw-body">"Upgrade by 4/10/26" appears three times but in a neutral tone. There's no cost-of-waiting frame: what does the reader lose if they don't act today? The deadline exists; the emotional weight of the deadline does not.</div>
+    </div>
+    <div class="flaw-card reveal">
+      <div class="flaw-num">FLAW 06</div>
+      <div class="flaw-title">Legal block swamps the brand close</div>
+      <div class="flaw-body">The email ends with five dense legal paragraphs — Revolut Bank UAB, Revolut Insurance Europe UAB, crypto licensing — immediately after "— Team Revolut". A warm sign-off followed by a wall of regulatory text kills any emotional residue from the offer.</div>
+    </div>
+    <div class="flaw-card reveal">
+      <div class="flaw-num">FLAW 07</div>
+      <div class="flaw-title">Two CTAs, equal weight, no hierarchy</div>
+      <div class="flaw-body">"Start my free trial" appears twice at the same size and style. No primary/secondary distinction. No urgency variant. The second CTA should use scarcity or deadline language to convert readers who hesitated the first time.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── REWRITTEN EMAIL ── -->
+<div class="section reveal">
+  <p class="section-label">03 · Rewritten Version</p>
+  <h2 class="section-title">The email — rewritten by Strategic Flow</h2>
+
+  <div class="rewrite-box">
+    <div class="rewrite-eyebrow">Strategic Flow · Rewrite · April 2026</div>
+
+    <div class="email-meta">
+      <span class="key">Subject:</span><span class="val">Adrian-Alexandru — €600 in subscriptions, 2 months free. Offer ends 10 April.</span>
+      <span class="key">Preview:</span><span class="val">Perplexity, fitness, sleep, mindfulness — all bundled. No extra charge. Claim before Thursday.</span>
+    </div>
+
+    <h2 class="rewrite-headline">The subscriptions you're already paying for — now included.</h2>
+
+    <p class="rewrite-body">
+      Hi Adrian-Alexandru,<br><br>
+      Perplexity AI. A meditation app. A sleep tracker. A fitness platform. You're probably spending money on at least one of these separately — right now, Revolut Premium bundles 8 of them into your account for no extra cost.<br><br>
+      For the next <strong>2 months, your Premium trial is on us.</strong> That's €100 in real subscription value, at zero cost — if you upgrade before <strong>Thursday, 10 April at 23:59.</strong>
+    </p>
+
+    <p class="rewrite-body" style="color: var(--muted); font-size:14px;">
+      <strong style="color:var(--text);">What's included with Premium:</strong><br>
+      · Perplexity AI Pro — €20/mo alone<br>
+      · Headspace or Calm — €13/mo alone<br>
+      · Fitness and sleep apps — combined €15+/mo<br>
+      · 5 more subscriptions at your fingertips<br>
+      · Unlimited currency exchange, 35+ currencies, no fees<br>
+      · Your choice of 3 exclusive Premium card colours
+    </p>
+
+    <p class="rewrite-body" style="font-size:14px; color:var(--muted);">
+      After your trial, a rolling monthly fee applies — visible in-app on the plans dashboard before you activate. Cancel any time during the trial (card delivery fee may apply if ordered).
+    </p>
+
+    <a href="#" class="rewrite-cta">Claim 2 months free — offer ends 10 April →</a>
+
+    <div class="quote-block" style="margin-top: 32px;">
+      This is what €600 of subscriptions looks like when you're not paying for each one separately.
+      <cite>— Strategic Flow note: make the value concrete and personal, not abstract and aggregate</cite>
+    </div>
+  </div>
+</div>
+
+<!-- ── 7 UPGRADES ── -->
+<div class="section reveal">
+  <p class="section-label">04 · Method</p>
+  <h2 class="section-title">The 7 upgrades — and why each one works</h2>
+  <div class="upgrades-grid">
+
+    <div class="upgrade-card reveal">
+      <div class="upgrade-num">01</div>
+      <div class="upgrade-content">
+        <span class="before-pill">Before: generic subject</span><span class="after-pill">After: name + value + deadline</span>
+        <h3>Subject line: curiosity gap over filing label</h3>
+        <p>Personalisation (the recipient's name) is the single highest open-rate signal in consumer email. Pairing it with a specific euro amount and a hard deadline converts three passive signals into one active one. Every word in the new subject line is doing conversion work.</p>
+      </div>
+    </div>
+
+    <div class="upgrade-card reveal">
+      <div class="upgrade-num">02</div>
+      <div class="upgrade-content">
+        <span class="before-pill">Before: mechanism first</span><span class="after-pill">After: consequence first</span>
+        <h3>Lead with what the reader already owns — or wants</h3>
+        <p>Starting with "Perplexity AI. A meditation app. A sleep tracker." addresses the reader's existing spend before asking for a new commitment. The offer becomes a consolidation of existing value, not a new purchase decision. This is the most powerful reframe in subscription marketing.</p>
+      </div>
+    </div>
+
+    <div class="upgrade-card reveal">
+      <div class="upgrade-num">03</div>
+      <div class="upgrade-content">
+        <span class="before-pill">Before: "8 subscriptions included"</span><span class="after-pill">After: named + priced per item</span>
+        <h3>Name every subscription and its standalone price</h3>
+        <p>The original mentions Perplexity once in the subject, then never again in the body. The rewrite names each category and gives a standalone price. €20/mo for Perplexity alone is more persuasive than "subscriptions worth €600 a year" — because it's specific, checkable, and personally relevant.</p>
+      </div>
+    </div>
+
+    <div class="upgrade-card reveal">
+      <div class="upgrade-num">04</div>
+      <div class="upgrade-content">
+        <span class="before-pill">Before: "upgrade by 4/10/26"</span><span class="after-pill">After: "before Thursday, 10 April"</span>
+        <h3>Translate the date into a day name</h3>
+        <p>4/10/26 requires the reader to calculate how far away it is. "Before Thursday" is immediate. The closer the deadline feels, the more urgent the decision. Day names also land differently in inboxes opened on mobile — Thursday is a single word, a date is a mental load.</p>
+      </div>
+    </div>
+
+    <div class="upgrade-card reveal">
+      <div class="upgrade-num">05</div>
+      <div class="upgrade-content">
+        <span class="before-pill">Before: flat cost-of-inaction</span><span class="after-pill">After: cost framed as personal loss</span>
+        <h3>Make the cost of not acting feel real</h3>
+        <p>"This is what €600 of subscriptions looks like when you're not paying for each one separately." The reader now has a counterfactual: what does their account look like after Thursday if they don't act? Loss aversion is more motivating than gain framing in subscription email. The rewrite activates both.</p>
+      </div>
+    </div>
+
+    <div class="upgrade-card reveal">
+      <div class="upgrade-num">06</div>
+      <div class="upgrade-content">
+        <span class="before-pill">Before: legal block after sign-off</span><span class="after-pill">After: T&Cs integrated before CTA</span>
+        <h3>Move legal context before the close, not after</h3>
+        <p>Five paragraphs of licensing and regulatory text after "— Team Revolut" erases the warmth of the closing. The rewrite moves the essential terms (rolling monthly, cancel anytime, card delivery fee) into a single plain-English sentence before the CTA. The legal wall moves to a linked page. Brand warmth is preserved at close.</p>
+      </div>
+    </div>
+
+    <div class="upgrade-card reveal">
+      <div class="upgrade-num">07</div>
+      <div class="upgrade-content">
+        <span class="before-pill">Before: 2 identical CTAs</span><span class="after-pill">After: deadline-specific primary CTA</span>
+        <h3>One CTA, maximum urgency, deadline embedded</h3>
+        <p>"Claim 2 months free — offer ends 10 April →" combines three conversion signals: the offer mechanics (2 months free), the deadline (10 April), and forward momentum (→). A second CTA, if needed, would use different urgency language for a different reader state — not a copy-paste of the first.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── CLOSING ── -->
+<div class="section reveal" style="text-align:center; padding-bottom: 60px;">
+  <p class="section-label" style="justify-content: center; display:flex;">05 · Conclusion</p>
+  <h2 class="section-title" style="max-width:680px;margin-left:auto;margin-right:auto;">This is the Strategic Flow method</h2>
+  <p style="color:var(--muted); max-width: 620px; margin: 0 auto 32px; font-size:15px; line-height:1.8;">
+    The same principles apply to promotional emails as to product pages and release notes. Lead with consequence. Make the value concrete and named. Turn the deadline from a date into a day. Let the legal block live where it belongs — out of the way of the close. And give the reader one clear, urgent next step.
+  </p>
+  <p style="font-family: var(--mono); font-size:12px; color: var(--muted);">
+    Analysis by Strategic Flow · strategicflow.carrd.co
+  </p>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  Strategic Flow © 2026 · Email Analysis: Revolut Premium · April 7, 2026<br>
+  <span style="margin-top:8px;display:block;">Source email: no-reply@revolut.com · Recipient: Adrian-Alexandru</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
