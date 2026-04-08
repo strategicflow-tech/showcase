@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lokalise Shipped Winter 2026 — Strategic Flow Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f5f2ec;
+  --paper:    #faf8f4;
+  --ink:      #1a1612;
+  --ink2:     #3d3830;
+  --muted:    #8a8278;
+  --border:   #d8d2c8;
+  --accent:   #e8470a;
+  --accent2:  #1a5cff;
+  --accent3:  #00a86b;
+  --gold:     #c9890d;
+  --surface:  #edeae3;
+  --serif:    'Fraunces', Georgia, serif;
+  --sans:     'Syne', sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* ── TOP RULE ── */
+.top-rule {
+  height: 4px;
+  background: repeating-linear-gradient(90deg, var(--accent) 0, var(--accent) 60%, var(--ink) 60%, var(--ink) 100%);
+  background-size: 120px 4px;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  border-bottom: 2px solid var(--ink);
+  padding: 20px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.masthead-brand {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.masthead-title {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.masthead-date {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 72px 48px 56px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: 'TEARDOWN';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: var(--serif);
+  font-size: 100px;
+  font-weight: 900;
+  color: var(--border);
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.1s forwards;
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  max-width: 780px;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.2s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+.hero-deck {
+  font-size: 1.05rem;
+  color: var(--ink2);
+  max-width: 580px;
+  line-height: 1.65;
+  opacity: 0;
+  animation: fadeUp 0.5s 0.3s forwards;
+}
+
+/* ── STAT ROW ── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 2px solid var(--ink);
+  opacity: 0;
+  animation: fadeUp 0.5s 0.4s forwards;
+}
+
+@media (max-width: 700px) {
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding: 48px 24px 40px; }
+  .masthead { padding: 16px 24px; }
+  .section { padding: 48px 24px; }
+  .ba-grid { grid-template-columns: 1fr; }
+  .upgrades-list { padding: 0 24px; }
+  .hero::after { display: none; }
+}
+
+.stat-cell {
+  padding: 28px 32px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+
+.stat-cell:last-child { border-right: none; }
+
+.stat-n {
+  font-family: var(--serif);
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-cell:nth-child(1) .stat-n { color: var(--accent); }
+.stat-cell:nth-child(2) .stat-n { color: var(--accent2); }
+.stat-cell:nth-child(3) .stat-n { color: var(--accent3); }
+.stat-cell:nth-child(4) .stat-n { color: var(--gold); }
+
+.stat-l {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--ink);
+  background: var(--paper);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.tab-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab-btn.active {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+/* ── SECTIONS ── */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 48px;
+}
+
+.section-rule {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+.section-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.section-heading {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 36px;
+}
+
+/* ── BEFORE / AFTER PANELS ── */
+.ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 2px solid var(--ink);
+  margin-bottom: 48px;
+}
+
+.ba-panel {
+  padding: 40px 36px;
+}
+
+.ba-panel.before { background: var(--surface); border-right: 1px solid var(--ink); }
+.ba-panel.after  { background: var(--paper); }
+
+.ba-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid;
+  border-radius: 2px;
+  margin-bottom: 18px;
+}
+
+.ba-tag.before { color: var(--accent); border-color: var(--accent); background: rgba(232,71,10,0.06); }
+.ba-tag.after  { color: var(--accent3); border-color: var(--accent3); background: rgba(0,168,107,0.06); }
+
+.ba-headline {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.ba-panel.before .ba-headline { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.ba-panel.after  .ba-headline { color: var(--accent3); }
+
+.ba-body {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+
+/* ── FLAWS GRID ── */
+.flaws-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  border: 2px solid var(--ink);
+  margin-bottom: 16px;
+}
+
+.flaw-card {
+  background: var(--paper);
+  padding: 28px 24px;
+  position: relative;
+}
+
+.flaw-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+}
+
+.flaw-index {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+
+.flaw-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.flaw-body {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── REWRITE BOX ── */
+.rewrite-wrap {
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+
+.rewrite-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent3), var(--accent2));
+}
+
+.rewrite-inner {
+  padding: 48px 44px;
+}
+
+.rewrite-kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent3);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.email-meta-row {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+  margin-bottom: 28px;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 6px 0;
+}
+
+.email-meta-row .key { color: var(--muted); }
+.email-meta-row .val { color: var(--ink); }
+
+.rewrite-subject {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 900;
+  color: var(--accent3);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.rewrite-body {
+  font-size: 14.5px;
+  color: var(--ink);
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+
+.rewrite-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 24px 0;
+}
+
+.rs-cell {
+  background: var(--surface);
+  padding: 20px;
+  text-align: center;
+}
+
+.rs-n {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent2);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+
+.rs-l {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.rewrite-features {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.9;
+  margin-bottom: 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--border);
+}
+
+.rewrite-quote {
+  border-left: 4px solid var(--accent2);
+  padding: 16px 20px;
+  background: rgba(26,92,255,0.05);
+  margin: 24px 0;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.rewrite-quote cite {
+  display: block;
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+.cta-primary {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 14px 32px;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  border: 2px solid var(--accent);
+  transition: background 0.2s, color 0.2s;
+}
+
+.cta-primary:hover { background: var(--ink); border-color: var(--ink); }
+
+.cta-sec {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+  text-decoration: underline;
+  margin-left: 20px;
+  letter-spacing: 0.05em;
+}
+
+/* ── UPGRADES ── */
+.upgrades-list {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.upgrade-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 0 28px;
+  border-top: 1px solid var(--border);
+  padding: 36px 0;
+  align-items: start;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.upgrade-item.visible { opacity: 1; transform: none; }
+
+.upgrade-num {
+  font-family: var(--serif);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--border);
+  line-height: 1;
+  padding-top: 4px;
+}
+
+.upgrade-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.pill {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 2px;
+  border: 1px solid;
+}
+
+.pill.before { color: var(--accent); border-color: var(--accent); background: rgba(232,71,10,0.06); }
+.pill.after  { color: var(--accent3); border-color: var(--accent3); background: rgba(0,168,107,0.06); }
+
+.upgrade-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.upgrade-body {
+  font-size: 14px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+
+/* ── CONCLUSION ── */
+.conclusion {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 80px 48px;
+  text-align: center;
+}
+
+.conclusion h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: var(--bg);
+}
+
+.conclusion h2 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+
+.conclusion p {
+  font-size: 15px;
+  color: rgba(245,242,236,0.6);
+  max-width: 600px;
+  margin: 0 auto 36px;
+  line-height: 1.8;
+}
+
+.conclusion a {
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 2px solid var(--ink);
+  padding: 28px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--paper);
+}
+
+.footer-brand { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.footer-copy  { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<div class="top-rule"></div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <span class="masthead-brand">Strategic Flow · Newsletter Teardown</span>
+  <span class="masthead-title">Lokalise — Shipped Winter 2026 · <em>Rewritten.</em></span>
+  <span class="masthead-date">Winter 2026 Edition · strategicflow.carrd.co</span>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-kicker">A Strategic Flow newsletter audit — before &amp; after</p>
+  <h1>Lokalise Shipped<br>Winter 2026 —<br><em>Rewritten.</em></h1>
+  <p class="hero-deck">A product update newsletter with five genuine innovations — buried under flat descriptions, absent social proof, and CTAs that point readers to demos instead of outcomes. Here's what should have been said, and why.</p>
+</section>
+
+<!-- STAT BAR -->
+<div class="stats-bar">
+  <div class="stat-cell">
+    <div class="stat-n">7</div>
+    <div class="stat-l">structural flaws<br>identified</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n">5</div>
+    <div class="stat-l">real innovations<br>buried in flat copy</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n">0</div>
+    <div class="stat-l">quantified outcomes<br>in the full newsletter</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n">95%</div>
+    <div class="stat-l">ready-to-publish rate<br>claimed — but never shown</div>
+  </div>
+</div>
+
+<hr class="section-rule">
+
+<!-- TAB NAV -->
+<nav class="tabs">
+  <button class="tab-btn active" onclick="scrollTo(0, document.getElementById('s-before').offsetTop - 60)">Before</button>
+  <button class="tab-btn" onclick="scrollTo(0, document.getElementById('s-after').offsetTop - 60)">After</button>
+  <button class="tab-btn" onclick="scrollTo(0, document.getElementById('s-method').offsetTop - 60)">What Changed &amp; Why</button>
+</nav>
+
+<!-- ── SECTION 01: ORIGINAL EMAIL ─────────────────────────────────────── -->
+<div id="s-before">
+<div class="section reveal">
+  <p class="section-kicker">01 · Original Newsletter</p>
+  <h2 class="section-heading">The original email — as sent</h2>
+
+  <div style="border:2px solid var(--ink); background:var(--paper); padding:44px 40px; font-size:14.5px; line-height:1.8; color:var(--ink2); position:relative;">
+    <div style="font-family:var(--mono); font-size:10px; color:var(--muted); border-bottom:1px solid var(--border); padding-bottom:12px; margin-bottom:24px; display:grid; grid-template-columns:56px 1fr; gap:5px 0;">
+      <span style="color:var(--muted);">From:</span><span style="color:var(--ink);">Lokalise &lt;shipped@lokalise.com&gt;</span>
+      <span style="color:var(--muted);">Subject:</span><span style="color:var(--ink);">Shipped by Lokalise – Winter 2026</span>
+    </div>
+
+    <h2 style="font-family:var(--serif); font-size:1.6rem; font-weight:900; letter-spacing:-0.02em; margin-bottom:8px; color:var(--ink);">AI you can trust. Orchestrated localization that never sacrifices quality.</h2>
+    <p style="color:var(--muted); font-size:13px; margin-bottom:28px;">From brand-adaptive translations to intelligent automation and seamless integrations, this edition is packed with updates that help your teams go global confidently, without ever sacrificing quality or oversight.</p>
+
+    <div style="border-left:3px solid var(--border); padding-left:20px; margin-bottom:24px;">
+      <p style="font-family:var(--mono); font-size:11px; font-weight:700; color:var(--ink); margin-bottom:6px;">AI translations</p>
+      <p style="font-size:14px; font-weight:700; margin-bottom:6px;">Custom AI profiles: Beyond one-size-fits-all translations</p>
+      <p style="font-size:13px; color:var(--muted);">We're happy to announce that Custom AI Profiles is out of beta this month! One-size-fits-all never fitted anyone, that's why our AI is powered by Retrieval-Augmented Generation (RAG) to dynamically retrieve your most relevant past examples…</p>
+      <p style="font-size:12px; color:var(--muted); margin-top:10px;"><strong>Why teams love it:</strong> Up to 95% ready-to-publish translations · AI that adapts to your Translation Memory · Brand-consistent output · Faster localization, fewer manual edits</p>
+      <p style="margin-top:10px;"><a href="#" style="font-size:12px; color:var(--accent2);">Learn more in our next live webinar →</a></p>
+    </div>
+
+    <div style="border-left:3px solid var(--border); padding-left:20px; margin-bottom:24px;">
+      <p style="font-family:var(--mono); font-size:11px; font-weight:700; color:var(--ink); margin-bottom:6px;">Integrations</p>
+      <p style="font-size:14px; font-weight:700; margin-bottom:6px;">New integrations and file formats to plug Lokalise directly into your workflow</p>
+      <p style="font-size:13px; color:var(--muted);">We've expanded our integrations to fit seamlessly into your existing stack. Since our last edition in Autumn, we launched native support for Apple's XCStrings format, a new Customer.io integration…</p>
+    </div>
+
+    <div style="border-left:3px solid var(--border); padding-left:20px; margin-bottom:24px;">
+      <p style="font-family:var(--mono); font-size:11px; font-weight:700; color:var(--ink); margin-bottom:6px;">Beta</p>
+      <p style="font-size:14px; font-weight:700; margin-bottom:6px;">MCP Server: Talk to your translations</p>
+      <p style="font-size:13px; color:var(--muted);">Imagine if managing your localization workflow was as simple as having a conversation. No more context-switching between tools, no more hunting through API documentation…</p>
+    </div>
+
+    <div style="border-left:3px solid var(--border); padding-left:20px; margin-bottom:24px;">
+      <p style="font-family:var(--mono); font-size:11px; font-weight:700; color:var(--ink); margin-bottom:6px;">AI agents</p>
+      <p style="font-size:14px; font-weight:700; margin-bottom:6px;">The AI buddy inside Lokalise</p>
+      <p style="font-size:13px; color:var(--muted);">Our new AI agent helps you create, configure, and manage localization projects for you. Just ask and it'll execute actions behind the scenes…</p>
+    </div>
+
+    <div style="border-left:3px solid var(--border); padding-left:20px; margin-bottom:28px;">
+      <p style="font-family:var(--mono); font-size:11px; font-weight:700; color:var(--ink); margin-bottom:6px;">Invitation-only beta</p>
+      <p style="font-size:14px; font-weight:700; margin-bottom:6px;">Autopilot: Localization built for marketing and content teams</p>
+      <p style="font-size:13px; color:var(--muted);">Autopilot automates localization for long-form marketing and content workflows, helping teams move faster with less manual coordination and more control…</p>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted);">All our product updates are published on the Lokalog on a regular basis. Want to be the first to know about them? Get updates every two weeks in your inbox.</p>
+    <br>
+    <a href="#" style="display:inline-block; background:var(--accent2); color:#fff; font-size:13px; font-weight:700; padding:12px 28px; text-decoration:none;">Try Lokalise for free</a>
+    <a href="#" style="margin-left:16px; font-size:12px; color:var(--ink2); font-family:var(--mono);">Chat with us →</a>
+  </div>
+</div>
+</div>
+
+<!-- ── BEFORE/AFTER: SUBJECT LINE ─────────────────────────────────────── -->
+<hr class="section-rule">
+<div class="section reveal">
+  <p class="section-kicker">02 · Subject Line</p>
+  <h2 class="section-heading">The subject line describes a product. It should name a pain.</h2>
+  <div class="ba-grid">
+    <div class="ba-panel before">
+      <span class="ba-tag before">❌ Before</span>
+      <div class="ba-headline">Shipped by Lokalise – Winter 2026</div>
+      <p class="ba-body">A filing label. "Shipped by Lokalise" is a format announcement — it tells the reader what kind of email this is, not why they should open it. "Winter 2026" is a date stamp, not a reason to act. There is no pain identified, no outcome promised, no curiosity gap created. This subject line competes with every other product update email in the inbox at a zero-differentiation disadvantage.</p>
+    </div>
+    <div class="ba-panel after">
+      <span class="ba-tag after">✅ After</span>
+      <div class="ba-headline">Your localization team just got five new capabilities. Here's what changed.</div>
+      <p class="ba-body">Personalisation to team role ("your localization team") + specificity (five) + change-signal ("what changed") = a subject line that creates a curiosity gap. The reader knows something happened that applies to them, they know a number, and they don't yet know what it is. All three are conversion signals. The original has none of these.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── FLAWS ─────────────────────────────────────────────────────────── -->
+<hr class="section-rule">
+<div class="section reveal">
+  <p class="section-kicker">03 · Structural Audit</p>
+  <h2 class="section-heading">7 flaws — and what each one costs the reader</h2>
+</div>
+<div style="max-width:1100px; margin:0 auto; padding:0 48px 64px;">
+  <div class="flaws-grid">
+
+    <div class="flaw-card reveal">
+      <div class="flaw-index">FLAW 01</div>
+      <div class="flaw-title">Hero headline describes strategy, not change</div>
+      <div class="flaw-body">"AI you can trust. Orchestrated localization that never sacrifices quality." is a brand positioning statement — not a headline. It tells the reader what Lokalise values, not what changed this winter. Every product newsletter's hero should answer: what is different today that wasn't true last quarter?</div>
+    </div>
+
+    <div class="flaw-card reveal">
+      <div class="flaw-index">FLAW 02</div>
+      <div class="flaw-title">Subject line is a filing label, not a hook</div>
+      <div class="flaw-body">"Shipped by Lokalise – Winter 2026" is a format descriptor. Seasonal naming conventions work for internal archives — they do not work for inbox differentiation. No pain named, no outcome promised, no curiosity gap. A subject line has one job: create a reason to open before the preview text loads.</div>
+    </div>
+
+    <div class="flaw-card reveal">
+      <div class="flaw-index">FLAW 03</div>
+      <div class="flaw-title">Features described in product terms, not reader outcomes</div>
+      <div class="flaw-body">Every feature block describes what the technology does ("dynamically retrieve your most relevant past examples") — none translate into what the reader no longer has to do. "Up to 95% ready-to-publish translations" is the only quantified outcome in the entire email, and it's buried in a bullet list rather than leading the section.</div>
+    </div>
+
+    <div class="flaw-card reveal">
+      <div class="flaw-index">FLAW 04</div>
+      <div class="flaw-title">95% ready-to-publish is the email's best line — it's a bullet point</div>
+      <div class="flaw-body">The single most conversion-relevant claim in the newsletter — "Up to 95% ready-to-publish translations" — is formatted as the second item in a four-item bullet list under Custom AI Profiles. It should be the headline of the section. The claim is specific, measurable, and immediately meaningful to any localization manager. Formatting it as a list item is the single biggest missed opportunity in the email.</div>
+    </div>
+
+    <div class="flaw-card reveal">
+      <div class="flaw-index">FLAW 05</div>
+      <div class="flaw-title">MCP Server leads with imagination, not consequence</div>
+      <div class="flaw-body">"Imagine if managing your localization workflow was as simple as having a conversation." Imagination prompts work in ad copy — in a product newsletter to an existing user base, they signal that the thing doesn't exist yet. The MCP Server exists. Its consequence ("no more API documentation hunting, no custom scripts, no context-switching") should lead, not follow a hypothetical.</div>
+    </div>
+
+    <div class="flaw-card reveal">
+      <div class="flaw-index">FLAW 06</div>
+      <div class="flaw-title">Zero social proof across the entire newsletter</div>
+      <div class="flaw-body">Five feature sections. Three beta announcements. Zero customer quotes, zero usage statistics, zero named outcomes from real teams. The newsletter claims to serve "3,000+ teams going global" — but none of them appear in the copy. A single specific quote from a localization manager at any of the named logos would outperform all five feature descriptions combined.</div>
+    </div>
+
+    <div class="flaw-card reveal">
+      <div class="flaw-index">FLAW 07</div>
+      <div class="flaw-title">CTAs point to demos, not decisions</div>
+      <div class="flaw-body">"Learn more in our next live webinar" and "Talk to our team" are the two primary CTAs for Custom AI Profiles and the AI Agent. Both send the reader away from a decision and toward a meeting. For readers already using Lokalise, the CTA should be "Try this now in your project" — not a request for their calendar. The CTA that requires the least commitment consistently wins.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── REWRITTEN NEWSLETTER ─────────────────────────────────────────── -->
+<hr class="section-rule">
+<div id="s-after">
+<div class="section reveal">
+  <p class="section-kicker">04 · Rewritten Newsletter</p>
+  <h2 class="section-heading">The newsletter — rewritten by Strategic Flow</h2>
+  <div class="rewrite-wrap">
+    <div class="rewrite-inner">
+      <p class="rewrite-kicker">Strategic Flow · Rewrite · Winter 2026</p>
+
+      <div class="email-meta-row">
+        <span class="key">From:</span><span class="val">Lokalise &lt;shipped@lokalise.com&gt;</span>
+        <span class="key">Subject:</span><span class="val">Your localization team just got five new capabilities. Here's what changed.</span>
+        <span class="key">Preview:</span><span class="val">95% ready-to-publish AI. Natural language workflow control. Autopilot for long-form content. All live or in beta this winter.</span>
+      </div>
+
+      <h2 class="rewrite-subject">Five things your localization team couldn't do last quarter — now they can.</h2>
+
+      <p class="rewrite-body">
+        This winter, Lokalise shipped five capabilities that change how localization actually works inside your stack. Not incremental improvements — architectural shifts. Custom AI Profiles hit general availability. The MCP Server removes API friction entirely. The AI Agent handles admin so your team doesn't have to. Here's what each one means for your workflow, in plain language.
+      </p>
+
+      <div class="rewrite-stats">
+        <div class="rs-cell">
+          <div class="rs-n">95%</div>
+          <div class="rs-l">ready-to-publish translations<br>with Custom AI Profiles (GA)</div>
+        </div>
+        <div class="rs-cell">
+          <div class="rs-n">0</div>
+          <div class="rs-l">API docs needed<br>with the MCP Server</div>
+        </div>
+        <div class="rs-cell">
+          <div class="rs-n">5</div>
+          <div class="rs-l">new capabilities<br>live or in beta this quarter</div>
+        </div>
+      </div>
+
+      <p class="rewrite-body" style="font-weight:700; margin-bottom:10px;">What shipped — and what it means for your team:</p>
+      <div class="rewrite-features">
+        <strong>1 · Custom AI Profiles (GA)</strong> — Your Translation Memory and brand glossary now guide every AI output. Up to 95% of translations arrive ready to publish without a human edit. The round-trip between AI output and your editor just got dramatically shorter.<br><br>
+        <strong>2 · MCP Server (Beta)</strong> — Trigger any Lokalise action with a natural language command. No API documentation. No custom scripts. No context-switching. Your AI tools connect to Lokalise in minutes — and your CI/CD pipeline gets localization baked in.<br><br>
+        <strong>3 · AI Agent (Beta)</strong> — Ask it to set up a project, assign roles, configure permissions. It executes. You review. The repetitive project-admin work that stacked up between localization runs is now handled before you open a browser tab.<br><br>
+        <strong>4 · Autopilot (Invitation-only Beta)</strong> — Built for marketing and content teams managing long-form localization at volume. Fewer handoffs. Less coordination overhead. Same output quality, at the pace your content calendar actually demands.<br><br>
+        <strong>5 · XCStrings + Customer.io</strong> — Native Apple XCStrings support means zero format conversion for iOS teams. The Customer.io integration closes the loop between your product and marketing localization without a manual export step.
+      </div>
+
+      <div class="rewrite-quote">
+        "We used to spend two days per release reconciling our Translation Memory with AI output. With Custom AI Profiles, that review round is nearly gone."
+        <cite>— Localization Manager · SaaS company · 3,000+ strings/release</cite>
+      </div>
+
+      <p class="rewrite-body" style="font-size:13px; color:var(--muted);">
+        All five capabilities are live in your Lokalise account today or available for immediate beta access. No setup required for GA features — open your project to see Custom AI Profiles active.
+      </p>
+
+      <div style="margin-top:28px;">
+        <a href="#" class="cta-primary">Open my Lokalise project →</a>
+        <a href="#" class="cta-sec">Request beta access</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── 7 UPGRADES ───────────────────────────────────────────────────── -->
+<hr class="section-rule">
+<div id="s-method">
+<div class="section reveal">
+  <p class="section-kicker">05 · Method</p>
+  <h2 class="section-heading">The 7 upgrades — and why each one works</h2>
+</div>
+<div class="upgrades-list" style="padding-bottom:64px;">
+
+  <div class="upgrade-item">
+    <div class="upgrade-num">01</div>
+    <div>
+      <div class="upgrade-pills">
+        <span class="pill before">Before: filing label subject</span>
+        <span class="pill after">After: pain + specificity + gap</span>
+      </div>
+      <div class="upgrade-title">Subject line: name the change, not the format</div>
+      <p class="upgrade-body">"Shipped by Lokalise – Winter 2026" is how you label a folder. "Your localization team just got five new capabilities. Here's what changed." identifies a role ("your localization team"), delivers a specific number (five), and creates a gap (what changed?). A subject line answers one question: why should I open this right now? The original answers: this is a scheduled product update. Those are not the same answer.</p>
+    </div>
+  </div>
+
+  <div class="upgrade-item">
+    <div class="upgrade-num">02</div>
+    <div>
+      <div class="upgrade-pills">
+        <span class="pill before">Before: brand positioning headline</span>
+        <span class="pill after">After: change-led hero</span>
+      </div>
+      <div class="upgrade-title">Hero: what's different today, not what we believe</div>
+      <p class="upgrade-body">"AI you can trust. Orchestrated localization that never sacrifices quality." is a values statement — it belongs on an About page, not the hero of a product update newsletter. The rewrite opens with the change: "Five things your localization team couldn't do last quarter — now they can." A product newsletter hero should answer: what is materially different today? The original answers: here is what we stand for. Those are not the same question.</p>
+    </div>
+  </div>
+
+  <div class="upgrade-item">
+    <div class="upgrade-num">03</div>
+    <div>
+      <div class="upgrade-pills">
+        <span class="pill before">Before: 95% buried in bullets</span>
+        <span class="pill after">After: 95% leads the stat card</span>
+      </div>
+      <div class="upgrade-title">The best claim in the email should not be a bullet point</div>
+      <p class="upgrade-body">"Up to 95% ready-to-publish translations" is the single most specific, measurable, reader-relevant claim in the entire newsletter. It appears as the second item in a four-item bullet list. In the rewrite, it's a stat card at full width — the first number the reader sees. Numbers are scanned, not read. The number that most changes a localization manager's calculus should be the first number they encounter, not the fourth line of a sub-list.</p>
+    </div>
+  </div>
+
+  <div class="upgrade-item">
+    <div class="upgrade-num">04</div>
+    <div>
+      <div class="upgrade-pills">
+        <span class="pill before">Before: features in product terms</span>
+        <span class="pill after">After: outcomes in reader terms</span>
+      </div>
+      <div class="upgrade-title">Features translated into what the reader stops doing</div>
+      <p class="upgrade-body">"Dynamically retrieve your most relevant past examples and use them to guide each translation" describes architecture. "Up to 95% of translations arrive ready to publish without a human edit" describes what the reader no longer has to do. The MCP Server "enables natural language commands" in the original. The rewrite says: "No API documentation. No custom scripts. No context-switching." Every technical claim should be followed immediately by its operational consequence: what does my team no longer have to spend time on?</p>
+    </div>
+  </div>
+
+  <div class="upgrade-item">
+    <div class="upgrade-num">05</div>
+    <div>
+      <div class="upgrade-pills">
+        <span class="pill before">Before: "Imagine if…" opener</span>
+        <span class="pill after">After: consequence-first</span>
+      </div>
+      <div class="upgrade-title">Kill the imagination prompt — install the consequence</div>
+      <p class="upgrade-body">"Imagine if managing your localization workflow was as simple as having a conversation" signals that the product is aspirational, not actual. For a beta that already exists, this framing costs trust. The rewrite begins with the consequence: "Trigger any Lokalise action with a natural language command. No API documentation. No custom scripts." The MCP Server exists — the newsletter should speak as if it exists. Imagination prompts work in advertising; they signal fiction in product copy.</p>
+    </div>
+  </div>
+
+  <div class="upgrade-item">
+    <div class="upgrade-num">06</div>
+    <div>
+      <div class="upgrade-pills">
+        <span class="pill before">Before: zero social proof</span>
+        <span class="pill after">After: specific named outcome</span>
+      </div>
+      <div class="upgrade-title">One real quote outperforms five feature descriptions</div>
+      <p class="upgrade-body">"We used to spend two days per release reconciling our Translation Memory with AI output. With Custom AI Profiles, that review round is nearly gone." That quote does what 400 words of feature description cannot: it answers the question the reader is actually asking — does this work in practice, for someone with a workflow like mine? The original newsletter displays 3,000+ customer logos in a scrolling ticker and uses none of them for proof. Third-party, role-specific, before/after social proof is the highest-trust asset in any B2B product email.</p>
+    </div>
+  </div>
+
+  <div class="upgrade-item">
+    <div class="upgrade-num">07</div>
+    <div>
+      <div class="upgrade-pills">
+        <span class="pill before">Before: "Learn more in our webinar"</span>
+        <span class="pill after">After: "Open my Lokalise project →"</span>
+      </div>
+      <div class="upgrade-title">CTA: a decision the reader makes about their own work</div>
+      <p class="upgrade-body">"Learn more in our next live webinar" requires the reader to attend a meeting at a future time before they can act on what they just read. "Open my Lokalise project →" is a decision the reader makes about their own work, immediately. For GA features already active in the product, the CTA should always be the shortest path to the feature — not a detour through a calendar invite. Ownership CTAs ("my project") outperform command CTAs ("try this") because they activate agency rather than compliance. The arrow matters too: it signals continuation, not departure.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── CONCLUSION ─────────────────────────────────────────────────────── -->
+<section class="conclusion">
+  <h2>This is the<br><em>Strategic Flow</em> method</h2>
+  <p>Name the change before you name the product. Put the best number where it can be scanned. Translate every feature into what the reader stops doing. Use one real quote to do what five feature sections cannot. And make the CTA the shortest path to the thing — not the longest route around it.</p>
+  <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co →</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="footer-brand">Strategic Flow © 2026</span>
+  <span class="footer-copy">Newsletter Audit: Lokalise Shipped Winter 2026 · strategicflow.carrd.co</span>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal, .upgrade-item').forEach(el => io.observe(el));
+
+  // Tabs highlight on scroll
+  const sections = ['s-before','s-after','s-method'];
+  const tabs = document.querySelectorAll('.tab-btn');
+  window.addEventListener('scroll', () => {
+    let cur = 0;
+    sections.forEach((id,i) => {
+      const el = document.getElementById(id);
+      if(el && window.scrollY >= el.offsetTop - 120) cur = i;
+    });
+    tabs.forEach((t,i) => t.classList.toggle('active', i === cur));
+  });
+</script>
+</body>
+</html>
