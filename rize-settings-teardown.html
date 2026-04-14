@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Rize Settings Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --rize:#d49325;--rize-pale:#fdf6e8;--rize-dark:#8a5c10;--rize-mid:#b87d1e;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── BEFORE ── */
+.bef-header{background:#0f172a;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-wrap{display:flex;align-items:center;gap:10px;}
+.bef-logo-img{width:28px;height:28px;border-radius:6px;background:#d49325;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;}
+.bef-logo-text{font-size:16px;font-weight:800;color:#fff;}
+.bef-date{font-size:10px;color:rgba(255,255,255,0.40);font-family:'DM Mono',monospace;}
+.bef-body{padding:26px 22px;background:#fff;}
+.bef-intro{font-size:14px;color:#374151;line-height:1.75;margin-bottom:20px;}
+.bef-section-title{font-size:13px;font-weight:700;color:#1a1a18;margin-bottom:12px;}
+.bef-bullets{list-style:none;padding:0;margin:0 0 20px;}
+.bef-bullet{font-size:13px;color:#374151;line-height:1.7;padding:8px 0;border-bottom:1px solid #f3f4f6;display:flex;gap:8px;align-items:flex-start;}
+.bef-bullet:last-child{border-bottom:none;}
+.bef-bullet-dot{width:6px;height:6px;background:#d49325;border-radius:50%;flex-shrink:0;margin-top:7px;}
+.bef-bullet strong{color:#1a1a18;}
+.bef-how-title{font-size:13px;font-weight:700;color:#1a1a18;margin-bottom:10px;}
+.bef-steps{list-style:none;padding:0;margin:0 0 20px;}
+.bef-step{font-size:12px;color:#6b6b66;line-height:1.65;padding:6px 0;border-bottom:1px dashed #e5e7eb;display:flex;gap:8px;}
+.bef-step:last-child{border-bottom:none;}
+.bef-step-num{font-family:'DM Mono',monospace;font-size:10px;color:#d49325;flex-shrink:0;margin-top:3px;}
+.bef-cta{display:block;text-align:center;background:#d49325;color:#fff;padding:11px 24px;border-radius:7px;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:18px;}
+.bef-footer{padding:12px 22px;background:#f9fafb;border-top:1px solid #e5e7eb;font-size:10px;color:#9ca3af;text-align:center;font-family:'DM Mono',monospace;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:7px;display:flex;gap:8px;line-height:1.55;}
+
+/* ── AFTER ── */
+.after-header{background:var(--rize-pale);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #d49325;}
+.after-logo-wrap{display:flex;align-items:center;gap:10px;}
+.after-logo-img{width:32px;height:32px;border-radius:7px;background:#d49325;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;}
+.after-logo-text{font-size:18px;font-weight:800;color:#1a1a18;}
+.after-tagline{font-size:10px;color:#d49325;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:27px;line-height:1.25;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:#d49325;}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--rize-pale);border-radius:10px;padding:16px;text-align:center;border:1px solid rgba(212,147,37,0.20);}
+.stat-num{font-family:'DM Serif Display',serif;font-size:26px;color:#d49325;line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;line-height:1.3;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:#d49325;color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-body{padding:24px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.after-body p{font-size:14px;color:var(--text-secondary);line-height:1.8;margin-bottom:14px;}
+.after-body p strong{color:var(--text-primary);}
+.after-features{padding:22px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.feature-item{padding:14px 16px;background:var(--rize-pale);border:1px solid rgba(212,147,37,0.18);border-radius:8px;}
+.feature-name{font-size:12px;font-weight:700;color:#d49325;margin-bottom:4px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em;}
+.feature-desc{font-size:12px;color:var(--text-secondary);line-height:1.55;}
+.after-offer{padding:22px 28px;background:var(--rize-pale);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#1a1a18;color:#f5d98a;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:14px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid rgba(212,147,37,0.30);color:#8a5c10;background:#fff;}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fc;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* ── NOTES ── */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .feature-grid{grid-template-columns:1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Rize Settings — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow changelog teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original changelog</span>
+      </div>
+    </div>
+
+    <!-- ══ BEFORE ══ -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> rize.io/changelog · March 20, 2026</div>
+        <div class="meta-row"><span>To:</span> All Rize users</div>
+        <div class="subject-line">New Rize Settings: UI, Members &amp; Billing</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo-wrap">
+          <div class="bef-logo-img">R</div>
+          <div class="bef-logo-text">Rize</div>
+        </div>
+        <div class="bef-date">March 20, 2026</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-intro">
+          We've completely redesigned Rize Settings to make managing your organization, teams, and billing simpler and more intuitive. What was once scattered across separate team and individual settings is now unified in one clean, organized interface that puts everything you need right at your fingertips.
+        </div>
+
+        <div class="bef-section-title">What's New</div>
+        <ul class="bef-bullets">
+          <li class="bef-bullet"><div class="bef-bullet-dot"></div><div><strong>Unified Settings Hub:</strong> Access all your settings from a single entry point at the bottom of your sidebar. No more confusion between team and individual settings.</div></li>
+          <li class="bef-bullet"><div class="bef-bullet-dot"></div><div><strong>Better Organization:</strong> Settings are now logically grouped into sections including Account, Billing, Organization, and individual Workspace tabs for easy navigation.</div></li>
+          <li class="bef-bullet"><div class="bef-bullet-dot"></div><div><strong>Organization Members Tab:</strong> A dedicated view showing all members in your organization with filtering by account, role, and status. See exactly which teams each member belongs to at a glance.</div></li>
+          <li class="bef-bullet"><div class="bef-bullet-dot"></div><div><strong>Workspace-Specific Controls:</strong> Manage members, enable profitability tracking, and toggle billable time directly from each workspace's settings.</div></li>
+          <li class="bef-bullet"><div class="bef-bullet-dot"></div><div><strong>Improved Billing Visibility:</strong> Clearly see your active seat count and how it connects to your subscription, making billing management transparent and straightforward.</div></li>
+          <li class="bef-bullet"><div class="bef-bullet-dot"></div><div><strong>Quick Search:</strong> Find any setting instantly using keyword search across all settings categories.</div></li>
+        </ul>
+
+        <div class="bef-how-title">How It Works</div>
+        <ul class="bef-steps">
+          <li class="bef-step"><span class="bef-step-num">01</span><div>Click the <strong>Settings</strong> link at the bottom of your sidebar to access the new unified settings interface.</div></li>
+          <li class="bef-step"><span class="bef-step-num">02</span><div>Navigate between <strong>Account</strong>, <strong>Billing</strong>, <strong>Organization</strong>, and individual workspace tabs to find what you need.</div></li>
+          <li class="bef-step"><span class="bef-step-num">03</span><div>Visit the <strong>Organization Members</strong> tab to view all members, filter by various criteria, and manage team assignments in one place.</div></li>
+          <li class="bef-step"><span class="bef-step-num">04</span><div>Click into any workspace to edit members, configure integrations, access API information, or enable profitability and billable time tracking.</div></li>
+          <li class="bef-step"><span class="bef-step-num">05</span><div>Use the search bar at the top to quickly jump to any specific setting by keyword.</div></li>
+        </ul>
+
+        <a href="#" class="bef-cta">Explore the new settings →</a>
+      </div>
+      <div class="bef-footer">Rize · Automatic time tracking for teams and individuals · San Francisco, CA</div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Subject line "New Rize Settings: UI, Members &amp; Billing" is a filing label — names three departments instead of one outcome. A user scanning their inbox has no reason to open it.</div>
+        <div class="issue-item"><span>⚠</span> Opening sentence starts with "We've completely redesigned" — company-first framing. The reader's first question ("what does this mean for me?") is answered in sentence three at the earliest.</div>
+        <div class="issue-item"><span>⚠</span> Six bullet points given equal visual weight — no hierarchy between "Quick Search" (minor convenience) and "Organization Members Tab" (major capability for team admins). Every item looks equally important.</div>
+        <div class="issue-item"><span>⚠</span> "How It Works" section is a numbered task list — it teaches the reader to use a feature before they've been given a reason to care about it.</div>
+        <div class="issue-item"><span>⚠</span> Zero consequence for inaction — the email describes what changed but never names what the reader was losing before this update existed. No tension, no urgency.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Explore the new settings →" is generic — it doesn't promise a specific outcome. Every settings update in every SaaS product uses this exact CTA.</div>
+      </div>
+    </div>
+
+    <!-- ══ AFTER ══ -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> rize.io/changelog · March 20, 2026 · Rewritten by Strategic Flow</div>
+        <div class="meta-row"><span>To:</span> Team admins, finance ops, agency owners</div>
+        <div class="subject-line">Your settings were in three different places. Now they're not.</div>
+      </div>
+
+      <div class="after-header">
+        <div class="after-logo-wrap">
+          <div class="after-logo-img">R</div>
+          <div>
+            <div class="after-logo-text">Rize</div>
+            <div class="after-tagline">Time tracking · March 2026 Update</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;">March 20, 2026</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">Rize · Settings Redesign · Live Now</div>
+        <div class="after-h1">Your settings were in <em>three different places.</em> Now they're not.</div>
+        <div class="after-lead">Every organization, billing, and workspace control is now in one unified hub — accessible from your sidebar, searchable by keyword, and organized so you stop hunting and start managing.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-label">unified hub for all settings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">6</div>
+            <div class="stat-label">capabilities redesigned from scratch</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">support tickets to find who's on which team</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://app.rize.io" class="after-cta-primary">Open your new settings →</a>
+          <span class="after-cta-ghost">See what's included</span>
+        </div>
+      </div>
+
+      <div class="after-body">
+        <p>You were managing organization members in one tab, checking billing in another, and configuring workspace features somewhere else entirely. Every setting change meant a scavenger hunt — and if you needed to see which team a member belonged to, you were opening a support ticket or cross-referencing a spreadsheet.</p>
+        <p><strong>Rize rebuilt its entire settings architecture</strong> into a single hub at the bottom of your sidebar. Organization, billing, workspaces — one entry point, logical grouping, instant keyword search. The Organization Members tab now shows every user's team assignments and roles at a glance, with filtering by account type, role, and status.</p>
+        <p>Teams that haven't updated yet are still reconciling seat counts manually and toggling profitability settings one workspace at a time. The new workspace-specific controls — billable time, profitability tracking, API access, integrations — are per-workspace now. That means client data stays separate, configurations don't bleed across projects, and you stop configuring the same toggle in six different places.</p>
+      </div>
+
+      <div class="after-features">
+        <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;">6 capabilities, all redesigned</div>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-name">Unified Settings Hub</div>
+            <div class="feature-desc">One sidebar link. All settings. Account, Billing, Organization, and Workspaces — logically grouped, no more confusion between team and individual settings.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-name">Organization Members Tab</div>
+            <div class="feature-desc">Every member, every team assignment, every role — visible in one view. Filter by account type, role, or status. No more opening multiple screens.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-name">Workspace-Specific Controls</div>
+            <div class="feature-desc">Profitability tracking, billable time, integrations, and API access — configured per workspace. Client data stays separate.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-name">Improved Billing Visibility</div>
+            <div class="feature-desc">Active seat count connected directly to your subscription view. Monthly reconciliation becomes a 10-second check.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-name">Quick Search</div>
+            <div class="feature-desc">Keyword search across every settings category. Find any toggle, any configuration, any member — instantly.</div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-name">Better Organization</div>
+            <div class="feature-desc">Settings grouped into Account, Billing, Organization, and individual Workspace tabs. The mental model finally matches how you actually work.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">WHO THIS UPDATE IS FOR</div>
+        <div class="offer-title">Three roles that feel this immediately</div>
+        <div class="offer-detail">Team admins managing 10-50 person orgs, finance ops reconciling seat-based billing, and agency owners running multiple client workspaces with separate configurations.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Team admins</span>
+          <span class="offer-pill">Finance ops</span>
+          <span class="offer-pill">Agency owners</span>
+          <span class="offer-pill">Multi-workspace users</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Open Settings</span>
+          <span class="footer-link">Rize docs</span>
+          <span class="footer-link">Contact support</span>
+        </div>
+        <div class="footer-note">Rize · Automatic time tracking · <a href="#" style="color:inherit;">Unsubscribe</a></div>
+      </div>
+    </div>
+
+    <!-- ══ NOTES ══ -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> New Rize Settings: UI, Members &amp; Billing</p><br>
+            <p>Three departments listed as a filing label. No outcome, no tension, no reason to open. Every settings update in every SaaS product uses this format — it's invisible in an inbox.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> Your settings were in three different places. Now they're not.</p><br>
+            <p>States the problem the reader already has, then resolves it in the same sentence. The "three different places" mirrors the original but reframes it as reader pain — not a company announcement.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why each one works</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject: company announcement → reader problem resolved</div>
+          <div class="upgrade-desc">"New Rize Settings" describes what Rize did. "Your settings were in three different places. Now they're not." describes what the reader experienced and what just changed. The reader recognizes the problem before they know what the solution is — which is exactly why they open it.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Opening: "We've completely redesigned" → reader's daily friction named first</div>
+          <div class="upgrade-desc">The original opens with what Rize accomplished. The rewrite opens with what the reader was doing wrong before this update: managing members in one tab, billing in another, workspace features somewhere else. The reader feels understood before they feel sold to.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Six equal bullets → hierarchy preserved, facts kept</div>
+          <div class="upgrade-desc">The original gives "Quick Search" the same visual weight as "Organization Members Tab" — a minor convenience treated identically to a major capability. The rewrite names all six features in a dedicated grid, but the body paragraph leads with the highest-value capabilities (Members tab, workspace controls) and saves Quick Search for the grid. Specificity is preserved — no facts were replaced with abstractions.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · "How It Works" task list → consequence paragraph instead</div>
+          <div class="upgrade-desc">The original teaches setup before it earns the right to do so. The rewrite puts the consequence of the old system — cross-referencing spreadsheets, opening support tickets, toggling the same setting six times — in the body where it creates urgency. The how-to lives in the feature grid for readers who are already convinced.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Zero-consequence email → inaction made costly</div>
+          <div class="upgrade-desc">"Teams that haven't updated yet are still reconciling seat counts manually and toggling profitability settings one workspace at a time." This sentence didn't exist in the original. It names what the reader is still doing wrong — and makes the update feel overdue rather than optional.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · Generic CTA → specific action with outcome</div>
+          <div class="upgrade-desc">"Explore the new settings →" could be any product update from any company. "Open your new settings →" implies they already belong to the reader — the settings exist, they're waiting, the only action is to go there. Ownership framing converts better because it removes the friction of evaluation.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">Content Fidelity Rule applied here</div>
+          <div class="cta-note-body">All 6 named features from the original (Unified Hub, Members Tab, Workspace Controls, Billing Visibility, Quick Search, Better Organization) appear in the rebuilt version — in the feature grid and in the body. Strategic Flow reframes structure and opening. It never replaces specific product facts with generic abstractions. The information stays. The framing changes.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-footer">
+  <span>Strategic Flow © 2026</span>
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+</div>
+
+<script>
+function switchPanel(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  const pill = document.getElementById('panel-pill');
+  if (name === 'before') { pill.className = 'label-pill before-pill'; pill.textContent = 'Original changelog'; }
+  else if (name === 'after') { pill.className = 'label-pill after-pill'; pill.textContent = 'Rewritten by Strategic Flow'; }
+  else { pill.className = 'label-pill notes-pill'; pill.textContent = 'Analysis'; }
+}
+</script>
+</body>
+</html>
