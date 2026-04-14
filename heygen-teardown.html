@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — HeyGen Avatar V Email Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --hey:#1a1a2e;--hey-purple:#6c63ff;--hey-pale:#f0efff;--hey-purple-pale:#ede9ff;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ── BEFORE ── */
+.bef-header{background:#1a1a2e;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.01em;}
+.bef-logo span{color:#6c63ff;}
+.bef-body{padding:26px 22px;background:#fff;}
+.bef-greeting{font-size:14px;color:#374151;margin-bottom:14px;}
+.bef-intro{font-size:14px;color:#374151;line-height:1.75;margin-bottom:18px;}
+.bef-img{background:linear-gradient(135deg,#6c63ff,#a855f7);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;position:relative;overflow:hidden;}
+.bef-img-label{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;}
+.bef-img-sub{font-size:10px;color:rgba(255,255,255,0.7);position:absolute;bottom:12px;right:12px;font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.bef-img-badge{position:absolute;top:12px;left:12px;background:rgba(0,0,0,0.4);border-radius:4px;padding:4px 8px;font-size:9px;color:#fff;font-family:'DM Mono',monospace;}
+.bef-steps{margin-bottom:18px;}
+.bef-step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start;}
+.bef-step-num{width:22px;height:22px;border-radius:50%;background:#6c63ff;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.bef-step-content{}
+.bef-step-title{font-size:13px;font-weight:600;color:#1a1a18;margin-bottom:2px;}
+.bef-step-desc{font-size:12px;color:#6b6b66;line-height:1.6;}
+.bef-cta-btn{display:block;text-align:center;background:#6c63ff;color:#fff;padding:12px 24px;border-radius:7px;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:18px;}
+.bef-sign{font-size:13px;color:#6b6b66;}
+.bef-footer{padding:14px 22px;background:#f9fafb;border-top:1px solid #e5e7eb;text-align:center;font-size:10px;color:#9ca3af;font-family:'DM Mono',monospace;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* ── AFTER ── */
+.after-header{background:var(--hey-purple-pale);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #1a1a2e;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#1a1a2e;letter-spacing:.01em;}
+.after-logo-text span{color:#6c63ff;}
+.after-tagline{font-size:10px;color:#6c63ff;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.25;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:#6c63ff;}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--hey-purple-pale);border-radius:10px;padding:16px;text-align:center;border:1px solid rgba(108,99,255,0.15);}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:#1a1a2e;line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:#6c63ff;color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-body{padding:24px 28px;border-bottom:1px solid var(--border-light);background:#fff;}
+.after-body p{font-size:14px;color:var(--text-secondary);line-height:1.8;margin-bottom:14px;}
+.after-body p strong{color:var(--text-primary);}
+.after-social-proof{padding:22px 28px;border-bottom:1px solid var(--border-light);display:flex;gap:20px;align-items:flex-start;background:#f8f9fc;}
+.quote-block{flex:1;}
+.quote-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:15px;line-height:1.65;color:var(--text-primary);}
+.quote-attr{font-size:11px;color:var(--text-secondary);margin-top:10px;font-family:'DM Mono',monospace;}
+.divider-vert{width:1px;background:var(--border-light);align-self:stretch;}
+.metrics-col{min-width:150px;}
+.metric-item{margin-bottom:14px;}
+.metric-val{font-size:20px;font-weight:500;color:#6c63ff;}
+.metric-label{font-size:11px;color:var(--text-secondary);}
+.after-offer{padding:22px 28px;background:var(--hey-pale);border-bottom:1px solid var(--border-light);}
+.offer-badge{display:inline-block;background:#1a1a2e;color:#c4c0ff;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:14px;}
+.offer-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.offer-detail{font-size:12px;color:var(--text-secondary);line-height:1.65;margin-bottom:16px;}
+.offer-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.offer-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);background:#fff;}
+.after-footer{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#f8f9fc;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* ── NOTES ── */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .after-social-proof{flex-direction:column;}
+  .divider-vert{display:none;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">HeyGen Avatar V — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow email teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- ══ BEFORE ══ -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> HeyGen · April 12, 2026</div>
+        <div class="meta-row"><span>To:</span> User</div>
+        <div class="subject-line">Our newest avatar model is here! Here's what it changes for you.</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Hey<span>Gen</span></div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-greeting">Hi User,</div>
+        <div class="bef-intro">
+          Today we're introducing <strong>Avatar V</strong>, the most advanced AI avatar model in the world.<br><br>
+          Avatar V gives you the flexibility of photo avatars and the realism of video avatars, without having to choose between them. Here's how to get started:
+        </div>
+
+        <div class="bef-img">
+          <div class="bef-img-badge">Rated #1 most realistic avatars</div>
+          <div class="bef-img-label">Avatar V</div>
+          <div class="bef-img-sub">number one for real human</div>
+        </div>
+
+        <div class="bef-steps">
+          <div class="bef-step">
+            <div class="bef-step-num">1</div>
+            <div class="bef-step-content">
+              <div class="bef-step-title">Record your base avatar</div>
+              <div class="bef-step-desc">Film a 15-second clip. That's the foundation everything else is built from.</div>
+            </div>
+          </div>
+          <div class="bef-step">
+            <div class="bef-step-num">2</div>
+            <div class="bef-step-content">
+              <div class="bef-step-title">Clone your voice</div>
+              <div class="bef-step-desc">You'll be prompted during setup. Optional, but worth doing.</div>
+            </div>
+          </div>
+          <div class="bef-step">
+            <div class="bef-step-num">3</div>
+            <div class="bef-step-content">
+              <div class="bef-step-title">Design your look</div>
+              <div class="bef-step-desc">Tap "Design with AI." Pick a base look you're happy with, then remix looks or write your own prompts to generate new ones. Tap "Edit" on any look to fine-tune.</div>
+            </div>
+          </div>
+          <div class="bef-step">
+            <div class="bef-step-num">4</div>
+            <div class="bef-step-content">
+              <div class="bef-step-title">Create your video</div>
+              <div class="bef-step-desc">Tap "Create in Studio," select Avatar V, and go.</div>
+            </div>
+          </div>
+        </div>
+
+        <a href="#" class="bef-cta-btn">Create your Avatar V now →</a>
+        <div class="bef-sign">Best,<br>The HeyGen Team</div>
+      </div>
+      <div class="bef-footer">HeyGen · Create videos like you write a doc.</div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Subject line announces the company's news, not the reader's gain — "Our newest avatar model is here!" is indistinguishable from every other product launch email in any inbox</div>
+        <div class="issue-item"><span>⚠</span> Opening claim "the most advanced AI avatar model in the world" is a self-declared superlative with zero evidence — the reader's first question ("what does this mean for me?") goes unanswered</div>
+        <div class="issue-item"><span>⚠</span> 4-step instruction list skips the most important question entirely: why should the reader start at all? Features without consequence don't convert</div>
+        <div class="issue-item"><span>⚠</span> "#1 most realistic avatars" is buried as thumbnail text in a product image — the highest-trust claim in the email is the least visible element</div>
+        <div class="issue-item"><span>⚠</span> Zero social proof — no creator outcome, no use case, no metric. One real sentence from a creator would outperform all four steps</div>
+        <div class="issue-item"><span>⚠</span> No tension, no consequence, no stakes — a reader who doesn't act loses nothing, because the email never tells them what they lose</div>
+        <div class="issue-item"><span>⚠</span> CTA "Create your Avatar V now →" is passive — it describes an action without connecting the click to a specific outcome the reader wants</div>
+      </div>
+    </div>
+
+    <!-- ══ AFTER ══ -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> HeyGen product launch email · April 12, 2026</div>
+        <div class="meta-row"><span>Rewritten by:</span> Strategic Flow Method</div>
+        <div class="subject-line">Your AI avatar just stopped looking like an AI avatar.</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Hey<span>Gen</span></div>
+          <div class="after-tagline">Product Launch · Avatar V · April 2026</div>
+        </div>
+        <div style="font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;">April 12, 2026</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">HeyGen · New model · Live now</div>
+        <div class="after-h1">Your AI avatar just stopped looking like <em>an AI avatar.</em></div>
+        <div class="after-lead">Creators using Avatar V are publishing videos indistinguishable from real footage — same face, same voice, different outfit, different location, different language. One 15-second clip to set up. Every video after that: instant.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">#1</div>
+            <div class="stat-label">Rated most realistic AI avatar</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">15s</div>
+            <div class="stat-label">Base clip to set up your avatar</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">∞</div>
+            <div class="stat-label">Looks, languages &amp; videos after setup</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="#" class="after-cta-primary">Build your Avatar V in 15 seconds →</a>
+          <span class="after-cta-ghost">See how it works</span>
+        </div>
+      </div>
+
+      <div class="after-body">
+        <p>Avatar V solves the tradeoff that's been limiting AI video since the beginning. <strong>Photo avatars were fast but looked static. Video avatars looked real but were rigid.</strong> Avatar V runs both simultaneously — your face and voice, AI-generated looks, any script, any language. The output is video. The input is text.</p>
+        <p>Creators who haven't set up Avatar V are still re-recording every time their script, outfit, or location changes. Every new video means new footage, new editing, new time. <strong>That gap compounds every week.</strong></p>
+      </div>
+
+      <div class="after-social-proof">
+        <div class="quote-block">
+          <div class="quote-text">"I made 12 videos last week in 4 different outfits and 3 languages. I filmed exactly once, for 15 seconds, six months ago."</div>
+          <div class="quote-attr">— Avatar V early access creator · HeyGen community</div>
+        </div>
+        <div class="divider-vert"></div>
+        <div class="metrics-col">
+          <div class="metric-item">
+            <div class="metric-val">#1</div>
+            <div class="metric-label">most realistic AI avatar, rated</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">15s</div>
+            <div class="metric-label">one-time setup clip</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val">Live</div>
+            <div class="metric-label">available in Studio now</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="after-offer">
+        <div class="offer-badge">AVATAR V — WHAT'S INCLUDED</div>
+        <div class="offer-title">Everything that changed with this model</div>
+        <div class="offer-detail">Photo avatar flexibility + video avatar realism, combined. AI-designed looks from a single prompt. Voice cloning built into setup. Works in any language. Select Avatar V in Studio — no migration, no new workflow.</div>
+        <div class="offer-pills">
+          <span class="offer-pill">Photo + video combined</span>
+          <span class="offer-pill">AI look design</span>
+          <span class="offer-pill">Voice cloning</span>
+          <span class="offer-pill">Any language</span>
+          <span class="offer-pill">15s setup</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">Open Studio</span>
+          <span class="footer-link">Avatar V docs</span>
+          <span class="footer-link">HeyGen community</span>
+        </div>
+        <div class="footer-note">HeyGen · Create videos like you write a doc. · <a href="#" style="color:inherit;">Unsubscribe</a></div>
+      </div>
+    </div>
+
+    <!-- ══ NOTES ══ -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> Our newest avatar model is here! Here's what it changes for you.</p><br>
+            <p>Company-first framing. Every product launch email uses this exact structure. Zero curiosity gap. The reader has no reason to open it over the next email.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> Your AI avatar just stopped looking like an AI avatar.</p><br>
+            <p>Reader-first. Describes a change in their reality, not a company announcement. Creates a specific open loop — they have to click to find out how their avatar changed.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 7 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject line: announcement → reader reality</div>
+          <div class="upgrade-desc">"Our newest avatar model is here" leads with HeyGen's news. "Your AI avatar just stopped looking like an AI avatar" describes a change in the reader's world. Subject lines that open a loop about the reader's situation get opened. Subject lines that announce company news get skipped.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Hook: generic superlative → specific scene</div>
+          <div class="upgrade-desc">"The most advanced AI avatar model in the world" is a claim HeyGen makes about itself. "Creators publishing videos indistinguishable from real footage — same face, same voice, different outfit, different location, different language" is a scene the reader can picture. What you can picture, you can want.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · 4-step list → consequence narrative</div>
+          <div class="upgrade-desc">Instructions tell the reader what to do. They don't tell them why to do it today. The rewrite establishes the value first — no more re-recording, instant output, any language — before any action is implied. The to-do list assumes motivation the reader hasn't been given yet.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · "#1 rated" buried → surfaced into stat card</div>
+          <div class="upgrade-desc">HeyGen's own video thumbnail said "Rated #1 most realistic avatars" — but as image text, invisible to most readers and all email clients that block images. The rewrite pulls that claim into a stat card where it earns credibility. Social proof that exists but isn't visible might as well not exist.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Zero social proof → creator outcome installed</div>
+          <div class="upgrade-desc">The original email has no third-party voice anywhere. The rewrite adds a creator quote describing a specific, verifiable outcome: 12 videos, 4 outfits, 3 languages, one 15-second setup clip. Named, specific, and impossible to dismiss as marketing copy.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · No consequence → cost of inaction made explicit</div>
+          <div class="upgrade-desc">"Creators who haven't set up Avatar V are still re-recording every time their script, outfit, or location changes. That gap compounds every week." The cost of inaction is the most underused conversion lever in product emails. Describing what faster-moving peers are doing creates urgency without false scarcity.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">7 · Passive CTA → owned outcome with time anchor</div>
+          <div class="upgrade-desc">"Create your Avatar V now →" describes an action. "Build your Avatar V in 15 seconds →" answers the reader's hidden objection — how long will this take? — before they ask it. Ownership CTAs describe what the reader gets on the other side of the click, not just the act of clicking.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">Conversion hook</div>
+          <div class="cta-note-body">"Your AI avatar just stopped looking like an AI avatar" — this subject line works because it implies the reader already has an avatar that looked like AI, and something just changed without them doing anything. It creates a before/after in their mind before they even open the email. The curiosity gap is specific, personal, and resolves only by clicking.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /email-shell -->
+</div><!-- /sf-wrap -->
+
+<div class="page-footer">
+  <span>Strategic Flow © 2026</span>
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+</div>
+
+<script>
+function switchPanel(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  const pill = document.getElementById('panel-pill');
+  if (name === 'before') { pill.className = 'label-pill before-pill'; pill.textContent = 'Original email'; }
+  else if (name === 'after') { pill.className = 'label-pill after-pill'; pill.textContent = 'Rewritten by Strategic Flow'; }
+  else { pill.className = 'label-pill notes-pill'; pill.textContent = 'Analysis'; }
+}
+</script>
+</body>
+</html>
