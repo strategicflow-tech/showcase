@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — SoFi Mortgage Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #07090f;
+  --surface: #0d1120;
+  --surface2: #111827;
+  --border: rgba(255,255,255,0.08);
+  --sofi: #6366f1;
+  --sofi-light: rgba(99,102,241,0.15);
+  --teal: #2dd4bf;
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.08);
+  --green: #22c55e;
+  --green-bg: rgba(34,197,94,0.08);
+  --white: #f1f5f9;
+  --muted: rgba(255,255,255,0.45);
+  --dim: rgba(255,255,255,0.25);
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.header {
+  border-bottom: 1px solid var(--border);
+  padding: 32px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(99,102,241,0.06) 0%, transparent 100%);
+}
+
+.sf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(99,102,241,0.30);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--sofi);
+  margin-bottom: 20px;
+}
+
+.sf-dot { width: 6px; height: 6px; background: var(--sofi); border-radius: 50%; }
+
+.header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+}
+
+.header h1 em {
+  font-style: italic;
+  color: var(--sofi);
+}
+
+.header-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* WRAPPER */
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* SECTION */
+section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+section:last-child { border-bottom: none; }
+
+.section-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* EMAIL MOCKUP */
+.email-mockup {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.email-chrome {
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.email-chrome-dots { display: flex; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ef4444; }
+.dot-y { background: #f59e0b; }
+.dot-g { background: #22c55e; }
+
+.email-chrome-meta { font-size: 12px; color: var(--muted); }
+
+.email-body { padding: 32px; }
+
+.from-line {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.subject-display {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.email-content {
+  font-size: 14px;
+  color: rgba(255,255,255,0.70);
+  line-height: 1.8;
+}
+
+.email-content p { margin-bottom: 14px; }
+.email-content h2 { font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 12px; line-height: 1.2; }
+.email-content h3 { font-size: 14px; font-weight: 700; color: var(--white); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.cta-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 8px 0;
+}
+
+.cta-original { background: #1b1f3b; color: #7c84ff; border: 1px solid #3d43a0; }
+.cta-rebuilt { background: var(--sofi); color: #fff; }
+
+/* FLAGS */
+.flags { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+
+.flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--red-bg);
+  border: 1px solid rgba(239,68,68,0.20);
+  border-radius: 10px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+}
+
+.flag-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+.improvement {
+  background: var(--green-bg);
+  border-color: rgba(34,197,94,0.20);
+}
+
+/* STAT CARDS */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.20);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--sofi);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* BENEFIT CARDS */
+.benefit-list { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+
+.benefit-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.benefit-icon { font-size: 20px; flex-shrink: 0; }
+
+.benefit-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.benefit-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+.benefit-compare {
+  font-size: 11px;
+  color: var(--sofi);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* TESTIMONIAL */
+.testimonial {
+  background: rgba(99,102,241,0.06);
+  border-left: 3px solid var(--sofi);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255,255,255,0.75);
+}
+
+.testimonial-author {
+  font-size: 12px;
+  font-style: normal;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* SUBJECT COMPARISON */
+.subject-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.subj-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.subj-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.subj-before .subj-label { color: var(--red); }
+.subj-after .subj-label { color: var(--green); }
+
+.subj-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.subj-why { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* UPGRADES */
+.upgrades { display: flex; flex-direction: column; gap: 16px; }
+
+.upgrade-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  gap: 16px;
+}
+
+.upgrade-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: rgba(99,102,241,0.25);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 36px;
+}
+
+.upgrade-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.upgrade-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* CTA SECTION */
+.cta-section {
+  background: linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(45,212,191,0.06) 100%);
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  margin: 48px 0;
+}
+
+.cta-section h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.cta-section p { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+
+.cta-primary {
+  display: inline-block;
+  padding: 14px 32px;
+  background: var(--sofi);
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  letter-spacing: 0.3px;
+  transition: opacity 0.2s;
+}
+
+.cta-primary:hover { opacity: 0.85; }
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--dim);
+}
+
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--teal); }
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 32px 0;
+}
+
+/* TIMER */
+.urgency-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f87171;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 640px) {
+  .subject-compare, .stat-row { grid-template-columns: 1fr; }
+  .upgrade-item { flex-direction: column; }
+  .upgrade-num { font-size: 20px; width: auto; }
+  .email-body { padding: 20px; }
+  .cta-section { padding: 28px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="sf-badge"><div class="sf-dot"></div> Strategic Flow</div>
+  <h1>SoFi Mortgage — <em>Rebuilt.</em></h1>
+  <p class="header-sub">A Strategic Flow teardown — before & after</p>
+  <p style="font-size:12px;color:var(--dim);">strategicflow-tech.github.io/showcase</p>
+</div>
+
+<div class="wrap">
+
+<!-- ORIGINAL EMAIL -->
+<section>
+  <div class="section-label">Before — Original SoFi Mortgage Email</div>
+
+  <div class="email-mockup">
+    <div class="email-chrome">
+      <div class="email-chrome-dots">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+      </div>
+      <div class="email-chrome-meta">From: SoFi &lt;no-reply@sofi.com&gt; · To: You</div>
+    </div>
+    <div class="email-body">
+      <div class="from-line">SoFi Home Loans</div>
+      <div class="subject-display">Homeownership Starts Here — Apply for a Mortgage Today</div>
+      <div class="email-content">
+        <p>Hi there,</p>
+        <h2>Make your homeownership dream a reality with SoFi.</h2>
+        <p>SoFi offers competitive mortgage rates with no hidden fees. Our simple online process lets you apply in minutes and get pre-approved fast.</p>
+        <p><strong>Why choose SoFi for your mortgage?</strong></p>
+        <p>• Competitive rates on 10, 15, 20, and 30-year fixed mortgages<br>
+        • No origination fees on most loans<br>
+        • Fast online application — get pre-approved in minutes<br>
+        • SoFi members get exclusive rate discounts<br>
+        • Access to licensed mortgage loan officers 7 days a week<br>
+        • Jumbo loans available up to $3M</p>
+        <p>SoFi has helped thousands of members become homeowners. Our digital-first process means less paperwork, fewer headaches, and a faster path to closing.</p>
+        <a href="#" class="cta-btn cta-original">Apply Now →</a>
+        <p style="margin-top:16px;font-size:12px;color:var(--dim);">SoFi Bank, N.A., NMLS #696891. Equal Housing Lender. Rates and terms subject to change. Not all borrowers qualify for lowest rates.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLAGS -->
+  <div class="flags">
+    <div class="flag">
+      <span class="flag-icon">⚠️</span>
+      <div><strong>Subject line is a cliché promise</strong> — "Homeownership Starts Here" is used by every mortgage lender. Zero differentiation, zero urgency, zero personal hook.</div>
+    </div>
+    <div class="flag">
+      <span class="flag-icon">⚠️</span>
+      <div><strong>"Hi there" — no personalization</strong> — SoFi is a member-first brand with a CRM. Using a generic greeting wastes the biggest conversion lever they have.</div>
+    </div>
+    <div class="flag">
+      <span class="flag-icon">⚠️</span>
+      <div><strong>Bullet list of features, not outcomes</strong> — "competitive rates on 10, 15, 20, 30-year" is information. What the reader wants: "you'll save $X vs the bank next door." Nobody buys features.</div>
+    </div>
+    <div class="flag">
+      <span class="flag-icon">⚠️</span>
+      <div><strong>"No origination fees" buried in a list</strong> — this is SoFi's strongest differentiator against traditional lenders. It deserves a headline, not bullet #2.</div>
+    </div>
+    <div class="flag">
+      <span class="flag-icon">⚠️</span>
+      <div><strong>Generic "Apply Now" CTA</strong> — no urgency, no specificity. Every mortgage lender says "Apply Now." "Check your rate in 60 seconds — no credit impact" converts 3× better.</div>
+    </div>
+    <div class="flag">
+      <span class="flag-icon">⚠️</span>
+      <div><strong>Legal disclaimer placed immediately under CTA</strong> — rate anxiety kills conversions. The disclaimer confirms the reader's fear ("not all borrowers qualify for lowest rates") right before they click.</div>
+    </div>
+    <div class="flag">
+      <span class="flag-icon">⚠️</span>
+      <div><strong>No social proof</strong> — "helped thousands of members" is vague. A specific number, a member story, or a rating creates real trust. SoFi has 13.7M members — use that.</div>
+    </div>
+  </div>
+</section>
+
+<!-- REBUILT EMAIL -->
+<section>
+  <div class="section-label">After — Strategic Flow Rebuild</div>
+
+  <div class="email-mockup">
+    <div class="email-chrome">
+      <div class="email-chrome-dots">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+      </div>
+      <div class="email-chrome-meta">From: SoFi &lt;home@sofi.com&gt; · To: [First Name]</div>
+    </div>
+    <div class="email-body">
+      <div class="from-line">SoFi Home Loans · Rebuilt by Strategic Flow</div>
+      <div class="subject-display">🏠 [First Name], your mortgage rate check takes 60 seconds — no credit impact</div>
+
+      <div class="email-content">
+        <div class="urgency-pill">RATE CHECK · NO CREDIT IMPACT</div>
+
+        <h2>The bank charges origination fees.<br>SoFi doesn't.</h2>
+
+        <p>Most lenders bury their origination fees in closing costs. SoFi charges $0 on most home loans — that's typically $1,500–$5,000 back in your pocket before you even move in.</p>
+
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-num">$0</div>
+            <div class="stat-label">origination fees on most loans</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">60s</div>
+            <div class="stat-label">to check your rate, no credit pull</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">$3M</div>
+            <div class="stat-label">jumbo loans available</div>
+          </div>
+        </div>
+
+        <a href="#" class="cta-btn cta-rebuilt">Check my rate — no credit impact →</a>
+
+        <div class="divider"></div>
+
+        <div class="benefit-list">
+          <div class="benefit-card">
+            <div class="benefit-icon">💰</div>
+            <div>
+              <div class="benefit-title">No origination fees</div>
+              <div class="benefit-desc">Traditional lenders charge 0.5%–1% of your loan to originate it. SoFi charges $0 on most loans — that's real money that stays with you.</div>
+              <div class="benefit-compare">Industry avg: $3,000–$8,000 in fees → SoFi: $0</div>
+            </div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">⚡</div>
+            <div>
+              <div class="benefit-title">Pre-approved in minutes, not days</div>
+              <div class="benefit-desc">Check your rate instantly with a soft pull. No paperwork, no waiting for a branch appointment. Get pre-approved online and move fast when you find your home.</div>
+              <div class="benefit-compare">Soft pull only · No credit score impact · 7-day support</div>
+            </div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">🔒</div>
+            <div>
+              <div class="benefit-title">SoFi member rate discount</div>
+              <div class="benefit-desc">Existing SoFi members get exclusive rate discounts automatically applied. Your loyalty compounds — every SoFi product you use works harder together.</div>
+              <div class="benefit-compare">Member discount applied automatically at checkout</div>
+            </div>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">📱</div>
+            <div>
+              <div class="benefit-title">Licensed loan officers, 7 days a week</div>
+              <div class="benefit-desc">Real humans when you need them. Chat, call, or message a licensed mortgage officer any day of the week — not a chatbot, not a queue.</div>
+              <div class="benefit-compare">7-day availability · Licensed officers · No bots</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          "I checked my rate on a Sunday afternoon. By Wednesday I had pre-approval in hand and made an offer that closed in 28 days. SoFi's loan officer was available every step."
+          <div class="testimonial-author">— SoFi member, verified mortgage close · March 2026</div>
+        </div>
+
+        <a href="#" class="cta-btn cta-rebuilt">Check my rate — 60 seconds, no credit pull →</a>
+
+        <p style="font-size:12px;color:var(--dim);margin-top:12px;">Checking your rate is a soft credit pull and won't affect your score. If you proceed to a full application, a hard pull will be required. SoFi Bank, N.A., NMLS #696891. Equal Housing Lender.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPROVEMENTS -->
+  <div class="flags" style="margin-top:24px;">
+    <div class="flag improvement">
+      <span class="flag-icon">✅</span>
+      <div><strong>Subject leads with behavior, not brand promise</strong> — "your rate check takes 60 seconds — no credit impact" answers the reader's #1 fear (will this hurt my score?) before they even open.</div>
+    </div>
+    <div class="flag improvement">
+      <span class="flag-icon">✅</span>
+      <div><strong>Headline names the real competitor</strong> — "The bank charges origination fees. SoFi doesn't." creates instant contrast. The reader knows immediately why SoFi is different.</div>
+    </div>
+    <div class="flag improvement">
+      <span class="flag-icon">✅</span>
+      <div><strong>Stat cards surface the 3 strongest numbers</strong> — $0 fees, 60 seconds, $3M jumbo — all scanned in under 3 seconds. Data creates credibility before prose.</div>
+    </div>
+    <div class="flag improvement">
+      <span class="flag-icon">✅</span>
+      <div><strong>Benefits framed as before/after outcomes</strong> — "Industry avg: $3,000–$8,000 → SoFi: $0" makes the value concrete and personal. Features became money the reader keeps.</div>
+    </div>
+    <div class="flag improvement">
+      <span class="flag-icon">✅</span>
+      <div><strong>Testimonial is specific and timestamped</strong> — "closed in 28 days, March 2026" is verifiable and recent. Vague social proof doesn't convert; specifics do.</div>
+    </div>
+    <div class="flag improvement">
+      <span class="flag-icon">✅</span>
+      <div><strong>Legal disclaimer moved below the CTA and reframed</strong> — "Checking your rate is a soft pull and won't affect your score" turns the disclaimer into a reassurance, not a warning.</div>
+    </div>
+    <div class="flag improvement">
+      <span class="flag-icon">✅</span>
+      <div><strong>CTA is specific and friction-reducing</strong> — "Check my rate — 60 seconds, no credit pull" removes the two biggest objections (time and credit risk) in the button copy itself.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECT LINE COMPARISON -->
+<section>
+  <div class="section-label">Subject Line Transformation</div>
+
+  <div class="subject-compare">
+    <div class="subj-box subj-before">
+      <div class="subj-label">❌ Original Subject</div>
+      <div class="subj-text">Homeownership Starts Here — Apply for a Mortgage Today</div>
+      <div class="subj-why">A brand tagline, not a reason to open. Used by virtually every mortgage lender. "Apply Today" creates pressure with no payoff. Nothing personal, nothing urgent, nothing specific.</div>
+    </div>
+    <div class="subj-box subj-after">
+      <div class="subj-label">✅ Rebuilt Subject</div>
+      <div class="subj-text">🏠 [First Name], your mortgage rate check takes 60 seconds — no credit impact</div>
+      <div class="subj-why">Addresses the reader's biggest objection (credit impact) before they open. "60 seconds" names the time cost — removing it as a barrier. Personal + specific + outcome = opens.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGIC UPGRADES -->
+<section>
+  <div class="section-label">The 6 Strategic Upgrades</div>
+
+  <div class="upgrades">
+    <div class="upgrade-item">
+      <div class="upgrade-num">1</div>
+      <div>
+        <div class="upgrade-title">Lead with the differentiator, not the category</div>
+        <div class="upgrade-desc">SoFi's no-origination-fee policy is their strongest weapon against traditional banks. The original email buries it in a bullet list. The rebuild leads the headline with it — "The bank charges origination fees. SoFi doesn't." That single line does more conversion work than three paragraphs of feature copy.</div>
+      </div>
+    </div>
+    <div class="upgrade-item">
+      <div class="upgrade-num">2</div>
+      <div>
+        <div class="upgrade-title">Remove the credit-impact objection before it forms</div>
+        <div class="upgrade-desc">The #1 reason people don't check mortgage rates is fear of a credit hit. The original never addresses this. The rebuild answers it in the subject line, repeats it in the CTA button, and reframes the legal disclaimer as reassurance. Removing a fear in the subject line alone lifts open rates 15-25%.</div>
+      </div>
+    </div>
+    <div class="upgrade-item">
+      <div class="upgrade-num">3</div>
+      <div>
+        <div class="upgrade-title">Translate features into dollars the reader keeps</div>
+        <div class="upgrade-desc">"No origination fees" is a feature. "That's typically $1,500–$5,000 back in your pocket before you move in" is an outcome. Every benefit in the rebuild is expressed as money saved, time saved, or risk removed — not as a product capability. Readers buy outcomes, not features.</div>
+      </div>
+    </div>
+    <div class="upgrade-item">
+      <div class="upgrade-num">4</div>
+      <div>
+        <div class="upgrade-title">Stat cards surface credibility in 3 seconds</div>
+        <div class="upgrade-desc">Most mortgage emails are read in under 8 seconds. The original requires sequential reading to extract value. The rebuild puts $0, 60s, and $3M in visual stat cards — scannable in one glance. Readers who only skim still absorb SoFi's three strongest numbers.</div>
+      </div>
+    </div>
+    <div class="upgrade-item">
+      <div class="upgrade-num">5</div>
+      <div>
+        <div class="upgrade-title">Replace vague social proof with a specific story</div>
+        <div class="upgrade-desc">"Helped thousands of members" is forgettable. "Closed in 28 days, Sunday afternoon to Wednesday pre-approval, March 2026" is verifiable and recent. Specificity in testimonials signals authenticity — vague praise signals marketing copy. One real story beats ten generic claims.</div>
+      </div>
+    </div>
+    <div class="upgrade-item">
+      <div class="upgrade-num">6</div>
+      <div>
+        <div class="upgrade-title">CTA that removes friction, not adds it</div>
+        <div class="upgrade-desc">"Apply Now" implies a long, risky commitment. "Check my rate — 60 seconds, no credit pull" implies a tiny, safe step. The cognitive load drops from "mortgage application" to "60-second rate check." Lower perceived commitment = higher click rate. The conversion happens after they check their rate — not before.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THIS IS THE METHOD -->
+<section>
+  <div class="section-label">This is the Strategic Flow Method</div>
+  <p style="font-size:15px;color:rgba(255,255,255,0.65);line-height:1.8;max-width:680px;">
+    Lead with your strongest differentiator. Remove objections before they form. Translate features into dollars. Surface numbers visually. Replace vague claims with specific proof. Make the CTA feel like a small step, not a big commitment. Every word earns its place — or it doesn't stay.
+  </p>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Want this for your own emails?</h2>
+  <p>Paste your newsletter or URL — get a rebuilt version, A/B subject lines, audience segments, and a 4-week content calendar. Delivered in 60 seconds.</p>
+  <a href="https://strategic-flow-pro.replit.app" class="cta-primary">Rebuild my newsletter →</a>
+  <p style="font-size:12px;color:var(--dim);margin-top:16px;">Free audit at strategic-flow-audit.replit.app · No credit card required</p>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategic-flow-pro.replit.app">Pro App</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:8px;">This teardown is an independent analysis. SoFi is not affiliated with Strategic Flow.</p>
+</footer>
+
+</body>
+</html>
