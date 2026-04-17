@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — SoFi Mortgage Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--surface:#0d1120;--s2:#111827;
+  --border:rgba(255,255,255,0.08);
+  --sofi:#00a2c7;--sofi-dim:rgba(0,162,199,0.12);
+  --red:#ef4444;--red-bg:rgba(239,68,68,0.08);
+  --green:#22c55e;--green-bg:rgba(34,197,94,0.08);
+  --white:#f1f5f9;--muted:rgba(255,255,255,0.45);--dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6}
+
+/* HEADER */
+.hdr{border-bottom:1px solid var(--border);padding:44px 24px;text-align:center;background:linear-gradient(180deg,rgba(0,162,199,0.08) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid rgba(0,162,199,0.30);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sofi);margin-bottom:20px}
+.dot-pulse{width:6px;height:6px;background:var(--sofi);border-radius:50%;animation:p 2s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(30px,5vw,54px);font-weight:800;letter-spacing:-1px;margin-bottom:12px}
+.hdr h1 em{font-style:italic;color:var(--sofi)}
+.hdr-sub{font-size:14px;color:var(--muted);margin-bottom:6px}
+
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+section{padding:52px 0;border-bottom:1px solid var(--border)}
+section:last-child{border-bottom:none}
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* EMAIL SHELL */
+.shell{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.chrome{padding:14px 20px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.dots{display:flex;gap:6px}.d{width:10px;height:10px;border-radius:50%}
+.dr{background:#ef4444}.dy{background:#f59e0b}.dg{background:#22c55e}
+.cmeta{font-size:12px;color:var(--muted)}
+.eb{padding:32px}
+.efrom{font-size:12px;color:var(--muted);margin-bottom:6px}
+.esubj{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:20px;line-height:1.3}
+.ec{font-size:14px;color:rgba(255,255,255,.65);line-height:1.8}
+.ec p{margin-bottom:14px}
+.ec h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:14px;line-height:1.2}
+.orig-btn{display:inline-block;padding:12px 28px;background:rgba(0,162,199,.12);border:1px solid rgba(0,162,199,.25);color:var(--sofi);font-weight:700;font-size:14px;border-radius:8px;text-decoration:none}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.flag{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--red-bg);border:1px solid rgba(239,68,68,.20);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.5}
+.fi{font-size:15px;flex-shrink:0;margin-top:1px}
+.ok{background:var(--green-bg);border-color:rgba(34,197,94,.20)}
+
+/* RATE TABLE */
+.rate-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+.rate-table th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.rate-table td{padding:12px 14px;border-bottom:1px solid var(--border);color:rgba(255,255,255,.75)}
+.rate-table tr:last-child td{border-bottom:none}
+.rate-table .rate-val{font-weight:700;color:var(--sofi);font-size:15px}
+
+/* SUBJECT COMPARE */
+.sc{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0}
+.sb{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.sl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+.sb-b .sl{color:var(--red)}.sb-a .sl{color:var(--green)}
+.st{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.4}
+.sw{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* A/B */
+.ab-list{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.ab-angle{font-size:10px;font-weight:700;color:var(--sofi);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.ab-subj{font-size:15px;font-weight:700;color:var(--white);margin-bottom:6px}
+.ab-why{font-size:13px;color:var(--muted);line-height:1.5}
+.ab-rate{display:inline-block;margin-top:8px;padding:3px 10px;background:var(--sofi-dim);border:1px solid rgba(0,162,199,.25);border-radius:20px;font-size:11px;font-weight:700;color:var(--sofi)}
+
+/* UPGRADES */
+.upgrades{display:flex;flex-direction:column;gap:16px}
+.up{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;display:flex;gap:16px}
+.up-n{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:rgba(0,162,199,.18);line-height:1;flex-shrink:0;width:36px}
+.up-t{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:6px}
+.up-d{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* CALENDAR */
+.cal{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.ci{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:flex;gap:16px;align-items:baseline}
+.ct{font-size:10px;font-weight:700;color:var(--sofi);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;flex-shrink:0}
+.cd{font-size:13px;color:rgba(255,255,255,.70)}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(0,162,199,.10) 0%,rgba(0,162,199,.04) 100%);border:1px solid rgba(0,162,199,.22);border-radius:16px;padding:40px;text-align:center;margin:48px 0}
+.cta-box h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:10px}
+.cta-box p{font-size:15px;color:var(--muted);margin-bottom:24px}
+.cta-btn{display:inline-block;padding:14px 32px;background:var(--sofi);color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px}
+
+footer{text-align:center;padding:28px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:640px){
+  .sc{grid-template-columns:1fr}
+  .up{flex-direction:column}
+  .ci{flex-direction:column;gap:4px}
+  .eb{padding:20px}
+  .rate-table{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="badge"><div class="dot-pulse"></div>Strategic Flow</div>
+  <h1>SoFi Mortgage — <em>Rebuilt.</em></h1>
+  <p class="hdr-sub">A Strategic Flow teardown — before & after</p>
+  <p style="font-size:12px;color:var(--dim)">strategicflow-tech.github.io/showcase · April 2026</p>
+</div>
+
+<div class="wrap">
+
+<!-- ① ORIGINAL -->
+<section>
+  <div class="lbl">Before — Original SoFi Mortgage Page Messaging</div>
+  <div class="shell">
+    <div class="chrome">
+      <div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div>
+      <div class="cmeta">sofi.com/home-loans/mortgage/ · as currently written</div>
+    </div>
+    <div class="eb">
+      <div class="efrom">SoFi Home Loans — landing page</div>
+      <div class="esubj">Homeownership Starts Here</div>
+      <div class="ec">
+        <h2>Purchase your dream home: Competitive home mortgage options.</h2>
+        <p>View your rate and make your offer stand out with a Verified Preapproval Letter from SoFi.</p>
+        <p>
+          • Close On Time Guarantee — Offer backed by $10,000<br>
+          • Verified Preapproval Letter — Make your offer stand out<br>
+          • Low down payment options — Put as little as 3%-5% down<br>
+          • Earn cash back — Get up to $9,500 after you close
+        </p>
+        <p style="margin-top:16px;font-size:13px;color:rgba(255,255,255,.40)">
+          13.7M SoFi members nationwide · $9.4B+ in funded mortgage loans · 130K+ homeowners served
+        </p>
+        <a href="#" class="orig-btn" style="margin-top:16px">View your rate →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="flags">
+    <div class="flag"><span class="fi">⚠️</span><div><strong>"Homeownership Starts Here"</strong> — the exact tagline used by Chase, Wells Fargo, Rocket Mortgage, and dozens of regional banks. Zero differentiation. The reader can't tell why SoFi is different before they bounce.</div></div>
+    <div class="flag"><span class="fi">⚠️</span><div><strong>"Purchase your dream home"</strong> — aspirational filler. Every mortgage lender says this. The real hook is sitting in the footnotes: SoFi closes 17 days faster than the industry average. That should be the headline.</div></div>
+    <div class="flag"><span class="fi">⚠️</span><div><strong>$10,000 guarantee buried as bullet #1</strong> — no traditional bank offers an On-Time Close Guarantee. This is SoFi's most defensible differentiator and it gets equal visual weight with "low down payment options."</div></div>
+    <div class="flag"><span class="fi">⚠️</span><div><strong>No consequence of using a slow lender</strong> — the reader needs to feel what happens if they don't close fast: rate lock expires, seller takes a backup offer, buyer loses the house. None of this urgency exists on the page.</div></div>
+    <div class="flag"><span class="fi">⚠️</span><div><strong>Rates exist but create no action</strong> — 4.990% (10yr), 5.000% (15yr), 5.375% (20yr), 5.625% (30yr) are on the page but presented as a static table, not a personalized prompt. "Your rate could be lower — soft pull, no credit impact" converts; a rate table doesn't.</div></div>
+    <div class="flag"><span class="fi">⚠️</span><div><strong>Lock and Look feature invisible</strong> — SoFi lets buyers lock their rate for 90 days while searching. This is a massive anxiety-reducer for buyers in competitive markets. It's buried in a secondary section, not leading the page.</div></div>
+    <div class="flag"><span class="fi">⚠️</span><div><strong>$500 member discount not surfaced</strong> — SoFi members get $500 off the $1,495 origination fee. SoFi Plus + direct deposit = another $500 off. Total $1,000 discount. This should appear near the CTA where price anxiety peaks, not in footnote 11.</div></div>
+    <div class="flag"><span class="fi">⚠️</span><div><strong>"View your rate" CTA appears 6+ times identically</strong> — repetition without escalation. The first CTA should reduce fear (soft pull, no score impact). The second should create urgency (lock your rate today). The third should close (start your 32-day close). Same button text for all three is a missed conversion ladder.</div></div>
+  </div>
+</section>
+
+<!-- ② REBUILT -->
+<section>
+  <div class="lbl">After — Strategic Flow Rebuild</div>
+
+  <div class="shell" style="border:none">
+    <div style="background:#f0f0f0;padding:20px;border-radius:16px">
+      <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,.10)">
+
+        <!-- Header -->
+        <div style="padding:20px 28px;background:#fff;border-bottom:3px solid #00a2c7;display:flex;align-items:center;gap:10px">
+          <img src="https://www.sofi.com/favicon.ico" style="height:32px;width:32px;border-radius:6px" alt="SoFi">
+          <div>
+            <div style="font-size:16px;font-weight:900;color:#1a1a18">SoFi</div>
+            <div style="font-size:10px;color:rgba(0,0,0,.40);font-family:monospace">Home Loans · April 2026</div>
+          </div>
+        </div>
+
+        <!-- Hero image -->
+        <img src="https://d32ijn7u0aqfv4.cloudfront.net/wp/wp-content/uploads/raw/HL25-2098550-J_LP-Combo-Hero-Creative-Test_Social-Share@2x.png" width="600" style="width:100%;display:block" alt="SoFi Mortgage">
+
+        <!-- Hook -->
+        <div style="padding:32px 28px 20px">
+          <h1 style="font-size:26px;font-weight:900;color:#1a1a18;line-height:1.2;letter-spacing:-.4px;margin-bottom:14px">🏡 Close 17 days faster — or we pay up to $10,000.</h1>
+          <p style="font-size:15px;color:#6b6b66;line-height:1.75;margin-bottom:24px">The industry average mortgage close takes 49 days. Rate locks expire. Sellers take backup offers. Buyers lose houses. SoFi members close in <strong>32 days</strong> — and if we cause any delay, we cover up to $10,000 of your closing costs.</p>
+
+          <!-- Stat cards -->
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px">
+            <tr>
+              <td style="width:25%;padding:5px;text-align:center">
+                <div style="border:1px solid rgba(0,0,0,.10);border-top:3px solid #00a2c7;border-radius:8px;padding:14px 8px;background:#f9f9f7">
+                  <div style="font-size:24px;font-weight:900;color:#00a2c7;margin-bottom:4px">32</div>
+                  <div style="font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4">days avg close¹</div>
+                </div>
+              </td>
+              <td style="width:25%;padding:5px;text-align:center">
+                <div style="border:1px solid rgba(0,0,0,.10);border-top:3px solid #00a2c7;border-radius:8px;padding:14px 8px;background:#f9f9f7">
+                  <div style="font-size:24px;font-weight:900;color:#00a2c7;margin-bottom:4px">$10K</div>
+                  <div style="font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4">on-time guarantee</div>
+                </div>
+              </td>
+              <td style="width:25%;padding:5px;text-align:center">
+                <div style="border:1px solid rgba(0,0,0,.10);border-top:3px solid #00a2c7;border-radius:8px;padding:14px 8px;background:#f9f9f7">
+                  <div style="font-size:20px;font-weight:900;color:#00a2c7;margin-bottom:4px">$9,500</div>
+                  <div style="font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4">cash back at close⁴</div>
+                </div>
+              </td>
+              <td style="width:25%;padding:5px;text-align:center">
+                <div style="border:1px solid rgba(0,0,0,.10);border-top:3px solid #00a2c7;border-radius:8px;padding:14px 8px;background:#f9f9f7">
+                  <div style="font-size:20px;font-weight:900;color:#00a2c7;margin-bottom:4px">130K+</div>
+                  <div style="font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4">homeowners served</div>
+                </div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- CTA 1 — fear removal -->
+          <div style="text-align:center;margin-bottom:8px">
+            <a href="#" style="display:inline-block;padding:14px 32px;background:#00a2c7;color:#fff;font-weight:800;font-size:14px;border-radius:8px;text-decoration:none">Check my rate — soft pull, no credit impact →</a>
+            <p style="font-size:11px;color:#9ca3af;margin-top:8px">Checking your rate won't affect your credit score. Takes 60 seconds.</p>
+          </div>
+        </div>
+
+        <div style="height:3px;background:linear-gradient(to right,#00a2c7,rgba(0,162,199,.3),transparent)"></div>
+
+        <!-- Benefits -->
+        <div style="padding:24px 28px">
+
+          <!-- Guarantee -->
+          <div style="background:#f9f9f9;border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:16px 18px;margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;color:#00a2c7;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">On-Time Close Guarantee¹</div>
+            <div style="font-size:14px;color:#374151;line-height:1.6">If SoFi causes your closing to be delayed, we give you up to <strong>$10,000 toward closing costs</strong>. No other major lender backs their timeline with cash. Lock your rate 5 business days before close and you qualify automatically.</div>
+            <div style="font-size:11px;color:#00a2c7;font-weight:600;margin-top:5px">Industry standard: $0 → SoFi: up to $10,000 backed</div>
+          </div>
+
+          <!-- Lock and Look -->
+          <div style="background:#f9f9f9;border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:16px 18px;margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;color:#00a2c7;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Lock and Look — 90-Day Rate Lock</div>
+            <div style="font-size:14px;color:#374151;line-height:1.6">Lock your rate <em>before</em> you find your home. SoFi's Lock and Look feature holds your rate for up to <strong>90 days</strong> while you search — so rising rates can't price you out of your budget mid-search.</div>
+            <div style="font-size:11px;color:#00a2c7;font-weight:600;margin-top:5px">Rate secured before house hunting begins</div>
+          </div>
+
+          <!-- Verified preapproval -->
+          <div style="background:#f9f9f9;border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:16px 18px;margin-bottom:12px">
+            <div style="font-size:11px;font-weight:700;color:#00a2c7;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Verified Preapproval Letter²</div>
+            <div style="font-size:14px;color:#374151;line-height:1.6">Not a soft pre-qual — a verified letter backed by real underwriting. Sellers and their agents prioritize offers from buyers with verified preapproval. In competitive markets, this is the difference between getting the house and losing it.</div>
+            <div style="font-size:11px;color:#00a2c7;font-weight:600;margin-top:5px">Soft credit pull only · No score impact</div>
+          </div>
+
+          <!-- Cash back + member discount -->
+          <div style="background:#f9f9f9;border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:16px 18px;margin-bottom:20px">
+            <div style="font-size:11px;font-weight:700;color:#00a2c7;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Up to $9,500 Cash Back + $500–$1,000 Member Discount</div>
+            <div style="font-size:14px;color:#374151;line-height:1.6">Use HomeStory Real Estate Services and get up to <strong>$9,500 cash back</strong> at close⁴ (avg $1,700). SoFi members save $500 off the $1,495 origination fee. SoFi Plus members or direct deposit holders save an extra $500 — up to <strong>$1,000 total discount</strong> on origination.*</div>
+            <div style="font-size:11px;color:#00a2c7;font-weight:600;margin-top:5px">Stack cash back + member discounts at close</div>
+          </div>
+
+          <!-- Rates -->
+          <div style="margin-bottom:20px">
+            <div style="font-size:11px;font-weight:700;color:#00a2c7;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Today's Rates (Updated Daily)</div>
+            <table width="100%" cellpadding="0" cellspacing="0" style="font-size:13px;border-collapse:collapse">
+              <tr style="border-bottom:1px solid rgba(0,0,0,.08)">
+                <td style="padding:10px 14px;color:#374151;font-weight:600">10-year fixed</td>
+                <td style="padding:10px 14px;text-align:right;font-weight:900;color:#00a2c7;font-size:15px">4.990%</td>
+                <td style="padding:10px 14px;text-align:right;color:#9ca3af;font-size:12px">5.483% APR</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(0,0,0,.08)">
+                <td style="padding:10px 14px;color:#374151;font-weight:600">15-year fixed</td>
+                <td style="padding:10px 14px;text-align:right;font-weight:900;color:#00a2c7;font-size:15px">5.000%</td>
+                <td style="padding:10px 14px;text-align:right;color:#9ca3af;font-size:12px">5.386% APR</td>
+              </tr>
+              <tr style="border-bottom:1px solid rgba(0,0,0,.08)">
+                <td style="padding:10px 14px;color:#374151;font-weight:600">20-year fixed</td>
+                <td style="padding:10px 14px;text-align:right;font-weight:900;color:#00a2c7;font-size:15px">5.375%</td>
+                <td style="padding:10px 14px;text-align:right;color:#9ca3af;font-size:12px">5.666% APR</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 14px;color:#374151;font-weight:600">30-year fixed</td>
+                <td style="padding:10px 14px;text-align:right;font-weight:900;color:#00a2c7;font-size:15px">5.625%</td>
+                <td style="padding:10px 14px;text-align:right;color:#9ca3af;font-size:12px">5.850% APR</td>
+              </tr>
+            </table>
+            <p style="font-size:11px;color:#9ca3af;margin-top:8px;line-height:1.5">Rates updated daily. Based on $400,000 loan, 75% LTV. Your rate may vary. Soft pull only to check your personalized rate.</p>
+          </div>
+
+          <!-- Testimonial -->
+          <div style="border-left:3px solid #00a2c7;padding:14px 16px;background:rgba(0,162,199,.04);border-radius:0 8px 8px 0;margin-bottom:20px;font-size:13px;font-style:italic;color:#374151;line-height:1.6">
+            "Aaron reached out while I was still completing the interest form. He got me a loan estimate first thing in the morning and made the entire process feel easy and stress-free. I highly recommend working with him."
+            <div style="font-style:normal;font-size:12px;color:#9ca3af;margin-top:6px">— Verified SoFi member review · 2026</div>
+          </div>
+
+          <!-- CTA 2 — urgency -->
+          <div style="text-align:center;padding:8px 0">
+            <a href="https://www.sofi.com/home-loans/mortgage/" style="display:inline-block;padding:14px 36px;background:#00a2c7;color:#fff;font-weight:800;font-size:14px;border-radius:8px;text-decoration:none">Start my 32-day close →</a>
+            <p style="font-size:11px;color:#9ca3af;margin-top:10px;line-height:1.5">Soft credit pull only — no score impact. SoFi Bank, N.A., NMLS #696891. Equal Housing Lender. Rates subject to change. Not all borrowers qualify for lowest rates.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="flags" style="margin-top:24px">
+    <div class="flag ok"><span class="fi">✅</span><div><strong>Headline fuses speed + guarantee in one sentence</strong> — "Close 17 days faster — or we pay up to $10,000" delivers both the competitive claim and the risk removal before the reader scrolls anywhere.</div></div>
+    <div class="flag ok"><span class="fi">✅</span><div><strong>4 stat cards surface all key numbers</strong> — 32 days, $10K guarantee, $9,500 cash back, 130K+ homeowners. Scannable in 3 seconds. The competitive case is made before a word of copy is read.</div></div>
+    <div class="flag ok"><span class="fi">✅</span><div><strong>Lock and Look surfaced prominently</strong> — 90-day rate lock before house hunting is a massive anxiety-reducer that was buried. Now it's the second benefit card — answering the buyer's biggest fear (rates rising mid-search).</div></div>
+    <div class="flag ok"><span class="fi">✅</span><div><strong>Rates displayed as personalized invitation</strong> — not a static table but a section with context: "Updated daily. Your rate may be lower. Soft pull only." Transforms a data dump into a conversion trigger.</div></div>
+    <div class="flag ok"><span class="fi">✅</span><div><strong>$1,000 member discount made explicit</strong> — $500 standard + $500 SoFi Plus/direct deposit = $1,000 off origination. The original never stacks these. Now it's clear and quantified near the CTA where price anxiety peaks.</div></div>
+    <div class="flag ok"><span class="fi">✅</span><div><strong>Real testimonial, attributed</strong> — Aaron's story is specific: reached out before form was complete, loan estimate same morning. This is operational proof of the 32-day speed claim, not vague praise.</div></div>
+    <div class="flag ok"><span class="fi">✅</span><div><strong>Two CTAs, two jobs</strong> — CTA 1 removes fear ("soft pull, no credit impact"). CTA 2 creates urgency ("Start my 32-day close"). Different conversion moments require different messaging.</div></div>
+  </div>
+</section>
+
+<!-- ③ SUBJECT LINE -->
+<section>
+  <div class="lbl">Headline Transformation</div>
+  <div class="sc">
+    <div class="sb sb-b">
+      <div class="sl">❌ Original</div>
+      <div class="st">Homeownership Starts Here</div>
+      <div class="sw">Shared verbatim by Chase, Rocket Mortgage, Wells Fargo, and dozens of regional lenders. Indistinguishable. No number, no guarantee, no urgency, no reason to choose SoFi over anyone else.</div>
+    </div>
+    <div class="sb sb-a">
+      <div class="sl">✅ Rebuilt</div>
+      <div class="st">Close 17 days faster — or we pay up to $10,000.</div>
+      <div class="sw">Specific, verifiable, and only SoFi can say it. Delivers the competitive claim AND the risk removal in a single sentence. The reader knows exactly why SoFi is different before reading anything else.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ A/B SUBJECTS -->
+<section>
+  <div class="lbl">3 A/B Email Subject Lines</div>
+  <div class="ab-list">
+    <div class="ab-card">
+      <div class="ab-angle">Fear of Loss</div>
+      <div class="ab-subj">Your buyer just found another property</div>
+      <div class="ab-why">Fear of loss is the strongest motivator in competitive housing markets. Frames closing speed as survival, not a feature. Works best for active buyers who have already lost bids.</div>
+      <span class="ab-rate">Predicted open rate: 34–40%</span>
+    </div>
+    <div class="ab-card">
+      <div class="ab-angle">Proof + Urgency</div>
+      <div class="ab-subj">SoFi closes mortgages in 32 days. The industry takes 49.</div>
+      <div class="ab-why">Pure data comparison. No adjectives, no hyperbole — just a verifiable 17-day gap. Works for analytical buyers who respond to proof over emotion.</div>
+      <span class="ab-rate">Predicted open rate: 29–35%</span>
+    </div>
+    <div class="ab-card">
+      <div class="ab-angle">Guarantee First</div>
+      <div class="ab-subj">Lock your rate for 90 days while you find your home</div>
+      <div class="ab-why">Targets a specific, underserved anxiety: rates rising during the home search. Lock and Look is a feature no competitor prominently advertises — makes SoFi stand out on the feature alone.</div>
+      <span class="ab-rate">Predicted open rate: 26–32%</span>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ STRATEGIC UPGRADES -->
+<section>
+  <div class="lbl">The 6 Strategic Upgrades</div>
+  <div class="upgrades">
+    <div class="up">
+      <div class="up-n">1</div>
+      <div>
+        <div class="up-t">Consequence before product</div>
+        <div class="up-d">"Purchase your dream home" is aspiration. "Rate lock expires. Seller takes a backup offer. You lose the house." is consequence. The rebuild opens with what happens when the buyer uses a slow lender — before any SoFi product is mentioned. Consequence-first creates urgency that no feature claim can replicate.</div>
+      </div>
+    </div>
+    <div class="up">
+      <div class="up-n">2</div>
+      <div>
+        <div class="up-t">The $10,000 guarantee earns the headline</div>
+        <div class="up-d">No traditional bank guarantees their closing timeline with cash. SoFi does. In the original, this appears as bullet #1 with equal visual weight as "low down payment options." In the rebuild, it's fused into the headline itself: "Close 17 days faster — or we pay up to $10,000." One sentence does what four bullets cannot.</div>
+      </div>
+    </div>
+    <div class="up">
+      <div class="up-n">3</div>
+      <div>
+        <div class="up-t">Lock and Look surfaces as an anxiety-resolver</div>
+        <div class="up-d">The fear of rates rising during a home search is real and underserved. SoFi's 90-day Lock and Look directly solves this — but it's buried in a secondary section. Promoted to the second benefit card, it becomes the feature that separates SoFi from every lender who forces buyers to time the market.</div>
+      </div>
+    </div>
+    <div class="up">
+      <div class="up-n">4</div>
+      <div>
+        <div class="up-t">Rates become an invitation, not a table</div>
+        <div class="up-d">4.990% / 5.000% / 5.375% / 5.625% presented as a static rate table creates no action. Reframed with "Updated daily. Your rate may be lower. Soft pull only — 60 seconds." — the same data becomes an invitation to find out your specific rate. The difference between information and conversion is personalization.</div>
+      </div>
+    </div>
+    <div class="up">
+      <div class="up-n">5</div>
+      <div>
+        <div class="up-t">Stack the savings explicitly</div>
+        <div class="up-d">$9,500 cash back + $500 member discount + $500 SoFi Plus discount = potentially $10,500 in savings at close. The original never stacks these. The rebuild presents them together near the CTA where price anxiety is highest — "Stack cash back + member discounts at close" makes the total feel intentional, not accidental.</div>
+      </div>
+    </div>
+    <div class="up">
+      <div class="up-n">6</div>
+      <div>
+        <div class="up-t">Two CTAs, two conversion moments</div>
+        <div class="up-d">The original repeats "View your rate" six times identically. The rebuild uses a conversion ladder: CTA 1 removes fear ("soft pull, no credit impact — 60 seconds") at the top when the reader is curious. CTA 2 creates urgency ("Start my 32-day close") at the bottom when the reader is convinced. Same destination, different psychological moment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ CONTENT CALENDAR -->
+<section>
+  <div class="lbl">4-Week Email Follow-up Calendar — 8 Sends</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:4px">Each email covers a unique SoFi mortgage benefit — no repetition, full funnel from rate check to close.</p>
+  <div class="cal">
+    <div class="ci"><div class="ct">Week 1 · Day 3</div><div class="cd">How verified preapproval wins bidding wars — why soft pre-quals lose competitive offers</div></div>
+    <div class="ci"><div class="ct">Week 1 · Day 5</div><div class="cd">On-Time Close Guarantee: full terms and how to qualify — what triggers the $10,000 payout</div></div>
+    <div class="ci"><div class="ct">Week 2 · Day 10</div><div class="cd">Lock and Look explained — how to secure today's rate before you find your home</div></div>
+    <div class="ci"><div class="ct">Week 2 · Day 12</div><div class="cd">$9,500 cash back at close: HomeStory eligibility guide and average vs maximum payout</div></div>
+    <div class="ci"><div class="ct">Week 3 · Day 17</div><div class="cd">SoFi member mortgage discounts: $500 standard + $500 Plus/direct deposit — stacking guide</div></div>
+    <div class="ci"><div class="ct">Week 3 · Day 19</div><div class="cd">VA and FHA loan options through SoFi — no down payment requirements and who qualifies</div></div>
+    <div class="ci"><div class="ct">Week 4 · Day 24</div><div class="cd">3% vs 5% down payment: real 30-year cost comparison for first-time buyers</div></div>
+    <div class="ci"><div class="ct">Week 4 · Day 26</div><div class="cd">Rate lock timing: exactly when to lock relative to your expected close date to avoid expiry</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-box">
+  <h2>This is the Strategic Flow Method.</h2>
+  <p>Consequence before product. Numbers replace adjectives. Guarantees earn headlines.<br>Two CTAs, two conversion moments. Every word earns its place.</p>
+  <a href="https://strategic-flow-pro.replit.app" class="cta-btn">Rebuild my newsletter →</a>
+  <p style="font-size:12px;color:var(--dim);margin-top:14px">Free audit → strategic-flow-audit.replit.app · No credit card required</p>
+</div>
+
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategic-flow-pro.replit.app">Pro App</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:8px">Independent analysis. SoFi Technologies, Inc. is not affiliated with Strategic Flow. All data sourced from sofi.com/home-loans/mortgage/ as of April 17, 2026.</p>
+</footer>
+
+</body>
+</html>
