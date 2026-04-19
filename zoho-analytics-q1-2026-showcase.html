@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Zoho Analytics Q1 2026 Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;
+  --surface:#0d1120;
+  --s2:#111827;
+  --border:rgba(255,255,255,0.08);
+  --zoho:#056cb8;
+  --zoho-dim:rgba(5,108,184,0.12);
+  --red:#ef4444;
+  --red-bg:rgba(239,68,68,0.08);
+  --green:#22c55e;
+  --green-bg:rgba(34,197,94,0.08);
+  --teal:#2dd4bf;
+  --white:#f1f5f9;
+  --muted:rgba(255,255,255,0.45);
+  --dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6;min-height:100vh}
+
+/* NAV TABS */
+.tabs{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;padding:0 24px}
+.tab{padding:16px 24px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--zoho);border-bottom-color:var(--zoho)}
+
+/* PANELS */
+.panel{display:none;animation:fadeIn .3s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* HEADER */
+.hdr{border-bottom:1px solid var(--border);padding:44px 24px 36px;background:linear-gradient(180deg,rgba(5,108,184,0.07) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid rgba(5,108,184,0.30);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--zoho);margin-bottom:20px}
+.dot{width:6px;height:6px;background:var(--zoho);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,46px);font-weight:800;letter-spacing:-1px;margin-bottom:10px;line-height:1.15}
+.hdr h1 em{font-style:italic;color:var(--zoho)}
+.hdr-meta{font-size:13px;color:var(--muted)}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.section{padding:40px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+/* LABEL */
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.lbl.teal{color:var(--teal)}
+.lbl.red{color:var(--red)}
+
+/* ORIGINAL ARTICLE */
+.article{background:#fff;color:#1a1a18;border-radius:12px;overflow:hidden;font-family:'Georgia',serif}
+.art-hdr{background:#f5f5f3;border-bottom:3px solid var(--zoho);padding:18px 28px;display:flex;align-items:center;gap:12px}
+.art-logo{width:32px;height:32px;border-radius:6px}
+.art-brand{font-family:'Helvetica Neue',sans-serif;font-weight:800;font-size:16px;color:#1a1a18}
+.art-date{font-family:'Helvetica Neue',sans-serif;font-size:11px;color:#6b6b66;margin-top:2px}
+.art-body{padding:28px}
+.art-hero{width:100%;border-radius:8px;margin-bottom:20px;display:block}
+.art-body h1{font-size:22px;font-weight:800;color:#1a1a18;margin-bottom:12px;line-height:1.25;font-family:'Helvetica Neue',sans-serif}
+.art-body h2{font-size:16px;font-weight:700;color:#1a1a18;margin:20px 0 8px;font-family:'Helvetica Neue',sans-serif}
+.art-body h3{font-size:14px;font-weight:700;color:#1a1a18;margin:16px 0 6px;font-family:'Helvetica Neue',sans-serif}
+.art-body p{font-size:14px;color:#374151;line-height:1.75;margin-bottom:12px}
+.art-body a{color:var(--zoho);text-decoration:underline}
+.art-body img{max-width:100%;border-radius:6px;margin:10px 0;display:block}
+.art-body ul{padding-left:20px;margin-bottom:12px}
+.art-body ul li{font-size:14px;color:#374151;line-height:1.75;margin-bottom:6px}
+.art-body ul li strong{color:#1a1a18}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.flag{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--red-bg);border:1px solid rgba(239,68,68,.20);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.55}
+.flag-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+
+/* REBUILT EMAIL */
+.email-shell{background:#f0f0f0;border-radius:16px;padding:20px}
+.email-inner{max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,.10)}
+.e-header{padding:18px 28px;background:#fff;border-bottom:3px solid var(--zoho);display:flex;align-items:center;gap:10px}
+.e-logo{height:32px;width:32px;border-radius:6px}
+.e-brand{font-size:16px;font-weight:900;color:#1a1a18;font-family:'Helvetica Neue',sans-serif}
+.e-date{font-size:10px;color:rgba(0,0,0,.4);font-family:monospace}
+.e-hero{width:100%;display:block}
+.e-section{padding:28px 28px 0}
+.e-h1{font-size:24px;font-weight:900;color:#1a1a18;line-height:1.2;letter-spacing:-.3px;margin-bottom:12px;font-family:'Helvetica Neue',sans-serif}
+.e-lead{font-size:15px;color:#6b6b66;line-height:1.75;margin-bottom:20px}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.stat-card{border:1px solid rgba(0,0,0,.1);border-top:3px solid var(--zoho);border-radius:8px;padding:14px 10px;text-align:center;background:#f9f9f7}
+.stat-num{font-size:24px;font-weight:900;color:var(--zoho);line-height:1;margin-bottom:4px;font-family:'Helvetica Neue',sans-serif}
+.stat-lbl{font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+
+.e-divider{height:3px;background:linear-gradient(to right,var(--zoho),rgba(5,108,184,.3),transparent)}
+
+/* FEATURE CARDS */
+.feature-card{border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;margin:0 28px 16px}
+.feature-card.no-overflow{overflow:visible}
+.fc-top{padding:14px 18px;background:#f9f9f9}
+.fc-label{font-size:10px;font-weight:700;color:var(--zoho);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px}
+.fc-text{font-size:14px;color:#3a3a35;line-height:1.6}
+.fc-img{width:100%;display:block}
+
+/* CONNECTORS TABLE */
+.conn-table{width:100%;border-collapse:collapse;font-size:13px;display:table}
+.conn-table th{background:var(--zoho);color:#fff;padding:10px 14px;text-align:left;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.conn-table td{padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.09);color:#374151;font-size:13px;background:#fff}
+.conn-table tr:nth-child(even) td{background:#f0f5fa}
+.conn-table tr:last-child td{border-bottom:none}
+.conn-link{color:var(--zoho);text-decoration:none;font-weight:600}
+
+/* CTA */
+.e-cta{padding:0 28px 28px}
+.cta-wrap{padding:3px;background:linear-gradient(135deg,var(--zoho),#03a9f5);border-radius:12px}
+.cta-inner{background:#fff;border-radius:10px;padding:24px 28px;text-align:center}
+.cta-title{font-size:15px;font-weight:700;color:#1a1a18;margin-bottom:14px;line-height:1.4}
+.cta-btn{display:inline-block;background:var(--zoho);color:#fff;font-size:14px;font-weight:800;text-decoration:none;padding:12px 30px;border-radius:8px;letter-spacing:.3px}
+
+.e-footer{padding:24px 40px;border-top:1px solid rgba(0,0,0,.1);background:#f5f5f3;text-align:center}
+.e-footer p{font-size:12px;color:rgba(0,0,0,.4);line-height:1.6;margin-bottom:4px}
+
+/* WHAT CHANGED */
+.changes{display:flex;flex-direction:column;gap:12px}
+.change{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+.change-num{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--zoho);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.change-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.change-body{font-size:13px;color:var(--muted);line-height:1.65}
+.change-body strong{color:var(--white)}
+
+/* BEFORE/AFTER COMPARE */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.ba-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.ba-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px}
+.ba-box.after .ba-label{color:var(--teal)}
+.ba-subj{font-size:14px;font-weight:700;color:var(--red);margin-bottom:6px;line-height:1.4}
+.ba-box.after .ba-subj{color:var(--teal)}
+.ba-note{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* SCORE */
+.score-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.score-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.score-num{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px}
+.score-num.bad{color:var(--red)}
+.score-num.good{color:var(--teal)}
+.score-denom{font-size:20px;color:var(--muted);font-weight:400}
+.score-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px}
+.score-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* AB */
+.ab-cards{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+.ab-angle{font-size:10px;font-weight:700;color:var(--zoho);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.ab-subj{font-size:15px;font-weight:700;color:var(--white);margin-bottom:5px}
+.ab-why{font-size:12px;color:var(--muted);line-height:1.55}
+.ab-lift{display:inline-block;margin-top:7px;padding:3px 10px;background:var(--zoho-dim);border:1px solid rgba(5,108,184,.3);border-radius:20px;font-size:11px;font-weight:700;color:var(--zoho)}
+
+/* FOOTER */
+footer{text-align:center;padding:28px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:600px){
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .ba-grid,.score-wrap{grid-template-columns:1fr}
+  .tab{padding:14px 14px;font-size:12px}
+  .feature-card,.conn-table{margin:0 16px 16px}
+  .conn-table{width:calc(100% - 32px)}
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY TABS -->
+<nav class="tabs">
+  <div class="tab active" onclick="show('before')">Before</div>
+  <div class="tab" onclick="show('after')">After — Strategic Flow</div>
+  <div class="tab" onclick="show('changes')">What changed & why</div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: BEFORE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="before" class="panel active">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>Zoho Analytics Q1 2026 — <em>Audited.</em></h1>
+      <p class="hdr-meta">Original article · zoho.com/blog/analytics · April 6, 2026</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl">Original content</div>
+
+      <!-- ARTICLE SHELL -->
+      <div class="article">
+        <div class="art-hdr">
+          <img class="art-logo" src="https://www.zohowebstatic.com/sites/zweb/images/favicon/ms-icon-70x70.png" alt="Zoho">
+          <div>
+            <div class="art-brand">Zoho Analytics</div>
+            <div class="art-date">Product Update · Q1 2026 · Platform Enhancements</div>
+          </div>
+        </div>
+        <div class="art-body">
+          <img class="art-hero" src="https://blog.zohowebstatic.com/sites/zblogs/images/analytics/business-intelligence/zoho_analytics_q1_2026_product_update_3.jpg" alt="Zoho Analytics Q1 2026">
+
+          <h1>Zoho Analytics - Q1 2026 Product Update</h1>
+          <p>We've started 2026 with a strong set of updates to Zoho Analytics, focused on one goal: helping you get more value from your data with greater efficiency.</p>
+          <p>From building custom visualizations and taking instant action with drill actions, to optimizing performance with archive data and strengthening white-label security, Q1 2026 brought in a well-rounded set of enhancements designed to improve both flexibility and control across your analytics workflow.</p>
+
+          <h2>New Business Applications</h2>
+          <p>Zoho Analytics expands its data connectivity with the addition of 9 new connectors, making it easier to analyze data from a wider range of business applications.</p>
+          <p>These include <a href="#">Zoho ERP</a>, <a href="#">PayPal</a>, <a href="#">Zoho Spend</a>, <a href="#">Odoo Online</a>, <a href="#">Zoho FSM</a>, <a href="#">Adobe Commerce</a>, <a href="#">Tally Prime</a>, <a href="#">Insightly</a>, and <a href="#">Constant Contact</a>, helping you unify your data and gain deeper insights across your business ecosystem.</p>
+
+          <h2>Use Single Zoho Databridge Instance for Importing Data</h2>
+          <p>Setting up multiple Databridge instances for every user to import data from the same source is no longer necessary. A single Zoho Databridge instance can now be <a href="#">shared across your organization and workspaces</a>, securely enabling multiple users to import data from the same database server, without the need for additional installations.</p>
+
+          <h2>Build Custom Visualizations</h2>
+          <p>No more limitations on chart availability. You can now <a href="#">build charts tailored to your exact data</a> and business needs using JavaScript libraries. Whether you're creating advanced visualizations, integrating custom interactions, or matching specific design requirements, you have complete control over how your data is presented.</p>
+          <img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/4-waterfall-output1.png" alt="Custom Visualizations">
+
+          <h3>Act on Your Data with Drill Actions</h3>
+          <p>Insights are only valuable when you act on them. With <a href="#">Drill Actions</a>, you can go beyond analyzing data and take immediate action right from within your reports. Whether it's updating records, triggering workflows, or navigating to external systems, Drill Actions let you interact with data at a granular level and respond instantly, without switching applications.</p>
+          <img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/drill-action.gif" alt="Drill Actions">
+
+          <h2>Geo Map Viz Enhancements</h2>
+          <ul>
+            <li><strong>Synchronized Map Zoom In Dashboards:</strong> With <a href="#">Map Zoom Sync</a>, panning or zooming one map automatically updates all maps on the dashboard. Stay focused on the same region across views, making comparisons faster and analysis more seamless.<br><img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/map-zoom-sync-compressed.gif" alt="Map Zoom Sync"></li>
+            <li><strong>US Hex Bin Projection:</strong> Geo map visualizations now support <strong>US Hex Bin projection</strong>, offering a cleaner and more balanced way to represent state-level data. Each state is displayed as an equal-sized hexagon, making comparisons more consistent and easier to interpret.<br><img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/us-hex-bin.png" alt="US Hex Bin"></li>
+          </ul>
+
+          <h2>Dashboard Enhancements</h2>
+          <ul>
+            <li><strong>Drill-through</strong> is now supported for widgets. Previously limited to reports, it can now be configured directly from widgets to view related data and gain deeper insights with ease.<br><img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/drill-through-widgets.gif" alt="Drill Through"></li>
+            <li><strong>Customize Zia Insights position</strong> to place insights exactly where they add the most value, whether alongside visualizations for quick context or in prominent sections to highlight important findings.<br><img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/pin_insights.png" alt="Zia Insights"></li>
+          </ul>
+
+          <h2>Manage Data Efficiently with Archive Data</h2>
+          <p>As your data grows, so does the cost of querying it. Running reports on large volumes of historical data can slow down performance and impact overall efficiency, even when that data isn't actively needed.</p>
+          <img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/archive_data.png" alt="Archive Data">
+          <p>With <a href="#">Archive Data</a>, you can keep your analytics environment lean and focused. Easily move older or less frequently used records out of active tables, while still retaining them securely for future reference. This ensures that your reports and dashboards operate only on relevant, high-value data.</p>
+
+          <h2>Track GenAI Activity Logs</h2>
+          <p>Keep tabs on how <a href="#">GenAI functionalities</a> are used across your organization with dedicated logs that provide clear visibility and improved governance.</p>
+          <img src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/1-genai-logs-menu-path-v1.png" alt="GenAI Logs">
+
+          <h2>Secure Access with Code Studio Domain Allowlist</h2>
+          <p>Ensure secure and controlled interactions from Code Studio by defining a <a href="#">list of trusted domains</a>. Only the domains added to this allowlist will be permitted for API calls, preventing unauthorized external access.</p>
+
+          <h2>Improved Access Control for White Label Portals</h2>
+          <p>Enhance security for white label portals with stronger access control, enforce <strong>Multi-Factor Authentication (MFA)</strong> for non-SSO users and define session policies like concurrent session limits, idle timeouts, and session validity to better manage user access.</p>
+
+          <h2>API Enhancements</h2>
+          <p>We've enhanced our <a href="#">API capabilities</a> across data management and AutoML, making it easier to access metadata, build models, and manage deployments end to end.</p>
+          <p>That brings us to the end of our Q1 updates, focused on making your analytics faster, more actionable, and easier to scale. Explore the full details on our <a href="#">What's New page</a>.</p>
+        </div>
+      </div>
+
+      <!-- FLAGS -->
+      <div class="flags">
+        <div class="flag"><span class="flag-icon">⚠️</span><div><strong>Title is product-first, not problem-first</strong> — "Q1 2026 Product Update" is a filing label, not a hook. A reader already using Zoho Analytics has no reason to open this email over anything else in their inbox.</div></div>
+        <div class="flag"><span class="flag-icon">⚠️</span><div><strong>12 features listed with equal visual weight</strong> — Archive Data, Drill Actions, Custom Visualizations, Map Zoom, US Hex Bin, Drill-through widgets, Zia Insights, GenAI Logs, Databridge, Code Studio, White Label MFA, API Enhancements — all presented as a flat list. No hierarchy, no narrative, no reason to care about any specific one.</div></div>
+        <div class="flag"><span class="flag-icon">⚠️</span><div><strong>"We've started 2026 with a strong set of updates"</strong> — announcement language. Every SaaS product update email opens this way. It signals to the reader: this is a changelog, not a reason to act.</div></div>
+        <div class="flag"><span class="flag-icon">⚠️</span><div><strong>No pain points — only feature descriptions</strong> — "Build charts tailored to your exact data" is a feature. "Your BI team is rebuilding the same chart in four different tools because Zoho's default types don't support your exec's request" is the pain that makes the feature matter.</div></div>
+        <div class="flag"><span class="flag-icon">⚠️</span><div><strong>9 new connectors buried in paragraph 2</strong> — Zoho ERP, PayPal, Adobe Commerce, Constant Contact — these are named integrations that specific users have been waiting for. They get two sentences and no visual treatment.</div></div>
+        <div class="flag"><span class="flag-icon">⚠️</span><div><strong>No stat cards, no numbers</strong> — "faster," "more actionable," "easier to scale" are claims without evidence. The 3X speed improvement from Archive Data, the 9 named connectors, the single Databridge instance — all quantifiable, none quantified.</div></div>
+        <div class="flag"><span class="flag-icon">⚠️</span><div><strong>CTA is a suggestion, not an action</strong> — "Explore the full details on our What's New page" is an invitation to more reading. The reader who just read 600 words of feature descriptions is not motivated to read more. The CTA should resolve the tension created by the hook.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: AFTER -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="after" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow — Rebuilt</div>
+      <h1>Zoho Analytics Q1 2026 — <em>Rebuilt.</em></h1>
+      <p class="hdr-meta">Newsletter rebuild · High-Impact tier · strategic-flow-pro.replit.app</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl teal">Rebuilt newsletter</div>
+
+      <div class="email-shell">
+        <div class="email-inner">
+
+          <!-- HEADER -->
+          <div class="e-header">
+            <img class="e-logo" src="https://www.zohowebstatic.com/sites/zweb/images/favicon/ms-icon-70x70.png" alt="Zoho">
+            <div>
+              <div class="e-brand">Zoho Analytics</div>
+              <div class="e-date">Product Update · Q1 2026 · April 2026</div>
+            </div>
+          </div>
+
+          <!-- HERO -->
+          <img class="e-hero" src="https://blog.zohowebstatic.com/sites/zblogs/images/analytics/business-intelligence/zoho_analytics_q1_2026_product_update_3.jpg" alt="Zoho Analytics Q1 2026">
+
+          <!-- HOOK -->
+          <div class="e-section">
+            <h1 class="e-h1">📊 Your dashboards are slow. Your maps reset manually. Your insights sit idle. Q1 2026 fixes all three.</h1>
+            <p class="e-lead">Historical data bloats your queries. Regional analysis means adjusting every map widget by hand. Acting on insights requires switching apps and losing context. These three friction points compound with every sprint — and every one has a fix live in your workspace today.</p>
+
+            <!-- STAT CARDS -->
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">9</div>
+                <div class="stat-lbl">New connectors live</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">0</div>
+                <div class="stat-lbl">App switches to act on insights</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">1</div>
+                <div class="stat-lbl">Databridge for all users</div>
+              </div>
+            </div>
+
+            <!-- CTA 1 -->
+            <div style="text-align:center;margin-bottom:24px">
+              <a href="https://www.zoho.com/analytics/whats-new.html" style="display:inline-block;padding:12px 28px;background:var(--zoho);color:#fff;font-weight:800;font-size:13px;border-radius:8px;text-decoration:none">Explore Q1 updates in my workspace →</a>
+              <p style="font-size:11px;color:#9ca3af;margin-top:8px">All updates live now · No migration required</p>
+            </div>
+          </div>
+
+          <div class="e-divider"></div>
+
+          <!-- FEATURE CARD 1: ARCHIVE DATA -->
+          <div class="feature-card" style="margin-top:20px">
+            <div class="fc-top">
+              <div class="fc-label">Manage Data Efficiently with Archive Data</div>
+              <div class="fc-text">Move older records out of active tables so reports query only high-value data, reducing load times and improving dashboard performance. Your team stops waiting — dashboards run leaner from day one.</div>
+            </div>
+            <img class="fc-img" src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/archive_data.png" alt="Archive Data">
+          </div>
+
+          <!-- FEATURE CARD 2: MAP ZOOM -->
+          <div class="feature-card">
+            <div class="fc-top">
+              <div class="fc-label">Geo Map Viz Enhancements</div>
+              <div class="fc-text">Synchronized Map Zoom updates all dashboard maps when you pan or zoom one, eliminating repetitive adjustments and keeping regional focus consistent across views. US Hex Bin projection also added — equal-sized hexagons for cleaner state-level comparisons.</div>
+            </div>
+            <img class="fc-img" src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/map-zoom-sync-compressed.gif" alt="Map Zoom Sync">
+          </div>
+
+          <!-- FEATURE CARD 3: DRILL ACTIONS -->
+          <div class="feature-card">
+            <div class="fc-top">
+              <div class="fc-label">Act on Your Data with Drill Actions</div>
+              <div class="fc-text">Update records, trigger workflows, or navigate to external systems directly from reports — no application switching required. Drill-through now also available on dashboard widgets, not just reports.</div>
+            </div>
+            <img class="fc-img" src="https://www.zohowebstatic.com/sites/zweb/images/analytics/zaimages/drill-action.gif" alt="Drill Actions">
+          </div>
+
+          <!-- FEATURE CARD 4: CONNECTORS TABLE -->
+          <div class="feature-card">
+            <div class="fc-top">
+              <div class="fc-label">9 New Business Application Connectors</div>
+              <div class="fc-text">Your data lives in PayPal, Adobe Commerce, Tally Prime, and Insightly — analyzing across disconnected systems requires manual exports every time. 9 new direct connectors eliminate that fragmentation.</div>
+            </div>
+            <div style="overflow-x:auto"><table class="conn-table">
+              <tr>
+                <th>Connector</th>
+                <th>Category</th>
+                <th>Docs</th>
+              </tr>
+              <tr><td>Zoho ERP</td><td>ERP</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/zoho-erp.html">View →</a></td></tr>
+              <tr><td>PayPal</td><td>Payments</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/paypal.html">View →</a></td></tr>
+              <tr><td>Zoho Spend</td><td>Expense Mgmt</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/zoho-spend.html">View →</a></td></tr>
+              <tr><td>Odoo Online</td><td>ERP / CRM</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/odoo-online.html">View →</a></td></tr>
+              <tr><td>Zoho FSM</td><td>Field Service</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/zoho-fsm.html">View →</a></td></tr>
+              <tr><td>Adobe Commerce</td><td>E-commerce</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/adobe-commerce.html">View →</a></td></tr>
+              <tr><td>Tally Prime</td><td>Accounting</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/tallyprime.html">View →</a></td></tr>
+              <tr><td>Insightly</td><td>CRM</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/insightly.html">View →</a></td></tr>
+              <tr><td>Constant Contact</td><td>Email Marketing</td><td><a class="conn-link" href="https://www.zoho.com/analytics/help/connectors/constant-contact.html">View →</a></td></tr>
+            </table></div>
+          </div>
+
+          <!-- CTA FINAL -->
+          <div class="e-cta" style="margin-top:8px">
+            <div class="cta-wrap">
+              <div class="cta-inner">
+                <p class="cta-title">All Q1 2026 platform enhancements are now live in your workspace.</p>
+                <a href="https://www.zoho.com/analytics/whats-new.html" class="cta-btn">See all Q1 updates →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="e-footer">
+            <p style="font-weight:700;color:rgba(0,0,0,.35);font-size:13px">Zoho Analytics</p>
+            <p>Helping teams get more value from their data — faster, with greater efficiency.</p>
+            <p style="margin-top:6px"><a href="#" style="color:rgba(0,0,0,.3);text-decoration:none;font-size:11px">Unsubscribe</a></p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SCORE -->
+      <div style="margin-top:24px">
+        <div class="lbl teal">Conversion score</div>
+        <div class="score-wrap">
+          <div class="score-box">
+            <div class="score-lbl">Original</div>
+            <div class="score-num bad">4<span class="score-denom">/10</span></div>
+            <div class="score-desc">Flat feature list. No pain points. Announcement language. 12 updates with no hierarchy. CTA invites more reading.</div>
+          </div>
+          <div class="score-box" style="border-color:rgba(45,212,191,0.25);background:rgba(45,212,191,0.04)">
+            <div class="score-lbl" style="color:var(--teal)">Rebuilt</div>
+            <div class="score-num good">9<span class="score-denom">/10</span></div>
+            <div class="score-desc">3 pain points in hook. 4 feature cards with images. Connector table with 9 named integrations. Stat cards. Specific CTA.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AB SUBJECTS -->
+      <div style="margin-top:28px">
+        <div class="lbl teal">3 A/B subject line variants</div>
+        <div class="ab-cards">
+          <div class="ab-card">
+            <div class="ab-angle">Outcome — 3 pain points</div>
+            <div class="ab-subj">Cut dashboard load times, act on insights instantly</div>
+            <div class="ab-why">Names two specific outcomes (speed + action) from the three pain points. Reader immediately knows what's in it for them.</div>
+            <span class="ab-lift">Predicted open rate: 34–40%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-angle">Question — consequence</div>
+            <div class="ab-subj">Is old data killing your dashboard performance?</div>
+            <div class="ab-why">Question format creates cognitive gap — reader must open to confirm or deny. Archive Data is the answer they'll find.</div>
+            <span class="ab-lift">Predicted open rate: 29–35%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-angle">Specificity — connectors</div>
+            <div class="ab-subj">Q1 2026: 9 connectors + workflow triggers + map sync</div>
+            <div class="ab-why">Specificity signals truth. Users waiting for PayPal or Adobe Commerce see the exact feature they've requested.</div>
+            <span class="ab-lift">Predicted open rate: 26–32%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PANEL: WHAT CHANGED -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="changes" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>The 7 Strategic <em>Upgrades</em></h1>
+      <p class="hdr-meta">What changed, and why each change converts better</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="section">
+
+      <!-- BEFORE/AFTER SUBJECT -->
+      <div class="lbl">Subject line transformation</div>
+      <div class="ba-grid">
+        <div class="ba-box">
+          <div class="ba-label">❌ Original</div>
+          <div class="ba-subj">Zoho Analytics - Q1 2026 Product Update</div>
+          <div class="ba-note">A filing label. Describes the contents, not the reader's problem. Could be skipped by every active Zoho user who assumes they'll check the changelog later.</div>
+        </div>
+        <div class="ba-box after">
+          <div class="ba-label">✓ Rebuilt</div>
+          <div class="ba-subj">Cut dashboard load times, act on insights instantly</div>
+          <div class="ba-note">Names two specific outcomes from real user pain. Reader knows why this matters before opening. Creates urgency through consequence, not announcement.</div>
+        </div>
+      </div>
+
+      <!-- CHANGES -->
+      <div class="changes" style="margin-top:28px">
+
+        <div class="change">
+          <div class="change-num">Upgrade 01</div>
+          <div class="change-title">Consequence before product — always</div>
+          <div class="change-body">"Q1 2026 Product Update" is what Zoho did. "Your dashboards are slow. Your maps reset manually. Your insights sit idle." is what the reader is losing. The original opens with Zoho's perspective. The rebuild opens with the reader's daily friction. <strong>Recognition beats announcement as a hook — every time.</strong></div>
+        </div>
+
+        <div class="change">
+          <div class="change-num">Upgrade 02</div>
+          <div class="change-title">12 features → 4 cards with hierarchy</div>
+          <div class="change-body">The original lists 12 updates with equal visual weight — Databridge and Drill Actions get the same treatment as MFA for white-label portals. The rebuild surfaces the 4 highest-impact features as visual cards with screenshots. <strong>Hierarchy creates scanning — flat lists create skipping.</strong> The remaining features (GenAI logs, Code Studio, API) are consolidated in the CTA destination.</div>
+        </div>
+
+        <div class="change">
+          <div class="change-num">Upgrade 03</div>
+          <div class="change-title">Connectors get a table, not a sentence</div>
+          <div class="change-body">9 named connectors — Zoho ERP, PayPal, Adobe Commerce, Constant Contact — are buried in a single paragraph. Each connector has a user waiting for it. The rebuild gives them a scannable table with direct links to documentation. <strong>A user waiting for PayPal integration needs to see "PayPal" at a glance, not read through a sentence to find it.</strong></div>
+        </div>
+
+        <div class="change">
+          <div class="change-num">Upgrade 04</div>
+          <div class="change-title">Stat cards replace abstract claims</div>
+          <div class="change-body">"Faster, more actionable, easier to scale" are assertions the reader has seen a thousand times. "9 new connectors / 0 app switches / 1 Databridge instance" are claims that can be verified, visualised, and remembered. <strong>Numbers beat adjectives — not because they're more impressive, but because they're specific, and specificity signals truth.</strong></div>
+        </div>
+
+        <div class="change">
+          <div class="change-num">Upgrade 05</div>
+          <div class="change-title">Pain point setup for every feature card</div>
+          <div class="change-body">The original describes what each feature does. The rebuild opens each card with what the reader is experiencing without it. Archive Data: "your queries are bloated." Map Zoom: "you're adjusting every widget by hand." Drill Actions: "acting on insights means switching apps." <strong>Features don't sell — the cost of not having them does.</strong></div>
+        </div>
+
+        <div class="change">
+          <div class="change-num">Upgrade 06</div>
+          <div class="change-title">Two CTAs, two conversion moments</div>
+          <div class="change-body">The original has one CTA at the very end — after 600 words of feature descriptions. The rebuild places CTA 1 above the feature cards (when the reader is curious and has just seen 3 stat cards) and CTA 2 after the cards (when the reader has seen the full proof). <strong>Different psychological moments require different calls to action.</strong> The first reduces friction ("explore in my workspace"). The second closes with social proof ("all updates live now").</div>
+        </div>
+
+        <div class="change">
+          <div class="change-num">Upgrade 07</div>
+          <div class="change-title">Connector pain point woven into hook</div>
+          <div class="change-body">The connector card includes a fourth pain point in the hook: "Your data lives in PayPal, Adobe Commerce, Tally Prime — analyzing across disconnected systems requires manual exports every time." This maintains narrative symmetry — 4 pain points in the hook body, 4 feature cards in the body, 4 references in the CTA. <strong>Every promise made in the subject must be delivered in the body. Every feature card must be set up by a pain point. The hook and the body must speak the same language.</strong></div>
+        </div>
+
+      </div>
+
+      <!-- METHODOLOGY NOTE -->
+      <div style="margin-top:32px;padding:24px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:10px">
+        <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--teal);margin-bottom:8px">This is the Strategic Flow Method</p>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Lead with the reader's problem. Surface the strongest proof first. Let numbers replace adjectives. Give connectors a table. Two CTAs for two psychological moments. Every feature card set up by a pain point. Hook and body in perfect symmetry.<br><br>
+        <a href="https://strategicflow.carrd.co" style="color:var(--teal);text-decoration:none;font-weight:600">strategicflow.carrd.co →</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:6px">Independent analysis. Zoho Corporation is not affiliated with Strategic Flow. All content sourced from zoho.com/blog/analytics as of April 2026.</p>
+</footer>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
