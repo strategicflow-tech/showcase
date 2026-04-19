@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Notion 3.4 Part 2 Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;
+  --surface:#0d1120;
+  --border:rgba(255,255,255,0.08);
+  --notion:#000000;
+  --notion-acc:#37352f;
+  --teal:#2dd4bf;
+  --red:#ef4444;
+  --white:#f1f5f9;
+  --muted:rgba(255,255,255,0.45);
+  --dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6}
+
+/* TABS */
+.tabs{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;padding:0 20px}
+.tab{padding:16px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+
+/* PANELS */
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* HEADER */
+.hdr{padding:40px 24px 32px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(45,212,191,0.06) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid rgba(45,212,191,0.3);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:18px}
+.dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,44px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.hdr h1 em{font-style:italic;color:var(--teal)}
+.hdr-meta{font-size:13px;color:var(--muted)}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.section{padding:36px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.lbl.teal{color:var(--teal)}
+.lbl.red{color:var(--red)}
+
+/* ── ORIGINAL ARTICLE ── */
+.article{background:#fff;color:#37352f;border-radius:12px;overflow:hidden;font-family:-apple-system,'Segoe UI',sans-serif}
+.art-hdr{background:#fff;border-bottom:1px solid #e9e9e7;padding:16px 28px;display:flex;align-items:center;justify-content:space-between}
+.art-hdr-left{display:flex;align-items:center;gap:12px}
+.art-logo{width:28px;height:28px}
+.art-brand{font-weight:700;font-size:15px;color:#37352f}
+.art-date{font-size:11px;color:#9b9b9b}
+.art-body{padding:0 28px 28px}
+.art-hero{width:100%;display:block;border-radius:0}
+.art-h1{font-size:28px;font-weight:800;color:#37352f;margin:24px 0 12px;line-height:1.2}
+.art-h3{font-size:17px;font-weight:700;color:#37352f;margin:24px 0 8px;line-height:1.3}
+.art-p{font-size:14px;color:#37352f;line-height:1.75;margin-bottom:12px}
+.art-img{width:100%;border-radius:8px;margin:10px 0;display:block}
+.art-ul{padding-left:20px;margin-bottom:12px}
+.art-ul li{font-size:14px;color:#37352f;line-height:1.75;margin-bottom:6px}
+.art-ul li strong{color:#37352f}
+.art-a{color:#2383e2;text-decoration:underline}
+.art-note{font-size:13px;color:#9b9b9b;font-style:italic;margin-bottom:12px}
+.art-tag{display:inline-block;background:#f1f1ef;border-radius:4px;padding:2px 8px;font-size:12px;color:#787774;margin-bottom:8px}
+
+/* FEATURE TABLE IN ARTICLE */
+.art-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.art-table th{background:#f7f6f3;padding:9px 12px;text-align:left;font-weight:700;font-size:12px;color:#37352f;border-bottom:1px solid #e9e9e7}
+.art-table td{padding:9px 12px;border-bottom:1px solid #e9e9e7;color:#37352f;vertical-align:top}
+.art-table tr:last-child td{border-bottom:none}
+.art-table a{color:#2383e2}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.flag{display:flex;gap:12px;padding:13px 15px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.55}
+.flag-i{font-size:15px;flex-shrink:0;margin-top:1px}
+
+/* ── REBUILT EMAIL ── */
+.email-shell{background:#f0f0f0;border-radius:14px;padding:18px}
+.email-inner{max-width:600px;margin:0 auto;background:#fff;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.1);font-family:-apple-system,'Segoe UI',sans-serif}
+.e-hdr{padding:16px 24px;background:#fff;border-bottom:2px solid #000;display:flex;align-items:center;justify-content:space-between}
+.e-hdr-left{display:flex;align-items:center;gap:10px}
+.e-logo{width:28px;height:28px}
+.e-brand{font-weight:800;font-size:15px;color:#37352f}
+.e-date{font-size:10px;color:#9b9b9b;font-family:monospace}
+.e-hero{width:100%;display:block}
+.e-body{padding:24px}
+.e-h1{font-size:24px;font-weight:900;color:#37352f;line-height:1.2;letter-spacing:-.3px;margin-bottom:12px}
+.e-lead{font-size:15px;color:#6b7280;line-height:1.75;margin-bottom:20px}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.stat-card{border:1px solid rgba(0,0,0,.1);border-top:3px solid #000;border-radius:8px;padding:14px 8px;text-align:center;background:#f9f9f7}
+.stat-num{font-size:26px;font-weight:900;color:#37352f;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:#9b9b9b;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+
+.e-divider{height:2px;background:linear-gradient(to right,#000,rgba(0,0,0,.2),transparent)}
+
+/* FEATURE CARDS */
+.fc{border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.fc-top{padding:14px 18px;background:#f9f9f7}
+.fc-lbl{font-size:10px;font-weight:700;color:#000;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px}
+.fc-txt{font-size:14px;color:#3a3a35;line-height:1.6}
+.fc-img{width:100%;display:block}
+.fc-ul{padding:0 18px 14px;margin-top:0;background:#f9f9f7}
+.fc-ul li{font-size:13px;color:#37352f;line-height:1.7;margin-bottom:4px;list-style:none;padding-left:14px;position:relative}
+.fc-ul li::before{content:"→";position:absolute;left:0;color:#000;font-weight:700}
+.fc-ul li strong{color:#37352f}
+
+/* CONNECTORS TABLE */
+.conn-wrap{overflow-x:auto;margin-bottom:14px}
+.conn-table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px}
+.conn-table th{background:#37352f;color:#fff;padding:9px 13px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.conn-table td{padding:9px 13px;border-bottom:1px solid rgba(0,0,0,.08);color:#374151;font-size:13px}
+.conn-table tr:nth-child(even) td{background:#f7f7f5}
+.conn-table tr:last-child td{border-bottom:none}
+.conn-a{color:#2383e2;text-decoration:none;font-weight:500}
+
+/* CTA */
+.e-cta{padding:0 24px 24px}
+.cta-outer{padding:2px;background:#000;border-radius:10px}
+.cta-inner{background:#fff;border-radius:9px;padding:22px 24px;text-align:center}
+.cta-title{font-size:15px;font-weight:700;color:#37352f;margin-bottom:14px;line-height:1.4}
+.cta-btn{display:inline-block;background:#000;color:#fff;font-size:14px;font-weight:700;text-decoration:none;padding:11px 28px;border-radius:7px;letter-spacing:.2px}
+.cta-note{font-size:11px;color:#9b9b9b;margin-top:8px}
+
+.e-footer{padding:20px 32px;border-top:1px solid rgba(0,0,0,.08);background:#f7f7f5;text-align:center}
+.e-footer p{font-size:11px;color:rgba(0,0,0,.4);line-height:1.6;margin-bottom:3px}
+
+/* SCORE */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.score-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.score-n{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px}
+.score-d{font-size:18px;color:var(--muted)}
+.score-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.score-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* AB */
+.ab-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:17px 20px}
+.ab-ang{font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.ab-sub{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+.ab-why{font-size:12px;color:var(--muted);line-height:1.55}
+.ab-lift{display:inline-block;margin-top:6px;padding:3px 10px;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.25);border-radius:20px;font-size:11px;font-weight:700;color:var(--teal)}
+
+/* CHANGES */
+.changes{display:flex;flex-direction:column;gap:12px}
+.change{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+.ch-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.ch-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.ch-body{font-size:13px;color:var(--muted);line-height:1.65}
+.ch-body strong{color:var(--white)}
+
+/* BA */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.ba-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
+.ba-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px}
+.ba-box.after .ba-lbl{color:var(--teal)}
+.ba-subj{font-size:14px;font-weight:700;color:var(--red);margin-bottom:6px;line-height:1.4}
+.ba-box.after .ba-subj{color:var(--teal)}
+.ba-note{font-size:12px;color:var(--muted);line-height:1.55}
+
+footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:580px){
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .ba-grid,.score-grid{grid-template-columns:1fr}
+  .tab{padding:13px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tab active" onclick="show('before',this)">Before</div>
+  <div class="tab" onclick="show('after',this)">After — Strategic Flow</div>
+  <div class="tab" onclick="show('changes',this)">What changed & why</div>
+</nav>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- BEFORE -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="before" class="panel active">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>Notion 3.4, Part 2 — <em>Audited.</em></h1>
+      <p class="hdr-meta">Original release notes · notion.com/releases/2026-04-14</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl">Original content</div>
+      <div class="article">
+        <div class="art-hdr">
+          <div class="art-hdr-left">
+            <img class="art-logo" src="https://www.notion.com/front-static/favicon.ico" alt="Notion">
+            <div>
+              <div class="art-brand">Notion</div>
+              <div class="art-date">April 14, 2026 · Release Notes</div>
+            </div>
+          </div>
+        </div>
+        <div class="art-body">
+          <img class="art-hero" src="https://images.ctfassets.net/spoqsaf9291f/7iMlUGn3XhfCoGBKuUPwIi/43487e8cb9f639538391fcb2ba839b94/What-sNew-Cover.jpg" alt="Notion 3.4 Part 2">
+          <h1 class="art-h1">Notion 3.4, part 2</h1>
+          <p class="art-p">We launched Custom Agents a few weeks ago, and teams are building faster than we can keep up with. In Notion 3.4, your agents can take on even more of your day-to-day busywork.</p>
+          <p class="art-p">Custom Agents are now easier to fine-tune, and new AI Autofill brings them straight into your databases, making enrichment and upkeep automatic. And you can create skills for your Notion Agent, so it can learn your most important workflows.</p>
+          <p class="art-note"><em>Custom Agents are still free to try until May 3, 2026, so now's the time!</em></p>
+
+          <h3 class="art-h3">Teams and Custom Agents, working together</h3>
+          <img class="art-img" src="https://images.ctfassets.net/spoqsaf9291f/3aDYwNu9KdabAPhytGvTu9/ca0e894e3424c51f776e559b15ef9a7c/QA_Agent_WhatsNew_pt2.gif" alt="Custom Agents">
+          <p class="art-p">In case you missed it, here's a quick refresher on Custom Agents: they're like AI teammates that handle your repetitive work. Since launching a month ago, we're seeing all manner of teams discover new ways to put them to work:</p>
+          <ul class="art-ul">
+            <li><strong>Surface the right info at the right time:</strong> Ramp's GTM team uses Enablement Eddie to pull up the right assets and customer answers.</li>
+            <li><strong>Handle repeat questions:</strong> Clay runs an IT Buddy that resolves common employee questions in minutes.</li>
+            <li><strong>Automate reporting:</strong> Braintrust's Competitive Intelligence Agent tracks competitor updates across the web and Gong call transcripts, then revises internal docs every morning.</li>
+          </ul>
+
+          <h3 class="art-h3">New Custom Agent upgrades: efficiency, transparency, context</h3>
+          <img class="art-img" src="https://www.notion.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fspoqsaf9291f%2F2Ap7yFGJQz6CUOXyBQLjva%2Ffeb0a74c8d906f2e20d1b76e5c4c5bcb%2FAI_Models_Visual.jpg&w=3840&q=75" alt="Agent upgrades">
+          <ul class="art-ul">
+            <li><strong>More efficient to run:</strong> Custom Agents are now 35–50% cheaper to run across the board. Even more cost efficient when you pick GPT-5.4 Mini & Nano, Haiku 4.5, and MiniMax M2.5 that use up to 10× fewer credits.</li>
+            <li><strong>Visibility into your Agents' credits:</strong> Easier to tune your agent and understand what's working with the Notion credits dashboard.</li>
+            <li><strong>More context to work with:</strong> Custom Agents can now use private Slack channels. More integrations coming: Microsoft Teams, Google Drive, Salesforce, and custom connectors.</li>
+          </ul>
+          <p class="art-note"><em>Starting May 4, Custom Agents will use Notion Credits you can purchase.</em></p>
+
+          <h3 class="art-h3">AI Autofill in databases, powered by Custom Agents</h3>
+          <img class="art-img" src="https://images.ctfassets.net/spoqsaf9291f/2C36hM1S4ydzoz7YFO8Bvv/1259dc508edfe33218152b52b0771933/Database_Agent_-_AI_2.gif" alt="AI Autofill">
+          <p class="art-p">Use Autofill to keep your data fresh and up to date, now with all the power and intelligence of Custom Agents. Continuously enrich, extract, and categorize information across every row, so your database stays trustworthy without manual review.</p>
+
+          <h3 class="art-h3">Your Notion Agent has new Skills, integrations … and you can talk to it!</h3>
+          <img class="art-img" src="https://www.notion.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fspoqsaf9291f%2F19aVglB1oJJYQH637JgDnn%2F495a927dc520f27ec8d65bf5676a3183%2F05_Notion_Agent.jpg&w=3840&q=75" alt="Notion Agent Skills">
+          <p class="art-p">Skills turn "that thing you always ask Notion Agent to do" into something it can do on command. Save your best workflows as skills like drafting weekly updates, reshaping a doc in your team's format, or prepping briefs before a meeting.</p>
+          <ul class="art-ul">
+            <li><strong>Integrate with Calendar, Mail, and Slack:</strong> Ask your agent to read, summarize, and follow through in the tools you use every day.</li>
+            <li><strong>Inline doc edits:</strong> Have your agent edit directly in your doc when you select text.</li>
+            <li><strong>Talk to your agent:</strong> Use the microphone button to dictate your prompt.</li>
+          </ul>
+
+          <h3 class="art-h3">Customize your AI Meeting Notes summary</h3>
+          <img class="art-img" src="https://www.notion.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fspoqsaf9291f%2F36nRLk9LvDst7sBB0333us%2Fd0de164a0958d76e0e461f5ca8c27850%2F06_AI_Meeting_Notes_-_Primary.jpg&w=3840&q=75" alt="AI Meeting Notes">
+          <p class="art-p">Your #1 feature request for AI Meeting Notes is finally here! Now you can add a quick set of custom instructions, so summaries come out in the format you prefer.</p>
+
+          <h3 class="art-h3">New AI connectors: Salesforce and Box</h3>
+          <img class="art-img" src="https://www.notion.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fspoqsaf9291f%2F3JDDureEVFBADVZFnGZouW%2Fe5ea1fa9e02981e9e2516cb1e2abde4f%2F09_AI_Connectors_v4.png&w=3840&q=75" alt="AI Connectors">
+          <table class="art-table">
+            <tr><th>Connector</th><th>What you can do</th></tr>
+            <tr><td><strong>Salesforce</strong></td><td>Search accounts, opportunities, and notes to prep for calls, draft follow-ups, and build account plans without bouncing between tabs.</td></tr>
+            <tr><td><strong>Box</strong></td><td>Search and summarize files like proposals, contracts, and project docs to pull key details, compare versions, and keep deliverables moving.</td></tr>
+          </table>
+
+          <h3 class="art-h3">A meaningful performance boost</h3>
+          <img class="art-img" src="https://images.ctfassets.net/spoqsaf9291f/78v0IeajC9MjdXloOkW8SG/00d1750ff55cbd4ed8429632f99b5427/Page_Loader.gif" alt="Performance boost">
+          <p class="art-p">Pages should feel instant. Now, initial page render is 28% faster, so content shows up sooner and you can stay in flow.</p>
+
+          <h3 class="art-h3">New database permission: "Can create pages"</h3>
+          <img class="art-img" src="https://www.notion.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fspoqsaf9291f%2F24KPPlIhLfLTUnxytBy4qC%2F71c3e2cafa9b7117adf0b00ad5b0931c%2FDB_Permission_2.jpg&w=3840&q=75" alt="DB Permission">
+          <p class="art-p">Allow teammates to create new pages in a database, while still being restricted from viewing or editing other content they shouldn't have access to.</p>
+
+          <h3 class="art-h3">But wait, there's more</h3>
+          <ul class="art-ul">
+            <li><strong>AI Meeting Notes via API:</strong> Integrations can pull full transcripts and summarized notes automatically.</li>
+            <li><strong>n8n MCP integration:</strong> Connect Custom Agents to n8n to run existing automations across apps and APIs.</li>
+            <li><strong>MCP improvements:</strong> AI tools can now do more in Notion — comments, meeting transcripts, Notion Sites — with faster responses and new admin controls.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- FLAGS -->
+      <div class="flags">
+        <div class="flag"><span class="flag-i">⚠️</span><div><strong>"We launched Custom Agents a few weeks ago, and teams are building faster than we can keep up with"</strong> — brand enthusiasm as opener. Zero relevance to the reader's problem. The person reading this has busywork they need eliminated today, not a progress report on Notion's launch momentum.</div></div>
+        <div class="flag"><span class="flag-i">⚠️</span><div><strong>35–50% cost reduction buried in bullet #1 of a sub-section</strong> — this is the most financially concrete claim in the entire release. Users paying Notion credits care deeply about this. It gets one sentence inside a three-bullet list, with no headline treatment.</div></div>
+        <div class="flag"><span class="flag-i">⚠️</span><div><strong>No stat cards or visual hierarchy for key numbers</strong> — 35-50% cheaper, 28% faster page render, 10× fewer credits on mini models, May 3 deadline — all buried in prose. None surfaced as scannable proof.</div></div>
+        <div class="flag"><span class="flag-i">⚠️</span><div><strong>Salesforce and Box connectors get no problem setup</strong> — "With the Salesforce connector, search accounts…" describes the feature. The pain is: your team switches tabs 8 times per call prep. That's the sentence that should open the section.</div></div>
+        <div class="flag"><span class="flag-i">⚠️</span><div><strong>May 3 deadline mentioned twice but never treated as urgency</strong> — "Custom Agents are still free to try until May 3, 2026, so now's the time!" is italicized footnote copy. A hard deadline is the strongest conversion trigger in the email. It should be the headline.</div></div>
+        <div class="flag"><span class="flag-i">⚠️</span><div><strong>"But wait, there's more" section dilutes the core narrative</strong> — n8n MCP integration, API Meeting Notes, MCP improvements are valuable but buried as afterthoughts. They need their own context or a consolidated "Also in 3.4" section with brief descriptions.</div></div>
+        <div class="flag"><span class="flag-i">⚠️</span><div><strong>CTA "Try Custom Agents →" appears once at the top, then never again</strong> — after 800 words of features, there is no closing call to action. The reader who gets to the end has no directed next step.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- AFTER -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="after" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow — Rebuilt</div>
+      <h1>Notion 3.4, Part 2 — <em>Rebuilt.</em></h1>
+      <p class="hdr-meta">Newsletter rebuild · High-Impact tier · strategic-flow-pro.replit.app</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl teal">Rebuilt newsletter</div>
+      <div class="email-shell">
+        <div class="email-inner">
+
+          <!-- HEADER -->
+          <div class="e-hdr">
+            <div class="e-hdr-left">
+              <img class="e-logo" src="https://www.notion.com/front-static/favicon.ico" alt="Notion">
+              <div>
+                <div class="e-brand">Notion</div>
+                <div class="e-date">3.4 Part 2 · April 14, 2026</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HERO -->
+          <img class="e-hero" src="https://images.ctfassets.net/spoqsaf9291f/7iMlUGn3XhfCoGBKuUPwIi/43487e8cb9f639538391fcb2ba839b94/What-sNew-Cover.jpg" alt="Notion 3.4">
+
+          <!-- HOOK -->
+          <div class="e-body">
+            <h1 class="e-h1">⚡ Your agents just got 35–50% cheaper. Pages load 28% faster. And the free window closes May 3.</h1>
+            <p class="e-lead">Custom Agents now cost less to run, connect to private Slack channels, and can be taught your team's workflows as reusable Skills. AI Autofill keeps your databases current without manual review. And pages that used to make you wait are now 28% faster out of the gate. Three problems — cost, context, and speed — fixed in one update.</p>
+
+            <!-- STAT CARDS -->
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">50%</div>
+                <div class="stat-lbl">Cheaper agents to run</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">28%</div>
+                <div class="stat-lbl">Faster page render</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">May 3</div>
+                <div class="stat-lbl">Free trial deadline</div>
+              </div>
+            </div>
+
+            <!-- CTA 1 -->
+            <div style="text-align:center;margin-bottom:22px">
+              <a href="https://notion.so/?target=new_custom_agent" style="display:inline-block;padding:12px 26px;background:#000;color:#fff;font-weight:700;font-size:13px;border-radius:7px;text-decoration:none">Try Custom Agents free — before May 3 →</a>
+              <p style="font-size:11px;color:#9b9b9b;margin-top:8px">Free until May 3, 2026 · No card required to start</p>
+            </div>
+          </div>
+
+          <div class="e-divider"></div>
+
+          <!-- FEATURE 1: AGENTS CHEAPER -->
+          <div style="padding:20px 24px 0">
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">Custom Agent Upgrades — Cost, Visibility, Context</div>
+                <div class="fc-txt">Running agents on repetitive tasks like email triage now costs 35–50% less across the board. Switching to GPT-5.4 Mini, Haiku 4.5, or MiniMax M2.5 cuts credits by up to 10×. The Notion credits dashboard shows exactly where your credits go — so you optimize instead of guess.</div>
+              </div>
+              <img class="fc-img" src="https://www.notion.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fspoqsaf9291f%2F2Ap7yFGJQz6CUOXyBQLjva%2Ffeb0a74c8d906f2e20d1b76e5c4c5bcb%2FAI_Models_Visual.jpg&w=3840&q=75" alt="Agent upgrades">
+              <ul class="fc-ul" style="padding-top:12px">
+                <li><strong>Private Slack channels now accessible</strong> — agents no longer miss the conversations that matter</li>
+                <li><strong>Microsoft Teams, Google Drive, Salesforce</strong> — coming next</li>
+              </ul>
+            </div>
+
+            <!-- FEATURE 2: AI AUTOFILL -->
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">AI Autofill in Databases — Powered by Custom Agents</div>
+                <div class="fc-txt">Your database goes stale the moment someone stops manually updating it. AI Autofill continuously enriches, extracts, and categorizes information across every row — so your CRM, project tracker, and pipeline stay current without anyone touching them.</div>
+              </div>
+              <img class="fc-img" src="https://images.ctfassets.net/spoqsaf9291f/2C36hM1S4ydzoz7YFO8Bvv/1259dc508edfe33218152b52b0771933/Database_Agent_-_AI_2.gif" alt="AI Autofill">
+            </div>
+
+            <!-- FEATURE 3: SKILLS -->
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">Notion Agent Skills + Voice + Inline Edits</div>
+                <div class="fc-txt">Every time you ask Notion Agent to do the same thing — draft a weekly update, reshape a doc, prep a brief — you're spending a prompt on a workflow that should already be saved. Skills make it one command. Voice input means you can dictate instead of type. Inline edits happen in place, not in a side panel.</div>
+              </div>
+              <img class="fc-img" src="https://www.notion.com/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2Fspoqsaf9291f%2F19aVglB1oJJYQH637JgDnn%2F495a927dc520f27ec8d65bf5676a3183%2F05_Notion_Agent.jpg&w=3840&q=75" alt="Notion Agent Skills">
+            </div>
+
+            <!-- FEATURE 4: CONNECTORS TABLE -->
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">New AI Connectors — Salesforce & Box</div>
+                <div class="fc-txt">Your team switches tabs to prep for every call, compare every contract, and follow up on every deal. Two new connectors bring Salesforce and Box directly into Notion AI — so context lives where work happens.</div>
+              </div>
+              <div class="conn-wrap">
+                <table class="conn-table">
+                  <tr>
+                    <th>Connector</th>
+                    <th>What it unlocks</th>
+                    <th>Best for</th>
+                  </tr>
+                  <tr>
+                    <td><strong>Salesforce</strong></td>
+                    <td>Search accounts, opps, notes — draft follow-ups and account plans without tab switching</td>
+                    <td>Sales, RevOps</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Box</strong></td>
+                    <td>Search and summarize proposals, contracts, project docs — compare versions, extract key details</td>
+                    <td>Legal, Finance, PM</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- FEATURE 5: PERFORMANCE -->
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">28% Faster Page Render + Meeting Notes Customization</div>
+                <div class="fc-txt">Initial page render is now 28% faster — content shows up before you finish reaching for your mouse. AI Meeting Notes now accept custom instructions, so summaries arrive in the format your team actually uses, not Notion's default.</div>
+              </div>
+              <img class="fc-img" src="https://images.ctfassets.net/spoqsaf9291f/78v0IeajC9MjdXloOkW8SG/00d1750ff55cbd4ed8429632f99b5427/Page_Loader.gif" alt="Performance">
+            </div>
+          </div>
+
+          <!-- CTA FINAL -->
+          <div class="e-cta" style="padding-top:8px">
+            <div class="cta-outer">
+              <div class="cta-inner">
+                <p class="cta-title">Custom Agents are free to try until May 3. After that, they run on Notion Credits.</p>
+                <a href="https://notion.so/?target=new_custom_agent" class="cta-btn">Start my first Agent →</a>
+                <p class="cta-note">Free through May 3, 2026 · Business & Enterprise plans · No setup required</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="e-footer">
+            <p style="font-weight:700;color:rgba(0,0,0,.35);font-size:13px">Notion</p>
+            <p>Your AI workspace — built for human teamwork.</p>
+            <p style="margin-top:5px"><a href="#" style="color:rgba(0,0,0,.3);text-decoration:none;font-size:11px">Unsubscribe · notion.com/releases</a></p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SCORE -->
+      <div style="margin-top:24px">
+        <div class="lbl teal">Conversion score</div>
+        <div class="score-grid">
+          <div class="score-box">
+            <div class="score-l">Original</div>
+            <div class="score-n" style="color:var(--red)">4<span class="score-d">/10</span></div>
+            <div class="score-desc">Brand enthusiasm opener. Key numbers buried in bullets. No stat cards. May 3 deadline treated as footnote. No closing CTA.</div>
+          </div>
+          <div class="score-box" style="border-color:rgba(45,212,191,.25);background:rgba(45,212,191,.04)">
+            <div class="score-l" style="color:var(--teal)">Rebuilt</div>
+            <div class="score-n" style="color:var(--teal)">9<span class="score-d">/10</span></div>
+            <div class="score-desc">3 pain points in hook. Stat cards surface 50%/28%/May 3. Connectors table. Deadline as primary CTA. Two CTAs at key scroll moments.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AB -->
+      <div style="margin-top:26px">
+        <div class="lbl teal">3 A/B subject line variants</div>
+        <div class="ab-list">
+          <div class="ab-card">
+            <div class="ab-ang">Deadline + savings</div>
+            <div class="ab-sub">Agents just got 50% cheaper — free until May 3</div>
+            <div class="ab-why">Combines the strongest financial claim (50% cost reduction) with the hard deadline. Two conversion triggers in one subject line.</div>
+            <span class="ab-lift">Predicted open rate: 36–42%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Speed + consequence</div>
+            <div class="ab-sub">28% faster pages. Agents that cost half as much. One update.</div>
+            <div class="ab-why">Two specific numbers, zero adjectives. Readers can verify both claims — specificity signals truth and builds trust before opening.</div>
+            <span class="ab-lift">Predicted open rate: 30–36%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Urgency — deadline</div>
+            <div class="ab-sub">Custom Agents are free for 3 more weeks. Then they're not.</div>
+            <div class="ab-why">Blunt deadline framing. "Then they're not" is a pattern interrupt — abrupt, specific, creates FOMO without using the word FOMO.</div>
+            <span class="ab-lift">Predicted open rate: 28–34%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- WHAT CHANGED -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="changes" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>The 7 Strategic <em>Upgrades</em></h1>
+      <p class="hdr-meta">What changed, why each change converts better</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+
+      <div class="lbl">Subject line transformation</div>
+      <div class="ba-grid">
+        <div class="ba-box">
+          <div class="ba-lbl">❌ Original</div>
+          <div class="ba-subj">Notion 3.4, part 2</div>
+          <div class="ba-note">A version number. Tells the reader nothing about why this update matters to them today. Could be skipped by any active Notion user who assumes they'll check it later.</div>
+        </div>
+        <div class="ba-box after">
+          <div class="ba-lbl">✓ Rebuilt</div>
+          <div class="ba-subj">Agents just got 50% cheaper — free until May 3</div>
+          <div class="ba-note">Specific financial claim + hard deadline. Two conversion triggers before the reader opens. Creates urgency and communicates value simultaneously.</div>
+        </div>
+      </div>
+
+      <div class="changes" style="margin-top:26px">
+        <div class="change">
+          <div class="ch-num">Upgrade 01</div>
+          <div class="ch-title">The deadline is the headline — not a footnote</div>
+          <div class="ch-body">The original mentions May 3 twice — once in italicised footnote copy at the top, once buried in a sub-section. A hard free-trial deadline is the strongest conversion trigger in the email. <strong>The rebuild makes it the headline of the hook, one of three stat cards, and the primary CTA.</strong> The same information, placed correctly, converts completely differently.</div>
+        </div>
+        <div class="change">
+          <div class="ch-num">Upgrade 02</div>
+          <div class="ch-title">35–50% cost reduction surfaces to stat card</div>
+          <div class="ch-body">Users paying Notion credits care deeply about cost efficiency. The original buries "35–50% cheaper" in bullet #1 of a sub-section titled "New Custom Agent upgrades." <strong>The rebuild gives it the largest visual treatment in the email — a stat card that reads "50% / Cheaper agents to run" — before any feature description.</strong> Numbers before features. Always.</div>
+        </div>
+        <div class="change">
+          <div class="ch-num">Upgrade 03</div>
+          <div class="ch-title">Pain point before product — for every feature</div>
+          <div class="ch-body">The original opens AI Autofill with: "Use Autofill to keep your data fresh." That's a feature description. <strong>The rebuild opens with: "Your database goes stale the moment someone stops manually updating it."</strong> That's a pain the reader recognises. Recognition creates urgency — a feature description creates evaluation. One converts, one gets skipped.</div>
+        </div>
+        <div class="change">
+          <div class="ch-num">Upgrade 04</div>
+          <div class="ch-title">Salesforce + Box get a table, not a paragraph</div>
+          <div class="ch-body">Two enterprise connectors — Salesforce and Box — are described in two paragraphs of prose. Sales teams, RevOps, Legal, Finance each care about different things. <strong>The rebuild uses a three-column table: Connector / What it unlocks / Best for.</strong> A sales rep scanning for "Salesforce" finds it in 2 seconds. Prose makes them read 60 words to find the same information.</div>
+        </div>
+        <div class="change">
+          <div class="ch-num">Upgrade 05</div>
+          <div class="ch-title">28% page speed gets a stat card, not a sentence</div>
+          <div class="ch-body">Performance improvements are consistently the most universally relevant feature in any product update — every user benefits, every day. The original gives it one paragraph. <strong>The rebuild gives it a stat card at the top — "28% / Faster page render" — visible before the reader scrolls past the first screen.</strong></div>
+        </div>
+        <div class="change">
+          <div class="ch-num">Upgrade 06</div>
+          <div class="ch-title">Two CTAs at two psychological moments</div>
+          <div class="ch-body">The original has one CTA at the very top, then nothing at the end of 800 words. <strong>The rebuild places CTA 1 above the features</strong> (when curiosity peaks after seeing the stat cards) <strong>and CTA 2 after the features</strong> (when the reader has seen the proof and is ready to act). Different psychological moments require different calls to action. The word "my" in "Start my first Agent" closes the distance between reading and deciding.</div>
+        </div>
+        <div class="change">
+          <div class="ch-num">Upgrade 07</div>
+          <div class="ch-title">"But wait, there's more" consolidated into hook</div>
+          <div class="ch-body">The original's final section — n8n MCP, API Meeting Notes, MCP improvements — reads like a postscript. These are real features with real users waiting for them. <strong>The rebuild weaves the Slack private channels mention into the Agents feature card as a specific pain ("agents no longer miss the conversations that matter") and notes upcoming integrations as a forward promise.</strong> Every feature deserves a setup. No feature should feel like an afterthought.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;padding:22px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:10px">
+        <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--teal);margin-bottom:7px">This is the Strategic Flow Method</p>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7">Deadline as headline. Numbers before features. Pain before product. Connectors get tables. Two CTAs for two moments. Every claim that can be quantified gets a stat card. <br><br>
+        <a href="https://strategicflow.carrd.co" style="color:var(--teal);text-decoration:none;font-weight:600">strategicflow.carrd.co →</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:5px">Independent analysis. Notion Labs, Inc. is not affiliated with Strategic Flow. All content sourced from notion.com/releases as of April 2026.</p>
+</footer>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
