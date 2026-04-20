@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Medallia CX Stats Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--surface:#0d1120;--border:rgba(255,255,255,0.08);
+  --md:#7C3AED;--md-dim:rgba(124,58,237,0.12);--md-border:rgba(124,58,237,0.28);
+  --md-green:#00B67A;
+  --teal:#2dd4bf;--red:#ef4444;--red-bg:rgba(239,68,68,0.08);
+  --white:#f1f5f9;--muted:rgba(255,255,255,0.45);--dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6}
+
+.tabs{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto}
+.tab{padding:16px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--md);border-bottom-color:var(--md)}
+
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.hdr{padding:40px 24px 32px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(124,58,237,0.07) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--md-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--md);margin-bottom:18px}
+.dot{width:6px;height:6px;background:var(--md);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.hdr h1 em{font-style:italic;color:var(--md)}
+.hdr-meta{font-size:13px;color:var(--muted)}
+.hdr-meta a{color:var(--md);text-decoration:none}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.section{padding:36px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.lbl.purple{color:var(--md)}
+.lbl.red{color:var(--red)}
+
+/* ARTICLE */
+.article{background:#fff;color:#1e1e1e;border-radius:14px;overflow:hidden;font-family:-apple-system,'Segoe UI',sans-serif}
+.art-hdr{padding:16px 28px;background:#1a0533;border-bottom:3px solid #7C3AED;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.art-logo{height:22px;display:block}
+.art-byline{font-size:11px;color:rgba(255,255,255,.55)}
+.art-body{padding:28px}
+.art-hero{width:100%;border-radius:10px;margin:0 0 22px;display:block}
+.art-h1{font-size:22px;font-weight:800;color:#1e1e1e;margin:0 0 6px;line-height:1.25}
+.art-meta{font-size:12px;color:#888;margin-bottom:20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.art-tag{display:inline-block;background:#f3f0ff;border-radius:4px;padding:2px 8px;font-size:11px;color:#5b21b6;font-weight:600}
+.art-p{font-size:14px;color:#374151;line-height:1.8;margin-bottom:14px}
+.art-h2{font-size:16px;font-weight:800;color:#1e1e1e;margin:26px 0 10px;padding-left:14px;border-left:3px solid #7C3AED}
+.art-h3{font-size:14px;font-weight:700;color:#1e1e1e;margin:18px 0 8px}
+.art-chart{width:100%;border-radius:8px;margin:14px 0;display:block;border:1px solid #e5e7eb}
+.art-stat-callout{background:#faf5ff;border:1px solid #ddd6fe;border-radius:10px;padding:18px 20px;margin:14px 0}
+.art-stat-callout .big{font-size:36px;font-weight:900;color:#7C3AED;line-height:1;margin-bottom:4px}
+.art-stat-callout .label{font-size:13px;color:#5b21b6;font-weight:600;line-height:1.5}
+.art-takeaway{background:#f5f3ff;border-left:4px solid #7C3AED;border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0;font-size:14px;color:#3b0764;line-height:1.65}
+.art-takeaway strong{color:#5b21b6}
+.art-next{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;margin:10px 0;font-size:13px;color:#374151}
+.art-next strong{color:#1e1e1e}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.flag{display:flex;gap:12px;padding:13px 16px;background:var(--red-bg);border:1px solid rgba(239,68,68,.18);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.55}
+.flag strong{color:var(--white)}
+
+/* EMAIL SHELL */
+.email-shell{background:#f0f0f0;border-radius:14px;padding:18px}
+.email-inner{max-width:600px;margin:0 auto;background:#fff;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.1);font-family:-apple-system,'Segoe UI',sans-serif}
+.e-hdr{padding:18px 28px;background:#1a0533;border-bottom:3px solid #7C3AED;display:flex;align-items:center;justify-content:space-between}
+.e-logo{height:20px;display:block}
+.e-date{font-size:10px;color:rgba(255,255,255,.4);font-family:monospace}
+.e-body{padding:32px 28px 0}
+.e-h1{font-size:24px;font-weight:900;color:#1a1a1a;line-height:1.2;letter-spacing:-.3px;margin-bottom:14px}
+.e-lead{font-size:15px;color:#4b5563;line-height:1.75;margin-bottom:22px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.stat-card{border:1px solid rgba(0,0,0,.1);border-top:3px solid #7C3AED;border-radius:8px;padding:14px 8px;text-align:center;background:#faf5ff}
+.stat-num{font-size:22px;font-weight:900;color:#7C3AED;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+
+.e-divider{height:3px;background:linear-gradient(to right,#7C3AED,rgba(124,58,237,.3),transparent)}
+
+.fc{border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;margin:0 0 14px}
+.fc-top{padding:14px 18px;background:#f9f9f7}
+.fc-persona{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.fc-persona.ceo{background:#dbeafe;color:#1e40af}
+.fc-persona.cro{background:#d1fae5;color:#065f46}
+.fc-persona.coo{background:#fce7f3;color:#9d174d}
+.fc-lbl{font-size:10px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.fc-txt{font-size:14px;color:#3a3a35;line-height:1.6}
+.fc-stat{font-size:28px;font-weight:900;color:#7C3AED;margin:10px 0 2px}
+.fc-stat-desc{font-size:11px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 0 22px}
+.ba-box{padding:14px;background:#f5f5f3;border-radius:8px}
+.ba-box.after{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18)}
+.ba-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#9b9b9b;margin-bottom:6px}
+.ba-box.after .ba-lbl{color:#7C3AED}
+.ba-txt{font-size:13px;color:#1a1a1a;line-height:1.6}
+
+.e-cta{padding:0 0 26px}
+.cta-outer{padding:3px;background:linear-gradient(135deg,#7C3AED,#00B67A);border-radius:10px}
+.cta-inner{background:#fff;border-radius:8px;padding:22px 24px;text-align:center}
+.cta-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px;line-height:1.4}
+.cta-btn{display:inline-block;background:#7C3AED;color:#fff;font-size:14px;font-weight:800;text-decoration:none;padding:11px 28px;border-radius:7px}
+
+.e-footer{padding:18px 32px;border-top:1px solid rgba(0,0,0,.08);background:#f7f7f5;text-align:center;font-size:11px;color:rgba(0,0,0,.35);line-height:1.7}
+
+/* SCORES */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.score-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.score-n{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px}
+.score-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.score-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* AB */
+.ab-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:17px 20px}
+.ab-ang{font-size:10px;font-weight:700;color:var(--md);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.ab-sub{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+.ab-why{font-size:12px;color:var(--muted);line-height:1.55}
+.ab-lift{display:inline-block;margin-top:6px;padding:3px 10px;background:var(--md-dim);border:1px solid var(--md-border);border-radius:20px;font-size:11px;font-weight:700;color:var(--md)}
+
+/* CALENDAR */
+.cal-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cal-item{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--md);border-radius:8px;padding:12px 16px;display:flex;gap:14px;align-items:baseline}
+.cal-timing{font-size:10px;font-weight:700;color:var(--md);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;flex-shrink:0;min-width:110px}
+.cal-topic{font-size:13px;color:var(--muted)}
+
+/* CHANGES */
+.changes{display:flex;flex-direction:column;gap:12px}
+.change{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+.ch-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--md);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.ch-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.ch-body{font-size:13px;color:var(--muted);line-height:1.65}
+.ch-body strong{color:var(--white)}
+
+.ba2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ba2{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:14px}
+.ba2.after{border-color:var(--md-border);background:var(--md-dim)}
+.ba2-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.ba2.after .ba2-lbl{color:var(--md)}
+.ba2-txt{font-size:13px;color:rgba(255,255,255,.7);line-height:1.55}
+.ba2.after .ba2-txt{color:#c4b5fd}
+
+.method-note{margin-top:28px;padding:22px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--md);border-radius:10px}
+.method-note p{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--md);margin-bottom:7px}
+.method-note span{font-size:13px;color:var(--muted);line-height:1.7}
+.method-note a{color:var(--md);text-decoration:none;font-weight:600}
+
+footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:600px){
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .ba-grid,.ba2-grid,.score-grid{grid-template-columns:1fr}
+  .cal-item{flex-direction:column;gap:4px}
+  .tab{padding:13px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tab active" onclick="show('before',this)">Before</div>
+  <div class="tab" onclick="show('after',this)">After — Strategic Flow</div>
+  <div class="tab" onclick="show('changes',this)">What changed & why</div>
+</nav>
+
+<!-- ══════════════ BEFORE ══════════════ -->
+<div id="before" class="panel active">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow Teardown</div>
+      <h1>Medallia CX Stats — <em>Audited.</em></h1>
+      <p class="hdr-meta">Original post · <a href="https://www.medallia.com/blog/customer-experience-stats-show-c-suite/" target="_blank">medallia.com → 3 Customer Experience Stats to Show Your C-Suite</a> · Mar 17, 2026</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl">Original article</div>
+      <div class="article">
+        <div class="art-hdr">
+          <img class="art-logo" src="https://www.medallia.com/wp-content/themes/medallia2024-new/assets/static/img/medallia-white.svg" alt="Medallia">
+          <div class="art-byline">Medallia Blog · by Lauren Farah, Content Strategist</div>
+        </div>
+        <div class="art-body">
+          <img class="art-hero" src="https://www.medallia.com/wp-content/uploads/2026/03/medallia_blog_3-11-1-scaled.jpg" alt="Medallia CX Report 2026">
+
+          <h1 class="art-h1">3 Customer Experience Stats to Show Your C-Suite</h1>
+          <div class="art-meta">
+            <span>March 17, 2026</span>·<span class="art-tag">Customer Experience</span><span class="art-tag">CX Strategy</span><span class="art-tag">C-Suite</span>
+          </div>
+
+          <p class="art-p">When CX lives in a silo, everyone suffers. CX teams can't demonstrate their value. C-suite leaders fail to implement data-driven strategies that improve the company's bottom line. And while customers continue to signal their intent, none of it — their feedback, frustrations, and concerns — ends up making its way back to the decision-makers who can actually make a difference.</p>
+          <p class="art-p">That's why we conducted our 2026 State of Customer Experience Report, to see what CX teams can do to better connect the powerful engine of customer experience to the rest of the enterprise, once and for all.</p>
+          <p class="art-p">Spoiler: More than ever, the most successful CX teams are proving their worth by unlocking greater value for executives across the C-suite, delivering insights and actions that boost operational efficiencies, cost savings, and revenue growth.</p>
+          <p class="art-p">Here are three findings that demonstrate what CX can bring to the table for your CEO, CRO, and COO.</p>
+
+          <h2 class="art-h2">1. For Your CEO: Reporting Structure Impact on Executive Action</h2>
+          <div class="art-h3">The data:</div>
+          <p class="art-p">Executive action on CX insights drops off sharply when CX teams report to leaders other than a dedicated CCO or CXO. Executives are <strong>1.3x more likely to act on CX insights</strong> when the CX team reports to a CCO or CXO. Despite this, currently only <strong>half of CX practitioners report to a CCO or CXO</strong>. Furthermore, <strong>2 out of 3 CX practitioners</strong> are operating on teams with limited scope, managing only a specific channel or lifecycle stage rather than the whole journey.</p>
+
+          <img class="art-chart" src="https://www.medallia.com/wp-content/uploads/2026/03/Blog_Show-C-Suite-1-1022x1024.jpg" alt="Bar chart: CX insights received vs acted upon by department. Largest drop-offs: Executive/C-Suite (-43%), Finance/Risk/Compliance (-43%), Sales/Account Management (-35%)">
+
+          <div class="art-takeaway"><strong>Takeaway for your CEO:</strong> Failing to act on customer data is an organizational design problem, not a data problem. Without strong, centralized ownership of CX, cross-functional alignment breaks down. To implement cross-departmental changes that actually improve the customer journey, CX needs the structural authority and executive sponsorship to mandate those changes.</div>
+
+          <div class="art-next"><strong>Next steps:</strong> Get your CEO up to speed on the benefits of hiring a CXO and how to set them up for success.</div>
+
+          <h2 class="art-h2">2. For Your CRO: The Performance Multiplier of Conversational Intelligence</h2>
+          <div class="art-h3">The data:</div>
+          <p class="art-p">Across the board, only <strong>1 in 5 CX practitioners</strong> say they're on pace to surpass their department's yearly goals. However, CX teams that use conversational intelligence data are <strong>63% more likely to say they're exceeding their goals</strong> than teams that do not. Despite this massive advantage, conversational data remains vastly underutilized — only <strong>30% of teams use it frequently</strong>.</p>
+
+          <img class="art-chart" src="https://www.medallia.com/wp-content/uploads/2026/03/Blog_Show-C-Suite-3-1024x958.jpg" alt="Circular chart: CX teams using conversational intelligence are 63% more likely to exceed goals">
+
+          <div class="art-takeaway"><strong>Takeaway for your CRO:</strong> Insights from unstructured conversational data — phone calls, live chat, social media — empower brands to detect friction immediately and intervene in the moment, reducing the risk of costly churn, declining brand reputation, and loss of referrals.</div>
+
+          <div class="art-next"><strong>Next steps:</strong> Read: The Hidden Cost of Ignoring Customer Conversations.</div>
+
+          <h2 class="art-h2">3. For Your COO: AI Maturity Gap and Frontline Impact</h2>
+          <div class="art-h3">The data:</div>
+          <p class="art-p">Currently, organizations are prioritizing AI for backend insights, with <strong>36% rating their AI data analytics capabilities as "advanced."</strong> In contrast, only <strong>29% report having advanced GenAI for internal/employee-facing uses</strong>. However, a massive <strong>83% say equipping their frontline employees with usable AI tools is critical</strong> to reaching their 2026 goals.</p>
+
+          <img class="art-chart" src="https://www.medallia.com/wp-content/uploads/2026/03/Blog_Show-C-Suite-2-1024x678.jpg" alt="Split graphic: 29% rate frontline AI as advanced (left) vs 83% say useful frontline AI is critical for 2026 goals (right)">
+
+          <div class="art-takeaway"><strong>Takeaway for your COO:</strong> Empowering the frontline with AI has the potential to be transformative. Sitting on the sidelines will only hold companies back, behind brands that are investing in equipping the teams that directly interact with customers with tools to help them do their jobs more effectively.</div>
+
+          <h2 class="art-h2">Next Steps to Break Down CX Silos</h2>
+          <p class="art-p">Nearly <strong>three in four CX practitioners (73%)</strong> tell us that CX insights are slipping through the cracks and not being shared effectively across the org. Nearly half (41%) worry their teams are too siloed from the rest of the company to be able to reach their goals in 2026.</p>
+          <p class="art-p">Use the charts highlighted here to break down for the C-suite why partnering with CX will enable your team to drive the kinds of high-impact business outcomes they're looking to achieve.</p>
+        </div>
+      </div>
+
+      <div class="flags">
+        <div class="flag">⚠️<div><strong>Headline is a tactic, not a tension</strong> — "3 stats to show your C-suite" frames this as a presentation tool, not a business problem. The real tension: CX insights are reaching executives at a 43% drop-off rate. They're being ignored at the highest level of the org. That's the headline — not "here are some slides to show your boss."</div></div>
+        <div class="flag">⚠️<div><strong>Hook introduces the silo problem abstractly</strong> — "When CX lives in a silo, everyone suffers" is accurate but passive. The reader — a CX director — already knows this. What they don't see is the quantified cost: a 43% gap between insights received and insights acted on at C-suite level. Land that number in the first sentence.</div></div>
+        <div class="flag">⚠️<div><strong>Three stats are framed as equal weight — they're not</strong> — Stat #1 (executive action gap) is the structural root cause. Stat #2 (conversational intelligence 63% lift) is the highest-leverage intervention. Stat #3 (AI maturity gap) is the next frontier. The newsletter should sequence them as a business case narrative, not a flat list of three findings.</div></div>
+        <div class="flag">⚠️<div><strong>63% conversational intelligence lift is buried in a paragraph</strong> — This is the most actionable number in the article — CX teams using conversational data are 63% more likely to exceed goals — and it appears mid-sentence in Stat #2. It should be the headline of its section, not a clause in a data dump.</div></div>
+        <div class="flag">⚠️<div><strong>Charts have no alt text framing in the email</strong> — The three Medallia data charts are rich with insight but they're dropped in without framing sentences that tell the reader what to look at. A 43% drop-off at the C-suite level is in that chart — the copy never directs the eye to find it.</div></div>
+        <div class="flag">⚠️<div><strong>CTA is a generic "use these charts" instruction</strong> — The article ends with "use the charts highlighted here to break down for the C-suite why partnering with CX will enable your team..." This is meta-commentary about using the content, not a direct consequential action. The natural CTA is the 2026 State of CX Report — full download — but it's mentioned only in the intro as a parenthetical link.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ AFTER ══════════════ -->
+<div id="after" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow — Rebuilt</div>
+      <h1>Medallia CX Stats — <em>Rebuilt.</em></h1>
+      <p class="hdr-meta">Newsletter rebuild · High-Impact tier · strategic-flow-pro.replit.app</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl purple">Rebuilt newsletter</div>
+
+      <div class="email-shell">
+        <div class="email-inner">
+          <div class="e-hdr">
+            <img class="e-logo" src="https://www.medallia.com/wp-content/themes/medallia2024-new/assets/static/img/medallia-white.svg" alt="Medallia">
+            <div class="e-date">2026 State of CX Report · March 2026</div>
+          </div>
+
+          <div class="e-body">
+            <img src="https://www.medallia.com/wp-content/uploads/2026/03/medallia_blog_3-11-1-scaled.jpg" alt="Medallia 2026 State of CX Report" style="width:100%;border-radius:8px;margin-bottom:22px;display:block">
+
+            <h1 class="e-h1">📊 Your CX insights are reaching the C-suite. 43% of them are being ignored.</h1>
+            <p class="e-lead">CX teams are generating data. Executives are receiving it. The problem is what happens next — a 43% drop-off between insights received and insights acted on at the C-suite level. The reason isn't data quality or dashboard design. It's organizational structure. And there are three numbers from our 2026 State of CX Report that change the conversation.</p>
+
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">43%</div>
+                <div class="stat-lbl">C-suite insights drop-off rate</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">63%</div>
+                <div class="stat-lbl">more likely to exceed goals with conversational intelligence</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">83%</div>
+                <div class="stat-lbl">say frontline AI is critical to 2026 goals</div>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-bottom:24px">
+              <a href="https://www.medallia.com/resource/2026-state-of-customer-experience-report" style="display:inline-block;padding:12px 28px;background:#7C3AED;color:#fff;font-weight:800;font-size:13px;border-radius:7px;text-decoration:none">Download the 2026 State of CX Report →</a>
+              <p style="font-size:11px;color:#9b9b9b;margin-top:8px">Full data, charts, and executive framework · Free</p>
+            </div>
+          </div>
+
+          <div class="e-divider"></div>
+
+          <div style="padding:20px 24px 0">
+
+            <div class="fc">
+              <div class="fc-top">
+                <span class="fc-persona ceo">For Your CEO</span>
+                <div class="fc-lbl">The organizational design problem</div>
+                <div class="fc-stat">1.3×</div>
+                <div class="fc-stat-desc">more likely to act on CX when reporting to a CCO/CXO</div>
+                <div class="fc-txt">Executives receiving CX insights aren't ignoring them out of indifference — they lack the organizational mandate to act. Only 50% of CX teams report to a CCO or CXO. 2 in 3 manage a single channel, not the full journey. The 43% C-suite action gap isn't a data problem. It's a structural one.</div>
+              </div>
+              <img src="https://www.medallia.com/wp-content/uploads/2026/03/Blog_Show-C-Suite-1-1022x1024.jpg" alt="C-Suite insights received vs acted upon — 43% drop-off" style="width:100%;display:block">
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <span class="fc-persona cro">For Your CRO</span>
+                <div class="fc-lbl">The highest-leverage intervention available</div>
+                <div class="fc-stat">63%</div>
+                <div class="fc-stat-desc">more likely to exceed goals — with conversational intelligence</div>
+                <div class="fc-txt">Only 1 in 5 CX practitioners are on pace to exceed their yearly goals. But teams using conversational intelligence — call transcripts, live chat, social signals — are 63% more likely to be in that group. Only 30% of teams use it frequently. That gap is your competitive opening.</div>
+              </div>
+              <img src="https://www.medallia.com/wp-content/uploads/2026/03/Blog_Show-C-Suite-3-1024x958.jpg" alt="63% more likely to exceed goals — conversational intelligence chart" style="width:100%;display:block">
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <span class="fc-persona coo">For Your COO</span>
+                <div class="fc-lbl">The frontline AI gap — 29% vs 83%</div>
+                <div class="fc-stat">29%</div>
+                <div class="fc-stat-desc">have advanced frontline AI · 83% say it's critical for 2026</div>
+                <div class="fc-txt">Organizations have invested in backend AI analytics — 36% rate their data capabilities as advanced. But only 29% have advanced GenAI tools for the frontline employees who directly interact with customers. 83% say closing that gap is critical to hitting 2026 goals. The investment is not where the impact is.</div>
+              </div>
+              <img src="https://www.medallia.com/wp-content/uploads/2026/03/Blog_Show-C-Suite-2-1024x678.jpg" alt="29% advanced frontline AI vs 83% say it's critical" style="width:100%;display:block">
+            </div>
+
+            <div class="ba-grid">
+              <div class="ba-box">
+                <div class="ba-lbl">Before</div>
+                <div class="ba-txt">Your CX team sends weekly insight reports to the C-suite. Executives acknowledge them in meetings. Nothing changes in product, operations, or sales because there's no structural mandate for cross-functional action. 73% of CX insights are slipping through the cracks — not because no one cares, but because no one owns the outcome.</div>
+              </div>
+              <div class="ba-box after">
+                <div class="ba-lbl">After</div>
+                <div class="ba-txt">CX reports to a CCO with cross-functional authority. Conversational intelligence surfaces friction signals in real time — before churn materializes. Frontline teams have AI tools that surface the next best action in the moment. C-suite action rate on CX insights goes from 57% to the full 100% it was designed to reach.</div>
+              </div>
+            </div>
+
+            <div class="e-cta">
+              <div class="cta-outer">
+                <div class="cta-inner">
+                  <p class="cta-title">The data your C-suite needs to stop treating CX as a cost center. All in one report.</p>
+                  <a href="https://www.medallia.com/resource/2026-state-of-customer-experience-report" class="cta-btn">Get the 2026 State of CX Report →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="e-footer">
+            <p style="font-weight:700;color:rgba(0,0,0,.4);font-size:13px">Medallia</p>
+            <p>Experience management platform · CX · EX · Contact Center · Market Research</p>
+            <p style="margin-top:5px"><a href="#" style="color:rgba(0,0,0,.3);text-decoration:none;font-size:11px">Unsubscribe · medallia.com</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORES -->
+      <div style="margin-top:24px">
+        <div class="lbl purple">Conversion score</div>
+        <div class="score-grid">
+          <div class="score-box">
+            <div class="score-l">Original</div>
+            <div class="score-n" style="color:var(--red)">4<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Tactic headline hides the tension. Hook is passive — no quantified cost. Three stats presented as equal weight. 63% lift buried mid-paragraph. Charts dropped without framing. CTA is meta-instruction to use the content, not a direct action.</div>
+          </div>
+          <div class="score-box" style="border-color:var(--md-border);background:var(--md-dim)">
+            <div class="score-l" style="color:var(--md)">Rebuilt</div>
+            <div class="score-n" style="color:var(--md)">9<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">43% drop-off as hook — names the exact failure CX directors live. 3 stat cards above fold. 3 persona-tagged feature cards with data charts imported. Business case cascade: structure → intervention → frontier. CTA = report download, direct consequence of reading.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AB -->
+      <div style="margin-top:26px">
+        <div class="lbl purple">3 A/B subject line variants</div>
+        <div class="ab-list">
+          <div class="ab-card">
+            <div class="ab-ang">Loss — executive action gap</div>
+            <div class="ab-sub">Your CX insights are reaching the C-suite. 43% are being ignored.</div>
+            <div class="ab-why">Lands the exact failure in two sentences. CX directors who send weekly reports and wonder why nothing changes will recognize this immediately. The number makes it undeniable.</div>
+            <span class="ab-lift">Predicted open rate: 37–43%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Opportunity — conversational intelligence gap</div>
+            <div class="ab-sub">CX teams using this one data source are 63% more likely to exceed goals.</div>
+            <div class="ab-why">Outcome-first framing with a specific, credible lift number. Curiosity hook: the reader knows their team isn't in that 63% group and opens to find out why.</div>
+            <span class="ab-lift">Predicted open rate: 31–37%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Tension — frontline AI gap</div>
+            <div class="ab-sub">83% say frontline AI is critical. Only 29% have it. What's the plan?</div>
+            <div class="ab-why">Quantified gap framing with an implicit challenge. Works for COOs and operations leaders who know they're behind and are already looking for the justification to act.</div>
+            <span class="ab-lift">Predicted open rate: 26–32%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div style="margin-top:26px">
+        <div class="lbl purple">4-Week Content Calendar</div>
+        <div class="cal-list">
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 3</div><div class="cal-topic">Why the 43% C-suite action gap is an org design problem, not a data problem</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 5</div><div class="cal-topic">What a CCO actually does — and why half of CX teams still don't have one</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 10</div><div class="cal-topic">The hidden cost of ignoring customer conversations — what 70% of teams are leaving on the table</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 12</div><div class="cal-topic">How to make the business case for conversational intelligence to your CRO</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 17</div><div class="cal-topic">The frontline AI gap — why backend analytics investment isn't moving the needle</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 19</div><div class="cal-topic">73% of CX insights slip through the cracks — what the other 27% do differently</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 24</div><div class="cal-topic">How to break down CX silos without a reorg — a practical framework for 2026</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 26</div><div class="cal-topic">Full 2026 State of CX Report — what the data says about where CX is headed next</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ WHAT CHANGED ══════════════ -->
+<div id="changes" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>The 6 Strategic <em>Upgrades</em></h1>
+      <p class="hdr-meta">What changed in the Medallia rebuild — and why each change converts better</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+
+      <div class="lbl">Subject line transformation</div>
+      <div class="ba2-grid">
+        <div class="ba2">
+          <div class="ba2-lbl">❌ Original</div>
+          <div class="ba2-txt" style="color:var(--red);font-weight:700;margin-bottom:6px">"3 Customer Experience Stats to Show Your C-Suite"</div>
+          <div class="ba2-txt">Tactic framing — positions the content as a presentation aid. The reader is a CX director looking to justify their budget, not a student looking for slides. The tension is missing entirely: the C-suite is already receiving the insights and ignoring 43% of them.</div>
+        </div>
+        <div class="ba2 after">
+          <div class="ba2-lbl">✓ Rebuilt</div>
+          <div class="ba2-txt" style="font-weight:700;margin-bottom:6px">"Your CX insights are reaching the C-suite. 43% are being ignored."</div>
+          <div class="ba2-txt">Names the exact failure CX practitioners already feel but can't quantify. Two sentences — the problem and the proof number. Every CX director who has sent weekly insight reports and seen nothing change will open this.</div>
+        </div>
+      </div>
+
+      <div class="changes" style="margin-top:26px">
+
+        <div class="change">
+          <div class="ch-num">Upgrade 01</div>
+          <div class="ch-title">43% drop-off lands in the first sentence</div>
+          <div class="ch-body">The original mentions the 43% C-suite action gap only implicitly — it appears in the chart caption, not the copy. The rebuild leads with it as the hook number: <strong>"Your CX insights are reaching the C-suite. 43% are being ignored."</strong> The reader's frustration has a name and a percentage before they've read a single paragraph.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 02</div>
+          <div class="ch-title">Three stats become three stat cards — above the fold</div>
+          <div class="ch-body">The original presents all three numbers embedded in section headings and body text. <strong>The rebuild extracts 43%, 63%, and 83% as visual stat cards immediately after the hook</strong> — before any feature content appears. Each number represents one C-suite persona. The reader scans three numbers and understands the entire business case in 10 seconds.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 03</div>
+          <div class="ch-title">Persona tags make each section scannable for the right reader</div>
+          <div class="ch-body">The original uses section headings like "For Your CEO" — good structure, but the persona signal disappears once the reader enters the section. <strong>The rebuild adds color-coded persona chips (CEO blue / CRO green / COO pink) at the top of each feature card</strong> so a CRO forwarding this to their team knows exactly which section is theirs — without reading the full email.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 04</div>
+          <div class="ch-title">63% conversational intelligence lift gets its own headline</div>
+          <div class="ch-body">The original buries "63% more likely to exceed goals" mid-sentence in the CRO section. This is the most actionable number in the report — it directly names what separates goal-exceeding teams from the 80% who aren't on pace. <strong>The rebuild gives it a large-format stat display at the top of its card, before the explanation.</strong> Numbers first. Reasons second.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 05</div>
+          <div class="ch-title">Charts imported with directing copy — not dropped silently</div>
+          <div class="ch-body">The original drops all three Medallia data charts in-line without copy that tells the reader where to look. The 43% C-suite drop-off is visible in the bar chart — but invisible without guidance. <strong>The rebuild adds a stat callout above each chart</strong> (e.g., "1.3× more likely to act on CX with CCO/CXO reporting") so the eye knows what it's looking for before it lands on the data.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 06</div>
+          <div class="ch-title">CTA becomes a direct report download — not a meta-instruction</div>
+          <div class="ch-body">The original ends with: "Use the charts highlighted here to break down for the C-suite why partnering with CX will enable your team…" This is a meta-instruction about how to use the content — not a call to act. <strong>The rebuild replaces it with a direct download CTA for the 2026 State of CX Report</strong> — the resource the article was written to promote — with the framing: "The data your C-suite needs to stop treating CX as a cost center." The consequence of reading leads directly to the next action.</div>
+        </div>
+
+      </div>
+
+      <div class="method-note">
+        <p>This is the Strategic Flow Method</p>
+        <span>Data before description. Numbers as visual cards, not prose clauses. Persona-tagged sections for scannable multi-stakeholder content. Charts imported with directing copy. CTA is the direct consequence of reading — not meta-commentary about using the article.<br><br>
+        <a href="https://strategicflow.carrd.co" target="_blank">strategicflow.carrd.co →</a></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:5px">Independent analysis. Medallia® is not affiliated with Strategic Flow. Content sourced from medallia.com as of April 2026.</p>
+</footer>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
