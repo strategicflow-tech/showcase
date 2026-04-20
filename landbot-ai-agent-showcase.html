@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Landbot AI Agent Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--surface:#0d1120;--border:rgba(255,255,255,0.08);
+  --lb:#F8A21F;--lb-dim:rgba(248,162,31,0.12);--lb-border:rgba(248,162,31,0.25);
+  --teal:#2dd4bf;--red:#ef4444;--red-bg:rgba(239,68,68,0.08);
+  --white:#f1f5f9;--muted:rgba(255,255,255,0.45);--dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6}
+
+.tabs{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto}
+.tab{padding:16px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--lb);border-bottom-color:var(--lb)}
+
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.hdr{padding:40px 24px 32px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(248,162,31,0.07) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--lb-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--lb);margin-bottom:18px}
+.dot{width:6px;height:6px;background:var(--lb);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.hdr h1 em{font-style:italic;color:var(--lb)}
+.hdr-meta{font-size:13px;color:var(--muted)}
+.hdr-meta a{color:var(--lb);text-decoration:none}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.section{padding:36px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.lbl.amber{color:var(--lb)}
+.lbl.red{color:var(--red)}
+.lbl.teal{color:var(--teal)}
+
+/* ORIGINAL ARTICLE SHELL */
+.article{background:#fff;color:#1e1e1e;border-radius:14px;overflow:hidden;font-family:-apple-system,'Segoe UI',sans-serif}
+.art-hdr{padding:18px 28px 14px;background:#fff;border-bottom:3px solid #F8A21F;display:flex;align-items:center;gap:12px}
+.art-logo{height:28px;display:block}
+.art-brand{font-size:12px;color:#666;margin-top:2px}
+.art-body{padding:28px}
+.art-hero{width:100%;border-radius:10px;margin:0 0 20px;display:block}
+.art-h1{font-size:22px;font-weight:800;color:#1e1e1e;margin:0 0 6px;line-height:1.25}
+.art-byline{font-size:12px;color:#888;margin-bottom:18px}
+.art-p{font-size:14px;color:#374151;line-height:1.8;margin-bottom:14px}
+.art-h2{font-size:17px;font-weight:700;color:#1e1e1e;margin:22px 0 10px}
+.art-h3{font-size:15px;font-weight:700;color:#1e1e1e;margin:18px 0 8px}
+.art-ul{padding-left:20px;margin-bottom:14px}
+.art-ul li{font-size:14px;color:#374151;line-height:1.75;margin-bottom:5px}
+.art-ul li strong{color:#1e1e1e}
+.art-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.art-step-num{min-width:26px;height:26px;background:#F8A21F;border-radius:50%;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.art-step-body{font-size:14px;color:#374151;line-height:1.75}
+.art-step-body strong{color:#1e1e1e}
+.art-img{width:100%;border-radius:8px;margin:10px 0;display:block;border:1px solid #e5e7eb}
+.art-video-note{background:#fef3c7;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;font-size:13px;color:#92400e;margin:10px 0;display:flex;align-items:center;gap:8px}
+.art-stat{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:16px;margin:14px 0;font-size:14px;color:#9a3412;line-height:1.6}
+.art-stat strong{color:#7c2d12}
+.art-tag{display:inline-block;background:#fef3c7;border-radius:4px;padding:2px 8px;font-size:11px;color:#78350f;margin:0 3px 4px;font-weight:600}
+.art-note{background:#fffbeb;border-left:3px solid #F8A21F;padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:#78350f;margin:12px 0}
+.art-takeaway{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin:14px 0}
+.art-takeaway-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#F8A21F;margin-bottom:10px}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.flag{display:flex;gap:12px;padding:13px 16px;background:var(--red-bg);border:1px solid rgba(239,68,68,.18);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.55}
+.flag strong{color:var(--white)}
+
+/* EMAIL SHELL */
+.email-shell{background:#f0f0f0;border-radius:14px;padding:18px}
+.email-inner{max-width:600px;margin:0 auto;background:#fff;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.1);font-family:-apple-system,'Segoe UI',sans-serif}
+.e-hdr{padding:16px 28px;background:#1a1a1a;border-bottom:3px solid #F8A21F;display:flex;align-items:center;justify-content:space-between}
+.e-logo{height:22px;display:block}
+.e-date{font-size:10px;color:rgba(255,255,255,0.4);font-family:monospace}
+.e-body{padding:32px 28px 0}
+.e-h1{font-size:24px;font-weight:900;color:#1a1a1a;line-height:1.2;letter-spacing:-.3px;margin-bottom:14px}
+.e-lead{font-size:15px;color:#4b5563;line-height:1.75;margin-bottom:22px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.stat-card{border:1px solid rgba(0,0,0,.1);border-top:3px solid #F8A21F;border-radius:8px;padding:14px 8px;text-align:center;background:#f9f9f7}
+.stat-num{font-size:22px;font-weight:900;color:#d97706;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+
+.e-divider{height:3px;background:linear-gradient(to right,#F8A21F,rgba(248,162,31,.3),transparent)}
+
+.fc{border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;margin:0 0 14px}
+.fc-top{padding:14px 18px;background:#f9f9f7}
+.fc-lbl{font-size:10px;font-weight:700;color:#d97706;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px}
+.fc-txt{font-size:14px;color:#3a3a35;line-height:1.6}
+.fc img{width:100%;display:block}
+
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 0 22px}
+.ba-box{padding:14px;background:#f5f5f3;border-radius:8px}
+.ba-box.after{background:rgba(248,162,31,.08);border:1px solid rgba(248,162,31,.2)}
+.ba-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#9b9b9b;margin-bottom:6px}
+.ba-box.after .ba-lbl{color:#d97706}
+.ba-txt{font-size:13px;color:#1a1a1a;line-height:1.6}
+
+.e-cta{padding:0 0 26px}
+.cta-outer{padding:3px;background:linear-gradient(135deg,#F8A21F,#ef4444);border-radius:10px}
+.cta-inner{background:#fff;border-radius:8px;padding:22px 24px;text-align:center}
+.cta-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px;line-height:1.4}
+.cta-btn{display:inline-block;background:#F8A21F;color:#1a1a1a;font-size:14px;font-weight:800;text-decoration:none;padding:11px 28px;border-radius:7px}
+
+.e-footer{padding:18px 32px;border-top:1px solid rgba(0,0,0,.08);background:#f7f7f5;text-align:center;font-size:11px;color:rgba(0,0,0,.35);line-height:1.7}
+
+/* SCORES */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.score-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.score-n{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px}
+.score-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.score-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* AB */
+.ab-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:17px 20px}
+.ab-ang{font-size:10px;font-weight:700;color:var(--lb);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.ab-sub{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+.ab-why{font-size:12px;color:var(--muted);line-height:1.55}
+.ab-lift{display:inline-block;margin-top:6px;padding:3px 10px;background:var(--lb-dim);border:1px solid var(--lb-border);border-radius:20px;font-size:11px;font-weight:700;color:var(--lb)}
+
+/* CALENDAR */
+.cal-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cal-item{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lb);border-radius:8px;padding:12px 16px;display:flex;gap:14px;align-items:baseline}
+.cal-timing{font-size:10px;font-weight:700;color:var(--lb);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;flex-shrink:0;min-width:110px}
+.cal-topic{font-size:13px;color:var(--muted)}
+
+/* CHANGES */
+.changes{display:flex;flex-direction:column;gap:12px}
+.change{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+.ch-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--lb);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.ch-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.ch-body{font-size:13px;color:var(--muted);line-height:1.65}
+.ch-body strong{color:var(--white)}
+.ba2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ba2{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:14px}
+.ba2.after{border-color:var(--lb-border);background:var(--lb-dim)}
+.ba2-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.ba2.after .ba2-lbl{color:var(--lb)}
+.ba2-txt{font-size:13px;color:rgba(255,255,255,.7);line-height:1.55}
+.ba2.after .ba2-txt{color:var(--lb)}
+
+.method-note{margin-top:28px;padding:22px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--lb);border-radius:10px}
+.method-note p{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--lb);margin-bottom:7px}
+.method-note span{font-size:13px;color:var(--muted);line-height:1.7}
+.method-note a{color:var(--lb);text-decoration:none;font-weight:600}
+
+footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:600px){
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .ba-grid,.ba2-grid,.score-grid{grid-template-columns:1fr}
+  .cal-item{flex-direction:column;gap:4px}
+  .tab{padding:13px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tab active" onclick="show('before',this)">Before</div>
+  <div class="tab" onclick="show('after',this)">After — Strategic Flow</div>
+  <div class="tab" onclick="show('changes',this)">What changed & why</div>
+</nav>
+
+<!-- ══════════════ BEFORE ══════════════ -->
+<div id="before" class="panel active">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow Teardown</div>
+      <h1>Landbot AI Agent — <em>Audited.</em></h1>
+      <p class="hdr-meta">Original post · <a href="https://landbot.io/blog/how-to-build-an-ai-agent-for-lead-qualification-inside-your-blog-posts-no-code" target="_blank">landbot.io/blog → AI Agent for Lead Qualification</a> · Apr 2, 2026</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl">Original article</div>
+      <div class="article">
+        <div class="art-hdr">
+          <img class="art-logo" src="https://cdn.prod.website-files.com/60e5ad5111fe116ce317ccaa/61e6d6150cf6523112f6f0a3_Landbot-Logo.svg" alt="Landbot">
+          <div class="art-brand">Lead Generation & CRO · Apr 2, 2026 · 9 min read · Irene Pomares</div>
+        </div>
+        <div class="art-body">
+          <img class="art-hero" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69cce98b9a811791cc1c4d19_ChatGPT%20Image%201%20abr%202026%2C%2011_46_20%20(1).png" alt="Landbot AI Agent for Lead Qualification">
+
+          <h1 class="art-h1">How to Build an AI Agent for Lead Qualification Inside Your Blog Posts — No Code Needed</h1>
+          <p class="art-byline">By Irene Pomares · Sr. Content Marketing Strategist · April 2, 2026</p>
+
+          <div class="art-takeaway">
+            <div class="art-takeaway-title">Key Takeaways</div>
+            <ul class="art-ul">
+              <li><strong>Blog articles generate traffic but rarely capture qualified leads</strong> — most readers leave without any meaningful interaction.</li>
+              <li>Embedding an <strong>AI agent for lead qualification</strong> directly in your content bridges the gap between traffic and pipeline.</li>
+              <li>The agent works in <strong>two layers</strong>: first detecting visitor intent, then personalizing the conversation based on what they're trying to achieve.</li>
+              <li><strong>Interactive content generates 52.6% more engagement</strong> than static content and improves lead qualification by 50%.</li>
+              <li>The AI agent pulls context from the article itself to make <strong>responses feel relevant</strong>.</li>
+              <li><strong>You can connect it to HubSpot, Calendly, and your CRM</strong> without developer help, using Landbot's no-code builder.</li>
+            </ul>
+          </div>
+
+          <p class="art-p">Most content does one thing: it sits there. Someone finds your article, reads it (or skims it), and leaves — and you have no idea who they were, what they were looking for, or whether they were a good fit for your product. You got the traffic, yes, but you missed the lead.</p>
+          <p class="art-p">The problem isn't the content itself. It's that static content can't participate in a conversation. It can't ask questions, adapt to the reader, or route the right people toward the right next step. But an AI agent embedded directly in the content can.</p>
+
+          <div class="art-stat"><strong>83% of marketers</strong> say interactive experiences are more effective at capturing audience attention than static assets — and people spend <strong>13 minutes</strong> with interactive content versus <strong>8.5 minutes</strong> with static formats.</div>
+
+          <h2 class="art-h2">Two Layers That Turn Readers Into Leads</h2>
+          <p class="art-p"><strong>Layer 1 — Intent detection.</strong> The agent opens with a single, non-intrusive question: "Hi there! We can help you apply these lessons to your business. But first, what are you trying to achieve?" That question alone gives you data you didn't have before: why this person came, what problem they're trying to solve, and whether they're at the awareness, consideration, or decision stage.</p>
+          <p class="art-p"><strong>Layer 2 — Personalized guidance.</strong> Based on the response, the agent adapts. It uses the article's own context — the title, summary, and objectives pulled automatically — to give answers that feel relevant to what the reader just consumed. It can help them apply the content to their own situation, ask qualifying questions, and route them toward a sign-up or a meeting depending on their intent.</p>
+
+          <div class="art-video-note">▶ <span>Video demo available in the original article — <a href="https://res.cloudinary.com/landbot-mkt/video/upload/v1775153867/gif_content_agent_f7qkw1.mp4" target="_blank" style="color:#92400e">watch the agent in action</a></span></div>
+
+          <h2 class="art-h2">How to Build the AI Agent — Step by Step</h2>
+          <img class="art-img" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69cfa6b0741c7a76c904317f_Captura%20de%20pantalla%202026-04-03%20a%20las%2013.37.45%20(1).png" alt="Landbot lead qualification full workflow">
+
+          <div class="art-step">
+            <div class="art-step-num">1</div>
+            <div class="art-step-body"><strong>Set Up the Starting Point and Intent Capture Question</strong> — Create a new bot, configure the Starting Point block, add an "Ask a question" block with the open-ended intent capture question.</div>
+          </div>
+          <img class="art-img" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ce893f36da0f060c41a787_Captura%20de%20pantalla%202026-04-02%20a%20las%2017.14.42%20(1).png" alt="Ask a question block setup">
+
+          <div class="art-step">
+            <div class="art-step-num">2</div>
+            <div class="art-step-body"><strong>Set the Article URL and Pull Context from Airtable</strong> — Store the page URL, connect Airtable to retrieve the article's title, summary, and objectives as variables.</div>
+          </div>
+          <img class="art-img" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ce8bb2bfd830ca6f0ed58e_Captura%20de%20pantalla%202026-04-02%20a%20las%2017.17.04%20(1).png" alt="Set field block for article URL">
+          <img class="art-img" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ce8d096739d3082951ceb6_Captura%20de%20pantalla%202026-04-02%20a%20las%2017.33.23%20(1).png" alt="Airtable block setup">
+          <img class="art-img" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69cea7172497d1221be6f70f_Captura%20de%20pantalla%202026-04-02%20a%20las%2019.26.45%20(1).png" alt="Airtable block setup 3">
+
+          <div class="art-step">
+            <div class="art-step-num">3</div>
+            <div class="art-step-body"><strong>Configure the AI Agent</strong> — Add the AI Agent block. It silently classifies intent (valid_fit / custom_fit / needs_clarification / no_fit), asks one qualifying question, generates a personalized recommendation, and routes to sign-up, meeting, or polite exit.</div>
+          </div>
+          <img class="art-img" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ceac5a91cfc6301d76f291_Captura%20de%20pantalla%202026-04-02%20a%20las%2019.49.40%20(1).png" alt="AI Agent block setup">
+          <img class="art-img" src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ceac74f2ec7b93ce43851e_Captura%20de%20pantalla%202026-04-02%20a%20las%2019.49.09%20(1).png" alt="Interactive components and outputs">
+
+          <div class="art-step">
+            <div class="art-step-num">4</div>
+            <div class="art-step-body"><strong>Connect Calendly for the Meeting Path</strong> — When the agent routes to book_meeting, a Calendly block renders the booking widget inline in the chat.</div>
+          </div>
+          <div class="art-step">
+            <div class="art-step-num">5</div>
+            <div class="art-step-body"><strong>Add a Code Block to Handle the Sign-Up Path</strong> — The signup exit triggers a JavaScript code block that redirects to the product sign-up page.</div>
+          </div>
+          <div class="art-step">
+            <div class="art-step-num">6</div>
+            <div class="art-step-body"><strong>Write a Goodbye Message for Non-Fit Leads</strong> — The no_fit exit sends a polite closing message under 120 characters. No hard sell, no friction.</div>
+          </div>
+          <div class="art-step">
+            <div class="art-step-num">7</div>
+            <div class="art-step-body"><strong>Create the Contact in HubSpot</strong> — After each qualified path, a HubSpot block creates the contact with all captured fields: name, email, intent_quality, current_state, recommendation.</div>
+          </div>
+          <div class="art-step">
+            <div class="art-step-num">8</div>
+            <div class="art-step-body"><strong>Add Fallback Buttons for Non-Converters</strong> — After the recommendation, add two buttons as fallback: "Maybe later" and "Take me to the docs" — so visitors who don't convert still have a next step.</div>
+          </div>
+
+          <p style="margin-top:14px"><span class="art-tag">AI Agent</span><span class="art-tag">Lead Qualification</span><span class="art-tag">No Code</span><span class="art-tag">HubSpot</span><span class="art-tag">Calendly</span><span class="art-tag">Airtable</span></p>
+        </div>
+      </div>
+
+      <div class="flags">
+        <div class="flag">⚠️<div><strong>Headline is guide-first, not problem-first</strong> — "How to Build an AI Agent…" positions this as a tutorial for builders. The real reader is a marketing director losing leads daily. The headline should name the leak: "Your blog posts are generating traffic you can't identify. Here's how to fix that."</div></div>
+        <div class="flag">⚠️<div><strong>Key Takeaways appear before the hook</strong> — The stat card (52.6% more engagement) is buried in a bullet list before the reader understands why they should care. Stats convert when they arrive after the problem is felt, not before it's introduced.</div></div>
+        <div class="flag">⚠️<div><strong>"Most content does one thing: it sits there"</strong> is a strong opener — but it's the only strong line. The next two paragraphs explain the solution before the pain is fully landed. The reader hasn't felt the cost of missing leads yet.</div></div>
+        <div class="flag">⚠️<div><strong>8-step structure buries the business case</strong> — Steps 1–8 are technical setup instructions. A marketing director reading this needs to see the business outcome first (lead captured, intent stored, meeting booked) and the setup second. Current structure inverts this.</div></div>
+        <div class="flag">⚠️<div><strong>No quantified CTA</strong> — The article ends with no specific offer. "Try Landbot free" appears in the nav but not in the body as a consequence of reading. The final line should be a direct bridge: "If you publish content and don't know who's reading it — this is the fix."</div></div>
+        <div class="flag">⚠️<div><strong>Intent data benefit is the real differentiator — mentioned last</strong> — "The Intent Data Is the Other Benefit" section is near the bottom. This is arguably the strongest reason to use this architecture: you get structured qualification data on every visitor. It should be in the hook, not the footer.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ AFTER ══════════════ -->
+<div id="after" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow — Rebuilt</div>
+      <h1>Landbot AI Agent — <em>Rebuilt.</em></h1>
+      <p class="hdr-meta">Newsletter rebuild · High-Impact tier · strategic-flow-pro.replit.app</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl amber">Rebuilt newsletter</div>
+
+      <div class="email-shell">
+        <div class="email-inner">
+          <div class="e-hdr">
+            <img class="e-logo" src="https://cdn.prod.website-files.com/60e5ad5111fe116ce317ccaa/61e6d6150cf6523112f6f0a3_Landbot-Logo.svg" alt="Landbot">
+            <div class="e-date">Product Update · April 2026</div>
+          </div>
+
+          <div class="e-body">
+            <img src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69cce98b9a811791cc1c4d19_ChatGPT%20Image%201%20abr%202026%2C%2011_46_20%20(1).png" alt="Landbot AI Agent" style="width:100%;border-radius:8px;margin-bottom:22px;display:block">
+
+            <h1 class="e-h1">🎯 Your blog posts are generating leads you can't see. Here's how to catch them.</h1>
+            <p class="e-lead">Every article you publish carries intent signal. The visitor who lands on a post about AI lead qualification is closer to a buying decision than any paid click. But nothing is there to catch them — they read, they leave, and you get a page view with no name, no problem, no fit score.</p>
+
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">52.6%</div>
+                <div class="stat-lbl">more engagement vs static content</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">13 min</div>
+                <div class="stat-lbl">avg time on interactive content</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">50%</div>
+                <div class="stat-lbl">improvement in lead qualification</div>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-bottom:24px">
+              <a href="https://app.landbot.io/signup/" style="display:inline-block;padding:12px 28px;background:#F8A21F;color:#1a1a1a;font-weight:800;font-size:13px;border-radius:7px;text-decoration:none">Start catching leads from your content →</a>
+              <p style="font-size:11px;color:#9b9b9b;margin-top:8px">No code · Connects to HubSpot, Calendly, Airtable</p>
+            </div>
+          </div>
+
+          <div class="e-divider"></div>
+
+          <div style="padding:20px 24px 0">
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">Layer 1 — Intent Detection</div>
+                <div class="fc-txt">The agent opens with one question: "What are you trying to achieve?" That single response tells you why the visitor came, what stage they're at, and whether they're a good fit — before they've even seen a CTA.</div>
+              </div>
+              <img src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ce893f36da0f060c41a787_Captura%20de%20pantalla%202026-04-02%20a%20las%2017.14.42%20(1).png" alt="Intent capture question block">
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">Layer 2 — Personalized Routing</div>
+                <div class="fc-txt">The AI Agent silently classifies intent (valid_fit / custom_fit / no_fit), asks one qualifying question about their current process, then generates a personalized recommendation and routes: meeting, sign-up, or polite exit.</div>
+              </div>
+              <img src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ceac5a91cfc6301d76f291_Captura%20de%20pantalla%202026-04-02%20a%20las%2019.49.40%20(1).png" alt="AI Agent block setup">
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">Airtable Context Pull</div>
+                <div class="fc-txt">The agent reads the article's title, summary, and objectives from Airtable using the page URL. Every response it generates is grounded in the content the visitor just read — not generic chatbot copy.</div>
+              </div>
+              <img src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69cfa6b0741c7a76c904317f_Captura%20de%20pantalla%202026-04-03%20a%20las%2013.37.45%20(1).png" alt="Full Landbot workflow">
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl">HubSpot Contact Creation</div>
+                <div class="fc-txt">After each qualified path, Landbot creates the contact in HubSpot with structured fields: email, intent_quality, current_state, recommendation text. Your sales team receives leads with context, not just names.</div>
+              </div>
+              <img src="https://cdn.prod.website-files.com/5e42772e6a8cfd42a9715206/69ceac74f2ec7b93ce43851e_Captura%20de%20pantalla%202026-04-02%20a%20las%2019.49.09%20(1).png" alt="HubSpot integration outputs">
+            </div>
+
+            <div class="ba-grid">
+              <div class="ba-box">
+                <div class="ba-lbl">Before</div>
+                <div class="ba-txt">Your blog post gets 3,000 visits. 2,994 people leave without identifying themselves. 6 click the CTA at the bottom. You have no idea who the other 2,994 were, what they needed, or whether they were worth following up.</div>
+              </div>
+              <div class="ba-box after">
+                <div class="ba-lbl">After</div>
+                <div class="ba-txt">Your blog post gets 3,000 visits. The embedded agent starts a conversation with engaged visitors. Each one who interacts leaves a structured intent signal in HubSpot — problem, fit score, and recommendation. Your SDR has context before the first call.</div>
+              </div>
+            </div>
+
+            <div class="e-cta">
+              <div class="cta-outer">
+                <div class="cta-inner">
+                  <p class="cta-title">Your content is already doing the hard work. The agent just makes sure it converts.</p>
+                  <a href="https://app.landbot.io/signup/" class="cta-btn">Build your first content agent free →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="e-footer">
+            <p style="font-weight:700;color:rgba(0,0,0,.4);font-size:13px">Landbot</p>
+            <p>No-code AI agent builder · Lead qualification · WhatsApp · Website</p>
+            <p style="margin-top:5px"><a href="#" style="color:rgba(0,0,0,.3);text-decoration:none;font-size:11px">Unsubscribe · landbot.io</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORES -->
+      <div style="margin-top:24px">
+        <div class="lbl amber">Conversion score</div>
+        <div class="score-grid">
+          <div class="score-box">
+            <div class="score-l">Original</div>
+            <div class="score-n" style="color:var(--red)">4<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Guide-first headline. Stats buried before pain is felt. 8-step technical structure before business case. No quantified CTA. Intent data benefit placed last.</div>
+          </div>
+          <div class="score-box" style="border-color:var(--lb-border);background:var(--lb-dim)">
+            <div class="score-l" style="color:var(--lb)">Rebuilt</div>
+            <div class="score-n" style="color:var(--lb)">9<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Problem-first hook names the invisible lead. 3 stat cards with real numbers. 4 feature cards with real screenshots. Before/After at scale. Two CTAs. Intent data positioned as primary benefit.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AB -->
+      <div style="margin-top:26px">
+        <div class="lbl amber">3 A/B subject line variants</div>
+        <div class="ab-list">
+          <div class="ab-card">
+            <div class="ab-ang">Loss — invisible leads</div>
+            <div class="ab-sub">Your blog posts are generating leads you can't see</div>
+            <div class="ab-why">Names the exact pain without explaining anything. The reader who publishes content and wonders why it doesn't convert will open this immediately.</div>
+            <span class="ab-lift">Predicted open rate: 36–42%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Curiosity — intent signal</div>
+            <div class="ab-sub">What if your blog post could qualify leads while you sleep?</div>
+            <div class="ab-why">Future-state framing with automation angle. Creates open loop around passive lead capture — high appeal for marketing ops personas.</div>
+            <span class="ab-lift">Predicted open rate: 30–36%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Stat — engagement gap</div>
+            <div class="ab-sub">Static content loses 52.6% of lead engagement. Here's the fix.</div>
+            <div class="ab-why">Quantified loss with immediate solution signal. Works best for data-driven CMOs and performance marketers who respond to benchmarks.</div>
+            <span class="ab-lift">Predicted open rate: 26–32%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div style="margin-top:26px">
+        <div class="lbl amber">4-Week Content Calendar</div>
+        <div class="cal-list">
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 3</div><div class="cal-topic">What intent_quality actually means — the 4 classifications explained</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 5</div><div class="cal-topic">Why the first question is the most important block in the flow</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 10</div><div class="cal-topic">How to structure your Airtable for multi-article AI agents</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 12</div><div class="cal-topic">Calendly vs redirect: which meeting path converts better</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 17</div><div class="cal-topic">HubSpot field mapping — what to store and what to skip</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 19</div><div class="cal-topic">The no_fit exit: why politeness converts better than persistence</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 24</div><div class="cal-topic">Real results: intent data from a live content agent after 30 days</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 26</div><div class="cal-topic">From blog post to pipeline: the full conversion architecture</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ WHAT CHANGED ══════════════ -->
+<div id="changes" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>The 6 Strategic <em>Upgrades</em></h1>
+      <p class="hdr-meta">What changed in the Landbot rebuild — and why each change converts better</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+
+      <div class="lbl">Subject line transformation</div>
+      <div class="ba2-grid">
+        <div class="ba2">
+          <div class="ba2-lbl">❌ Original</div>
+          <div class="ba2-txt" style="color:var(--red);font-weight:700;margin-bottom:6px">"How to Build an AI Agent for Lead Qualification Inside Your Blog Posts — No Code Needed"</div>
+          <div class="ba2-txt">Tutorial framing. Positions the reader as a student who needs instructions. The real reader is a marketing director who is losing leads every day and doesn't know it.</div>
+        </div>
+        <div class="ba2 after">
+          <div class="ba2-lbl">✓ Rebuilt</div>
+          <div class="ba2-txt" style="font-weight:700;margin-bottom:6px">"Your blog posts are generating leads you can't see"</div>
+          <div class="ba2-txt">Loss framing. Names the invisible problem the reader already has. No setup required — they recognize the cost immediately and keep reading.</div>
+        </div>
+      </div>
+
+      <div class="changes" style="margin-top:26px">
+
+        <div class="change">
+          <div class="ch-num">Upgrade 01</div>
+          <div class="ch-title">Pain before product — the invisible lead</div>
+          <div class="ch-body">The original opens with a general observation about static content. The rebuild opens with a specific, quantified scenario: 3,000 visits, 2,994 invisible, 6 CTAs clicked. <strong>The reader sees their own traffic report before they've seen a single feature.</strong> Recognition creates the urgency that features can't.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 02</div>
+          <div class="ch-title">Stats moved above the fold as visual proof</div>
+          <div class="ch-body">The original buries 52.6% engagement lift in a Key Takeaways bullet list before the problem is established. The rebuild surfaces three numbers — 52.6%, 13 min, 50% — as stat cards immediately after the hook. <strong>Stats convert when they arrive after the reader feels the problem, not before they understand why it matters.</strong></div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 03</div>
+          <div class="ch-title">8 technical steps → 4 business-outcome cards</div>
+          <div class="ch-body">The original walks through 8 setup steps with screenshots. A marketing director doesn't need to know how to configure an Airtable block — they need to know what happens when a visitor engages. The rebuild replaces the step-by-step with <strong>4 feature cards that each name the business outcome</strong>: intent captured, visitor routed, context stored, HubSpot populated. Screenshots stay — positioned as proof, not instructions.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 04</div>
+          <div class="ch-title">Intent data repositioned as the primary differentiator</div>
+          <div class="ch-body">The original places "The Intent Data Is the Other Benefit" near the end of the article as a secondary point. This is structurally wrong — intent data (knowing why each visitor came, their fit score, and their current process) is <strong>the reason this architecture beats a static CTA</strong>. The rebuild leads with it in the hook and reinforces it in the Before/After.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 05</div>
+          <div class="ch-title">Before/After at scale — 3,000 visits framing</div>
+          <div class="ch-body">The original has no Before/After comparison. The rebuild uses a 3,000-visit scenario to make the cost of inaction concrete and measurable. <strong>"2,994 people leave without identifying themselves"</strong> is a number the reader can apply to their own analytics dashboard immediately. It converts abstract loss into a visible gap.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 06</div>
+          <div class="ch-title">Two CTAs at two conviction moments</div>
+          <div class="ch-body">The original has no in-body CTA — only a nav-level "Try Landbot free" link. The rebuild places CTA 1 above the feature cards when curiosity peaks after the stat cards. CTA 2 closes with ownership language: <strong>"Your content is already doing the hard work. The agent just makes sure it converts."</strong> The reader is the agent. Landbot is the tool.</div>
+        </div>
+
+      </div>
+
+      <div class="method-note">
+        <p>This is the Strategic Flow Method</p>
+        <span>Pain before product. Numbers before features. Business outcomes replace setup instructions. Intent data as the primary differentiator, not a footnote. Two CTAs at two conviction moments. Content calendar turns one email into eight weeks of follow-up.<br><br>
+        <a href="https://strategicflow.carrd.co" target="_blank">strategicflow.carrd.co →</a></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:5px">Independent analysis. Landbot® is not affiliated with Strategic Flow. Content sourced from landbot.io as of April 2026.</p>
+</footer>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
