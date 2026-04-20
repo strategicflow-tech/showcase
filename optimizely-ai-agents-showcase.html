@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Optimizely AI Agents Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--surface:#0d1120;--border:rgba(255,255,255,0.08);
+  --op:#0070F3;--op-dim:rgba(0,112,243,0.12);--op-border:rgba(0,112,243,0.28);
+  --teal:#2dd4bf;--red:#ef4444;--red-bg:rgba(239,68,68,0.08);
+  --white:#f1f5f9;--muted:rgba(255,255,255,0.45);--dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6}
+
+.tabs{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto}
+.tab{padding:16px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--op);border-bottom-color:var(--op)}
+
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.hdr{padding:40px 24px 32px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,112,243,0.07) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--op-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--op);margin-bottom:18px}
+.dot{width:6px;height:6px;background:var(--op);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.hdr h1 em{font-style:italic;color:var(--op)}
+.hdr-meta{font-size:13px;color:var(--muted)}
+.hdr-meta a{color:var(--op);text-decoration:none}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.section{padding:36px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.lbl.blue{color:var(--op)}
+.lbl.red{color:var(--red)}
+.lbl.teal{color:var(--teal)}
+
+/* ARTICLE */
+.article{background:#fff;color:#1e1e1e;border-radius:14px;overflow:hidden;font-family:-apple-system,'Segoe UI',sans-serif}
+.art-hdr{padding:16px 28px;background:#fff;border-bottom:3px solid #0070F3;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.art-logo{height:24px;display:block}
+.art-byline{font-size:11px;color:#666}
+.art-body{padding:28px}
+.art-hero{width:100%;border-radius:10px;margin:0 0 22px;display:block}
+.art-h1{font-size:22px;font-weight:800;color:#1e1e1e;margin:0 0 6px;line-height:1.25}
+.art-meta{font-size:12px;color:#888;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.art-tag{display:inline-block;background:#eff6ff;border-radius:4px;padding:2px 8px;font-size:11px;color:#1d4ed8;font-weight:600}
+.art-p{font-size:14px;color:#374151;line-height:1.8;margin-bottom:14px}
+.art-h2{font-size:16px;font-weight:800;color:#1e1e1e;margin:24px 0 10px;padding-left:14px;border-left:3px solid #0070F3}
+.art-quote{background:#eff6ff;border-left:4px solid #0070F3;border-radius:0 8px 8px 0;padding:14px 18px;margin:14px 0;font-size:14px;color:#1e3a5f;line-height:1.65;font-style:italic}
+.art-quote strong{font-style:normal;color:#1d4ed8}
+.art-checklist{list-style:none;padding:0;margin:12px 0}
+.art-checklist li{font-size:14px;color:#374151;line-height:1.75;margin-bottom:6px;padding-left:26px;position:relative}
+.art-checklist li::before{content:'✅';position:absolute;left:0;font-size:13px}
+.art-summary{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:18px 20px;margin:18px 0}
+.art-summary-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#0369a1;margin-bottom:10px}
+.art-summary ul{padding-left:18px}
+.art-summary ul li{font-size:14px;color:#374151;line-height:1.75;margin-bottom:4px}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.flag{display:flex;gap:12px;padding:13px 16px;background:var(--red-bg);border:1px solid rgba(239,68,68,.18);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.55}
+.flag strong{color:var(--white)}
+
+/* EMAIL SHELL */
+.email-shell{background:#f0f0f0;border-radius:14px;padding:18px}
+.email-inner{max-width:600px;margin:0 auto;background:#fff;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.1);font-family:-apple-system,'Segoe UI',sans-serif}
+.e-hdr{padding:18px 28px;background:#0c1b33;border-bottom:3px solid #0070F3;display:flex;align-items:center;justify-content:space-between}
+.e-logo{height:20px;display:block}
+.e-date{font-size:10px;color:rgba(255,255,255,.4);font-family:monospace}
+.e-body{padding:32px 28px 0}
+.e-h1{font-size:24px;font-weight:900;color:#1a1a1a;line-height:1.2;letter-spacing:-.3px;margin-bottom:14px}
+.e-lead{font-size:15px;color:#4b5563;line-height:1.75;margin-bottom:22px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.stat-card{border:1px solid rgba(0,0,0,.1);border-top:3px solid #0070F3;border-radius:8px;padding:14px 8px;text-align:center;background:#f8faff}
+.stat-num{font-size:20px;font-weight:900;color:#0070F3;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+
+.e-divider{height:3px;background:linear-gradient(to right,#0070F3,rgba(0,112,243,.3),transparent)}
+
+.fc{border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;margin:0 0 14px}
+.fc-top{padding:14px 18px;background:#f9f9f7}
+.fc-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#0070F3;border-radius:50%;color:#fff;font-size:11px;font-weight:800;margin-right:8px;flex-shrink:0;vertical-align:middle}
+.fc-lbl{font-size:10px;font-weight:700;color:#0070F3;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px;display:flex;align-items:center}
+.fc-txt{font-size:14px;color:#3a3a35;line-height:1.6}
+.fc-quote{font-size:12px;color:#0070F3;font-style:italic;margin-top:8px;padding-left:12px;border-left:2px solid #0070F3}
+
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 0 22px}
+.ba-box{padding:14px;background:#f5f5f3;border-radius:8px}
+.ba-box.after{background:rgba(0,112,243,.06);border:1px solid rgba(0,112,243,.18)}
+.ba-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#9b9b9b;margin-bottom:6px}
+.ba-box.after .ba-lbl{color:#0070F3}
+.ba-txt{font-size:13px;color:#1a1a1a;line-height:1.6}
+
+.e-cta{padding:0 0 26px}
+.cta-outer{padding:3px;background:linear-gradient(135deg,#0070F3,#7c3aed);border-radius:10px}
+.cta-inner{background:#fff;border-radius:8px;padding:22px 24px;text-align:center}
+.cta-title{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px;line-height:1.4}
+.cta-btn{display:inline-block;background:#0070F3;color:#fff;font-size:14px;font-weight:800;text-decoration:none;padding:11px 28px;border-radius:7px}
+
+.e-footer{padding:18px 32px;border-top:1px solid rgba(0,0,0,.08);background:#f7f7f5;text-align:center;font-size:11px;color:rgba(0,0,0,.35);line-height:1.7}
+
+/* SCORES */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.score-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.score-n{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px}
+.score-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.score-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* AB */
+.ab-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:17px 20px}
+.ab-ang{font-size:10px;font-weight:700;color:var(--op);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.ab-sub{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+.ab-why{font-size:12px;color:var(--muted);line-height:1.55}
+.ab-lift{display:inline-block;margin-top:6px;padding:3px 10px;background:var(--op-dim);border:1px solid var(--op-border);border-radius:20px;font-size:11px;font-weight:700;color:var(--op)}
+
+/* CALENDAR */
+.cal-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cal-item{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--op);border-radius:8px;padding:12px 16px;display:flex;gap:14px;align-items:baseline}
+.cal-timing{font-size:10px;font-weight:700;color:var(--op);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;flex-shrink:0;min-width:110px}
+.cal-topic{font-size:13px;color:var(--muted)}
+
+/* CHANGES */
+.changes{display:flex;flex-direction:column;gap:12px}
+.change{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+.ch-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--op);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.ch-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.ch-body{font-size:13px;color:var(--muted);line-height:1.65}
+.ch-body strong{color:var(--white)}
+
+.ba2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ba2{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:14px}
+.ba2.after{border-color:var(--op-border);background:var(--op-dim)}
+.ba2-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.ba2.after .ba2-lbl{color:var(--op)}
+.ba2-txt{font-size:13px;color:rgba(255,255,255,.7);line-height:1.55}
+.ba2.after .ba2-txt{color:#93c5fd}
+
+.method-note{margin-top:28px;padding:22px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--op);border-radius:10px}
+.method-note p{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--op);margin-bottom:7px}
+.method-note span{font-size:13px;color:var(--muted);line-height:1.7}
+.method-note a{color:var(--op);text-decoration:none;font-weight:600}
+
+footer{text-align:center;padding:24px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:600px){
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .ba-grid,.ba2-grid,.score-grid{grid-template-columns:1fr}
+  .cal-item{flex-direction:column;gap:4px}
+  .tab{padding:13px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tab active" onclick="show('before',this)">Before</div>
+  <div class="tab" onclick="show('after',this)">After — Strategic Flow</div>
+  <div class="tab" onclick="show('changes',this)">What changed & why</div>
+</nav>
+
+<!-- ══════════════ BEFORE ══════════════ -->
+<div id="before" class="panel active">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow Teardown</div>
+      <h1>Optimizely AI Agents — <em>Audited.</em></h1>
+      <p class="hdr-meta">Original post · <a href="https://www.optimizely.com/insights/blog/mistakes-you-make-when-introducing-ai-agents/" target="_blank">optimizely.com → 5 mistakes marketing teams make when introducing AI agents</a> · Apr 16, 2026</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl">Original article</div>
+      <div class="article">
+        <div class="art-hdr">
+          <img class="art-logo" src="https://www.optimizely.com/globalassets/02.-global-images/optimizely_symbol_full-color.svg" alt="Optimizely">
+          <div class="art-byline">Optimizely Insights · by Leah Messenger, Content Marketing Manager</div>
+        </div>
+        <div class="art-body">
+
+          <img class="art-hero" src="https://www.optimizely.com/contentassets/54a6a33dbeac421d96bea5e93d06253f/opaluniversity_promoengine_q126_960x540_2.png" alt="Optimizely Opal University — AI training for marketers">
+
+          <h1 class="art-h1">5 mistakes that marketing teams make when introducing AI agents</h1>
+          <div class="art-meta">
+            <span>April 16, 2026</span>·<span>6 min read</span>·<span class="art-tag">AI Agents</span><span class="art-tag">Marketing Ops</span>
+          </div>
+
+          <p class="art-p">The bottleneck has shifted. Most marketing teams are past asking whether to use AI agents — the new question on everyone's mind is why they're not working like they're supposed to. The answers are a whole lot less technical than you think.</p>
+
+          <p class="art-p">At Optimizely's recent Agents in Action event, Daniel Hulme (Chief AI Officer @ WPP) — who has spent 25 years building and deploying AI systems at scale — made an observation that stuck: <em>"We get excited about technology, and then we tend to apply that technology to solving the wrong problem."</em></p>
+
+          <p class="art-p">Below are 6 mistakes marketing teams make when introducing AI agents. All of them are avoidable.</p>
+
+          <h2 class="art-h2">1. Starting with the tool, not the problem</h2>
+          <p class="art-p">A new agent capability gets demoed, something clicks, and the question immediately becomes: where can we apply this? Working backwards from a tool almost always leads you to the wrong destination. Start with the friction that's actually costing you. Then ask whether an agent is genuinely the right solution.</p>
+          <div class="art-quote"><strong>"Start with the problem and work backwards. Ask yourself: do we have the right capability, knowledge and data to address it?"</strong><br>— Daniel Hulme, Chief AI Officer @ WPP</div>
+
+          <h2 class="art-h2">2. Treating deployment as a launch, not a release cycle</h2>
+          <p class="art-p">In traditional software development, around 80% of total effort goes into testing — not building. That ratio doesn't change with AI agents. Most teams don't realise it. Agents operating inside marketing workflows need to be tested, monitored, and iterated on continuously — not shipped and forgotten.</p>
+          <div class="art-quote"><strong>"Companies will deploy AI agents and they're not going to test them. They're not going to realise how much effort is involved in making sure they're safe and responsible."</strong><br>— Daniel Hulme</div>
+
+          <h2 class="art-h2">3. Only planning for failure, not for success</h2>
+          <p class="art-p">Teams do QA. They define what failure looks like. What they rarely do is model for what happens when an agent performs exactly as intended — and causes a problem anyway. An agent optimising campaign targeting with perfect precision could, over time, create audiences so tightly defined that they reinforce bias and collapse creative range.</p>
+          <div class="art-quote"><strong>"You have to think about the consequences of AI going very right."</strong><br>— Daniel Hulme</div>
+
+          <h2 class="art-h2">4. Hiring for AI specialism when breadth is the multiplier</h2>
+          <p class="art-p">The people who get the most out of AI agents aren't always the most technically fluent — they're the most contextually rich. Someone with a background in art history, anthropology, or geopolitics can surface references and cultural resonances a narrowly trained specialist might miss entirely. The person orchestrating your agent workflows might be your most generalist thinker, not your most technical hire.</p>
+
+          <h2 class="art-h2">5. Measuring impact in 'time saved' rather than work unlocked</h2>
+          <p class="art-p">Time saved is easy to report but often misleading. In marketing, there is never a shortage of work. Efficiency gains don't produce slack — they produce capacity for more ambition.</p>
+          <div class="art-quote"><strong>"There are millions of moments right now that are being missed where brands are failing to put their products in front of the right people."</strong><br>— Daniel Hulme</div>
+          <p class="art-p">The real case for AI agents isn't operational efficiency — it's coverage. The campaigns that didn't run, the content variants that didn't get tested, the audiences that weren't reached.</p>
+
+          <h2 class="art-h2">6. Waiting until something goes wrong to build governance</h2>
+          <p class="art-p">Teams with clear governance structures deploy faster, not slower — they've already thought through the questions that would otherwise stop them. Daniel's four pre-deployment questions at WPP:</p>
+          <ul class="art-checklist">
+            <li>Is the intent appropriate?</li>
+            <li>Are the algorithms explainable?</li>
+            <li>Have the agents been properly verified and tested?</li>
+            <li>What happens if this goes very right?</li>
+          </ul>
+
+          <div class="art-summary">
+            <div class="art-summary-title">Long story short</div>
+            <ul>
+              <li>Fully defined problems before tools</li>
+              <li>Real testing cycles (80% effort, not 20%)</li>
+              <li>Governance built before it's needed</li>
+              <li>Success metrics that capture what was made possible, not just faster</li>
+              <li>Generalist orchestrators alongside technical specialists</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="flags">
+        <div class="flag">⚠️<div><strong>Headline buries the tension</strong> — "5 mistakes teams make" is a listicle signal that promises incremental improvement. The real tension in the article is much sharper: your AI agents are deployed, they're not working, and the reason has nothing to do with the technology. That's the headline.</div></div>
+        <div class="flag">⚠️<div><strong>Hook names a shift but doesn't land the cost</strong> — "The bottleneck has shifted" is a strong opener but it's abstract. The reader doesn't feel the consequence. What does it cost to deploy agents that solve the wrong problem? What does a failed rollout look like in a marketing org? Name that before listing mistakes.</div></div>
+        <div class="flag">⚠️<div><strong>Six mistakes presented equally — no hierarchy</strong> — Mistake #1 (starting with the tool) is the root cause of all others. Mistakes #2–6 are downstream consequences. The newsletter should structure them as a cascade, not a flat list. Root cause → compounding consequences → governance fix.</div></div>
+        <div class="flag">⚠️<div><strong>Daniel Hulme quotes are the strongest content — but they're buried mid-section</strong> — Three of the most compelling quotes in the article (tool vs problem, testing effort, millions of missed moments) appear after paragraphs of setup. In a newsletter, quotes this strong should open the section, not close it.</div></div>
+        <div class="flag">⚠️<div><strong>No stat cards — numbers exist but get no visual treatment</strong> — "80% of effort goes into testing", "13 minutes vs 8.5 minutes", "millions of missed moments" — these are scannable proof points buried in prose. Visual stat cards above the fold would anchor the business case immediately.</div></div>
+        <div class="flag">⚠️<div><strong>CTA is a promo block for Opal University, not a consequence of reading</strong> — The embedded promo ("FREE AI TRAINING — Enroll in a free 5 day AI course") appears before the article even starts. It reads as advertising. The natural CTA from this content is the AI Playbook — but it's mentioned only in the last line as a text link.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ AFTER ══════════════ -->
+<div id="after" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow — Rebuilt</div>
+      <h1>Optimizely AI Agents — <em>Rebuilt.</em></h1>
+      <p class="hdr-meta">Newsletter rebuild · High-Impact tier · strategic-flow-pro.replit.app</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl blue">Rebuilt newsletter</div>
+
+      <div class="email-shell">
+        <div class="email-inner">
+          <div class="e-hdr">
+            <img class="e-logo" src="https://www.optimizely.com/globalassets/02.-global-images/optimizely_symbol_full-color.svg" alt="Optimizely">
+            <div class="e-date">Insights · April 16, 2026</div>
+          </div>
+
+          <div class="e-body">
+            <img src="https://www.optimizely.com/contentassets/54a6a33dbeac421d96bea5e93d06253f/opaluniversity_promoengine_q126_960x540_2.png" alt="Optimizely AI Agents" style="width:100%;border-radius:8px;margin-bottom:22px;display:block">
+
+            <h1 class="e-h1">🤖 Your AI agents are deployed. They're not working. The reason isn't the technology.</h1>
+            <p class="e-lead">Most marketing teams are past the "should we use AI agents?" conversation. The new question — the one nobody wants to say out loud — is why their agents aren't performing like they were supposed to. Daniel Hulme has spent 25 years deploying AI at scale. His answer is uncomfortable: you're solving the wrong problems.</p>
+
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">80%</div>
+                <div class="stat-lbl">of deployment effort should be testing, not building</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">Millions</div>
+                <div class="stat-lbl">of brand moments missed daily without agent coverage</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">4</div>
+                <div class="stat-lbl">pre-deployment questions WPP asks before every AI rollout</div>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-bottom:24px">
+              <a href="https://www.optimizely.com/ai-playbook/" style="display:inline-block;padding:12px 28px;background:#0070F3;color:#fff;font-weight:800;font-size:13px;border-radius:7px;text-decoration:none">Get the AI Agent Playbook →</a>
+              <p style="font-size:11px;color:#9b9b9b;margin-top:8px">Modern marketer's guide to agent orchestration</p>
+            </div>
+          </div>
+
+          <div class="e-divider"></div>
+
+          <div style="padding:20px 24px 0">
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl"><span class="fc-num">1</span> Start with the problem, not the tool</div>
+                <div class="fc-txt">Working backwards from a shiny agent capability leads to mismatched deployments every time. The teams that succeed define the friction first: what's the campaign you can't run at pace? The content variant you can't test? Start there, then ask if an agent is the right answer.</div>
+                <div class="fc-quote">"Start with the problem and work backwards. Do we have the right capability, knowledge and data to address it?" — Daniel Hulme, CAO @ WPP</div>
+              </div>
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl"><span class="fc-num">2</span> Deployment is a release cycle, not a launch</div>
+                <div class="fc-txt">In software development, 80% of total effort goes into testing. Not building — testing. That ratio doesn't change for AI agents. Agents running inside your marketing workflows need continuous monitoring and iteration. Most teams ship them like campaign assets and move on.</div>
+                <div class="fc-quote">"Companies will deploy AI agents and they're not going to test them. They won't realise how much effort is involved in making them safe." — Daniel Hulme</div>
+              </div>
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl"><span class="fc-num">3</span> Plan for success, not just failure</div>
+                <div class="fc-txt">An agent optimising campaign targeting with perfect precision could, over time, create audiences so tightly defined they reinforce bias and collapse your creative range. Success metrics need a ceiling, not just a floor. What does "too optimised" look like before it becomes a problem?</div>
+                <div class="fc-quote">"You have to think about the consequences of AI going very right." — Daniel Hulme</div>
+              </div>
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-lbl"><span class="fc-num">4–6</span> Breadth beats specialism · Measure coverage · Govern early</div>
+                <div class="fc-txt">The best agent orchestrators are generalists with contextual range, not technical specialists. Measure what AI makes possible — not just hours saved. And governance built before you need it makes you deploy faster, not slower. Four questions WPP asks every time: intent appropriate? algorithms explainable? properly tested? what if it goes very right?</div>
+              </div>
+            </div>
+
+            <div class="ba-grid">
+              <div class="ba-box">
+                <div class="ba-lbl">Before</div>
+                <div class="ba-txt">You deploy an AI agent because it impressed in a demo. Six weeks later, adoption is low, outputs are generic, and nobody can explain why it's not working. The post-mortem lands on the technology. The real failure was the problem definition.</div>
+              </div>
+              <div class="ba-box after">
+                <div class="ba-lbl">After</div>
+                <div class="ba-txt">You start by naming the specific friction: campaigns you can't run at pace, audiences you can't reach, content variants that never get tested. The agent is scoped to that problem. Testing takes 80% of the effort. Governance questions are answered before go-live. Deployment works.</div>
+              </div>
+            </div>
+
+            <div class="e-cta">
+              <div class="cta-outer">
+                <div class="cta-inner">
+                  <p class="cta-title">The technology is no longer the hard part. The hard part is everything around it.</p>
+                  <a href="https://www.optimizely.com/ai-playbook/" class="cta-btn">Download the AI Agent Playbook →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="e-footer">
+            <p style="font-weight:700;color:rgba(0,0,0,.4);font-size:13px">Optimizely</p>
+            <p>Digital experience platform · Experimentation · Content · Commerce</p>
+            <p style="margin-top:5px"><a href="#" style="color:rgba(0,0,0,.3);text-decoration:none;font-size:11px">Unsubscribe · optimizely.com</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORES -->
+      <div style="margin-top:24px">
+        <div class="lbl blue">Conversion score</div>
+        <div class="score-grid">
+          <div class="score-box">
+            <div class="score-l">Original</div>
+            <div class="score-n" style="color:var(--red)">4<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Listicle headline kills tension. Hook names a shift without cost. Six mistakes presented as flat list — no cascade logic. Best quotes buried mid-section. No stat cards. CTA is an unrelated promo block, not a consequence of reading.</div>
+          </div>
+          <div class="score-box" style="border-color:var(--op-border);background:var(--op-dim)">
+            <div class="score-l" style="color:var(--op)">Rebuilt</div>
+            <div class="score-n" style="color:var(--op)">9<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Problem-first hook names the deployment failure. 3 stat cards: 80% / Millions / 4. Cascade structure: root cause → compounding mistakes → governance fix. Hulme quotes open each card. CTA flows from the content. Before/After makes failure cost concrete.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AB -->
+      <div style="margin-top:26px">
+        <div class="lbl blue">3 A/B subject line variants</div>
+        <div class="ab-list">
+          <div class="ab-card">
+            <div class="ab-ang">Tension — deployment failure</div>
+            <div class="ab-sub">Your AI agents are deployed. They're not working. Here's why.</div>
+            <div class="ab-why">Names the exact moment marketing ops leaders are living right now. No preamble — lands directly in the pain of a rollout that hasn't delivered.</div>
+            <span class="ab-lift">Predicted open rate: 38–44%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Curiosity — wrong problem</div>
+            <div class="ab-sub">The AI agent problem isn't the AI. It's the problem you gave it.</div>
+            <div class="ab-why">Reframes the failure in a way that feels like insider knowledge. Creates cognitive dissonance — forces the reader to reconsider their deployment assumptions.</div>
+            <span class="ab-lift">Predicted open rate: 31–37%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Stat — testing gap</div>
+            <div class="ab-sub">80% of AI agent effort should be testing. Most teams give it 20%.</div>
+            <div class="ab-why">Quantified gap between best practice and reality. Works for CMOs who are already questioning why their agent rollout underperformed — gives them a concrete answer immediately.</div>
+            <span class="ab-lift">Predicted open rate: 27–33%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div style="margin-top:26px">
+        <div class="lbl blue">4-Week Content Calendar</div>
+        <div class="cal-list">
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 3</div><div class="cal-topic">How to write a proper problem definition before touching an agent builder</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 5</div><div class="cal-topic">The 80/20 testing inversion — why most teams get the ratio backwards</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 10</div><div class="cal-topic">What "going very right" looks like — the over-optimisation risk nobody talks about</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 12</div><div class="cal-topic">Why your best AI orchestrator might have a history degree, not a CS one</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 17</div><div class="cal-topic">From time saved to work unlocked — how to rewrite your AI ROI metrics</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 19</div><div class="cal-topic">The 4 pre-deployment questions WPP asks before every AI rollout</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 24</div><div class="cal-topic">Governance as an accelerant — how clear frameworks make you deploy faster</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 26</div><div class="cal-topic">Millions of missed moments — measuring campaign coverage, not efficiency</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ WHAT CHANGED ══════════════ -->
+<div id="changes" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>The 6 Strategic <em>Upgrades</em></h1>
+      <p class="hdr-meta">What changed in the Optimizely rebuild — and why each change converts better</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+
+      <div class="lbl">Subject line transformation</div>
+      <div class="ba2-grid">
+        <div class="ba2">
+          <div class="ba2-lbl">❌ Original</div>
+          <div class="ba2-txt" style="color:var(--red);font-weight:700;margin-bottom:6px">"5 mistakes that marketing teams make when introducing AI agents"</div>
+          <div class="ba2-txt">Listicle framing. Signals incremental tips. A reader who already has agents deployed and struggling doesn't open a "mistakes" list — they open something that names their specific failure state.</div>
+        </div>
+        <div class="ba2 after">
+          <div class="ba2-lbl">✓ Rebuilt</div>
+          <div class="ba2-txt" style="font-weight:700;margin-bottom:6px">"Your AI agents are deployed. They're not working. Here's why."</div>
+          <div class="ba2-txt">Three sentences that map exactly to the reader's current reality. Deployed → not working → reason unknown. The article answers the third sentence. Open rate follows recognition.</div>
+        </div>
+      </div>
+
+      <div class="changes" style="margin-top:26px">
+
+        <div class="change">
+          <div class="ch-num">Upgrade 01</div>
+          <div class="ch-title">Hook names the failure, not the topic</div>
+          <div class="ch-body">The original opens with "The bottleneck has shifted" — accurate but abstract. The reader doesn't feel a cost. The rebuild opens with a specific failure state: <strong>agents deployed, not performing, reason unclear.</strong> Every CMO who has sat in that post-mortem meeting recognises it immediately. Recognition creates the urgency to keep reading.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 02</div>
+          <div class="ch-title">80% stat elevated to stat card — above the fold</div>
+          <div class="ch-body">The original mentions "around 80% of total effort goes into testing" mid-paragraph in Mistake #2. It's the most actionable number in the article — it directly explains why deployments fail — and it's invisible in prose. <strong>The rebuild makes it the first stat card, above the feature content.</strong> Numbers that indict current practice convert when they arrive before the solution, not after it.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 03</div>
+          <div class="ch-title">Flat list → cascade structure</div>
+          <div class="ch-body">The original presents six mistakes as equal items in a numbered list. But Mistake #1 (wrong problem) is the root cause of all the others. Mistakes #2–5 are downstream compounding failures. Mistake #6 (governance) is the fix. <strong>The rebuild structures this as a cascade:</strong> root cause → compounding consequences → resolution. The reader understands why each mistake matters, not just what it is.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 04</div>
+          <div class="ch-title">Hulme quotes moved to section openers</div>
+          <div class="ch-body">The original buries Daniel Hulme's strongest quotes after paragraphs of setup. In a newsletter, a quote this authoritative — from someone who has deployed AI at WPP scale for 25 years — should open the argument, not close it. <strong>The rebuild uses each Hulme quote as the first sentence of its feature card,</strong> letting his credibility do the work before the explanation follows.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 05</div>
+          <div class="ch-title">Promo block removed — CTA flows from content</div>
+          <div class="ch-body">The original embeds an Opal University promo block before the article content begins. It reads as advertising and breaks the hook immediately. <strong>The rebuild removes the promo entirely and replaces both CTAs</strong> with a single, consequence-driven action: "Download the AI Agent Playbook" — the resource Optimizely already links at the end of the article, repositioned as the natural next step after reading about deployment failure.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 06</div>
+          <div class="ch-title">Before/After makes failure cost concrete</div>
+          <div class="ch-body">The original has no Before/After. The abstract risk of "solving the wrong problem" doesn't convert. <strong>The rebuild describes a specific failure arc:</strong> impressed by demo → deployed → six weeks later, adoption low, outputs generic, post-mortem blames the technology. Then the After: same deployment done right, with 80% testing effort, pre-defined problem, governance pre-built. The cost of mistake #1 becomes visible and personal.</div>
+        </div>
+
+      </div>
+
+      <div class="method-note">
+        <p>This is the Strategic Flow Method</p>
+        <span>Failure state before topic. Stats as proof cards, not prose. Cascade logic replaces flat lists. Expert quotes open arguments, not close them. Promo blocks removed, consequential CTAs installed. Before/After makes abstract risk concrete and personal.<br><br>
+        <a href="https://strategicflow.carrd.co" target="_blank">strategicflow.carrd.co →</a></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:5px">Independent analysis. Optimizely® is not affiliated with Strategic Flow. Content sourced from optimizely.com as of April 2026.</p>
+</footer>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
