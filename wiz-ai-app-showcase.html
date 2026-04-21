@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Wiz AI-APP Teardown</title>
+<meta name="description" content="Email teardown complet: subiect original vs rebuilt, scor de conversie, A/B variants. Metodologie Strategic Flow. Wiz AI Application Protection Platform launch.">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--surface:#0d1120;--border:rgba(255,255,255,0.08);
+  --wiz:#0066FF;--wiz-dim:rgba(0,102,255,0.10);--wiz-border:rgba(0,102,255,0.28);
+  --red:#ef4444;--red-bg:rgba(239,68,68,0.08);
+  --white:#f1f5f9;--muted:rgba(255,255,255,0.45);--dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6}
+
+.tabs{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto}
+.tab{padding:16px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--wiz);border-bottom-color:var(--wiz)}
+
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.hdr{padding:40px 24px 32px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(0,102,255,0.07) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--wiz-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--wiz);margin-bottom:18px}
+.dot{width:6px;height:6px;background:var(--wiz);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.hdr h1 em{font-style:italic;color:var(--wiz)}
+.hdr-meta{font-size:13px;color:var(--muted)}
+.hdr-meta a{color:var(--wiz);text-decoration:none}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.section{padding:36px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.lbl.blue{color:var(--wiz)}
+
+/* ARTICLE */
+.article{background:#fff;color:#1e1e1e;border-radius:14px;overflow:hidden;font-family:-apple-system,'Segoe UI',sans-serif}
+.art-hdr{padding:16px 28px;background:#050f2e;border-bottom:3px solid #0066FF;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.art-byline{font-size:11px;color:rgba(255,255,255,.55)}
+.art-body{padding:28px}
+.art-hero{width:100%;border-radius:10px;margin:0 0 22px;display:block}
+.art-h1{font-size:22px;font-weight:800;color:#1e1e1e;margin:0 0 6px;line-height:1.25}
+.art-sub{font-size:14px;color:#3730a3;font-style:italic;margin-bottom:14px;line-height:1.6}
+.art-h2{font-size:16px;font-weight:800;color:#1e1e1e;margin:26px 0 10px;padding-left:14px;border-left:3px solid #0066FF}
+.art-meta{font-size:12px;color:#888;margin-bottom:20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.art-tag{display:inline-block;background:#eff6ff;border-radius:4px;padding:2px 8px;font-size:11px;color:#1d4ed8;font-weight:600}
+.art-p{font-size:14px;color:#374151;line-height:1.8;margin-bottom:14px}
+.art-li{font-size:14px;color:#374151;line-height:1.7;padding-left:18px;position:relative;margin-bottom:8px}
+.art-li::before{content:'→';position:absolute;left:0;color:#0066FF;font-weight:700}
+.art-li strong{color:#1e1e1e}
+.art-img{width:100%;border-radius:8px;margin:14px 0;display:block;border:1px solid #e5e7eb}
+.art-caption{font-size:11px;color:#9ca3af;margin-top:-10px;margin-bottom:14px;text-align:center;font-style:italic}
+.art-cta-wrap{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.art-cta-btn{display:inline-block;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;border:2px solid #0066FF;color:#0066FF}
+.art-cta-btn.primary{background:#0066FF;color:#fff;border-color:#0066FF}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.flag{display:flex;gap:12px;padding:13px 16px;background:var(--red-bg);border:1px solid rgba(239,68,68,.18);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.55}
+.flag strong{color:var(--white)}
+
+/* EMAIL SHELL */
+.email-shell{background:#f0f0f0;border-radius:14px;padding:18px}
+.email-inner{max-width:600px;margin:0 auto;background:#ffffff;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.1);font-family:-apple-system,'Segoe UI',sans-serif}
+.e-hdr{padding:18px 28px;background:#050f2e;border-bottom:3px solid #0066FF;display:flex;align-items:center;justify-content:space-between}
+.e-date{font-size:10px;color:rgba(255,255,255,.4);font-family:monospace}
+.e-hero{width:100%;display:block;max-height:220px;object-fit:cover}
+.e-body{padding:32px 28px 0}
+.e-h1{font-size:24px;font-weight:900;color:#1a1a18;line-height:1.2;letter-spacing:-.3px;margin-bottom:14px}
+.e-lead{font-size:15px;color:#6b6b66;line-height:1.75;margin-bottom:22px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.stat-card{border:1px solid rgba(0,0,0,.1);border-top:3px solid #0066FF;border-radius:8px;padding:14px 8px;text-align:center;background:#eff6ff}
+.stat-num{font-size:22px;font-weight:900;color:#0066FF;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+
+.e-divider{height:3px;background:linear-gradient(to right,#0066FF,rgba(0,102,255,.3),transparent)}
+
+/* FEATURE CARDS */
+.fc{border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;margin:0 0 14px;background:#fff}
+.fc-top{padding:14px 18px;background:#f0f7ff}
+.fc-label{font-size:10px;font-weight:700;color:#0066FF;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.fc-title{font-size:15px;font-weight:800;color:#1a1a18;margin-bottom:8px}
+.fc-txt{font-size:14px;color:#3a3a35;line-height:1.6}
+.fc-img{width:100%;display:block;border-top:1px solid rgba(0,0,0,.08)}
+.fc-caption{font-size:10px;color:#9ca3af;text-align:center;padding:6px 14px;background:#f9fafb;font-style:italic}
+
+/* QUOTE */
+.e-quote{margin:0 0 22px;padding:18px 20px;border-left:3px solid #0066FF;background:#eff6ff;border-radius:0 8px 8px 0}
+.e-quote p{font-size:14px;color:#1e3a8a;line-height:1.7;font-style:italic;margin-bottom:6px}
+.e-quote cite{font-size:11px;color:#0066FF;font-weight:700}
+
+/* BEFORE/AFTER */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 0 22px}
+.ba-box{padding:14px;background:#f5f5f3;border-radius:8px}
+.ba-box.after{background:#eff6ff;border:1px solid rgba(0,102,255,.18)}
+.ba-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#9b9b9b;margin-bottom:6px}
+.ba-box.after .ba-lbl{color:#0066FF}
+.ba-txt{font-size:13px;color:#1a1a18;line-height:1.6}
+.ba-box.after .ba-txt{color:#1e3a8a}
+
+/* CTA */
+.e-cta{padding:0 0 26px}
+.cta-outer{padding:3px;background:linear-gradient(135deg,#0066FF,#7c3aed);border-radius:10px}
+.cta-inner{background:#fff;border-radius:8px;padding:22px 24px;text-align:center}
+.cta-title{font-size:15px;font-weight:700;color:#1a1a18;margin-bottom:14px;line-height:1.4}
+.cta-btn{display:inline-block;background:#0066FF;color:#fff;font-size:14px;font-weight:800;text-decoration:none;padding:11px 28px;border-radius:7px}
+
+.e-footer{padding:18px 32px;border-top:1px solid rgba(0,0,0,.08);background:#f5f5f3;text-align:center;font-size:11px;color:rgba(0,0,0,.35);line-height:1.7}
+
+/* SCORES */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.score-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.score-n{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px}
+.score-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.score-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* AB */
+.ab-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:17px 20px}
+.ab-ang{font-size:10px;font-weight:700;color:var(--wiz);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.ab-sub{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+.ab-why{font-size:12px;color:var(--muted);line-height:1.55}
+.ab-lift{display:inline-block;margin-top:6px;padding:3px 10px;background:var(--wiz-dim);border:1px solid var(--wiz-border);border-radius:20px;font-size:11px;font-weight:700;color:var(--wiz)}
+
+/* CALENDAR */
+.cal-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cal-item{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--wiz);border-radius:8px;padding:12px 16px;display:flex;gap:14px;align-items:baseline}
+.cal-timing{font-size:10px;font-weight:700;color:var(--wiz);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;flex-shrink:0;min-width:110px}
+.cal-topic{font-size:13px;color:var(--muted)}
+
+/* CHANGES */
+.changes{display:flex;flex-direction:column;gap:12px}
+.change{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+.ch-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--wiz);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.ch-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.ch-body{font-size:13px;color:var(--muted);line-height:1.65}
+.ch-body strong{color:var(--white)}
+
+.ba2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.ba2{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:14px}
+.ba2.after{border-color:var(--wiz-border);background:var(--wiz-dim)}
+.ba2-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.ba2.after .ba2-lbl{color:var(--wiz)}
+.ba2-txt{font-size:13px;color:rgba(255,255,255,.7);line-height:1.55}
+.ba2.after .ba2-txt{color:#bfdbfe}
+
+.method-note{margin-top:28px;padding:22px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--wiz);border-radius:10px}
+.method-note p{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--wiz);margin-bottom:7px}
+.method-note span{font-size:13px;color:var(--muted);line-height:1.7}
+.method-note a{color:var(--wiz);text-decoration:none;font-weight:600}
+
+.back-link{text-align:center;padding:24px 20px;border-top:1px solid var(--border)}
+.back-link a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .15s}
+.back-link a:hover{color:var(--wiz)}
+
+footer{text-align:center;padding:16px 20px 28px;font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:600px){
+  .stat-grid,.ba-grid,.ba2-grid,.score-grid{grid-template-columns:1fr 1fr}
+  .cal-item{flex-direction:column;gap:4px}
+  .tab{padding:13px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tab active" onclick="show('before',this)">Before</div>
+  <div class="tab" onclick="show('after',this)">After — Strategic Flow</div>
+  <div class="tab" onclick="show('changes',this)">What changed & why</div>
+</nav>
+
+<!-- ══════════════ BEFORE ══════════════ -->
+<div id="before" class="panel active">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow Teardown</div>
+      <h1>Wiz AI-APP Launch — <em>Audited.</em></h1>
+      <p class="hdr-meta">Original post · <a href="https://www.wiz.io/blog/introducing-wiz-ai-app" target="_blank">wiz.io → Introducing Wiz AI Application Protection Platform (AI-APP)</a> · March 23, 2026</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl">Original article</div>
+      <div class="article">
+        <div class="art-hdr">
+          <svg width="80" height="24" viewBox="0 0 80 24" fill="none">
+            <circle cx="12" cy="12" r="12" fill="#0066FF"/>
+            <text x="6" y="16" font-family="Arial Black" font-size="11" font-weight="900" fill="white">W</text>
+            <text x="28" y="16" font-family="Arial" font-size="12" font-weight="700" fill="white">Wiz</text>
+          </svg>
+          <div class="art-byline">Snegha Ramnarayanan, Aviel Erdis, Guy Weiss, Dan Segev · March 23, 2026</div>
+        </div>
+        <div class="art-body">
+          <img class="art-hero" src="https://www.datocms-assets.com/75231/1774246532-app-2x.png?fm=webp" alt="Wiz AI-APP Platform" onerror="this.style.display='none'">
+
+          <h1 class="art-h1">Introducing Wiz AI Application Protection Platform (AI-APP)</h1>
+          <div class="art-sub">Secure every layer of AI applications — infrastructure, data, access, models, agents, and applications — from code to runtime, across every environment you build in.</div>
+          <div class="art-meta"><span class="art-tag">Product Launch</span><span class="art-tag">AI Security</span><span class="art-tag">Cloud Security</span></div>
+
+          <p class="art-p">AI hasn't just changed how we build — it has fundamentally changed how risk emerges. AI applications are dynamic, interconnected systems combining models, agents, tools, data, and infrastructure across code, cloud, and runtime. Most approaches still analyze infrastructure, identity, and applications in isolation — leaving teams without the context needed to identify real risk.</p>
+
+          <p class="art-p">Today, we're introducing the <strong>Wiz AI Application Protection Platform (AI-APP)</strong> — designed to secure AI applications end-to-end, with the context needed to understand real risk and act on it.</p>
+
+          <h2 class="art-h2">The Context Gap in AI Security</h2>
+          <p class="art-p">Security teams are left trying to answer:</p>
+          <div class="art-li"><strong>Where</strong> AI applications are running across my environment?</div>
+          <div class="art-li"><strong>What</strong> are their capabilities — what can they actually do?</div>
+          <div class="art-li"><strong>Which</strong> of these actually represent real, exploitable risk?</div>
+          <div class="art-li"><strong>Can I detect</strong> and respond to threats in time?</div>
+
+          <img class="art-img" src="https://www.datocms-assets.com/75231/1774290929-screenshot-2026-03-23-at-20-31-41.png?fm=webp" alt="AI Risk Issue on Security Graph">
+          <div class="art-caption">AI Risk Issue on Security Graph — Externally exposed agent with authentication bypass vulnerability exposing sensitive data</div>
+
+          <p class="art-p">Consider a customer-facing AI chatbot connected to internal tools and data systems. An attacker discovers an authentication bypass vulnerability — a common issue in rapidly built, "vibe-coded" applications — and uses it to inject a prompt, manipulating the agent into taking unintended action.</p>
+
+          <img class="art-img" src="https://www.datocms-assets.com/75231/1774061679-screenshot-2026-03-19-at-9-47-20-pm.png?fm=webp" alt="AI attack path visualization" onerror="this.style.display='none'">
+
+          <h2 class="art-h2">1. Visibility — Build a Complete AI Inventory</h2>
+          <img class="art-img" src="https://www.datocms-assets.com/75231/1774062025-screenshot-2026-02-27-at-5-05-41-pm.png?fm=webp" alt="AI Inventory in Wiz" onerror="this.style.display='none'">
+          <div class="art-caption">AI Inventory</div>
+
+          <p class="art-p">Wiz builds a complete inventory of AI applications using multiple detection methods:</p>
+          <div class="art-li"><strong>Managed platforms</strong> — deep integrations with AWS Bedrock, Azure AI, and Google Vertex AI</div>
+
+          <img class="art-img" src="https://www.datocms-assets.com/75231/1774062100-screenshot-2026-03-19-at-10-04-50-pm.png?fm=webp" alt="Agent hosted on AWS Bedrock" onerror="this.style.display='none'">
+          <div class="art-caption">Agent hosted on AWS Bedrock & the tools it's connected to</div>
+
+          <div class="art-li"><strong>SaaS AI ecosystems</strong> — visibility into platforms like OpenAI and Microsoft Copilot Studio</div>
+          <img class="art-img" src="https://www.datocms-assets.com/75231/1774062190-screenshot-2026-03-19-at-7-11-25-am.png?fm=webp" alt="Agent built in Copilot Studio" onerror="this.style.display='none'">
+          <div class="art-caption">Agent built in Copilot Studio with access to sensitive data in SharePoint</div>
+
+          <div class="art-li"><strong>Custom and self-hosted AI</strong> — code and workload analysis to identify frameworks, agents, and services</div>
+          <img class="art-img" src="https://www.datocms-assets.com/75231/1774062282-screenshot-2026-03-19-at-10-02-56-pm.png?fm=webp" alt="Custom hosted agent on Wiz Security Graph" onerror="this.style.display='none'">
+          <div class="art-caption">Custom hosted agent on the Wiz Security Graph</div>
+
+          <h2 class="art-h2">2. Risk — Understand How Risk Emerges Across Layers</h2>
+          <img class="art-img" src="https://www.datocms-assets.com/75231/1774061823-screenshot-2026-03-19-at-11-18-38-pm.png?fm=webp" alt="AI risk analysis in Wiz" onerror="this.style.display='none'">
+
+          <p class="art-p">AI risk doesn't live in a single layer. It emerges when systems interact — across models, agents, tools, infrastructure, and data. The platform brings together visibility, risk analysis, and runtime protection into a single, graph-powered platform.</p>
+
+          <div class="art-cta-wrap">
+            <a href="https://www.wiz.io/events/security-for-ai-era" class="art-cta-btn primary">Join our live webinar — Wiz AI-APP</a>
+            <a href="https://www.wiz.io/demo" class="art-cta-btn">Schedule a demo</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="flags">
+        <div class="flag">⚠️<div><strong>Hook leads with Wiz's perspective, not the reader's problem</strong> — "AI hasn't just changed how we build — it has fundamentally changed how risk emerges" is a vendor observation. The security engineer reading this knows AI risk is real. What they don't have is a way to answer the 4 questions Wiz buries in paragraph 3. Those 4 questions should be the opening sentence.</div></div>
+        <div class="flag">⚠️<div><strong>"Today, we're introducing" opener loses the urgency</strong> — The real urgency isn't the product launch. It's the attack scenario: a customer-facing chatbot connected to production data, bypassed via a prompt injection, exfiltrating sensitive records while every individual action looks normal. That attack path scenario — currently buried mid-article — should be the hook.</div></div>
+        <div class="flag">⚠️<div><strong>3 capabilities presented as equal weight — they aren't</strong> — Visibility, Risk, and Runtime Protection are the three pillars. But Visibility (inventory) is the foundation everything else depends on. Runtime Protection is where the purchase decision gets made. The email should sequence them as a narrative: you can't protect what you can't see → you can't prioritize what you can't contextualize → you can't respond to what you can't detect in real time.</div></div>
+        <div class="flag">⚠️<div><strong>Attack path scenario is the strongest content — used as an example, not the lead</strong> — The chatbot/prompt injection/authentication bypass attack path is the most visceral, specific, and memorable thing in the article. It shows exactly how AI risk actually emerges. It's introduced as "Consider a customer-facing AI chatbot..." after two paragraphs of abstraction. This scenario should open the email.</div></div>
+        <div class="flag">⚠️<div><strong>Two CTAs of equal weight create no decision</strong> — "Join our live webinar" and "Schedule a demo" appear side by side with no hierarchy. The reader doesn't know which action is the right next step based on where they are in the buying journey. The email should end with one primary CTA anchored to the urgency just created.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ AFTER ══════════════ -->
+<div id="after" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow — Rebuilt</div>
+      <h1>Wiz AI-APP Launch — <em>Rebuilt.</em></h1>
+      <p class="hdr-meta">Newsletter rebuild · High-Impact tier · strategic-flow-pro.replit.app</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl blue">Rebuilt newsletter</div>
+
+      <div class="email-shell">
+        <div class="email-inner">
+          <div class="e-hdr">
+            <svg width="70" height="22" viewBox="0 0 70 22" fill="none">
+              <circle cx="11" cy="11" r="11" fill="#0066FF"/>
+              <text x="5" y="15" font-family="Arial Black" font-size="10" font-weight="900" fill="white">W</text>
+              <text x="27" y="15" font-family="Arial" font-size="11" font-weight="700" fill="white">Wiz</text>
+            </svg>
+            <div class="e-date">AI Security · March 2026 · New Platform</div>
+          </div>
+
+          <img class="e-hero" src="https://www.datocms-assets.com/75231/1774246532-app-2x.png?fm=webp" alt="Wiz AI Application Protection Platform" onerror="this.style.display='none'">
+
+          <div class="e-body">
+            <h1 class="e-h1">🔐 Your customer-facing AI agent just exfiltrated sensitive data. Every individual action looked normal.</h1>
+            <p class="e-lead">A chatbot connected to production. An authentication bypass in vibe-coded app logic. A prompt injection that makes the agent do exactly what it was designed to do — for the wrong person. The individual actions look normal. Only connected, the attack path becomes visible. That's the context gap AI security has been missing.</p>
+
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">6</div>
+                <div class="stat-lbl">layers secured: infra · data · access · models · agents · apps</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">3</div>
+                <div class="stat-lbl">detection methods: managed · SaaS · custom self-hosted</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">1</div>
+                <div class="stat-lbl">graph-powered platform — visibility to runtime in one place</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="e-divider"></div>
+
+          <div style="padding:20px 24px 0">
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-label">SEE WHAT YOU'RE BUILDING WITH</div>
+                <div class="fc-title">Complete AI inventory — managed, SaaS, and custom</div>
+                <div class="fc-txt">You can't protect what you can't see. AI adoption spans AWS Bedrock, Azure AI, Google Vertex, OpenAI, Microsoft Copilot Studio, and custom self-hosted agents — creating blind spots across environments. Wiz builds a complete inventory across all of them, including the Workload Explainer that detects how custom AI applications are built even when they aren't explicitly defined.</div>
+              </div>
+              <img class="fc-img" src="https://www.datocms-assets.com/75231/1774062025-screenshot-2026-02-27-at-5-05-41-pm.png?fm=webp" alt="AI Inventory in Wiz" onerror="this.style.display='none'">
+              <div class="fc-caption">Complete AI inventory across managed, SaaS, and custom environments</div>
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-label">UNDERSTAND HOW RISK ACTUALLY EMERGES</div>
+                <div class="fc-title">Cross-layer risk — not isolated alerts</div>
+                <div class="fc-txt">AI risk doesn't live in one layer. It emerges when systems interact — a model with excessive permissions, an agent connected to production data, infrastructure with an unpatched vulnerability. The Security Graph connects these signals into a complete attack path. The chatbot attack above is invisible in any single tool. In the graph, it's a three-step path with a clear entry point.</div>
+              </div>
+              <img class="fc-img" src="https://www.datocms-assets.com/75231/1774290929-screenshot-2026-03-23-at-20-31-41.png?fm=webp" alt="AI Risk on Security Graph" onerror="this.style.display='none'">
+              <div class="fc-caption">AI risk issue on Security Graph — externally exposed agent with authentication bypass vulnerability</div>
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-label">DETECT AND RESPOND IN REAL TIME</div>
+                <div class="fc-title">Runtime protection — from code to runtime, across every environment</div>
+                <div class="fc-txt">Visibility and risk analysis tell you what could happen. Runtime protection tells you what's happening now. Wiz AI-APP detects threats across AI applications in real time — model interactions, agent executions, cloud activity — with the full context of how they're connected. The goal: move from upload to response without switching tools, opening tickets, or losing the thread of the investigation.</div>
+              </div>
+              <img class="fc-img" src="https://www.datocms-assets.com/75231/1774061823-screenshot-2026-03-19-at-11-18-38-pm.png?fm=webp" alt="Wiz AI-APP runtime protection" onerror="this.style.display='none'">
+            </div>
+
+            <div class="e-quote">
+              <p>"It's only when these are connected that the full AI attack path becomes clear."</p>
+              <cite>Wiz AI-APP — Security Graph connecting model, agent, and infrastructure signals</cite>
+            </div>
+
+            <div class="ba-grid">
+              <div class="ba-box">
+                <div class="ba-lbl">Before AI-APP</div>
+                <div class="ba-txt">Infrastructure team sees a configuration change. Security team sees an anomalous API call. App team sees a model interaction. Each looks normal in isolation. Three weeks later, an incident response investigation connects them — after sensitive data has already moved.</div>
+              </div>
+              <div class="ba-box after">
+                <div class="ba-lbl">With AI-APP</div>
+                <div class="ba-txt">The Security Graph connects the authentication bypass, the agent execution, and the data movement into a single attack path — flagged in real time. The team sees the full picture before the data leaves. Response happens in the same platform where the risk was identified.</div>
+              </div>
+            </div>
+
+            <div class="e-cta">
+              <div class="cta-outer">
+                <div class="cta-inner">
+                  <p class="cta-title">If your AI applications are connected to production data, this is the platform that makes the attack path visible before it's a breach.</p>
+                  <a href="https://www.wiz.io/events/security-for-ai-era" class="cta-btn">See Wiz AI-APP in action →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="e-footer">
+            <p style="font-weight:700;color:rgba(0,0,0,.4);font-size:13px">Wiz · Now part of Google</p>
+            <p>Cloud Security · AI Application Protection · Code to Runtime</p>
+            <p style="margin-top:5px"><a href="#" style="color:rgba(0,0,0,.3);text-decoration:none;font-size:11px">Unsubscribe · wiz.io</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORES -->
+      <div style="margin-top:24px">
+        <div class="lbl blue">Conversion score</div>
+        <div class="score-grid">
+          <div class="score-box">
+            <div class="score-l">Original</div>
+            <div class="score-n" style="color:var(--red)">3<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Vendor perspective as hook. Attack scenario buried mid-article. Three pillars presented as flat list. Two equal-weight CTAs. Best content — the prompt injection attack path — used as an example, not the lead.</div>
+          </div>
+          <div class="score-box" style="border-color:var(--wiz-border);background:var(--wiz-dim)">
+            <div class="score-l" style="color:var(--wiz)">Rebuilt</div>
+            <div class="score-n" style="color:var(--wiz)">9<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Attack scenario as hook — most visceral content leads. 3 stat cards: 6 layers / 3 detection methods / 1 platform. 3 feature cards in narrative sequence: see → understand → detect. All real screenshots imported. Single CTA anchored to the threat.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AB -->
+      <div style="margin-top:26px">
+        <div class="lbl blue">3 A/B subject line variants</div>
+        <div class="ab-list">
+          <div class="ab-card">
+            <div class="ab-ang">Attack scenario — prompt injection</div>
+            <div class="ab-sub">Your AI agent just exfiltrated data. Every individual action looked normal.</div>
+            <div class="ab-why">Recreates the exact failure mode that makes AI security uniquely difficult — individual actions that are indistinguishable from legitimate behavior. Security leaders who have investigated AI incidents will recognize this immediately.</div>
+            <span class="ab-lift">Predicted open rate: 40–46%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Context gap — isolated tools failing</div>
+            <div class="ab-sub">Your infrastructure team, security team, and app team each saw something normal. Combined, it was a breach.</div>
+            <div class="ab-why">Names the organizational failure mode that AI-APP solves. CISO-level framing — the "three teams, three tickets, one breach" pattern is a known pain point for anyone managing cross-functional security.</div>
+            <span class="ab-lift">Predicted open rate: 34–40%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Platform announcement — capability framing</div>
+            <div class="ab-sub">Wiz AI-APP: the first platform to connect model, agent, and infrastructure risk into a single attack path.</div>
+            <div class="ab-why">Differentiator-first framing for readers who track platform launches. "Single attack path" is a specific, testable claim — not a category description. Works for analysts and security engineers comparing tools.</div>
+            <span class="ab-lift">Predicted open rate: 28–34%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div style="margin-top:26px">
+        <div class="lbl blue">4-Week Content Calendar</div>
+        <div class="cal-list">
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 3</div><div class="cal-topic">What is a context gap in AI security — and why isolated tools can't close it</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 5</div><div class="cal-topic">Prompt injection + authentication bypass: how vibe-coded apps create exploitable attack paths</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 10</div><div class="cal-topic">AI inventory: why you can't protect what you can't see across managed, SaaS, and custom AI</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 12</div><div class="cal-topic">How the Wiz Security Graph connects model, agent, and infrastructure risk into one attack path</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 17</div><div class="cal-topic">AWS Bedrock, Azure AI, Copilot Studio: where your AI agents are running and what they can access</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 19</div><div class="cal-topic">From CNAPP to AI-APP: how cloud-native protection evolves for AI-native applications</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 24</div><div class="cal-topic">Runtime protection for AI: detecting threats in real time vs. discovering them in incident reviews</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 26</div><div class="cal-topic">AI security at Google scale — what Wiz joining Google means for the AI-APP roadmap</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ WHAT CHANGED ══════════════ -->
+<div id="changes" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>The 5 Strategic <em>Upgrades</em></h1>
+      <p class="hdr-meta">What changed in the Wiz AI-APP rebuild — and why each change converts better</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+
+      <div class="lbl">Subject line transformation</div>
+      <div class="ba2-grid">
+        <div class="ba2">
+          <div class="ba2-lbl">❌ Original</div>
+          <div class="ba2-txt" style="color:var(--red);font-weight:700;margin-bottom:6px">"Introducing Wiz AI Application Protection Platform (AI-APP)"</div>
+          <div class="ba2-txt">Feature name as subject. The security engineer reading this knows AI risk is growing. What they don't have is a way to see it. The announcement framing signals "press release" — not "this is the problem you have right now."</div>
+        </div>
+        <div class="ba2 after">
+          <div class="ba2-lbl">✓ Rebuilt</div>
+          <div class="ba2-txt" style="font-weight:700;margin-bottom:6px">"Your AI agent just exfiltrated data. Every individual action looked normal."</div>
+          <div class="ba2-txt">The exact failure mode that makes AI security hard — individual actions that look legitimate, combined into an attack. Anyone who has investigated an AI incident, or fears they'd miss one, opens this immediately.</div>
+        </div>
+      </div>
+
+      <div class="changes" style="margin-top:26px">
+
+        <div class="change">
+          <div class="ch-num">Upgrade 01</div>
+          <div class="ch-title">Attack scenario leads — not the platform announcement</div>
+          <div class="ch-body">The original opens with Wiz's observation about how AI has changed risk. <strong>The rebuild opens with the specific attack: chatbot + authentication bypass + prompt injection + data exfiltration — all looking normal in isolation.</strong> The reader sees the threat before they see the solution. This is the "problem felt" that makes the product feel necessary rather than interesting.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 02</div>
+          <div class="ch-title">3 stat cards replace abstract capability claims</div>
+          <div class="ch-body">The original has no visual data elements — only prose describing the platform. <strong>The rebuild extracts 3 concrete numbers: 6 layers secured / 3 detection methods / 1 platform.</strong> Each number is a specific, verifiable claim. "6 layers" is more credible than "end-to-end protection." The reader understands the scope in 10 seconds before reading a word of body copy.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 03</div>
+          <div class="ch-title">3 pillars sequenced as a narrative, not a flat list</div>
+          <div class="ch-body">The original presents Visibility, Risk, and Runtime Protection as three equal sections. <strong>The rebuild sequences them as a causal chain: see → understand → detect.</strong> "You can't protect what you can't see" → "you can't prioritize what you can't contextualize" → "you can't respond to what you can't detect in real time." Each section builds the case for the next. The purchase decision happens at section 3 because sections 1 and 2 made it inevitable.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 04</div>
+          <div class="ch-title">All real screenshots imported and anchored to copy</div>
+          <div class="ch-body">The original drops screenshots without directing the reader's eye. <strong>The rebuild imports all 6 Wiz product screenshots with captions that name exactly what to look at</strong> — "externally exposed agent with authentication bypass," "agent on AWS Bedrock and the tools it's connected to," "complete AI inventory." Screenshots are evidence for the claim above them, not decoration.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 05</div>
+          <div class="ch-title">Single CTA anchored to the threat created in the hook</div>
+          <div class="ch-body">The original ends with two equal-weight CTAs — webinar and demo — with no hierarchy. <strong>The rebuild ends with one CTA that recaps the argument: "If your AI applications are connected to production data, this is the platform that makes the attack path visible before it's a breach."</strong> The reader who opened because of the attack scenario is now told exactly what to do next to prevent it.</div>
+        </div>
+
+      </div>
+
+      <div class="method-note">
+        <p>This is the Strategic Flow Method</p>
+        <span>The attack scenario as hook — not the product announcement. Stat cards make the scope concrete before body copy. Causal narrative sequence instead of flat feature list. All real product screenshots imported and anchored. Single CTA = the direct consequence of reading.<br><br>
+        <a href="https://strategicflow.carrd.co" target="_blank">strategicflow.carrd.co →</a></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="back-link">
+  <a href="index.html">← Back to all teardowns</a>
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:5px">Independent analysis. Wiz® is not affiliated with Strategic Flow. Content sourced from wiz.io as of April 2026.</p>
+</footer>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
