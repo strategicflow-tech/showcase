@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow Audit — Free Email Teardown Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --white: #f5f2ec;
+    --signal: #00e5a0;
+    --signal-dim: #00c98a;
+    --noise: #ff4444;
+    --amber: #f5a623;
+    --mid: #1a1a1a;
+    --muted: #3a3a3a;
+    --card-bg: #141414;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--signal);
+    text-transform: uppercase;
+  }
+
+  .logo span { color: var(--white); }
+
+  nav { display: flex; gap: 32px; align-items: center; }
+  nav a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(245,242,236,0.5);
+    text-decoration: none; transition: color 0.2s;
+  }
+  nav a:hover { color: var(--signal); }
+
+  .nav-cta {
+    background: var(--signal);
+    color: var(--ink) !important;
+    padding: 8px 18px;
+    font-weight: 700 !important;
+    transition: background 0.2s, transform 0.1s !important;
+  }
+  .nav-cta:hover { background: var(--signal-dim) !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,160,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,160,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridDrift 20s linear infinite;
+  }
+
+  @keyframes gridDrift {
+    from { transform: translate(0, 0); }
+    to   { transform: translate(60px, 60px); }
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,229,160,0.12) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.1); }
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--signal);
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--signal);
+  }
+
+  .hero-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 28px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--signal);
+  }
+
+  .hero-subline {
+    font-size: 17px; line-height: 1.6;
+    color: rgba(245,242,236,0.65);
+    max-width: 480px;
+    margin-bottom: 44px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 16px; align-items: center;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--signal);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 14px 28px;
+    text-decoration: none;
+    transition: all 0.2s;
+    position: relative; overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+  }
+
+  .btn-primary:hover::after { transform: translateX(100%); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,160,0.3); }
+
+  .btn-ghost {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(245,242,236,0.5);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--white); }
+
+  .free-badge {
+    display: inline-block;
+    background: rgba(0,229,160,0.12);
+    border: 1px solid rgba(0,229,160,0.3);
+    color: var(--signal);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; padding: 4px 10px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s 0.05s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HERO MOCK SCREEN ── */
+  .hero-visual {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .mock-screen {
+    width: 100%; max-width: 520px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,229,160,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mock-topbar {
+    background: #1a1a1a;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  .mock-url {
+    flex: 1;
+    background: #222;
+    border: 1px solid #333;
+    padding: 4px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: rgba(245,242,236,0.4);
+    margin-left: 8px;
+  }
+
+  .mock-body { padding: 20px; }
+
+  .mock-input-group { margin-bottom: 16px; }
+  .mock-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: rgba(245,242,236,0.3);
+    margin-bottom: 6px;
+  }
+
+  .mock-input {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid rgba(0,229,160,0.2);
+    padding: 10px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--white);
+  }
+
+  .mock-input.active { border-color: var(--signal); box-shadow: 0 0 0 2px rgba(0,229,160,0.1); }
+
+  .mock-btn {
+    width: 100%;
+    background: var(--signal);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 12px;
+    border: none; cursor: pointer; margin-top: 12px;
+  }
+
+  .mock-results { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 16px; }
+
+  .result-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+  }
+
+  .result-label { color: rgba(245,242,236,0.5); }
+
+  .score-pill {
+    padding: 2px 8px;
+    font-size: 10px; font-weight: 700;
+  }
+
+  .score-bad  { background: rgba(255,68,68,0.15);  color: var(--noise); }
+  .score-mid  { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .score-good { background: rgba(0,229,160,0.15);  color: var(--signal); }
+
+  .mock-bar-track {
+    height: 4px; background: #222; margin-top: 4px; position: relative; overflow: hidden;
+  }
+  .mock-bar-fill {
+    height: 100%;
+    animation: barGrow 2s 1.5s ease both;
+  }
+  @keyframes barGrow { from { width: 0; } }
+
+  .typing-cursor {
+    display: inline-block;
+    width: 8px; height: 13px; background: var(--signal);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle; margin-left: 2px;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 48px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .stat-item {
+    padding: 0 32px;
+    border-right: 1px solid var(--border);
+    animation: fadeUp 0.6s ease both;
+  }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-item:last-child  { border-right: none; }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px; color: var(--signal);
+    line-height: 1;
+  }
+
+  .stat-desc {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: rgba(245,242,236,0.4);
+    letter-spacing: 0.05em; margin-top: 4px;
+  }
+
+  /* ── SECTION UNIVERSAL ── */
+  section { padding: 100px 48px; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--signal); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::before {
+    content: '';
+    display: block; width: 16px; height: 1px; background: var(--signal);
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.1; margin-bottom: 20px;
+  }
+
+  .section-sub {
+    font-size: 16px; line-height: 1.7;
+    color: rgba(245,242,236,0.55);
+    max-width: 580px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+    position: relative;
+  }
+
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 40px; left: 16.66%; right: 16.66%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--signal), transparent);
+  }
+
+  .step-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 40px 32px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .step-card:hover {
+    border-color: rgba(0,229,160,0.3);
+    transform: translateY(-4px);
+  }
+
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--signal); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .step-num::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: rgba(0,229,160,0.2);
+  }
+
+  .step-icon {
+    font-size: 28px; margin-bottom: 16px;
+    display: block;
+  }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .step-desc {
+    font-size: 14px; line-height: 1.7;
+    color: rgba(245,242,236,0.5);
+  }
+
+  /* ── OUTPUT SHOWCASE ── */
+  .output-section {
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .output-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 64px;
+    align-items: center;
+    margin-top: 64px;
+  }
+
+  .output-list { display: flex; flex-direction: column; gap: 16px; }
+
+  .output-item {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+
+  .output-item:hover { border-color: rgba(0,229,160,0.25); }
+
+  .output-item.active {
+    border-color: var(--signal);
+    background: rgba(0,229,160,0.04);
+  }
+
+  .output-icon {
+    width: 40px; height: 40px;
+    background: rgba(0,229,160,0.1);
+    border: 1px solid rgba(0,229,160,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+
+  .output-text h4 {
+    font-size: 15px; font-weight: 700; margin-bottom: 4px;
+  }
+
+  .output-text p {
+    font-size: 13px; color: rgba(245,242,236,0.45); line-height: 1.5;
+  }
+
+  /* ── MOCK AUDIT RESULT ── */
+  .audit-mock {
+    background: #141414;
+    border: 1px solid var(--border);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  .audit-mock-header {
+    background: #1a1a1a;
+    padding: 14px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .audit-mock-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--signal);
+    letter-spacing: 0.08em;
+  }
+
+  .audit-timestamp {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: rgba(245,242,236,0.25);
+  }
+
+  .audit-mock-body { padding: 20px; }
+
+  .score-ring-wrap {
+    display: flex; align-items: center; gap: 24px; margin-bottom: 20px;
+  }
+
+  .score-ring {
+    width: 80px; height: 80px;
+    background: conic-gradient(var(--signal) 0% 62%, #2a2a2a 62% 100%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+
+  .score-ring::before {
+    content: '';
+    position: absolute;
+    width: 60px; height: 60px;
+    background: #141414; border-radius: 50%;
+  }
+
+  .score-ring-val {
+    position: relative; z-index: 1;
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px; color: var(--signal);
+  }
+
+  .score-breakdown { flex: 1; }
+
+  .sb-row {
+    display: flex; justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .sb-key { color: rgba(245,242,236,0.4); }
+  .sb-val-bad  { color: var(--noise); }
+  .sb-val-good { color: var(--signal); }
+
+  .rebuild-block {
+    background: rgba(0,229,160,0.05);
+    border: 1px solid rgba(0,229,160,0.2);
+    padding: 14px;
+    margin-top: 16px;
+  }
+
+  .rebuild-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--signal);
+    margin-bottom: 8px;
+  }
+
+  .rebuild-before, .rebuild-after {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; padding: 8px 10px;
+    margin-bottom: 6px;
+  }
+
+  .rebuild-before {
+    background: rgba(255,68,68,0.08);
+    border-left: 2px solid var(--noise);
+    color: rgba(245,242,236,0.5);
+    text-decoration: line-through;
+  }
+
+  .rebuild-after {
+    background: rgba(0,229,160,0.08);
+    border-left: 2px solid var(--signal);
+    color: var(--white);
+  }
+
+  .ab-variants {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;
+  }
+
+  .ab-card {
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+  }
+
+  .ab-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--signal);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .ab-text { font-size: 11px; color: rgba(245,242,236,0.7); line-height: 1.4; }
+  .ab-rate { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--signal); margin-top: 4px; }
+
+  /* ── DIAGNOSTIC PANEL ── */
+  .diag-wrap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 64px;
+  }
+
+  .diag-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+
+  .diag-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .diag-card:hover::before { transform: scaleX(1); }
+  .diag-card:hover { transform: translateY(-4px); border-color: rgba(0,229,160,0.2); }
+
+  .diag-problem {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--noise); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .diag-title {
+    font-size: 18px; font-weight: 700; margin-bottom: 10px;
+  }
+
+  .diag-desc {
+    font-size: 13px; color: rgba(245,242,236,0.45); line-height: 1.6;
+  }
+
+  .diag-fix {
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--signal);
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(0,229,160,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .cta-section .section-title { font-size: clamp(40px, 5vw, 68px); }
+  .cta-section .section-sub { margin: 0 auto 48px; text-align: center; }
+
+  .cta-group {
+    display: flex; gap: 16px;
+    justify-content: center; align-items: center;
+    position: relative;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    padding: 60px 48px 40px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 48px;
+  }
+
+  .footer-brand .logo { font-size: 15px; margin-bottom: 16px; display: block; }
+
+  .footer-tagline {
+    font-size: 13px; color: rgba(245,242,236,0.4);
+    line-height: 1.6; max-width: 280px;
+  }
+
+  .footer-col h5 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--signal);
+    margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 13px; color: rgba(245,242,236,0.45);
+    text-decoration: none; margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--white); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-copy {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: rgba(245,242,236,0.25);
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── SCROLLING TICKER ── */
+  .ticker-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: #0a0a0a;
+    padding: 14px 0;
+  }
+
+  .ticker-track {
+    display: flex; gap: 0;
+    animation: ticker 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em;
+    color: rgba(245,242,236,0.25);
+    padding: 0 32px;
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .ticker-dot { color: var(--signal); }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    header { padding: 16px 24px; }
+    nav { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+    .hero-visual { display: none; }
+    section { padding: 60px 24px; }
+    .stats-bar { grid-template-columns: 1fr 1fr; padding: 32px 24px; gap: 24px; }
+    .stat-item { border-right: none; padding: 0; }
+    .steps-grid, .diag-wrap { grid-template-columns: 1fr; }
+    .steps-grid::before { display: none; }
+    .output-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .ab-variants { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Strategic<span>Flow</span> <span style="color:rgba(245,242,236,0.3)">/ Audit</span></div>
+  <nav>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#output">Output</a>
+    <a href="#problems">Diagnoses</a>
+    <a href="strategic-flow-pro.html">Pro Platform →</a>
+    <a href="https://strategic-flow-audit.replit.app" class="nav-cta">Run Free Audit</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-content">
+    <div class="free-badge">100% Free · No Account Required · 60 Seconds</div>
+    <div class="eyebrow">Strategic Flow Audit</div>
+    <h1 class="hero-headline">Your email<br>has a bug.<br><em>Find it now.</em></h1>
+    <p class="hero-subline">Paste any SaaS email or URL. In 60 seconds, the Audit returns a full teardown — subject line score, hook diagnosis, CTA analysis, and a rebuilt version ready to send.</p>
+    <div class="hero-ctas">
+      <a href="https://strategic-flow-audit.replit.app" class="btn-primary">
+        ⚡ Run My Free Audit
+      </a>
+      <a href="#output" class="btn-ghost">See sample output ↓</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="mock-screen">
+      <div class="mock-topbar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <div class="mock-url">strategic-flow-audit.replit.app</div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-input-group">
+          <div class="mock-label">// Paste email subject line</div>
+          <div class="mock-input active">Introducing our Q2 Product Update<span class="typing-cursor"></span></div>
+        </div>
+        <div class="mock-input-group">
+          <div class="mock-label">// Or paste email body / URL</div>
+          <div class="mock-input" style="height:64px; padding-top:10px; color:rgba(245,242,236,0.25)">Optional — paste full email content here</div>
+        </div>
+        <div class="mock-btn">⚡ Analyze Email</div>
+
+        <div class="mock-results">
+          <div class="result-row">
+            <span class="result-label">Cohesion Score</span>
+            <span class="score-pill score-bad">42 / 100</span>
+          </div>
+          <div class="mock-bar-track"><div class="mock-bar-fill" style="width:42%;background:var(--noise)"></div></div>
+          <div class="result-row" style="margin-top:10px">
+            <span class="result-label">Subject Diagnosis</span>
+            <span class="score-pill score-bad">Feature-first ✗</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Hook Type</span>
+            <span class="score-pill score-mid">Announcement</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">CTA Strength</span>
+            <span class="score-pill score-bad">Passive</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Rebuilt Subject</span>
+            <span class="score-pill score-good">Ready ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Subject line scored in 60 seconds</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Hook diagnosis — consequence vs announcement</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Rebuilt subject line included free</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> CTA strength analysis</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Cohesion score 0–100</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Predicted open rate delta</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> No account. No card. No pitch.</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Subject line scored in 60 seconds</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Hook diagnosis — consequence vs announcement</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Rebuilt subject line included free</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> CTA strength analysis</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Cohesion score 0–100</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> Predicted open rate delta</div>
+    <div class="ticker-item"><span class="ticker-dot">◆</span> No account. No card. No pitch.</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <div class="stat-num">60s</div>
+    <div class="stat-desc">average time to full teardown</div>
+  </div>
+  <div class="stat-item reveal" style="animation-delay:0.1s">
+    <div class="stat-num">7</div>
+    <div class="stat-desc">diagnostic dimensions scored</div>
+  </div>
+  <div class="stat-item reveal" style="animation-delay:0.2s">
+    <div class="stat-num">+38%</div>
+    <div class="stat-desc">avg open rate lift on rebuilt subjects</div>
+  </div>
+  <div class="stat-item reveal" style="animation-delay:0.3s">
+    <div class="stat-num">$0</div>
+    <div class="stat-desc">first time free access — no card required</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-label">Process</div>
+  <h2 class="section-title reveal">Three inputs.<br>One full diagnosis.</h2>
+  <p class="section-sub reveal">The Strategic Flow Method runs a systematic audit across every structural layer of your email — the same way a developer debugs a broken system.</p>
+
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-num">STEP 01</div>
+      <span class="step-icon">📋</span>
+      <h3 class="step-title">Paste Your Email</h3>
+      <p class="step-desc">Drop in your subject line, email body, or URL. The Audit accepts any SaaS email — product updates, onboarding sequences, newsletters, cold outreach.</p>
+    </div>
+    <div class="step-card reveal" style="animation-delay:0.1s">
+      <div class="step-num">STEP 02</div>
+      <span class="step-icon">🔬</span>
+      <h3 class="step-title">System Runs Diagnosis</h3>
+      <p class="step-desc">The Strategic Flow engine scores your subject line, hook type, CTA language, narrative structure, and consequence framing across 7 diagnostic dimensions.</p>
+    </div>
+    <div class="step-card reveal" style="animation-delay:0.2s">
+      <div class="step-num">STEP 03</div>
+      <span class="step-icon">⚡</span>
+      <h3 class="step-title">Get the Teardown</h3>
+      <p class="step-desc">Receive a full report: cohesion score, what's broken and why, a rebuilt subject line, and predicted open rate delta — ready to act on immediately.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OUTPUT SHOWCASE -->
+<section id="output" class="output-section">
+  <div class="section-label">Output</div>
+  <h2 class="section-title reveal">What you receive</h2>
+  <p class="section-sub reveal">Not a generic score. A precise teardown with rebuilt components — so you know exactly what was broken, why it mattered, and what to ship instead.</p>
+
+  <div class="output-grid">
+    <div class="output-list">
+      <div class="output-item active reveal">
+        <div class="output-icon">📊</div>
+        <div class="output-text">
+          <h4>Cohesion Score</h4>
+          <p>0–100 composite score across subject, hook, CTA, and narrative arc. Color-coded by severity.</p>
+        </div>
+      </div>
+      <div class="output-item reveal">
+        <div class="output-icon">🔍</div>
+        <div class="output-text">
+          <h4>Hook Diagnosis</h4>
+          <p>Classifies your hook as announcement, feature-first, consequence-first, or question-based. Flags the conversion gap.</p>
+        </div>
+      </div>
+      <div class="output-item reveal">
+        <div class="output-icon">✏️</div>
+        <div class="output-text">
+          <h4>Rebuilt Subject Line</h4>
+          <p>A consequence-first rewrite of your original subject — with an explanation of why the rebuilt version converts better.</p>
+        </div>
+      </div>
+      <div class="output-item reveal">
+        <div class="output-icon">📈</div>
+        <div class="output-text">
+          <h4>Predicted Open Rate Delta</h4>
+          <p>Estimated open rate improvement based on industry benchmarks for your email type and sector.</p>
+        </div>
+      </div>
+      <div class="output-item reveal">
+        <div class="output-icon">🎯</div>
+        <div class="output-text">
+          <h4>CTA Strength Analysis</h4>
+          <p>Passive vs ownership language scoring. Flags "Learn more" vs "Start my free trial" — and why the difference is a conversion lever.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="audit-mock reveal">
+      <div class="audit-mock-header">
+        <div class="audit-mock-title">// STRATEGIC FLOW AUDIT — OUTPUT</div>
+        <div class="audit-timestamp">Generated 0.6s</div>
+      </div>
+      <div class="audit-mock-body">
+        <div class="score-ring-wrap">
+          <div class="score-ring">
+            <div class="score-ring-val">42</div>
+          </div>
+          <div class="score-breakdown">
+            <div class="sb-row"><span class="sb-key">Subject framing</span><span class="sb-val-bad">Feature-first</span></div>
+            <div class="sb-row"><span class="sb-key">Hook type</span><span class="sb-val-bad">Announcement</span></div>
+            <div class="sb-row"><span class="sb-key">CTA language</span><span class="sb-val-bad">Passive</span></div>
+            <div class="sb-row"><span class="sb-key">Consequence signal</span><span class="sb-val-bad">Missing</span></div>
+            <div class="sb-row"><span class="sb-key">Narrative arc</span><span class="sb-val-good">Present</span></div>
+          </div>
+        </div>
+
+        <div class="rebuild-block">
+          <div class="rebuild-label">// Subject Line Rebuild</div>
+          <div class="rebuild-before">Introducing our Q2 Product Update</div>
+          <div class="rebuild-after">The manual step slowing your team — we removed it.</div>
+        </div>
+
+        <div class="ab-variants">
+          <div class="ab-card">
+            <div class="ab-tag">Variant A</div>
+            <div class="ab-text">The manual step slowing your team — we removed it.</div>
+            <div class="ab-rate">↑ Est. 34-38% open</div>
+          </div>
+          <div class="ab-card">
+            <div class="ab-tag">Variant B</div>
+            <div class="ab-text">Your onboarding flow was broken. Here's the fix.</div>
+            <div class="ab-rate">↑ Est. 31-35% open</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS WE DIAGNOSE -->
+<section id="problems">
+  <div class="section-label">Diagnoses</div>
+  <h2 class="section-title reveal">The six bugs<br>we always find</h2>
+  <p class="section-sub reveal">These aren't opinions. They're structural errors — measurable patterns in SaaS emails that kill open rates and CTR before the reader reaches your content.</p>
+
+  <div class="diag-wrap">
+    <div class="diag-card reveal">
+      <div class="diag-problem">⬤ Bug #1</div>
+      <h3 class="diag-title">Feature-First Subject Line</h3>
+      <p class="diag-desc">The subject announces the product. The reader opens emails that announce their problem — not yours.</p>
+      <div class="diag-fix">→ Reframe around reader consequence</div>
+    </div>
+    <div class="diag-card reveal" style="animation-delay:0.1s">
+      <div class="diag-problem">⬤ Bug #2</div>
+      <h3 class="diag-title">Announcement Hook</h3>
+      <p class="diag-desc">"We're excited to introduce..." — the reader's brain routes this to their promotions tab before they finish the sentence.</p>
+      <div class="diag-fix">→ Consequence-first hook rewrite</div>
+    </div>
+    <div class="diag-card reveal" style="animation-delay:0.2s">
+      <div class="diag-problem">⬤ Bug #3</div>
+      <h3 class="diag-title">Passive CTA Language</h3>
+      <p class="diag-desc">"Learn more" signals uncertainty. Ownership CTAs ("Start my trial", "See my dashboard") convert 2–4× higher in SaaS flows.</p>
+      <div class="diag-fix">→ CTA rewrite with ownership language</div>
+    </div>
+    <div class="diag-card reveal" style="animation-delay:0.3s">
+      <div class="diag-problem">⬤ Bug #4</div>
+      <h3 class="diag-title">No Stakes / Consequence</h3>
+      <p class="diag-desc">The email describes the feature without communicating what happens to the reader if they ignore it. No consequence = no urgency.</p>
+      <div class="diag-fix">→ Stakes injection into body copy</div>
+    </div>
+    <div class="diag-card reveal" style="animation-delay:0.4s">
+      <div class="diag-problem">⬤ Bug #5</div>
+      <h3 class="diag-title">Broken Narrative Arc</h3>
+      <p class="diag-desc">The subject promises one thing; the body delivers another. Cohesion collapse kills click-through even when open rates are healthy.</p>
+      <div class="diag-fix">→ Arc alignment audit</div>
+    </div>
+    <div class="diag-card reveal" style="animation-delay:0.5s">
+      <div class="diag-problem">⬤ Bug #6</div>
+      <h3 class="diag-title">Technical Debt in Copy</h3>
+      <p class="diag-desc">Accumulated bad decisions across subject lines, CTAs, and hooks that compound into a communication architecture that doesn't convert.</p>
+      <div class="diag-fix">→ Full rebuild (Pro tier)</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-label" style="justify-content:center">Start Now</div>
+  <h2 class="section-title reveal">60 seconds to find<br>what's <em style="font-style:italic;color:var(--signal)">breaking</em> your email.</h2>
+  <p class="section-sub reveal">No account. No card. No pitch. Just the diagnosis — and a rebuilt subject line you can ship today.</p>
+  <div class="cta-group reveal">
+    <a href="https://strategic-flow-audit.replit.app" class="btn-primary" style="font-size:15px;padding:18px 36px">
+      ⚡ Run My Free Audit
+    </a>
+    <a href="strategic-flow-pro.html" class="btn-ghost" style="font-size:13px">
+      Need the full rebuild? See Pro Platform →
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">Strategic<span>Flow</span></span>
+      <p class="footer-tagline">I turn SaaS product updates into emails that get opened, read, and clicked — using the Strategic Flow Method.</p>
+      <div style="margin-top:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(245,242,236,0.35)">
+        Based in Arona, Costa Adeje<br>Canary Islands, Spain
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Tools</h5>
+      <a href="https://strategic-flow-audit.replit.app">Free Audit</a>
+      <a href="https://strategic-flow-pro.replit.app">Pro Platform</a>
+      <a href="https://strategicflow-tech.github.io/showcase">Showcase</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="https://strategicflow.carrd.co">Website</a>
+      <a href="strategic-flow-pro.html">Pricing</a>
+      <a href="mailto:strategicflow@proton.me">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a>
+      <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Strategic Flow · Arona, Canary Islands</div>
+    <div class="footer-copy">strategic-flow-audit.replit.app</div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => io.observe(r));
+
+  // Output item toggle
+  const outputItems = document.querySelectorAll('.output-item');
+  outputItems.forEach(item => {
+    item.addEventListener('click', () => {
+      outputItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
