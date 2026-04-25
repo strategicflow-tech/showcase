@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subject Line Pack — Strategic Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #04080f;
+  --bg2: #080e1a;
+  --card: #0d1424;
+  --border: rgba(255,255,255,0.07);
+  --teal: #2dd4bf;
+  --teal-dim: rgba(45,212,191,0.12);
+  --teal-mid: rgba(45,212,191,0.25);
+  --white: #f1f5f9;
+  --muted: rgba(255,255,255,0.45);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Syne', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(4,8,15,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+
+.nav-brand {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--teal);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  background: var(--teal);
+  color: #04080f !important;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 700 !important;
+}
+
+/* HERO */
+.hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 100px 40px 80px;
+  text-align: center;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(45,212,191,0.3);
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 32px;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+h1 {
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.hero-sub {
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 580px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+}
+
+.hero-price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.price-main {
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.04em;
+}
+
+.price-label {
+  text-align: left;
+}
+
+.price-label .top {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.price-label .bot {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--teal);
+  color: #04080f;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 800;
+  padding: 18px 40px;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+  box-shadow: 0 0 40px rgba(45,212,191,0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 60px rgba(45,212,191,0.4);
+}
+
+.hero-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 16px;
+  letter-spacing: 0.05em;
+}
+
+/* DEMO BLOCK */
+.demo-block {
+  max-width: 760px;
+  margin: 0 auto 100px;
+  padding: 0 40px;
+}
+
+.terminal {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.r { background: #ff5f57; }
+.dot.y { background: #ffbd2e; }
+.dot.g { background: #28c941; }
+
+.terminal-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 0.05em;
+}
+
+.terminal-body {
+  padding: 28px;
+}
+
+.t-line {
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.t-comment { color: rgba(255,255,255,0.25); }
+.t-label { color: var(--teal); }
+.t-val { color: var(--white); }
+.t-old { color: rgba(255,80,80,0.8); text-decoration: line-through; }
+.t-new { color: #86efac; }
+.t-dim { color: var(--muted); }
+
+.t-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+.variant-block {
+  background: rgba(45,212,191,0.05);
+  border: 1px solid rgba(45,212,191,0.15);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+
+.variant-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.variant-text {
+  font-size: 14px;
+  color: var(--white);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.variant-lift {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #86efac;
+}
+
+/* STATS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 0 40px;
+}
+
+.stat {
+  background: var(--bg2);
+  padding: 36px 28px;
+  text-align: center;
+}
+
+.stat-val {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--teal);
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* WHAT YOU GET */
+.section {
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 0 40px;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.section h2 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 48px;
+  line-height: 1.1;
+}
+
+.section h2 em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.deliverables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.deliv-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  transition: border-color 0.2s;
+}
+
+.deliv-card:hover {
+  border-color: rgba(45,212,191,0.3);
+}
+
+.deliv-icon {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.deliv-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.deliv-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* HOW IT WORKS */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.step {
+  background: var(--bg2);
+  padding: 36px 28px;
+}
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.step-icon { font-size: 28px; margin-bottom: 16px; }
+
+.step-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* WHAT'S INSIDE */
+.inside-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+
+.inside-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 15px;
+  color: var(--muted);
+  padding: 16px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.inside-list li::before {
+  content: '◆';
+  color: var(--teal);
+  font-size: 10px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.inside-list li strong {
+  color: var(--white);
+}
+
+/* CTA FINAL */
+.cta-final {
+  max-width: 700px;
+  margin: 0 auto 100px;
+  padding: 0 40px;
+  text-align: center;
+}
+
+.cta-box {
+  background: var(--card);
+  border: 1px solid rgba(45,212,191,0.2);
+  border-radius: 16px;
+  padding: 64px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(45,212,191,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cta-box h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.cta-box p {
+  color: var(--muted);
+  font-size: 16px;
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+.cta-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.cta-price {
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.cta-price-details {
+  text-align: left;
+}
+
+.cta-price-details .top {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cta-price-details .bot {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.guarantee {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 20px;
+  letter-spacing: 0.05em;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.footer-brand {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--teal);
+  margin-bottom: 12px;
+}
+
+.footer-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.footer-col h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--white); }
+
+.footer-copy {
+  border-top: 1px solid var(--border);
+  padding: 24px 40px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  max-width: 900px;
+  margin: 0 auto;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 20px 60px; }
+  .stats { grid-template-columns: 1fr 1fr; padding: 0 20px; }
+  .section { padding: 0 20px; }
+  .deliverables { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .cta-final { padding: 0 20px; }
+  .cta-box { padding: 40px 24px; }
+  footer { grid-template-columns: 1fr; padding: 40px 20px; }
+  .footer-copy { padding: 20px; }
+  .demo-block { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://strategicflow-tech.github.io/showcase/" class="nav-brand">StrategicFlow / Subject Line Pack</a>
+  <ul class="nav-links">
+    <li><a href="#what-you-get">What You Get</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app">Free Audit</a></li>
+    <li><a href="https://strategicflow-tech.github.io/showcase/strategic-flow-pro.html">Pro Platform →</a></li>
+    <li><a href="#order" class="nav-cta">Get Pack — $49</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">One-time · Delivered in 24h · No subscription</div>
+  <h1>10 subject lines.<br><em>Zero guesswork.</em></h1>
+  <p class="hero-sub">Paste your newsletter. Get back 10 consequence-first subject line variants — scored, ranked, and ready to A/B test. Built using the Strategic Flow Method.</p>
+
+  <div class="hero-price">
+    <div class="price-main">$49</div>
+    <div class="price-label">
+      <div class="top">One-time payment</div>
+      <div class="bot">10 variants · Delivered in 24h</div>
+    </div>
+  </div>
+
+  <a href="#order" class="btn-primary">⚡ Get My Subject Lines</a>
+  <p class="hero-note">No subscription · No account · Just the variants</p>
+</section>
+
+<!-- DEMO -->
+<div class="demo-block">
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="dot r"></div>
+      <div class="dot y"></div>
+      <div class="dot g"></div>
+      <div class="terminal-title">// SUBJECT LINE PACK — OUTPUT PREVIEW</div>
+    </div>
+    <div class="terminal-body">
+      <div class="t-line t-comment">// Original subject line</div>
+      <div class="t-line t-old">Q2 Product Update — New Features Inside</div>
+      <div class="t-line t-comment" style="margin-top:8px">// Diagnosis</div>
+      <div class="t-line"><span class="t-label">framing </span><span class="t-dim">→ </span><span class="t-val">Feature-first ✗</span></div>
+      <div class="t-line"><span class="t-label">hook     </span><span class="t-dim">→ </span><span class="t-val">Announcement ✗</span></div>
+      <div class="t-line"><span class="t-label">stakes   </span><span class="t-dim">→ </span><span class="t-val">Missing ✗</span></div>
+      <hr class="t-divider">
+      <div class="t-line t-comment">// 10 consequence-first rewrites</div>
+      <div class="variant-block">
+        <div class="variant-label">Variant A — Urgency + Stakes</div>
+        <div class="variant-text">The manual step that's slowing your team — removed.</div>
+        <div class="variant-lift">↑ Est. +34–38% open rate</div>
+      </div>
+      <div class="variant-block">
+        <div class="variant-label">Variant B — Question + Outcome</div>
+        <div class="variant-text">Your onboarding flow was broken. Here's the fix.</div>
+        <div class="variant-lift">↑ Est. +29–33% open rate</div>
+      </div>
+      <div class="variant-block">
+        <div class="variant-label">Variant C — Curiosity + Consequence</div>
+        <div class="variant-text">We found the leak in your activation funnel.</div>
+        <div class="variant-lift">↑ Est. +27–31% open rate</div>
+      </div>
+      <div class="t-line t-dim" style="margin-top:16px">+ 7 more variants delivered · scored · ranked</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-val">10</div>
+    <div class="stat-label">Subject Line Variants</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">24h</div>
+    <div class="stat-label">Delivery Time</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">+38%</div>
+    <div class="stat-label">Avg Open Rate Lift</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">$49</div>
+    <div class="stat-label">One-Time · No Sub</div>
+  </div>
+</div>
+
+<!-- WHAT YOU GET -->
+<section class="section" id="what-you-get">
+  <div class="section-label">Output</div>
+  <h2>What you <em>receive</em></h2>
+  <div class="deliverables">
+    <div class="deliv-card">
+      <div class="deliv-icon">✏️</div>
+      <div class="deliv-title">10 Subject Line Variants</div>
+      <div class="deliv-desc">Consequence-first rewrites of your original subject — covering urgency, curiosity, outcome, question, and stakes framing.</div>
+    </div>
+    <div class="deliv-card">
+      <div class="deliv-icon">📊</div>
+      <div class="deliv-title">Score + Ranking</div>
+      <div class="deliv-desc">Each variant is scored and ranked by estimated open rate lift — so you know which one to A/B test first.</div>
+    </div>
+    <div class="deliv-card">
+      <div class="deliv-icon">🔍</div>
+      <div class="deliv-title">Original Diagnosis</div>
+      <div class="deliv-desc">A clear breakdown of why your original subject line underperforms — feature-first framing, announcement hook, missing stakes.</div>
+    </div>
+    <div class="deliv-card">
+      <div class="deliv-icon">🎯</div>
+      <div class="deliv-title">Recommended A/B Pair</div>
+      <div class="deliv-desc">The two variants most likely to produce a meaningful test result — picked based on framing contrast, not arbitrary choice.</div>
+    </div>
+    <div class="deliv-card">
+      <div class="deliv-icon">📋</div>
+      <div class="deliv-title">Preheader Variants</div>
+      <div class="deliv-desc">5 matching preheader lines — written to extend the subject line hook, not repeat it.</div>
+    </div>
+    <div class="deliv-card">
+      <div class="deliv-icon">⚡</div>
+      <div class="deliv-title">Delivered in 24 Hours</div>
+      <div class="deliv-desc">You submit → we build → you receive a clean document with all variants, scores, and recommendations. No calls required.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works">
+  <div class="section-label">Process</div>
+  <h2>Three steps.<br><em>Zero friction.</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">STEP 01</div>
+      <div class="step-icon">💳</div>
+      <div class="step-title">Pay $49</div>
+      <div class="step-desc">One-time. No subscription. Click the button, complete checkout via Stripe. You'll be redirected to a short form.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 02</div>
+      <div class="step-icon">📋</div>
+      <div class="step-title">Paste Your Newsletter</div>
+      <div class="step-desc">Submit your current subject line, email body or URL, and a one-line description of your ICP. That's all we need.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 03</div>
+      <div class="step-icon">📬</div>
+      <div class="step-title">Receive Your Pack</div>
+      <div class="step-desc">Within 24 hours, you receive a document with 10 scored variants, a diagnosis, preheaders, and your recommended A/B pair.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="section">
+  <div class="section-label">Included</div>
+  <h2>Everything in<br><em>the pack</em></h2>
+  <ul class="inside-list">
+    <li><strong>10 subject line variants</strong> — consequence-first, scored 0–100</li>
+    <li><strong>5 preheader lines</strong> — matched to your top 5 subject variants</li>
+    <li><strong>Original diagnosis</strong> — what's broken and why it's costing you opens</li>
+    <li><strong>Recommended A/B pair</strong> — the two variants to test first</li>
+    <li><strong>Open rate lift estimate</strong> — per variant, based on industry benchmarks</li>
+    <li><strong>Framing breakdown</strong> — urgency, curiosity, outcome, stakes, question types explained</li>
+    <li><strong>Clean delivery document</strong> — formatted and ready to share with your team</li>
+  </ul>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-final" id="order">
+  <div class="cta-box">
+    <h2>10 subject lines.<br>Ready in 24 hours.</h2>
+    <p>Paste your newsletter. Get back 10 consequence-first variants — scored, ranked, and ready to A/B test. One-time. No subscription. No calls.</p>
+    <div class="cta-price-row">
+      <div class="cta-price">$49</div>
+      <div class="cta-price-details">
+        <div class="top">One-time payment</div>
+        <div class="bot">10 variants + diagnosis<br>Delivered in 24h</div>
+      </div>
+    </div>
+    <a href="https://buy.stripe.com/eVq5kD2bCd7HdBH7ph7wA05" class="btn-primary">⚡ Get My Subject Lines — $49</a>
+    <p class="guarantee">◆ Secure checkout via Stripe · Instant confirmation · 24h delivery</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">StrategicFlow</div>
+    <p class="footer-desc">I turn SaaS product updates into emails that get opened, read, and clicked — using the Strategic Flow Method.<br><br>Based in Arona, Costa Adeje<br>Canary Islands, Spain</p>
+  </div>
+  <div class="footer-col">
+    <h4>Tools</h4>
+    <a href="https://strategic-flow-audit.replit.app">Free Audit</a>
+    <a href="https://strategic-flow-pro.replit.app">Pro Platform</a>
+    <a href="https://strategicflow-tech.github.io/showcase">Showcase</a>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a>
+    <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  </div>
+</footer>
+<div class="footer-copy">© 2026 Strategic Flow · Arona, Canary Islands · Subject Line Pack</div>
+
+</body>
+</html>
