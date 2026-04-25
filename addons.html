@@ -193,7 +193,7 @@ h1 em {
 }
 
 .addon-title {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.02em;
   margin-bottom: 12px;
@@ -212,7 +212,7 @@ h1 em {
 }
 
 .addon-price {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 800;
   letter-spacing: -0.04em;
   color: var(--white);
@@ -231,13 +231,13 @@ h1 em {
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: var(--teal);
   color: #04080f;
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
-  padding: 14px 28px;
+  padding: 12px 20px;
   border-radius: 6px;
   text-decoration: none;
   letter-spacing: 0.02em;
@@ -578,15 +578,18 @@ footer {
   nav { padding: 16px 20px; }
   .nav-links { display: none; }
   .hero { padding: 60px 20px 60px; }
-  .addons { padding: 0 20px; }
-  .addon-header { grid-template-columns: 1fr; gap: 16px; }
-  .addon-price-block { text-align: left; }
-  .addon-body { grid-template-columns: 1fr; padding: 24px 20px 32px; }
-  .addon-header { padding: 28px 20px 24px; }
+  .addons { padding: 0 16px; }
+  .addon-header { grid-template-columns: 1fr; gap: 12px; padding: 24px 16px 20px; }
+  .addon-price-block { display: none; }
+  .addon-title { font-size: 18px; }
+  .addon-desc { font-size: 13px; }
+  .btn-primary { font-size: 12px; padding: 11px 16px; width: 100%; justify-content: center; }
+  .addon-body { grid-template-columns: 1fr; padding: 20px 16px 28px; gap: 24px; }
   .steps { grid-template-columns: 1fr; }
-  .section { padding: 0 20px; }
-  .bundle { padding: 0 20px; }
-  .bundle-box { padding: 32px 24px; }
+  .section { padding: 0 16px; }
+  .bundle { padding: 0 16px; }
+  .bundle-box { padding: 28px 20px; }
+  .bundle-total { flex-direction: column; align-items: flex-start; gap: 8px; }
   footer { grid-template-columns: 1fr; padding: 40px 20px; }
   .footer-copy { padding: 20px; }
 }
@@ -782,7 +785,7 @@ footer {
       <span class="bundle-total-label">Total if purchased separately</span>
       <span class="bundle-total-price">$497</span>
     </div>
-        <a href="https://buy.stripe.com/bJe00jaI87NnapvcJB7wA06" class="btn-primary" style="font-size:16px;padding:18px 40px;box-shadow:0 0 50px rgba(45,212,191,0.3);">⚡ Get All 3 Add-Ons — $199</a>
+        <a href="https://buy.stripe.com/bJe00jaI87NnapvcJB7wA06" class="btn-primary" style="font-size:14px;padding:14px 28px;box-shadow:0 0 50px rgba(45,212,191,0.3);">⚡ Get All 3 Add-Ons — $199</a>
     <p class="bundle-note" style="margin-top:20px;">◆ All three delivered within 48h · Save $298 vs buying separately · One payment, three deliverables</p>
     <div style="margin-top:28px;background:rgba(45,212,191,0.05);border:1px solid rgba(45,212,191,0.15);border-radius:10px;padding:24px;">
       <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">After payment — what to do next</div>
