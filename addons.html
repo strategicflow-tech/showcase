@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add-Ons — Strategic Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #04080f;
+  --bg2: #080e1a;
+  --card: #0d1424;
+  --border: rgba(255,255,255,0.07);
+  --teal: #2dd4bf;
+  --teal-dim: rgba(45,212,191,0.12);
+  --teal-mid: rgba(45,212,191,0.25);
+  --white: #f1f5f9;
+  --muted: rgba(255,255,255,0.82);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Syne', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(4,8,15,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+
+.nav-brand {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--teal);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  background: var(--teal);
+  color: #04080f !important;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 700 !important;
+}
+
+/* HERO */
+.hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 100px 40px 80px;
+  text-align: center;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(45,212,191,0.3);
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 32px;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+h1 {
+  font-size: clamp(40px, 7vw, 68px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.hero-sub {
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ADDON CARDS */
+.addons {
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.addon-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.addon-card:hover {
+  border-color: rgba(45,212,191,0.25);
+}
+
+.addon-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 24px;
+  padding: 40px 40px 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.addon-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.addon-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  background: rgba(45,212,191,0.1);
+  border: 1px solid rgba(45,212,191,0.2);
+  padding: 4px 12px;
+  border-radius: 100px;
+  letter-spacing: 0.08em;
+}
+
+.addon-delivery {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.addon-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.addon-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+.addon-price-block {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.addon-price {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.addon-price-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--teal);
+  color: #04080f;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 800;
+  padding: 14px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+  box-shadow: 0 0 30px rgba(45,212,191,0.2);
+  margin-top: 16px;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(45,212,191,0.35);
+}
+
+/* ADDON BODY */
+.addon-body {
+  padding: 32px 40px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.addon-includes h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.includes-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.includes-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.includes-list li::before {
+  content: '◆';
+  color: var(--teal);
+  font-size: 9px;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.includes-list li strong {
+  color: var(--white);
+}
+
+/* AFTER PAYMENT BOX */
+.after-payment {
+  background: rgba(45,212,191,0.05);
+  border: 1px solid rgba(45,212,191,0.15);
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.after-payment h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.after-payment p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.after-payment a {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.after-payment .email-subject {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--white);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin: 10px 0;
+  display: block;
+}
+
+/* HOW IT WORKS */
+.section {
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 0 40px;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.section h2 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 48px;
+  line-height: 1.1;
+}
+
+.section h2 em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.step {
+  background: var(--bg2);
+  padding: 36px 28px;
+}
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.step-icon { font-size: 28px; margin-bottom: 16px; }
+
+.step-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* BUNDLE */
+.bundle {
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 0 40px;
+}
+
+.bundle-box {
+  background: var(--card);
+  border: 1px solid rgba(45,212,191,0.2);
+  border-radius: 16px;
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bundle-box::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(45,212,191,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.bundle-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--teal);
+  border: 1px solid rgba(45,212,191,0.3);
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+
+.bundle-box h2 {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+
+.bundle-box p {
+  color: var(--muted);
+  font-size: 15px;
+  margin-bottom: 32px;
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+.bundle-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.bundle-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.bundle-item-name {
+  font-size: 14px;
+  color: var(--white);
+}
+
+.bundle-item-price {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.bundle-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: rgba(45,212,191,0.08);
+  border: 1px solid rgba(45,212,191,0.2);
+  border-radius: 8px;
+  margin-bottom: 32px;
+}
+
+.bundle-total-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.bundle-total-price {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--teal);
+  letter-spacing: -0.02em;
+}
+
+.bundle-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 16px;
+  letter-spacing: 0.05em;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.footer-brand {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--teal);
+  margin-bottom: 12px;
+}
+
+.footer-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.footer-col h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--white); }
+
+.footer-copy {
+  border-top: 1px solid var(--border);
+  padding: 24px 40px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  max-width: 900px;
+  margin: 0 auto;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 20px 60px; }
+  .addons { padding: 0 20px; }
+  .addon-header { grid-template-columns: 1fr; gap: 16px; }
+  .addon-price-block { text-align: left; }
+  .addon-body { grid-template-columns: 1fr; padding: 24px 20px 32px; }
+  .addon-header { padding: 28px 20px 24px; }
+  .steps { grid-template-columns: 1fr; }
+  .section { padding: 0 20px; }
+  .bundle { padding: 0 20px; }
+  .bundle-box { padding: 32px 24px; }
+  footer { grid-template-columns: 1fr; padding: 40px 20px; }
+  .footer-copy { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://strategicflow-tech.github.io/showcase/" class="nav-brand">StrategicFlow / Add-Ons</a>
+  <ul class="nav-links">
+    <li><a href="https://strategicflow-tech.github.io/showcase/subject-line-pack.html">Subject Line Pack</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app">Free Audit</a></li>
+    <li><a href="https://strategicflow-tech.github.io/showcase/strategic-flow-pro.html">Pro Platform →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">One-time · Delivered in 24h · No subscription</div>
+  <h1>More tools.<br><em>Same method.</em></h1>
+  <p class="hero-sub">Three focused add-ons built on the Strategic Flow Method. Pick what your email stack is missing — or get all three and build the full conversion layer.</p>
+</section>
+
+<!-- ADDON CARDS -->
+<div class="addons">
+
+  <!-- CARD 1: Brand Voice -->
+  <div class="addon-card" id="brand-voice">
+    <div class="addon-header">
+      <div>
+        <div class="addon-meta">
+          <span class="addon-num">ADD-ON 01</span>
+          <span class="addon-delivery">Delivered in 24h</span>
+        </div>
+        <div class="addon-title">Brand Voice Document</div>
+        <p class="addon-desc">Your brand voice extracted, defined, and formatted into a document your entire team can use. Built from your existing emails, website copy, and content — so every email sounds like you, not a template.</p>
+        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Get Brand Voice Doc — $149</a>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#2dd4bf;margin-top:10px;letter-spacing:0.05em;">→ Or get all 3 for $199 — <a href="#bundle" style="color:#2dd4bf;font-weight:700;text-decoration:underline;">see bundle ↓</a></p>
+      </div>
+      <div class="addon-price-block">
+        <div class="addon-price">$149</div>
+        <div class="addon-price-label">One-time</div>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="addon-includes">
+        <h4>What's included</h4>
+        <ul class="includes-list">
+          <li><strong>Tone & register definition</strong> — formal, conversational, founder-led, technical</li>
+          <li><strong>Vocabulary list</strong> — words you use, words to avoid</li>
+          <li><strong>Sentence structure patterns</strong> — how you open, how you close</li>
+          <li><strong>CTA language guide</strong> — your ownership framing style</li>
+          <li><strong>3 before/after rewrites</strong> — showing voice applied to real copy</li>
+          <li><strong>Formatted PDF + editable doc</strong> — ready to share with your team or AI</li>
+        </ul>
+      </div>
+      <div class="after-payment">
+        <h4>After payment — what to do next</h4>
+        <p>Send an email to <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a> with:<br><br>
+        <span class="email-subject">Brand Voice Doc — [Your Company Name]</span>
+        Include: 3–5 emails or URLs of content that sounds most like your brand. We'll extract the voice pattern and deliver your document within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 2: Re-engagement Campaign -->
+  <div class="addon-card" id="re-engagement">
+    <div class="addon-header">
+      <div>
+        <div class="addon-meta">
+          <span class="addon-num">ADD-ON 02</span>
+          <span class="addon-delivery">Delivered in 24h</span>
+        </div>
+        <div class="addon-title">Re-engagement Campaign</div>
+        <p class="addon-desc">3 emails designed to wake up your inactive subscribers. Built around a consequence-first hook, a reason to care now, and a low-friction next step — so you stop losing people who were almost ready to convert.</p>
+        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Get Re-engagement Campaign — $149</a>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#2dd4bf;margin-top:10px;letter-spacing:0.05em;">→ Or get all 3 for $199 — <a href="#bundle" style="color:#2dd4bf;font-weight:700;text-decoration:underline;">see bundle ↓</a></p>
+      </div>
+      <div class="addon-price-block">
+        <div class="addon-price">$149</div>
+        <div class="addon-price-label">One-time</div>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="addon-includes">
+        <h4>What's included</h4>
+        <ul class="includes-list">
+          <li><strong>Email 1 — The Hook</strong> — consequence-first re-entry, why now matters</li>
+          <li><strong>Email 2 — The Value</strong> — one high-signal piece of content or insight</li>
+          <li><strong>Email 3 — The Decision</strong> — stay or unsubscribe framing with soft CTA</li>
+          <li><strong>Subject lines + preheaders</strong> — for all 3 emails</li>
+          <li><strong>Send timing recommendation</strong> — spacing optimized for re-engagement</li>
+          <li><strong>Production-ready HTML</strong> — paste directly into your email platform</li>
+        </ul>
+      </div>
+      <div class="after-payment">
+        <h4>After payment — what to do next</h4>
+        <p>Send an email to <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a> with:<br><br>
+        <span class="email-subject">Re-engagement Campaign — [Your Company Name]</span>
+        Include: your product URL, what your inactive subscribers originally signed up for, and how long they've been inactive. Delivered in 24 hours.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 3: Cold Email Sequence -->
+  <div class="addon-card" id="cold-email">
+    <div class="addon-header">
+      <div>
+        <div class="addon-meta">
+          <span class="addon-num">ADD-ON 03</span>
+          <span class="addon-delivery">Delivered in 24h</span>
+        </div>
+        <div class="addon-title">Cold Email Sequence</div>
+        <p class="addon-desc">3 B2B outreach emails built for your ICP — consequence-first opening, specific value proposition, and a soft CTA that moves intent without pressure. The sequence most founders should be sending but aren't.</p>
+        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Get Cold Email Sequence — $199</a>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#2dd4bf;margin-top:10px;letter-spacing:0.05em;">→ Or get all 3 for $199 — <a href="#bundle" style="color:#2dd4bf;font-weight:700;text-decoration:underline;">see bundle ↓</a></p>
+      </div>
+      <div class="addon-price-block">
+        <div class="addon-price">$199</div>
+        <div class="addon-price-label">One-time</div>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="addon-includes">
+        <h4>What's included</h4>
+        <ul class="includes-list">
+          <li><strong>Email 1 — The opener</strong> — consequence-first, ICP-specific, under 80 words</li>
+          <li><strong>Email 2 — The follow-up</strong> — different angle, different benefit, same ask</li>
+          <li><strong>Email 3 — The break-up</strong> — closes the loop, often highest reply rate</li>
+          <li><strong>Subject lines</strong> — for all 3, A/B variant included for Email 1</li>
+          <li><strong>Send timing guide</strong> — day and spacing recommendation</li>
+          <li><strong>Plain text + formatted versions</strong> — ready to paste into any outreach tool</li>
+        </ul>
+      </div>
+      <div class="after-payment">
+        <h4>After payment — what to do next</h4>
+        <p>Send an email to <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a> with:<br><br>
+        <span class="email-subject">Cold Email Sequence — [Your Company Name]</span>
+        Include: your product URL, your ICP (job title + company type), and what problem you solve for them. Delivered in 24 hours.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-label">Process</div>
+  <h2>Same process.<br><em>Every add-on.</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">STEP 01</div>
+      <div class="step-icon">💳</div>
+      <div class="step-title">Pay once</div>
+      <div class="step-desc">One-time payment via Stripe. No subscription, no account required. You'll receive a confirmation email immediately after checkout.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 02</div>
+      <div class="step-icon">📋</div>
+      <div class="step-title">Send your brief</div>
+      <div class="step-desc">Email strategicflow@proton.me with the subject line shown on each add-on card. Include the details listed — it takes 3 minutes.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 03</div>
+      <div class="step-icon">📬</div>
+      <div class="step-title">Receive your deliverable</div>
+      <div class="step-desc">Within 24 hours, your add-on lands in your inbox — formatted, ready to use, and built on the Strategic Flow Method.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BUNDLE -->
+<div class="bundle" id="bundle">
+  <div class="bundle-box">
+    <div class="bundle-tag">◆ Full Stack</div>
+    <h2>Get all three add-ons.</h2>
+    <p>Brand voice, re-engagement campaign, and cold email sequence — the full conversion layer for your email stack. Email us after purchasing all three and we'll prioritize your deliverables.</p>
+    <div class="bundle-items">
+      <div class="bundle-item">
+        <span class="bundle-item-name">Brand Voice Document</span>
+        <span class="bundle-item-price">$149</span>
+      </div>
+      <div class="bundle-item">
+        <span class="bundle-item-name">Re-engagement Campaign</span>
+        <span class="bundle-item-price">$149</span>
+      </div>
+      <div class="bundle-item">
+        <span class="bundle-item-name">Cold Email Sequence</span>
+        <span class="bundle-item-price">$199</span>
+      </div>
+    </div>
+    <div class="bundle-total">
+      <span class="bundle-total-label">Total if purchased separately</span>
+      <span class="bundle-total-price">$497</span>
+    </div>
+        <a href="https://buy.stripe.com/bJe00jaI87NnapvcJB7wA06" class="btn-primary" style="font-size:16px;padding:18px 40px;box-shadow:0 0 50px rgba(45,212,191,0.3);">⚡ Get All 3 Add-Ons — $199</a>
+    <p class="bundle-note" style="margin-top:20px;">◆ All three delivered within 48h · Save $298 vs buying separately · One payment, three deliverables</p>
+    <div style="margin-top:28px;background:rgba(45,212,191,0.05);border:1px solid rgba(45,212,191,0.15);border-radius:10px;padding:24px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#2dd4bf;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">After payment — what to do next</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.82);line-height:1.9;">Send one email to <a href="mailto:strategicflow@proton.me" style="color:#2dd4bf;font-weight:700;text-decoration:none;">strategicflow@proton.me</a> with:<br><br>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#f1f5f9;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:4px;padding:8px 12px;display:block;margin:10px 0;">Bundle — [Your Company Name]</span>
+      Include: your product URL, 3–5 content samples for brand voice, your ICP description, and how long your subscribers have been inactive. We handle the rest — all 3 deliverables within 48h.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">StrategicFlow</div>
+    <p class="footer-desc">I turn SaaS product updates into emails that get opened, read, and clicked — using the Strategic Flow Method.<br><br>Based in Arona, Costa Adeje<br>Canary Islands, Spain</p>
+  </div>
+  <div class="footer-col">
+    <h4>Tools</h4>
+    <a href="https://strategic-flow-audit.replit.app">Free Audit</a>
+    <a href="https://strategic-flow-pro.replit.app">Pro Platform</a>
+    <a href="https://strategicflow-tech.github.io/showcase/subject-line-pack.html">Subject Line Pack</a>
+    <a href="https://strategicflow-tech.github.io/showcase">Showcase</a>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a>
+    <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  </div>
+</footer>
+<div class="footer-copy">© 2026 Strategic Flow · Arona, Canary Islands · Add-Ons</div>
+
+</body>
+</html>
