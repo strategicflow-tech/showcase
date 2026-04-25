@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Add-Ons — Strategic Flow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap&subset=latin" rel="stylesheet">
 <style>
 :root {
   --bg: #04080f;
@@ -193,6 +193,7 @@ h1 em {
 }
 
 .addon-title {
+  font-family: 'Syne', sans-serif;
   font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -231,15 +232,17 @@ h1 em {
 .btn-primary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 6px;
   background: var(--teal);
   color: #04080f;
-  font-family: var(--sans);
-  font-size: 13px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
   font-weight: 800;
-  padding: 12px 20px;
-  word-break: keep-all;
-  white-space: nowrap;
+  padding: 11px 18px;
+  white-space: normal;
+  word-break: break-word;
+  text-align: center;
   border-radius: 6px;
   text-decoration: none;
   letter-spacing: 0.02em;
@@ -585,7 +588,7 @@ footer {
   .addon-price-block { display: none; }
   .addon-title { font-size: 18px; }
   .addon-desc { font-size: 13px; }
-  .btn-primary { font-size: 12px; padding: 11px 16px; width: 100%; justify-content: center; }
+  .btn-primary { font-family: 'Syne', sans-serif; font-size: 12px; padding: 10px 14px; width: 100%; justify-content: center; white-space: normal; word-break: break-word; }
   .addon-body { grid-template-columns: 1fr; padding: 20px 16px 28px; gap: 24px; }
   .steps { grid-template-columns: 1fr; }
   .section { padding: 0 16px; }
@@ -628,7 +631,7 @@ footer {
         </div>
         <div class="addon-title">Brand Voice Document</div>
         <p class="addon-desc">Your brand voice extracted, defined, and formatted into a document your entire team can use. Built from your existing emails, website copy, and content — so every email sounds like you, not a template.</p>
-        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Get Brand Voice Doc — $149</a>
+        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Brand Voice Doc — $149</a>
         <a href="#bundle" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:#2dd4bf;text-decoration:none;padding:7px 14px;border:1px solid rgba(45,212,191,0.3);border-radius:4px;transition:all 0.2s;">↓ Or get all 3 for $199 — bundle</a>
       </div>
       <div class="addon-price-block">
@@ -667,7 +670,7 @@ footer {
         </div>
         <div class="addon-title">Re-engagement Campaign</div>
         <p class="addon-desc">3 emails designed to wake up your inactive subscribers. Built around a consequence-first hook, a reason to care now, and a low-friction next step — so you stop losing people who were almost ready to convert.</p>
-        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Get Re-engagement Campaign — $149</a>
+        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Re-engagement — $149</a>
         <a href="#bundle" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:#2dd4bf;text-decoration:none;padding:7px 14px;border:1px solid rgba(45,212,191,0.3);border-radius:4px;transition:all 0.2s;">↓ Or get all 3 for $199 — bundle</a>
       </div>
       <div class="addon-price-block">
@@ -706,7 +709,7 @@ footer {
         </div>
         <div class="addon-title">Cold Email Sequence</div>
         <p class="addon-desc">3 B2B outreach emails built for your ICP — consequence-first opening, specific value proposition, and a soft CTA that moves intent without pressure. The sequence most founders should be sending but aren't.</p>
-        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Get Cold Email Sequence — $199</a>
+        <a href="#bundle" class="btn-primary" style="background:rgba(45,212,191,0.15);color:#2dd4bf;box-shadow:none;">⚡ Cold Email Sequence — $199</a>
         <a href="#bundle" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:'Syne',sans-serif;font-size:12px;font-weight:600;color:#2dd4bf;text-decoration:none;padding:7px 14px;border:1px solid rgba(45,212,191,0.3);border-radius:4px;transition:all 0.2s;">↓ Or get all 3 for $199 — bundle</a>
       </div>
       <div class="addon-price-block">
