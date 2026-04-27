@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Finite State AI Unpacking Agent Teardown</title>
+<meta name="description" content="Email teardown complet: subiect original vs rebuilt, scor de conversie, A/B variants. Metodologie Strategic Flow. Finite State AI Unpacking Evaluation Agent.">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--surface:#0d1120;--border:rgba(255,255,255,0.08);
+  --fs:#7C3AED;--fs-dim:rgba(124,58,237,0.10);--fs-border:rgba(124,58,237,0.28);
+  --teal:#2dd4bf;--red:#ef4444;--red-bg:rgba(239,68,68,0.08);
+  --white:#f1f5f9;--muted:rgba(255,255,255,0.45);--dim:rgba(255,255,255,0.22)
+}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6}
+
+.tabs{position:sticky;top:0;z-index:100;background:rgba(7,9,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;padding:0 20px;overflow-x:auto}
+.tab{padding:16px 22px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:.5px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s;white-space:nowrap}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--fs);border-bottom-color:var(--fs)}
+
+.panel{display:none;animation:fadeIn .25s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.hdr{padding:40px 24px 32px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(124,58,237,0.07) 0%,transparent 100%)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--fs-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--fs);margin-bottom:18px}
+.dot{width:6px;height:6px;background:var(--fs);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hdr h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:8px}
+.hdr h1 em{font-style:italic;color:var(--fs)}
+.hdr-meta{font-size:13px;color:var(--muted)}
+.hdr-meta a{color:var(--fs);text-decoration:none}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.section{padding:36px 0;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+.lbl{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.lbl.purple{color:var(--fs)}
+
+/* ARTICLE */
+.article{background:#fff;color:#1e1e1e;border-radius:14px;overflow:hidden;font-family:-apple-system,'Segoe UI',sans-serif}
+.art-hdr{padding:16px 28px;background:#0f0520;border-bottom:3px solid #7C3AED;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.art-logo-svg{height:24px}
+.art-byline{font-size:11px;color:rgba(255,255,255,.55)}
+.art-body{padding:28px}
+.art-hero{width:100%;border-radius:10px;margin:0 0 22px;display:block}
+.art-h1{font-size:22px;font-weight:800;color:#1e1e1e;margin:0 0 6px;line-height:1.25}
+.art-h2{font-size:16px;font-weight:800;color:#1e1e1e;margin:26px 0 10px;padding-left:14px;border-left:3px solid #7C3AED}
+.art-meta{font-size:12px;color:#888;margin-bottom:20px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.art-tag{display:inline-block;background:#f5f3ff;border-radius:4px;padding:2px 8px;font-size:11px;color:#5b21b6;font-weight:600}
+.art-p{font-size:14px;color:#374151;line-height:1.8;margin-bottom:14px}
+.art-li{font-size:14px;color:#374151;line-height:1.7;padding-left:18px;position:relative;margin-bottom:6px}
+.art-li::before{content:'→';position:absolute;left:0;color:#7C3AED;font-weight:700}
+.art-img{width:100%;border-radius:8px;margin:14px 0;display:block;border:1px solid #e5e7eb}
+.art-cta{background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:16px 20px;margin:14px 0;font-size:14px;color:#5b21b6;font-weight:600}
+
+/* FLAGS */
+.flags{display:flex;flex-direction:column;gap:8px;margin-top:20px}
+.flag{display:flex;gap:12px;padding:13px 16px;background:var(--red-bg);border:1px solid rgba(239,68,68,.18);border-radius:10px;font-size:13px;color:rgba(255,255,255,.75);line-height:1.55}
+.flag strong{color:var(--white)}
+
+/* EMAIL SHELL */
+.email-shell{background:#f0f0f0;border-radius:14px;padding:18px}
+.email-inner{max-width:600px;margin:0 auto;background:#ffffff;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,.1);font-family:-apple-system,'Segoe UI',sans-serif}
+.e-hdr{padding:18px 28px;background:#0f0520;border-bottom:3px solid #7C3AED;display:flex;align-items:center;justify-content:space-between}
+.e-date{font-size:10px;color:rgba(255,255,255,.4);font-family:monospace}
+.e-body{padding:32px 28px 0}
+.e-h1{font-size:24px;font-weight:900;color:#1a1a18;line-height:1.2;letter-spacing:-.3px;margin-bottom:14px}
+.e-lead{font-size:15px;color:#6b6b66;line-height:1.75;margin-bottom:22px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.stat-card{border:1px solid rgba(0,0,0,.1);border-top:3px solid #7C3AED;border-radius:8px;padding:14px 8px;text-align:center;background:#f9f7ff}
+.stat-num{font-size:22px;font-weight:900;color:#7C3AED;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:10px;color:#6b6b66;font-weight:600;text-transform:uppercase;letter-spacing:.4px;line-height:1.4}
+
+.e-divider{height:3px;background:linear-gradient(to right,#7C3AED,rgba(124,58,237,.3),transparent)}
+
+/* FEATURE CARDS */
+.fc{border:1px solid rgba(0,0,0,.1);border-radius:10px;overflow:hidden;margin:0 0 14px;background:#fff}
+.fc-top{padding:14px 18px;background:#faf5ff}
+.fc-label{font-size:10px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.fc-title{font-size:15px;font-weight:800;color:#1a1a18;margin-bottom:8px}
+.fc-txt{font-size:14px;color:#3a3a35;line-height:1.6}
+.fc-img{width:100%;display:block;border-top:1px solid rgba(0,0,0,.08)}
+
+/* QUOTE BLOCK */
+.e-quote{margin:0 0 22px;padding:18px 20px;border-left:3px solid #7C3AED;background:#f5f3ff;border-radius:0 8px 8px 0}
+.e-quote p{font-size:14px;color:#3b0764;line-height:1.7;font-style:italic;margin-bottom:6px}
+.e-quote cite{font-size:11px;color:#7c3aed;font-weight:700}
+
+/* BEFORE/AFTER */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 0 22px;align-items:start}
+.ba-box{padding:12px;background:#f5f5f3;border-radius:8px;min-height:unset;height:fit-content}
+.ba-box.after{background:#f5f3ff;border:1px solid rgba(124,58,237,.18)}
+.ba-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#9b9b9b;margin-bottom:4px}
+.ba-box.after .ba-lbl{color:#7C3AED}
+.ba-txt{font-size:12px;color:#1a1a18;line-height:1.5}
+.ba-box.after .ba-txt{color:#4c1d95}
+
+/* CTA */
+.e-cta{padding:0 0 26px}
+.cta-outer{padding:3px;background:linear-gradient(135deg,#7C3AED,#4338ca);border-radius:10px}
+.cta-inner{background:#fff;border-radius:8px;padding:22px 24px;text-align:center}
+.cta-title{font-size:15px;font-weight:700;color:#1a1a18;margin-bottom:14px;line-height:1.4}
+.cta-btn{display:inline-block;background:#7C3AED;color:#fff;font-size:14px;font-weight:800;text-decoration:none;padding:11px 28px;border-radius:7px}
+
+.e-footer{padding:18px 32px;border-top:1px solid rgba(0,0,0,.08);background:#f5f5f3;text-align:center;font-size:11px;color:rgba(0,0,0,.35);line-height:1.7}
+
+/* SCORES */
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.score-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center}
+.score-n{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px}
+.score-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+.score-desc{font-size:12px;color:var(--muted);line-height:1.55}
+
+/* AB */
+.ab-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.ab-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:17px 20px}
+.ab-ang{font-size:10px;font-weight:700;color:var(--fs);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.ab-sub{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+.ab-why{font-size:12px;color:var(--muted);line-height:1.55}
+.ab-lift{display:inline-block;margin-top:6px;padding:3px 10px;background:var(--fs-dim);border:1px solid var(--fs-border);border-radius:20px;font-size:11px;font-weight:700;color:var(--fs)}
+
+/* CALENDAR */
+.cal-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.cal-item{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--fs);border-radius:8px;padding:12px 16px;display:flex;gap:14px;align-items:baseline}
+.cal-timing{font-size:10px;font-weight:700;color:var(--fs);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;flex-shrink:0;min-width:110px}
+.cal-topic{font-size:13px;color:var(--muted)}
+
+/* CHANGES */
+.changes{display:flex;flex-direction:column;gap:12px}
+.change{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px}
+.ch-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--fs);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.ch-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:8px}
+.ch-body{font-size:13px;color:var(--muted);line-height:1.65}
+.ch-body strong{color:var(--white)}
+
+.ba2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;align-items:start}
+.ba2{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:12px;min-height:unset;height:fit-content}
+.ba2.after{border-color:var(--fs-border);background:var(--fs-dim)}
+.ba2-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px}
+.ba2.after .ba2-lbl{color:var(--fs)}
+.ba2-txt{font-size:13px;color:rgba(255,255,255,.7);line-height:1.55}
+.ba2.after .ba2-txt{color:#c4b5fd}
+
+.method-note{margin-top:28px;padding:22px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--fs);border-radius:10px}
+.method-note p{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--fs);margin-bottom:7px}
+.method-note span{font-size:13px;color:var(--muted);line-height:1.7}
+.method-note a{color:var(--fs);text-decoration:none;font-weight:600}
+
+.back-link{text-align:center;padding:24px 20px;border-top:1px solid var(--border)}
+.back-link a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .15s}
+.back-link a:hover{color:var(--fs)}
+
+footer{text-align:center;padding:16px 20px 28px;font-size:12px;color:var(--dim)}
+footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:600px){
+  .stat-grid,.ba-grid,.ba2-grid,.score-grid{grid-template-columns:1fr 1fr}
+  .cal-item{flex-direction:column;gap:4px}
+  .tab{padding:13px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="tabs">
+  <div class="tab active" onclick="show('before',this)">Before</div>
+  <div class="tab" onclick="show('after',this)">After — Strategic Flow</div>
+  <div class="tab" onclick="show('changes',this)">What changed & why</div>
+</nav>
+
+<!-- ══════════════ BEFORE ══════════════ -->
+<div id="before" class="panel active">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow Teardown</div>
+      <h1>Finite State AI Unpacking — <em>Audited.</em></h1>
+      <p class="hdr-meta">Original post · <a href="https://finitestate.io/blog/ai-unpacking-evaluation-agent" target="_blank">finitestate.io → AI Unpacking Evaluation Agent</a> · February 24, 2026</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl">Original article</div>
+      <div class="article">
+        <div class="art-hdr">
+          <svg class="art-logo-svg" viewBox="0 0 160 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="28" height="28" rx="5" fill="#7C3AED"/>
+            <text x="5" y="20" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="white">FS</text>
+            <text x="36" y="19" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="0.2">Finite State</text>
+          </svg>
+          <div class="art-byline">Product Updates · Zachary O'Dell</div>
+        </div>
+        <div class="art-body">
+          <img class="art-hero" src="https://finitestate.io/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzv6tqb74%2Ffsds%2F7e1de30aa84b3b897f5d76a68c9f2351c1601d05-1350x1782.png%3Frect%3D0%2C512%2C1350%2C759%26w%3D1200%26h%3D675%26q%3D100&w=3840&q=75" alt="Finite State AI Unpacking Evaluation Agent" onerror="this.style.display='none'">
+
+          <h1 class="art-h1">AI Unpacking Evaluation Agent: Clearer Extraction Insight & Faster Fixes</h1>
+          <p style="font-size:14px;color:#5b21b6;font-style:italic;margin-bottom:14px">Stop guessing if scan results are complete. The AI Unpacking Evaluation Agent shows unpacking quality, identifies root causes, and recommends fixes inside the platform.</p>
+          <div class="art-meta">
+            <span>February 24, 2026</span>·<span class="art-tag">Product Updates</span>
+          </div>
+
+          <p class="art-p">Finite State is excited to introduce the AI Unpacking Evaluation Agent, a new capability designed to bring clarity, transparency, and actionable guidance to one of the most critical and often opaque steps in artifact analysis, extraction, and unpacking.</p>
+
+          <p class="art-p">With this release, customers no longer have to guess whether scan results represent a complete artifact or only a partial view due to unpacking issues. The AI Unpacking Evaluation Agent automatically evaluates extraction quality, explains what went wrong when issues occur, and provides clear next steps to resolve them, all directly within the platform.</p>
+
+          <h2 class="art-h2">Release Highlight: Immediate Visibility Into Unpacking Quality</h2>
+          <p class="art-p">When unpacking fails or is incomplete, results can be misleading. This creates uncertainty, slows investigations, and increases support overhead. The AI Unpacking Evaluation Agent solves this by clearly assessing how successfully an uploaded artifact was extracted and presenting a simple quality rating: <strong>Excellent, Good, Fair, or Poor</strong>.</p>
+
+          <p class="art-p">What this means for you:</p>
+          <div class="art-li">Immediate confidence in whether results are comprehensive</div>
+          <div class="art-li">Clear signals when findings may be incomplete</div>
+          <div class="art-li">Reduced risk of false confidence in partial analysis</div>
+          <div class="art-li">Faster decisions about whether remediation or re-upload is needed</div>
+
+          <h2 class="art-h2">Actionable Guidance When Extraction Is Incomplete</h2>
+          <img class="art-img" src="https://finitestate.io/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzv6tqb74%2Ffsds%2F7e1de30aa84b3b897f5d76a68c9f2351c1601d05-1350x1782.png%3Frect%3D0%2C512%2C1350%2C759%26w%3D1200%26h%3D675%26q%3D100&w=3840&q=75" alt="Unpacking agent results example" onerror="this.style.display='none'">
+
+          <p class="art-p">When unpacking issues occur, the agent: identifies likely root causes, highlights relevant file paths tied to each issue, and provides concrete prioritized recommendations — such as instructions to unpack locally, decrypt content, repackage nested archives, or adjust compression formats before re-uploading.</p>
+
+          <h2 class="art-h2">Built for Complex, Real-World Artifacts</h2>
+          <p class="art-p">Especially valuable for teams analyzing firmware images, disk images, nested archives, and encrypted containers, where extraction challenges are common and costly.</p>
+
+          <div class="art-cta">New to Finite State? Schedule a demo to see how the AI Unpacking Evaluation Agent helps teams move faster, reduce friction, and trust their results from the very first scan.</div>
+        </div>
+      </div>
+
+      <div class="flags">
+        <div class="flag">⚠️<div><strong>Headline names the feature, not the problem</strong> — "AI Unpacking Evaluation Agent: Clearer Extraction Insight & Faster Fixes" leads with the product name. The real reader — a firmware security engineer who has shipped a scan, seen partial results, and had no idea why — needs to see their exact situation in the first line. The headline should name the failure state: "Your scan completed. The results may not be."</div></div>
+        <div class="flag">⚠️<div><strong>"Excited to introduce" opener kills momentum</strong> — "Finite State is excited to introduce…" is the most common, least effective opening in B2B product emails. It signals "announcement" instead of "problem solved." The hook should start with the operational cost of the problem, not the company's emotion about fixing it.</div></div>
+        <div class="flag">⚠️<div><strong>Quality ratings buried after feature explanation</strong> — Excellent / Good / Fair / Poor is the most immediately understandable element of this feature — a simple signal that tells you whether to trust your results. It appears mid-article after two setup paragraphs. It should be the first concrete thing the reader sees.</div></div>
+        <div class="flag">⚠️<div><strong>Bullet lists replace outcome narrative</strong> — "What this means for you:" followed by 4 bullets is the standard feature-launch format. None of the bullets describe a specific scenario the reader has lived through. "Reduced risk of false confidence in partial analysis" is passive. "You shipped a scan on a nested archive. The results looked complete. They weren't." is what the reader actually experienced.</div></div>
+        <div class="flag">⚠️<div><strong>CTA is disconnected from the problem narrative</strong> — "Schedule a demo" appears at the end without any bridge sentence. The reader just learned their scan results may be unreliable. The CTA should acknowledge what they just learned and tell them what to do next: upload an artifact now, or see the agent in action on a live scan.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ AFTER ══════════════ -->
+<div id="after" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow — Rebuilt</div>
+      <h1>Finite State AI Unpacking — <em>Rebuilt.</em></h1>
+      <p class="hdr-meta">Newsletter rebuild · High-Impact tier · strategic-flow-pro.replit.app</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+      <div class="lbl purple">Rebuilt newsletter</div>
+
+      <div class="email-shell">
+        <div class="email-inner">
+          <div class="e-hdr">
+            <svg width="130" height="22" viewBox="0 0 130 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="22" height="22" rx="4" fill="#7C3AED"/>
+              <text x="4" y="16" font-family="Arial Black,sans-serif" font-size="12" font-weight="900" fill="white">FS</text>
+              <text x="28" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="white" letter-spacing="0.2">Finite State</text>
+            </svg>
+            <div class="e-date">Product Update · February 2026</div>
+          </div>
+
+          <img src="https://finitestate.io/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzv6tqb74%2Ffsds%2F7e1de30aa84b3b897f5d76a68c9f2351c1601d05-1350x1782.png%3Frect%3D0%2C512%2C1350%2C759%26w%3D1200%26h%3D675%26q%3D100&w=3840&q=75" alt="Finite State AI Unpacking Agent" style="width:100%;display:block;max-height:200px;object-fit:cover" onerror="this.style.display='none'">
+
+          <div class="e-body">
+            <h1 class="e-h1">🔍 Your scan completed. The results may not be telling you the full story.</h1>
+            <p class="e-lead">Incomplete unpacking produces scan results that look complete — until someone asks why a known vulnerability didn't show up. The AI Unpacking Evaluation Agent ends the guesswork: it tells you exactly how reliable your results are, and what to do when they aren't.</p>
+
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="stat-num">4</div>
+                <div class="stat-lbl">quality ratings: Excellent / Good / Fair / Poor</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">0</div>
+                <div class="stat-lbl">guesswork — root cause identified automatically</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-num">1</div>
+                <div class="stat-lbl">platform — no context switching to diagnose</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="e-divider"></div>
+
+          <div style="padding:20px 24px 0">
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-label">KNOW BEFORE YOU ACT</div>
+                <div class="fc-title">Immediate extraction quality rating</div>
+                <div class="fc-txt">Every artifact scan now shows an upfront quality signal — Excellent, Good, Fair, or Poor — before you interpret findings. If unpacking was incomplete, you know before you act on partial data. No more discovering three days later that the results were based on 40% of the artifact.</div>
+              </div>
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-label">ROOT CAUSE IN THE PLATFORM</div>
+                <div class="fc-title">Actionable guidance, not just error codes</div>
+                <div class="fc-txt">When extraction fails, the agent identifies the likely root cause, highlights the specific file paths involved, and provides concrete next steps: unpack locally, decrypt content, repackage nested archives, or adjust compression format before re-uploading. No ticket to support. No guesswork about what to try first.</div>
+              </div>
+              <img class="fc-img" src="https://finitestate.io/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fzv6tqb74%2Ffsds%2F7e1de30aa84b3b897f5d76a68c9f2351c1601d05-1350x1782.png%3Frect%3D0%2C512%2C1350%2C759%26w%3D1200%26h%3D675%26q%3D100&w=3840&q=75" alt="AI Unpacking Agent results" onerror="this.style.display='none'">
+            </div>
+
+            <div class="fc">
+              <div class="fc-top">
+                <div class="fc-label">BUILT FOR THE HARD CASES</div>
+                <div class="fc-title">Firmware, disk images, nested archives, encrypted containers</div>
+                <div class="fc-txt">The artifacts where extraction most commonly fails are also the ones where incomplete results are most dangerous. The AI Unpacking Evaluation Agent is specifically designed for these complex, real-world formats — where a partial scan doesn't just slow you down, it creates false confidence in results that don't reflect what's actually inside.</div>
+              </div>
+            </div>
+
+            <div class="e-quote">
+              <p>"Instead of quietly producing partial results, Finite State now explains extraction quality, flags risk, and tells customers exactly what to do next."</p>
+              <cite>Zachary O'Dell, Senior Product Manager · Finite State</cite>
+            </div>
+
+            <div class="ba-grid">
+              <div class="ba-box">
+                <div class="ba-lbl">Before</div>
+                <div class="ba-txt">You upload a firmware image. The scan completes. Results look reasonable. Three days later, during a review, someone flags a known CVE that wasn't in the report. You open a support ticket. You wait. You re-upload. You re-run the scan. You still don't know why it happened.</div>
+              </div>
+              <div class="ba-box after">
+                <div class="ba-lbl">After</div>
+                <div class="ba-txt">You upload a firmware image. The scan completes. The platform immediately shows: "Fair — extraction was incomplete due to encrypted nested archive. Recommended: decrypt locally and re-upload." You fix it in the same session. Results are complete. You move on.</div>
+              </div>
+            </div>
+
+            <div class="e-cta">
+              <div class="cta-outer">
+                <div class="cta-inner">
+                  <p class="cta-title">If you've ever acted on a scan result that turned out to be incomplete — this is the fix.</p>
+                  <a href="https://finitestate.io/request-demo" class="cta-btn">See the AI Unpacking Agent in action →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="e-footer">
+            <p style="font-weight:700;color:rgba(0,0,0,.4);font-size:13px">Finite State</p>
+            <p>Product Security Automation Platform · Firmware · Software Supply Chain</p>
+            <p style="margin-top:5px"><a href="#" style="color:rgba(0,0,0,.3);text-decoration:none;font-size:11px">Unsubscribe · finitestate.io</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCORES -->
+      <div style="margin-top:24px">
+        <div class="lbl purple">Conversion score</div>
+        <div class="score-grid">
+          <div class="score-box">
+            <div class="score-l">Original</div>
+            <div class="score-n" style="color:var(--red)">3<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Feature name as headline. "Excited to introduce" opener. Quality ratings buried after setup. Bullet lists replace scenario narrative. CTA disconnected from the problem just described.</div>
+          </div>
+          <div class="score-box" style="border-color:var(--fs-border);background:var(--fs-dim)">
+            <div class="score-l" style="color:var(--fs)">Rebuilt</div>
+            <div class="score-n" style="color:var(--fs)">9<span style="font-size:18px;color:var(--muted)">/10</span></div>
+            <div class="score-desc">Hook names the failure state the reader has lived. 3 stat cards: 4 ratings / 0 guesswork / 1 platform. 3 feature cards with real-world scenario framing. Before/After shows the complete vs incomplete scan experience. CTA is the direct consequence of reading.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AB -->
+      <div style="margin-top:26px">
+        <div class="lbl purple">3 A/B subject line variants</div>
+        <div class="ab-list">
+          <div class="ab-card">
+            <div class="ab-ang">False confidence — the hidden cost</div>
+            <div class="ab-sub">Your scan completed. The results might be showing you 40% of the artifact.</div>
+            <div class="ab-why">Names the exact fear of anyone who has shipped firmware analysis. "40%" makes the incompleteness concrete and frightening. Every security engineer who has ever trusted a partial result will open this.</div>
+            <span class="ab-lift">Predicted open rate: 36–42%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Operational friction — support loop eliminated</div>
+            <div class="ab-sub">Stop opening support tickets to find out why your scan missed something.</div>
+            <div class="ab-why">Names the specific workflow cost — the support ticket loop — that security teams experience after every incomplete unpack. Loss-aversion framing on wasted time, not on missed vulnerabilities.</div>
+            <span class="ab-lift">Predicted open rate: 30–36%</span>
+          </div>
+          <div class="ab-card">
+            <div class="ab-ang">Trust signal — new capability announcement</div>
+            <div class="ab-sub">New: Finite State now tells you exactly how reliable your scan results are.</div>
+            <div class="ab-why">Direct capability announcement for readers who track product updates. "Exactly how reliable" is a stronger claim than "improved visibility" — it implies a specific, measurable output rather than a vague quality improvement.</div>
+            <span class="ab-lift">Predicted open rate: 24–30%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div style="margin-top:26px">
+        <div class="lbl purple">4-Week Content Calendar</div>
+        <div class="cal-list">
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 3</div><div class="cal-topic">What "incomplete unpacking" actually means — and why scan results can look fine when they aren't</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 1 · Day 5</div><div class="cal-topic">The 4 quality ratings explained: when Excellent matters and when Fair is a red flag</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 10</div><div class="cal-topic">Firmware, disk images, nested archives: why complex artifacts fail extraction most often</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 2 · Day 12</div><div class="cal-topic">From "scan complete" to "results complete" — the gap most teams don't know they have</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 17</div><div class="cal-topic">How root cause identification changes the re-upload workflow for security teams</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 3 · Day 19</div><div class="cal-topic">False confidence in partial analysis: the CVE your scan missed because extraction stopped early</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 24</div><div class="cal-topic">Encrypted containers and compressed archives — the extraction edge cases that matter most</div></div>
+          <div class="cal-item"><div class="cal-timing">Week 4 · Day 26</div><div class="cal-topic">Product security automation: what it means to trust your results from the first scan</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ WHAT CHANGED ══════════════ -->
+<div id="changes" class="panel">
+  <div class="hdr">
+    <div class="wrap">
+      <div class="badge"><div class="dot"></div>Strategic Flow</div>
+      <h1>The 5 Strategic <em>Upgrades</em></h1>
+      <p class="hdr-meta">What changed in the Finite State rebuild — and why each change converts better</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section">
+
+      <div class="lbl">Subject line transformation</div>
+      <div class="ba2-grid">
+        <div class="ba2">
+          <div class="ba2-lbl">❌ Original</div>
+          <div class="ba2-txt" style="color:var(--red);font-weight:700;margin-bottom:6px">"AI Unpacking Evaluation Agent: Clearer Extraction Insight & Faster Fixes"</div>
+          <div class="ba2-txt">Feature name + vague benefit. A firmware security engineer who has acted on incomplete scan results doesn't see themselves in this headline. "Clearer Extraction Insight" doesn't name the cost they've lived through.</div>
+        </div>
+        <div class="ba2 after">
+          <div class="ba2-lbl">✓ Rebuilt</div>
+          <div class="ba2-txt" style="font-weight:700;margin-bottom:6px">"Your scan completed. The results might be showing you 40% of the artifact."</div>
+          <div class="ba2-txt">Names the exact failure state. "40%" makes incompleteness concrete. Every security engineer who has ever trusted a partial scan will recognize this immediately — before they know what the solution is.</div>
+        </div>
+      </div>
+
+      <div class="changes" style="margin-top:26px">
+
+        <div class="change">
+          <div class="ch-num">Upgrade 01</div>
+          <div class="ch-title">Hook names the failure state, not the feature</div>
+          <div class="ch-body">The original opens with "Finite State is excited to introduce…" — the most common, least effective opener in product update emails. <strong>The rebuild opens with the exact scenario the reader has lived: a completed scan that produced incomplete results.</strong> The reader feels the problem before they understand the solution.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 02</div>
+          <div class="ch-title">Quality ratings moved above the fold as stat cards</div>
+          <div class="ch-body">Excellent / Good / Fair / Poor is the most immediately understandable element of this feature — a simple signal that tells you whether to trust your results. In the original, it appears mid-article after two setup paragraphs. <strong>The rebuild presents all 4 as a visual stat card immediately after the hook</strong>, alongside 0 guesswork and 1 platform. The reader understands the product in 10 seconds.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 03</div>
+          <div class="ch-title">Feature cards replace bullet lists with scenario framing</div>
+          <div class="ch-body">The original uses 4 bullets under "What this means for you:" — each passive and abstract ("Reduced risk of false confidence in partial analysis"). <strong>The rebuild turns each feature into a scenario card with a specific use case:</strong> "You upload a firmware image. Results look reasonable. Three days later, a known CVE wasn't in the report." Readers recognize their own experience, not a generic benefit statement.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 04</div>
+          <div class="ch-title">Before/After shows the complete workflow change</div>
+          <div class="ch-body">The original has no concrete before/after comparison. <strong>The rebuild shows the complete experience transformation:</strong> support ticket loop and wasted re-uploads (Before) vs. immediate root cause diagnosis and same-session fix (After). The reader can visualize exactly how their workflow changes — which is the actual purchase decision.</div>
+        </div>
+
+        <div class="change">
+          <div class="ch-num">Upgrade 05</div>
+          <div class="ch-title">CTA is the direct consequence of reading</div>
+          <div class="ch-body">The original ends with a generic "Schedule a demo" with no bridge sentence. <strong>The rebuild uses a CTA that recaps the argument: "If you've ever acted on a scan result that turned out to be incomplete — this is the fix."</strong> The reader who has experienced this problem is directly addressed. The CTA resolves the tension created in the hook.</div>
+        </div>
+
+      </div>
+
+      <div class="method-note">
+        <p>This is the Strategic Flow Method</p>
+        <span>Failure state in the hook, not the feature name. Quality signals above the fold as stat cards. Scenario-based feature cards instead of bullet lists. Before/After shows the workflow change. CTA = the direct consequence of reading.<br><br>
+        <a href="https://strategicflow.carrd.co" target="_blank">strategicflow.carrd.co →</a></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="back-link">
+  <a href="index.html">← Back to all teardowns</a>
+</div>
+
+<footer>
+  <p>Strategic Flow © 2026 · <a href="https://strategicflow-tech.github.io/showcase/">All teardowns</a> · <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> · <a href="mailto:strategicflow@proton.me">Contact</a></p>
+  <p style="margin-top:5px">Independent analysis. Finite State® is not affiliated with Strategic Flow. Content sourced from finitestate.io as of April 2026.</p>
+</footer>
+
+<script>
+function show(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
