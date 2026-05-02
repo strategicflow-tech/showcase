@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7TV731EJTB');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newsletter Teardowns — Strategic Flow | Email Conversion Analysis & Rebuilds</title>
+<meta name="description" content="21 real SaaS newsletter teardowns: before/after conversion analysis, rebuilt HTML, A/B subject variants, and conversion scores. Strategic Flow methodology — see exactly what changed and why it converts.">
+<meta name="keywords" content="email teardown, newsletter audit, email copywriting analysis, before after email, conversion optimization, SaaS newsletter, email conversion, subject line optimization, Strategic Flow">
+<meta name="author" content="Strategic Flow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Newsletter Teardowns — Strategic Flow">
+<meta property="og:description" content="21 real SaaS newsletters rebuilt for conversion. Before/after analysis, A/B subject lines, conversion scores. See the methodology.">
+<meta property="og:url" content="https://strategicflow-tech.github.io/showcase/">
+<link rel="canonical" href="https://strategicflow-tech.github.io/showcase/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Newsletter Teardowns — Strategic Flow",
+  "description": "Email teardown portfolio: 21 real SaaS newsletters rebuilt for conversion. Before/after analysis, A/B subject variants, conversion scores.",
+  "url": "https://strategicflow-tech.github.io/showcase/",
+  "publisher": {"@type":"Organization","name":"Strategic Flow","url":"https://strategic-flow-pro.replit.app"},
+  "hasPart": [
+    {"@type":"Article","name":"HeyGen Newsletter Teardown — Before/After Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/heygen-showcase.html"},
+    {"@type":"Article","name":"Revolut Premium Newsletter Teardown — Before/After Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/revolut_newsletter_showcase.html"},
+    {"@type":"Article","name":"Optimizely AI Agents Newsletter Teardown — Before/After Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/optimizely-ai-agents-showcase.html"},
+    {"@type":"Article","name":"Medallia CX Stats Newsletter Teardown — Before/After Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/medallia-cx-stats-showcase.html"},
+    {"@type":"Article","name":"Landbot AI Agent Newsletter Teardown — Before/After Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/landbot-ai-agent-showcase.html"},
+    {"@type":"Article","name":"Notion Newsletter Teardown — Before/After Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/notion-34-part2-showcase.html"}
+  ]
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04080f;--surface:#090e1a;--border:rgba(255,255,255,0.07);
+  --teal:#2dd4bf;--teal-dim:rgba(45,212,191,0.08);--teal-border:rgba(45,212,191,0.2);
+  --white:#f1f5f9;--muted:rgba(255,255,255,0.45);--dim:rgba(255,255,255,0.22)
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6;min-height:100vh}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(4,8,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+.nav-logo{font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:var(--teal);text-decoration:none;letter-spacing:-0.3px;white-space:nowrap}
+.nav-logo span{color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.nav-link{font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:6px;transition:color .15s,background .15s;white-space:nowrap}
+.nav-link:hover{color:var(--white);background:rgba(255,255,255,0.06)}
+.nav-cta{background:var(--teal);color:#04080f !important;border-radius:6px;font-weight:700}
+.nav-cta:hover{background:#22c4ae}
+
+.hero{max-width:1100px;margin:0 auto;padding:72px 24px 56px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--teal-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+h1{font-family:'Inter',sans-serif;font-size:clamp(28px,5vw,54px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px}
+h1 em{font-style:italic;color:var(--teal)}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:32px}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.stat-n{font-family:'Inter',sans-serif;font-size:28px;font-weight:800;color:var(--teal);line-height:1}
+.stat-l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
+
+.filters-wrap{max-width:1100px;margin:0 auto;padding:0 24px 28px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter-btn{padding:7px 16px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--muted);background:none;cursor:pointer;transition:all .15s;white-space:nowrap}
+.filter-btn:hover,.filter-btn.active{border-color:var(--teal-border);color:var(--teal);background:var(--teal-dim)}
+
+.grid-wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+
+.card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(45,212,191,0.04) 0%,transparent 60%);opacity:0;transition:opacity .2s}
+.card:hover{border-color:var(--teal-border);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.card:hover::before{opacity:1}
+.card-arrow{position:absolute;top:20px;right:20px;font-size:16px;color:var(--dim);transition:color .2s,transform .2s}
+.card:hover .card-arrow{color:var(--teal);transform:translate(2px,-2px)}
+.card-brand{font-family:'Inter',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:6px;padding-right:28px;letter-spacing:-0.3px}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:14px}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{padding:3px 9px;border-radius:10px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:var(--dim)}
+.tag.teal{background:var(--teal-dim);border-color:var(--teal-border);color:var(--teal)}
+
+.method{max-width:1100px;margin:0 auto;padding:0 24px 80px}
+.method-inner{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:12px;padding:32px 36px}
+.method-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--teal);margin-bottom:12px}
+.method-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:20px}
+.step{padding:16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px}
+.step-n{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.step-t{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5}
+
+.cta-section{max-width:1100px;margin:0 auto;padding:0 24px 96px}
+.cta-inner{background:linear-gradient(135deg,rgba(45,212,191,0.07) 0%,rgba(45,212,191,0.02) 100%);border:1px solid var(--teal-border);border-radius:16px;padding:48px;text-align:center}
+.cta-inner h2{font-family:'Inter',sans-serif;font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:-1px;margin-bottom:12px}
+.cta-inner h2 em{font-style:italic;color:var(--teal)}
+.cta-inner p{color:var(--muted);font-size:16px;margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:13px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;transition:all .15s}
+.btn-primary{background:var(--teal);color:#04080f}
+.btn-primary:hover{background:#22c4ae;transform:translateY(-1px)}
+.btn-ghost{border:1px solid var(--border);color:var(--white)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.05)}
+
+footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center}
+.footer-inner{max-width:1100px;margin:0 auto}
+footer p{font-size:12px;color:var(--dim);margin-bottom:8px}
+footer a{color:var(--muted);text-decoration:none;margin:0 10px;font-size:12px}
+footer a:hover{color:var(--teal)}
+
+.card.hidden{display:none}
+
+@media(max-width:640px){
+  .hero{padding:48px 20px 40px}
+  .grid{grid-template-columns:1fr}
+  .method-inner{padding:24px 20px}
+  .cta-inner{padding:32px 20px}
+  .hero-stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="https://strategicflow-tech.github.io/showcase/" class="nav-logo">Strategic<span>Flow</span></a>
+    <div class="nav-links">
+      <a href="#teardowns" class="nav-link">Teardowns</a>
+      <a href="#methodology" class="nav-link">Methodology</a>
+      <a href="https://strategic-flow-audit.replit.app" class="nav-link" target="_blank" rel="noopener">Free Audit</a>
+      <a href="https://strategic-flow-pro.replit.app" class="nav-link nav-cta" target="_blank" rel="noopener">Rebuild Yours →</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge"><div class="dot"></div>Live teardown portfolio</div>
+  <h1>Real newsletters,<br><em>rebuilt for conversion.</em></h1>
+  <p class="hero-sub">Before/after analysis on 21 SaaS and B2B newsletters. Every teardown shows the original, the rebuild, what changed, and why it converts better.</p>
+  <div class="hero-stats">
+    <div><div class="stat-n">21</div><div class="stat-l">Teardowns live</div></div>
+    <div><div class="stat-n">3→9</div><div class="stat-l">Avg score lift</div></div>
+    <div><div class="stat-n">3</div><div class="stat-l">A/B variants each</div></div>
+  </div>
+</header>
+
+<div class="filters-wrap">
+  <div class="filters" role="group" aria-label="Filter by category">
+    <button class="filter-btn active" onclick="filter('all',this)">All (21)</button>
+    <button class="filter-btn" onclick="filter('saas',this)">B2B SaaS</button>
+    <button class="filter-btn" onclick="filter('fintech',this)">Fintech</button>
+    <button class="filter-btn" onclick="filter('ai',this)">AI / Agents</button>
+    <button class="filter-btn" onclick="filter('promo',this)">Promo</button>
+    <button class="filter-btn" onclick="filter('enterprise',this)">Enterprise</button>
+  </div>
+</div>
+
+<main id="teardowns" class="grid-wrap">
+  <div class="grid">
+
+    <a href="heygen-showcase.html" class="card" data-cat="saas ai"
+       title="HeyGen Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">HeyGen</div>
+      <div class="card-desc">AI video platform newsletter rebuilt from feature list to outcome-driven narrative. Hook restructured, stat cards added, CTA rewritten.</div>
+      <div class="card-tags"><span class="tag teal">AI · SaaS</span><span class="tag">Thought Leadership</span></div>
+    </a>
+
+    <a href="revolut_newsletter_showcase.html" class="card" data-cat="fintech"
+       title="Revolut Premium Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Revolut Premium</div>
+      <div class="card-desc">Feature announcement rebuilt with consequence-first hook and tiered CTAs. Fintech tone preserved, conversion architecture added.</div>
+      <div class="card-tags"><span class="tag teal">Fintech · Product</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="revolut_email_analysis.html" class="card" data-cat="fintech"
+       title="Revolut Email Deep Analysis — Full Funnel Cohesion Audit Before/After">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Revolut — Deep Analysis</div>
+      <div class="card-desc">Full funnel cohesion audit: subject line to checkout narrative mapped and fixed. Most comprehensive teardown in the portfolio.</div>
+      <div class="card-tags"><span class="tag teal">Fintech · Audit</span><span class="tag">Full Funnel</span></div>
+    </a>
+
+    <a href="qonto_showcase.html" class="card" data-cat="fintech saas"
+       title="Qonto Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Qonto</div>
+      <div class="card-desc">B2B fintech product update turned into business outcome story. Feature announcement reframed around reader's operational pain.</div>
+      <div class="card-tags"><span class="tag teal">Fintech · B2B</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="cato_networks_showcase.html" class="card" data-cat="saas enterprise"
+       title="Cato Networks Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Cato Networks</div>
+      <div class="card-desc">B2B cybersecurity newsletter: technical depth meets conversion copywriting. Dark theme, enterprise tone, consequence-driven structure.</div>
+      <div class="card-tags"><span class="tag teal">Cybersecurity · B2B</span><span class="tag">Thought Leadership</span></div>
+    </a>
+
+    <a href="atlassian_confluence_rovo_showcase.html" class="card" data-cat="saas enterprise ai"
+       title="Atlassian Confluence Rovo Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Atlassian / Confluence Rovo</div>
+      <div class="card-desc">AI feature launch email for enterprise audience. Technical announcement restructured with conversion-focused hierarchy and outcome framing.</div>
+      <div class="card-tags"><span class="tag teal">Enterprise · AI</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="lokalise_newsletter_teardown.html" class="card" data-cat="saas"
+       title="Lokalise Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Lokalise</div>
+      <div class="card-desc">Localization platform newsletter: developer-first narrative rebuilt for marketing decision-makers. Role reframing and outcome-first structure.</div>
+      <div class="card-tags"><span class="tag teal">DevTools · B2B</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="zoho-analytics-q1-2026-showcase.html" class="card" data-cat="saas enterprise"
+       title="Zoho Analytics Q1 2026 Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Zoho Analytics</div>
+      <div class="card-desc">Q1 2026 product update: 12 features rebuilt into a conversion-focused newsletter. Feature list transformed into prioritised outcome narrative.</div>
+      <div class="card-tags"><span class="tag teal">Analytics · B2B</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="notion-34-part2-showcase.html" class="card" data-cat="saas ai"
+       title="Notion 3.4 Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Notion</div>
+      <div class="card-desc">3.4 Part 2 release: agents 50% cheaper, 28% faster pages, May 3 deadline rebuilt as conversion hook with urgency architecture.</div>
+      <div class="card-tags"><span class="tag teal">Productivity · AI</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="landbot-ai-agent-showcase.html" class="card" data-cat="saas ai"
+       title="Landbot AI Agent Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Landbot</div>
+      <div class="card-desc">AI Agent for lead qualification: 8-step feature list rebuilt into 4 outcome cards. Intent data repositioned. Score 4→9.</div>
+      <div class="card-tags"><span class="tag teal">Conversational AI · No-Code</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="optimizely-ai-agents-showcase.html" class="card" data-cat="saas ai enterprise"
+       title="Optimizely AI Agents Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Optimizely</div>
+      <div class="card-desc">AI agents deployment mistakes: flat feature list rebuilt into cascade logic. Daniel Hulme quotes repositioned. Score 4→9.</div>
+      <div class="card-tags"><span class="tag teal">Marketing Ops · AI Agents</span><span class="tag">Thought Leadership</span></div>
+    </a>
+
+    <a href="medallia-cx-stats-showcase.html" class="card" data-cat="saas enterprise"
+       title="Medallia CX Stats Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Medallia</div>
+      <div class="card-desc">CX stats for C-suite: 43% executive action drop-off as hook. Persona-tagged cards for CEO/CRO/COO. 3 data charts imported. Score 4→9.</div>
+      <div class="card-tags"><span class="tag teal">CX Strategy · Enterprise</span><span class="tag">Thought Leadership</span></div>
+    </a>
+
+    <a href="gamma-newsletter-showcase.html" class="card" data-cat="saas"
+       title="Gamma Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Gamma</div>
+      <div class="card-desc">Visual blocks newsletter: feature announcement rebuilt into reader benefit narrative. Presentation tool repositioned for daily workflow pain.</div>
+      <div class="card-tags"><span class="tag teal">Productivity · SaaS</span><span class="tag">Product Update</span></div>
+    </a>
+
+    <a href="memrise_newsletter_showcase.html" class="card" data-cat="promo"
+       title="Memrise Offer Email Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Memrise</div>
+      <div class="card-desc">Offer email rebuilt: urgency architecture and social proof restructured. Discount email reframed from price-led to outcome-led.</div>
+      <div class="card-tags"><span class="tag teal">EdTech · Promo</span><span class="tag">Promotional</span></div>
+    </a>
+
+    <a href="tech_talent_decoded_showcase.html" class="card" data-cat="saas"
+       title="Tech Talent Decoded Newsletter Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Tech Talent Decoded</div>
+      <div class="card-desc">LinkedIn newsletter teardown: competitive tension hook, stat cards, and ownership CTAs added. B2B recruiting newsletter rebuilt.</div>
+      <div class="card-tags"><span class="tag teal">Recruiting · B2B</span><span class="tag">Newsletter</span></div>
+    </a>
+
+    <a href="uber_newsletter_showcase.html" class="card" data-cat="promo"
+       title="Uber Promotional Email Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Uber</div>
+      <div class="card-desc">Promotional email teardown: grid layout optimization and CTA hierarchy rebuilt. Multi-offer email restructured around primary conversion action.</div>
+      <div class="card-tags"><span class="tag teal">Marketplace · Promo</span><span class="tag">Promotional</span></div>
+    </a>
+
+    <a href="wizzair_easter_showcase.html" class="card" data-cat="promo"
+       title="Wizz Air Easter Promo Email Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Wizz Air</div>
+      <div class="card-desc">Easter flight promo rebuilt: urgency architecture, visual hierarchy, and booking flow optimized. Seasonal promo reframed around departure window.</div>
+      <div class="card-tags"><span class="tag teal">Travel · Promo</span><span class="tag">Promotional</span></div>
+    </a>
+
+    <a href="booking_com_showcase.html" class="card" data-cat="promo"
+       title="Booking.com Travel Email Teardown — Before/After Conversion Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Booking.com</div>
+      <div class="card-desc">Travel email teardown: personalization hooks and conversion architecture rebuilt. Generic promo transformed into intent-matched offer sequence.</div>
+      <div class="card-tags"><span class="tag teal">Travel · Promo</span><span class="tag">Promotional</span></div>
+    </a>
+
+    <a href="reversinglabs-vibeware-showcase.html" class="card">
+  <div class="card-brand">ReversingLabs</div>
+  <div class="card-desc">Vibeware AppSec — cost asimetric ca hook, 3 persona cards AppSec/DevSecOps/CISO, quote Murata ca centerpiece, scor 3→9</div>
+  <span class="tag teal">Cybersecurity · AppSec · B2B Enterprise</span>
+    </a>
+
+    <a href="finitestate-ai-unpacking-showcase.html" class="card" data-cat="saas enterprise"
+   title="Finite State AI Unpacking Agent Newsletter Teardown — Before/After Conversion Analysis">
+  <div class="card-arrow">↗</div>
+  <div class="card-brand">Finite State</div>
+  <div class="card-desc">AI Unpacking Evaluation Agent: "excited to introduce" opener rebuilt into failure-state hook. 3 feature cards with scenario framing. Before/After: support ticket loop vs same-session fix. Score 3→9.</div>
+  <div class="card-tags">
+    <span class="tag teal">Product Security · AppSec</span>
+    <span class="tag">Product Update</span>
+  </div>
+    </a>
+
+    <a href="wiz-ai-app-showcase.html" class="card" data-cat="saas ai enterprise"
+   title="Wiz AI-APP Newsletter Teardown — Before/After Conversion Analysis">
+  <div class="card-arrow">↗</div>
+  <div class="card-brand">Wiz</div>
+  <div class="card-desc">AI-APP platform launch — attack scenario ca hook, 6 screenshots reale importate, secvență cauzală see→understand→detect, CTA unic ancorat la amenințare. Scor 3→9.</div>
+  <div class="card-tags">
+    <span class="tag teal">Cloud Security · AI-APP · Enterprise</span>
+    <span class="tag">Product Launch</span>
+  </div>
+    </a>
+    
+  </div>
+</main>
+
+<section id="methodology" class="method" aria-labelledby="method-title">
+  <div class="method-inner">
+    <div class="method-label">The Strategic Flow Method</div>
+    <h2 id="method-title" style="font-family:'Inter',sans-serif;font-size:22px;font-weight:800;margin-bottom:10px;letter-spacing:-0.5px">How every teardown works</h2>
+    <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:600px">Each teardown follows the same diagnostic framework — applied to the actual email, not a generic template. Every rebuild is deliverable HTML, not a wireframe.</p>
+    <div class="method-steps">
+      <div class="step"><div class="step-n">Step 01</div><div class="step-t">Fetch and parse the source URL. Extract subject, hook, body structure, images, and CTA.</div></div>
+      <div class="step"><div class="step-n">Step 02</div><div class="step-t">Score the original on 10 conversion criteria: hook tension, subject specificity, CTA ownership, and cohesion.</div></div>
+      <div class="step"><div class="step-n">Step 03</div><div class="step-t">Identify 3–5 specific flags: exactly what fails and where in the reader's journey it breaks down.</div></div>
+      <div class="step"><div class="step-n">Step 04</div><div class="step-t">Rebuild the full HTML email: same brand, new conversion architecture. Hook, stat cards, body, Before/After, CTA.</div></div>
+      <div class="step"><div class="step-n">Step 05</div><div class="step-t">Generate 3 A/B subject line variants with angle, reasoning, and predicted open rate range.</div></div>
+      <div class="step"><div class="step-n">Step 06</div><div class="step-t">Produce a 4-week content calendar: 8 follow-up email topics built from the same source narrative.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" aria-labelledby="cta-title">
+  <div class="cta-inner">
+    <h2 id="cta-title">Your newsletter, <em>rebuilt in 60 seconds.</em></h2>
+    <p>Paste any URL. Get a full audit, rebuilt HTML, 3 A/B subjects, and a content calendar. No brief, no onboarding, no retainer.</p>
+    <div class="cta-btns">
+      <a href="https://strategic-flow-pro.replit.app" class="btn btn-primary" target="_blank" rel="noopener">Rebuild mine →</a>
+      <a href="https://strategic-flow-audit.replit.app" class="btn btn-ghost" target="_blank" rel="noopener">Free audit first</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>Strategic Flow © 2026 — Newsletter conversion architecture for B2B SaaS</p>
+    <div>
+      <a href="https://strategic-flow-pro.replit.app" target="_blank" rel="noopener">Pro App</a>
+      <a href="https://strategic-flow-audit.replit.app" target="_blank" rel="noopener">Free Audit</a>
+      <a href="mailto:strategicflow@proton.me">Contact</a>
+      <a href="https://strategicflow.carrd.co" target="_blank" rel="noopener">Website</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function filter(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+  document.querySelectorAll('.card').forEach(card => {
+    if (cat === 'all') { card.classList.remove('hidden') }
+    else { card.classList.toggle('hidden', !(card.dataset.cat||'').includes(cat)) }
+  })
+}
+</script>
+</body>
+</html>
