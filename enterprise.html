@@ -1198,18 +1198,8 @@
 </footer>
 
 <script>
-async function startCheckout() {
-  try {
-    const res = await fetch('https://strategic-flow-audit.replit.app/stripe/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({})
-    });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-  } catch (e) {
-    window.location.href = 'mailto:strategicflow@proton.me?subject=Architecture — Book Assessment';
-  }
+function startCheckout() {
+  window.location.href = 'https://strategic-flow-audit.replit.app/checkout';
 }
 </script>
 
