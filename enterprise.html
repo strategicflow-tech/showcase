@@ -591,7 +591,7 @@
     border: 1px solid rgba(74,143,231,0.3);
     background: rgba(74,143,231,0.03);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 380px 1fr;
   }
 
   .pricing-left {
@@ -656,29 +656,39 @@
 
   .includes-list {
     list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
   .includes-item {
-    display: flex;
-    gap: 16px;
-    font-size: 14px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    background: var(--card);
+    font-size: 13px;
     color: var(--mid);
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: border-color 0.2s;
   }
 
-  .includes-item::before {
-    content: '→';
-    color: var(--signal);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    flex-shrink: 0;
-    margin-top: 2px;
+  .includes-item:hover { border-color: rgba(74,143,231,0.3); }
+
+  .includes-item::before { display: none; }
+
+  .includes-item strong {
+    color: var(--white);
+    font-weight: 600;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 2px;
   }
 
-  .includes-item strong { color: var(--white); font-weight: 500; }
+  @media (max-width: 640px) {
+    .includes-list { grid-template-columns: 1fr; }
+  }
 
   /* COMPARISON */
   .compare-table {
@@ -1186,8 +1196,8 @@
 <section class="cta-section">
   <h2 class="cta-title">Start with <em>one email.</em><br>Free.</h2>
   <p class="cta-sub">Paste any email your company has sent. Get the full diagnostic in 60 seconds — score, bugs, rebuilt subject line. No card. No call required.</p>
-  <a href="https://strategic-flow-audit.replit.app" class="btn-primary">Run the Free Audit →</a>
-  <div class="cta-note">strategic-flow-audit.replit.app · No account required</div>
+  <a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-primary">See Architecture in Action →</a>
+  <div class="cta-note">Free demo · No account required · 60 seconds · one time only</div>
 </section>
 
 <!-- FOOTER -->
