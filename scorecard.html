@@ -497,10 +497,9 @@ function renderCards() {
             placeholder="Paste subject line here..."
             value="${esc(email.subject)}"
             onclick="event.stopPropagation()"
-            oninput="updateSubject(${ei}, this.value)"
-            onchange="updateSubject(${ei}, this.value)"
-            onpaste="setTimeout(()=>updateSubject(${ei}, this.value),0)"
+            id="input-${ei}"
           >
+          <button onclick="event.stopPropagation(); scoreSubject(${ei})" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.08em;background:var(--signal);color:var(--white);border:none;padding:6px 10px;cursor:pointer;flex-shrink:0;">SCORE</button>
           <span class="email-score-badge ${scoreClass}" id="score-${ei}">${scoreDisplay}</span>
           <span class="email-toggle" id="toggle-${ei}">▼</span>
         </div>
@@ -551,6 +550,11 @@ function toggleCard(ei) {
   body.classList.toggle('open');
   toggle.classList.toggle('open');
   header.classList.toggle('open');
+}
+
+function scoreSubject(ei) {
+  const input = document.getElementById('input-' + ei);
+  if (input) updateSubject(ei, input.value);
 }
 
 function updateSubject(ei, val) {
