@@ -498,6 +498,8 @@ function renderCards() {
             value="${esc(email.subject)}"
             onclick="event.stopPropagation()"
             oninput="updateSubject(${ei}, this.value)"
+            onchange="updateSubject(${ei}, this.value)"
+            onpaste="setTimeout(()=>updateSubject(${ei}, this.value),0)"
           >
           <span class="email-score-badge ${scoreClass}" id="score-${ei}">${scoreDisplay}</span>
           <span class="email-toggle" id="toggle-${ei}">▼</span>
