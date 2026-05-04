@@ -524,12 +524,7 @@ async function scoreSubject(ei) {
       if (body && !body.classList.contains('open')) { toggleCard(ei); }
     }
   } catch(err) {
-    // Fallback: just register subject with no bugs
-    state.emails[ei].subject = val;
-    updateCardScore(ei);
-    updateSummary();
-    var body = document.getElementById('body-' + ei);
-    if (body && !body.classList.contains('open')) { toggleCard(ei); }
+    alert('Error: ' + err.message);
   }
 
   if (btn) { btn.textContent = 'SCORE'; btn.disabled = false; }
@@ -617,19 +612,7 @@ function copyLink() {
 
 renderCards();
 
-// Debug: attach events after render
-document.addEventListener('click', function(e) {
-  if (e.target && e.target.tagName === 'BUTTON') {
-    var btn = e.target;
-    var onclick = btn.getAttribute('onclick');
-    if (onclick && onclick.indexOf('scoreSubject') !== -1) {
-      var ei = parseInt(onclick.replace('scoreSubject(','').replace(')',''));
-      var input = document.getElementById('input-' + ei);
-      var val = input ? input.value.trim() : 'NO INPUT';
-      alert('btn clicked ei=' + ei + ' val=' + val);
-    }
-  }
-});
+
 </script>
 </body>
 </html>
