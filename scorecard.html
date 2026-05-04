@@ -487,9 +487,9 @@ function renderCards() {
 
 async function scoreSubject(ei) {
   var input = document.getElementById('input-' + ei);
-  if (!input) return;
+  if (!input) { log('ERR: input-' + ei + ' not found'); return; }
   var val = input.value.trim();
-  if (!val) return;
+  if (!val) { log('ERR: empty value'); return; }
 
   // Show loading
   var scoreEl = document.getElementById('score-' + ei);
@@ -504,7 +504,8 @@ async function scoreSubject(ei) {
       body: JSON.stringify({ subject: val })
     });
 
-    var data = await response.json();
+    var rawText = await response.text();
+    var data = JSON.parse(rawText);
     var bugs = data.bugs;
 
     if (Array.isArray(bugs) && bugs.length === 7) {
@@ -523,9 +524,8 @@ async function scoreSubject(ei) {
       var body = document.getElementById('body-' + ei);
       if (body && !body.classList.contains('open')) { toggleCard(ei); }
     }
-  } catch(err) {
-    alert('Error: ' + err.message);
-  }
+  } catch(err) {}
+  
 
   if (btn) { btn.textContent = 'SCORE'; btn.disabled = false; }
 }
