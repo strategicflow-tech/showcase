@@ -375,7 +375,7 @@
   <div class="summary-section" id="summarySection">
     <div class="summary-header">
       <span class="summary-header-title">// Score summary</span>
-      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--mid);" id="summaryAvg">Avg: —</span>
+      <span style="font-family:DM Mono,monospace;font-size:11px;color:var(--mid);" id="summaryAvg">Avg: —</span>
     </div>
     <div class="summary-grid" id="summaryGrid"></div>
     <div class="interpretation">
@@ -398,7 +398,7 @@
   <div class="share-section">
     <div class="share-label">Share this scorecard</div>
     <button class="share-btn" onclick="copyLink()">Copy link to share</button>
-    <div id="copyConfirm" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--signal);margin-top:8px;display:none;">Link copied ✓</div>
+    <div id="copyConfirm" style="font-family:DM Mono,monospace;font-size:11px;color:var(--signal);margin-top:8px;display:none;">Link copied ✓</div>
   </div>
 
 </main>
@@ -406,46 +406,46 @@
 <script>
 const BUGS = [
   {
-    name: 'Filing label subject',
-    desc: 'Subject announces the product, not the reader's problem.',
-    bad: '❌ "New dashboard features available"',
-    good: '✅ "Your reporting is 3 clicks slower than it should be"'
+    name: "Filing label subject",
+    desc: "Subject announces the product, not the reader's problem.",
+    bad: "❌ New dashboard features available",
+    good: "✅ Your reporting is 3 clicks slower than it should be"
   },
   {
-    name: 'Caveat opener',
-    desc: 'Email opens with disclaimer or rollout notice before delivering value.',
-    bad: '❌ "This update is rolling out gradually over 2 weeks..."',
-    good: '✅ "This week, your team can do something it couldn't do last week."'
+    name: "Caveat opener",
+    desc: "Email opens with disclaimer or rollout notice before delivering value.",
+    bad: "❌ This update is rolling out gradually over 2 weeks...",
+    good: "✅ This week, your team can do something it couldn't do last week."
   },
   {
-    name: 'Feature-first language',
-    desc: 'Describes what was built, not what the reader can now do differently.',
-    bad: '❌ "We added AI-powered inline execution"',
-    good: '✅ "Your team no longer waits 40 minutes for results"'
+    name: "Feature-first language",
+    desc: "Describes what was built, not what the reader can now do differently.",
+    bad: "❌ We added AI-powered inline execution",
+    good: "✅ Your team no longer waits 40 minutes for results"
   },
   {
-    name: 'Flat visual hierarchy',
-    desc: 'Major releases and minor fixes at the same visual weight.',
-    bad: '❌ All updates in the same font size and style',
-    good: '✅ Major features as headlines, minor as supporting text'
+    name: "Flat visual hierarchy",
+    desc: "Major releases and minor fixes at the same visual weight.",
+    bad: "❌ All updates in the same font size and style",
+    good: "✅ Major features as headlines, minor as supporting text"
   },
   {
-    name: 'Zero quantified claims',
-    desc: 'No numbers, benchmarks, or time-saved data anywhere.',
-    bad: '❌ "Significantly faster processing"',
-    good: '✅ "3x faster — from 40 minutes to 12"'
+    name: "Zero quantified claims",
+    desc: "No numbers, benchmarks, or time-saved data anywhere.",
+    bad: "❌ Significantly faster processing",
+    good: "✅ 3x faster — from 40 minutes to 12"
   },
   {
-    name: 'Weak or missing CTA',
-    desc: 'No ownership language — reader doesn't feel the action belongs to them.',
-    bad: '❌ "Learn more" / "Explore what's new"',
-    good: '✅ "Fix my reporting →" / "See what changed in my account →"'
+    name: "Weak or missing CTA",
+    desc: "No ownership language — reader doesn't feel the action belongs to them.",
+    bad: "❌ Learn more / Explore what's new",
+    good: "✅ Fix my reporting → / See what changed in my account →"
   },
   {
-    name: 'Buried contrast',
-    desc: 'Before/after comparison hidden in fine print, not in the body.',
-    bad: '❌ italic footnote: "Previously required custom scripts"',
-    good: '✅ inline: "Setup that used to take 3 days now takes one click."'
+    name: "Buried contrast",
+    desc: "Before/after comparison hidden in fine print, not in the body.",
+    bad: "❌ italic footnote: Previously required custom scripts",
+    good: "✅ inline: Setup that used to take 3 days now takes one click."
   }
 ];
 
@@ -498,7 +498,7 @@ function renderCards() {
           >
           <button
             onclick="scoreSubject(${ei})"
-            style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.06em;background:var(--signal);color:var(--white);border:none;padding:8px 14px;cursor:pointer;flex-shrink:0;white-space:nowrap;"
+            style="font-family:DM Mono,monospace;font-size:10px;letter-spacing:0.06em;background:var(--signal);color:var(--white);border:none;padding:8px 14px;cursor:pointer;flex-shrink:0;white-space:nowrap;"
           >SCORE →</button>
           <span class="email-score-badge ${scoreClass}" id="score-${ei}">${scoreDisplay}</span>
           <span class="email-toggle" id="toggle-${ei}" onclick="toggleCard(${ei})" style="cursor:pointer;padding:0 4px;">▼</span>
@@ -515,8 +515,8 @@ function renderCards() {
                   <div class="bug-desc">${esc(bug.desc)}</div>
                   <span class="example-toggle" onclick="event.stopPropagation(); toggleExample(${ei}, ${bi})">See example ↓</span>
                   <div class="bug-example" id="example-${ei}-${bi}">
-                    <div class="example-bad">${bug.bad}</div>
-                    <div class="example-good" style="margin-top:4px;">${bug.good}</div>
+                    <div class="example-bad">${esc(bug.bad)}</div>
+                    <div class="example-good" style="margin-top:4px;">${esc(bug.good)}</div>
                   </div>
                 </div>
               </div>
@@ -596,7 +596,7 @@ function updateSummary() {
   const filled = state.emails.filter(e => e.subject.trim().length > 0);
 
   if (filled.length === 0) {
-    grid.innerHTML = '<div style="padding:24px;font-family:'DM Mono',monospace;font-size:12px;color:var(--mid);grid-column:1/-1;">Add email subject lines above to see your scores here.</div>';
+    grid.innerHTML = '<div style="padding:24px;font-family:DM Mono,monospace;font-size:12px;color:var(--mid);grid-column:1/-1;">Add email subject lines above to see your scores here.</div>';
     avgEl.textContent = 'Avg: —';
     return;
   }
