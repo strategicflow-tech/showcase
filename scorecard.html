@@ -405,63 +405,27 @@
 
 <script>
 const BUGS = [
-  {
-    name: "Filing label subject",
-    desc: "Subject announces the product, not the reader's problem.",
-    bad: "❌ New dashboard features available",
-    good: "✅ Your reporting is 3 clicks slower than it should be"
-  },
-  {
-    name: "Caveat opener",
-    desc: "Email opens with disclaimer or rollout notice before delivering value.",
-    bad: "❌ This update is rolling out gradually over 2 weeks...",
-    good: "✅ This week, your team can do something it couldn't do last week."
-  },
-  {
-    name: "Feature-first language",
-    desc: "Describes what was built, not what the reader can now do differently.",
-    bad: "❌ We added AI-powered inline execution",
-    good: "✅ Your team no longer waits 40 minutes for results"
-  },
-  {
-    name: "Flat visual hierarchy",
-    desc: "Major releases and minor fixes at the same visual weight.",
-    bad: "❌ All updates in the same font size and style",
-    good: "✅ Major features as headlines, minor as supporting text"
-  },
-  {
-    name: "Zero quantified claims",
-    desc: "No numbers, benchmarks, or time-saved data anywhere.",
-    bad: "❌ Significantly faster processing",
-    good: "✅ 3x faster — from 40 minutes to 12"
-  },
-  {
-    name: "Weak or missing CTA",
-    desc: "No ownership language — reader doesn't feel the action belongs to them.",
-    bad: "❌ Learn more / Explore what's new",
-    good: "✅ Fix my reporting → / See what changed in my account →"
-  },
-  {
-    name: "Buried contrast",
-    desc: "Before/after comparison hidden in fine print, not in the body.",
-    bad: "❌ italic footnote: Previously required custom scripts",
-    good: "✅ inline: Setup that used to take 3 days now takes one click."
-  }
+  { name: "Filing label subject", desc: "Subject announces the product, not the reader's problem.", bad: "New dashboard features available", good: "Your reporting is 3 clicks slower than it should be" },
+  { name: "Caveat opener", desc: "Email opens with disclaimer before delivering value.", bad: "This update is rolling out gradually over 2 weeks...", good: "This week, your team can do something it could not do last week." },
+  { name: "Feature-first language", desc: "Describes what was built, not what the reader can now do.", bad: "We added AI-powered inline execution", good: "Your team no longer waits 40 minutes for results" },
+  { name: "Flat visual hierarchy", desc: "Major releases and minor fixes at the same visual weight.", bad: "All updates in the same font size and style", good: "Major features as headlines, minor as supporting text" },
+  { name: "Zero quantified claims", desc: "No numbers, benchmarks, or time-saved data anywhere.", bad: "Significantly faster processing", good: "3x faster — from 40 minutes to 12" },
+  { name: "Weak or missing CTA", desc: "No ownership language — reader does not feel the action belongs to them.", bad: "Learn more / Explore what's new", good: "Fix my reporting / See what changed in my account" },
+  { name: "Buried contrast", desc: "Before/after comparison hidden in fine print, not in the body.", bad: "Previously required custom scripts", good: "Setup that used to take 3 days now takes one click." }
 ];
 
 const state = {
-  emails: Array.from({length: 5}, () => ({
-    subject: '',
-    bugs: Array(7).fill(false)
-  }))
+  emails: Array.from({length: 5}, function() { return { subject: '', bugs: [false,false,false,false,false,false,false] }; })
 };
 
 function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
 }
 
 function getScore(ei) {
-  return 10 - state.emails[ei].bugs.filter(Boolean).length;
+  var count = 0;
+  for (var i = 0; i < 7; i++) { if (state.emails[ei].bugs[i]) count++; }
+  return 10 - count;
 }
 
 function getScoreClass(score) {
@@ -477,107 +441,92 @@ function getCardClass(score) {
 }
 
 function renderCards() {
-  const container = document.getElementById('emailCards');
-  container.innerHTML = state.emails.map((email, ei) => {
-    const score = getScore(ei);
-    const hasSubject = email.subject.trim().length > 0;
-    const scoreDisplay = hasSubject ? score + '/10' : '—/10';
-    const scoreClass = hasSubject ? getScoreClass(score) : 'score-empty';
-    const cardClass = hasSubject ? getCardClass(score) : '';
+  var container = document.getElementById('emailCards');
+  var html = '';
+  for (var ei = 0; ei < 5; ei++) {
+    var email = state.emails[ei];
+    var score = getScore(ei);
+    var hasSubject = email.subject.trim().length > 0;
+    var scoreDisplay = hasSubject ? (score + '/10') : '—/10';
+    var scoreClass = hasSubject ? getScoreClass(score) : 'score-empty';
+    var cardClass = hasSubject ? getCardClass(score) : '';
 
-    return `
-      <div class="email-card ${cardClass}" id="card-${ei}">
-        <div class="email-card-header" id="header-${ei}">
-          <span class="email-num">0${ei+1}</span>
-          <input
-            type="text"
-            class="email-subject-input"
-            placeholder="Paste subject line here..."
-            id="input-${ei}"
-            value="${esc(email.subject)}"
-          >
-          <button
-            onclick="scoreSubject(${ei})"
-            style="font-family:DM Mono,monospace;font-size:10px;letter-spacing:0.06em;background:var(--signal);color:var(--white);border:none;padding:8px 14px;cursor:pointer;flex-shrink:0;white-space:nowrap;"
-          >SCORE →</button>
-          <span class="email-score-badge ${scoreClass}" id="score-${ei}">${scoreDisplay}</span>
-          <span class="email-toggle" id="toggle-${ei}" onclick="toggleCard(${ei})" style="cursor:pointer;padding:0 4px;">▼</span>
-        </div>
-        <div class="email-card-body" id="body-${ei}">
-          <div class="bugs-grid">
-            ${BUGS.map((bug, bi) => `
-              <div class="bug-row ${email.bugs[bi] ? 'checked' : ''}" id="bug-${ei}-${bi}" onclick="toggleBug(${ei}, ${bi})">
-                <div class="bug-checkbox">
-                  <div class="bug-checkbox-inner"></div>
-                </div>
-                <div class="bug-content">
-                  <div class="bug-name">Bug ${bi+1} — ${esc(bug.name)}</div>
-                  <div class="bug-desc">${esc(bug.desc)}</div>
-                  <span class="example-toggle" onclick="event.stopPropagation(); toggleExample(${ei}, ${bi})">See example ↓</span>
-                  <div class="bug-example" id="example-${ei}-${bi}">
-                    <div class="example-bad">${esc(bug.bad)}</div>
-                    <div class="example-good" style="margin-top:4px;">${esc(bug.good)}</div>
-                  </div>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
+    var bugsHtml = '';
+    for (var bi = 0; bi < 7; bi++) {
+      var bug = BUGS[bi];
+      var checked = email.bugs[bi] ? 'checked' : '';
+      bugsHtml += '<div class="bug-row ' + checked + '" id="bug-' + ei + '-' + bi + '" onclick="toggleBug(' + ei + ',' + bi + ')">';
+      bugsHtml += '<div class="bug-checkbox"><div class="bug-checkbox-inner"></div></div>';
+      bugsHtml += '<div class="bug-content">';
+      bugsHtml += '<div class="bug-name">Bug ' + (bi+1) + ' — ' + esc(bug.name) + '</div>';
+      bugsHtml += '<div class="bug-desc">' + esc(bug.desc) + '</div>';
+      bugsHtml += '<span class="example-toggle" onclick="event.stopPropagation();toggleExample(' + ei + ',' + bi + ')">See example ↓</span>';
+      bugsHtml += '<div class="bug-example" id="example-' + ei + '-' + bi + '">';
+      bugsHtml += '<div class="example-bad">❌ ' + esc(bug.bad) + '</div>';
+      bugsHtml += '<div class="example-good" style="margin-top:4px">✅ ' + esc(bug.good) + '</div>';
+      bugsHtml += '</div></div></div>';
+    }
 
+    html += '<div class="email-card ' + cardClass + '" id="card-' + ei + '">';
+    html += '<div class="email-card-header" id="header-' + ei + '">';
+    html += '<span class="email-num">0' + (ei+1) + '</span>';
+    html += '<input type="text" class="email-subject-input" placeholder="Paste subject line here..." id="input-' + ei + '" value="' + esc(email.subject) + '">';
+    html += '<button onclick="scoreSubject(' + ei + ')" style="font-family:monospace;font-size:10px;letter-spacing:0.06em;background:#4A8FE7;color:#fff;border:none;padding:8px 14px;cursor:pointer;flex-shrink:0">SCORE</button>';
+    html += '<span class="email-score-badge ' + scoreClass + '" id="score-' + ei + '">' + scoreDisplay + '</span>';
+    html += '<span class="email-toggle" id="toggle-' + ei + '" onclick="toggleCard(' + ei + ')" style="cursor:pointer;padding:0 4px">▼</span>';
+    html += '</div>';
+    html += '<div class="email-card-body" id="body-' + ei + '">';
+    html += '<div class="bugs-grid">' + bugsHtml + '</div>';
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
   updateSummary();
 }
 
 function scoreSubject(ei) {
-  const input = document.getElementById('input-' + ei);
-  if (!input) return;
-  const val = input.value.trim();
-  if (!val) return;
+  var input = document.getElementById('input-' + ei);
+  if (!input) { alert('input not found'); return; }
+  var val = input.value.trim();
+  if (!val) { alert('empty'); return; }
   state.emails[ei].subject = val;
   updateCardScore(ei);
   updateSummary();
-  // Auto-open card so user can check bugs
-  const body = document.getElementById('body-' + ei);
-  if (body && !body.classList.contains('open')) {
-    toggleCard(ei);
-  }
+  var body = document.getElementById('body-' + ei);
+  if (body && !body.classList.contains('open')) { toggleCard(ei); }
 }
 
 function toggleCard(ei) {
-  const body = document.getElementById('body-' + ei);
-  const toggle = document.getElementById('toggle-' + ei);
-  const header = document.getElementById('header-' + ei);
+  var body = document.getElementById('body-' + ei);
+  var toggle = document.getElementById('toggle-' + ei);
+  var header = document.getElementById('header-' + ei);
   if (!body) return;
   body.classList.toggle('open');
-  toggle.classList.toggle('open');
-  header.classList.toggle('open');
+  if (toggle) toggle.classList.toggle('open');
+  if (header) header.classList.toggle('open');
 }
 
 function toggleBug(ei, bi) {
   state.emails[ei].bugs[bi] = !state.emails[ei].bugs[bi];
-  const bugRow = document.getElementById('bug-' + ei + '-' + bi);
-  bugRow.classList.toggle('checked');
+  var bugRow = document.getElementById('bug-' + ei + '-' + bi);
+  if (bugRow) bugRow.classList.toggle('checked');
   updateCardScore(ei);
   updateSummary();
 }
 
 function toggleExample(ei, bi) {
-  const ex = document.getElementById('example-' + ei + '-' + bi);
-  const bugRow = document.getElementById('bug-' + ei + '-' + bi);
-  bugRow.classList.toggle('show-example');
-  ex.style.display = ex.style.display === 'block' ? 'none' : 'block';
+  var ex = document.getElementById('example-' + ei + '-' + bi);
+  var bugRow = document.getElementById('bug-' + ei + '-' + bi);
+  if (bugRow) bugRow.classList.toggle('show-example');
+  if (ex) ex.style.display = ex.style.display === 'block' ? 'none' : 'block';
 }
 
 function updateCardScore(ei) {
-  const email = state.emails[ei];
-  const score = getScore(ei);
-  const hasSubject = email.subject.trim().length > 0;
-  const scoreEl = document.getElementById('score-' + ei);
-  const cardEl = document.getElementById('card-' + ei);
+  var email = state.emails[ei];
+  var score = getScore(ei);
+  var hasSubject = email.subject.trim().length > 0;
+  var scoreEl = document.getElementById('score-' + ei);
+  var cardEl = document.getElementById('card-' + ei);
   if (!scoreEl) return;
-
   if (hasSubject) {
     scoreEl.textContent = score + '/10';
     scoreEl.className = 'email-score-badge ' + getScoreClass(score);
@@ -590,46 +539,43 @@ function updateCardScore(ei) {
 }
 
 function updateSummary() {
-  const grid = document.getElementById('summaryGrid');
-  const avgEl = document.getElementById('summaryAvg');
-
-  const filled = state.emails.filter(e => e.subject.trim().length > 0);
-
+  var grid = document.getElementById('summaryGrid');
+  var avgEl = document.getElementById('summaryAvg');
+  var filled = state.emails.filter(function(e) { return e.subject.trim().length > 0; });
   if (filled.length === 0) {
-    grid.innerHTML = '<div style="padding:24px;font-family:DM Mono,monospace;font-size:12px;color:var(--mid);grid-column:1/-1;">Add email subject lines above to see your scores here.</div>';
+    grid.innerHTML = '<div style="padding:24px;font-family:monospace;font-size:12px;color:var(--mid);grid-column:1/-1">Add email subject lines above to see your scores here.</div>';
     avgEl.textContent = 'Avg: —';
     return;
   }
-
-  const scores = state.emails.map((e, i) => ({
-    subject: e.subject || 'Email ' + (i+1),
-    score: getScore(i),
-    bugs: e.bugs.filter(Boolean).length,
-    filled: e.subject.trim().length > 0
-  }));
-
-  const filledScores = scores.filter(s => s.filled);
-  const avg = (filledScores.reduce((a, b) => a + b.score, 0) / filledScores.length).toFixed(1);
+  var total = 0;
+  var html = '';
+  for (var i = 0; i < 5; i++) {
+    var e = state.emails[i];
+    var s = getScore(i);
+    var f = e.subject.trim().length > 0;
+    var bugs = 0;
+    for (var b = 0; b < 7; b++) { if (e.bugs[b]) bugs++; }
+    if (f) total += s;
+    html += '<div class="summary-cell">';
+    html += '<div class="summary-email-name">' + (f ? esc(e.subject.slice(0,30) + (e.subject.length > 30 ? '...' : '')) : '<span style="color:var(--border)">—</span>') + '</div>';
+    html += '<div class="summary-score-big ' + (f ? getScoreClass(s) : 'score-empty') + '">' + (f ? s : '—') + '</div>';
+    html += '<div class="summary-bugs-count">' + (f ? bugs + ' bug' + (bugs !== 1 ? 's' : '') : '') + '</div>';
+    html += '</div>';
+  }
+  var avg = (total / filled.length).toFixed(1);
   avgEl.textContent = 'Avg: ' + avg + '/10';
-
-  grid.innerHTML = scores.map(s => `
-    <div class="summary-cell">
-      <div class="summary-email-name">${s.filled ? esc(s.subject.slice(0, 30) + (s.subject.length > 30 ? '...' : '')) : '<span style="color:var(--border)">—</span>'}</div>
-      <div class="summary-score-big ${s.filled ? getScoreClass(s.score) : 'score-empty'}">${s.filled ? s.score : '—'}</div>
-      <div class="summary-bugs-count">${s.filled ? s.bugs + ' bug' + (s.bugs !== 1 ? 's' : '') : ''}</div>
-    </div>
-  `).join('');
+  grid.innerHTML = html;
 }
 
 function copyLink() {
-  const url = window.location.href;
-  navigator.clipboard.writeText(url).then(() => {
-    const confirm = document.getElementById('copyConfirm');
+  navigator.clipboard.writeText(window.location.href).then(function() {
+    var confirm = document.getElementById('copyConfirm');
     confirm.style.display = 'block';
-    setTimeout(() => confirm.style.display = 'none', 3000);
+    setTimeout(function() { confirm.style.display = 'none'; }, 3000);
   });
 }
 
-// Init
 renderCards();
 </script>
+</body>
+</html>
