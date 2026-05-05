@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Figma Welcome Email Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.subject-line{font-size:16px;font-weight:500;color:var(--text-primary);margin-top:4px;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#1a1a1a;padding:14px 22px;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:17px;font-weight:700;color:#fff;}
+.bef-body{padding:24px 22px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-hero{width:100%;height:150px;background:linear-gradient(135deg,#a855f7 0%,#ec4899 50%,#f59e0b 100%);border-radius:8px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(255,255,255,0.7);font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.bef-h1{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;color:#111;text-align:center;margin-bottom:14px;}
+.bef-copy{font-size:13px;color:#555;line-height:1.7;margin-bottom:10px;}
+.bef-cta{display:block;background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:6px;font-size:14px;font-weight:500;margin:18px auto;text-align:center;max-width:180px;text-decoration:none;}
+.bef-section-title{font-size:17px;font-weight:600;color:#111;margin:20px 0 14px;}
+.bef-tool-item{display:flex;gap:14px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid #eee;}
+.bef-tool-icon{width:46px;height:46px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.icon-blue{background:#3b82f6;}.icon-purple{background:#a855f7;}
+.icon-gradient{background:linear-gradient(135deg,#667eea,#764ba2);}.icon-amber{background:#f59e0b;}
+.bef-tool-name{font-size:14px;font-weight:600;color:#111;margin-bottom:3px;}
+.bef-tool-desc{font-size:12px;color:#555;line-height:1.5;margin-bottom:7px;}
+.bef-tool-link{font-size:12px;color:#0066cc;text-decoration:underline;}
+.bef-divider{border:none;border-top:1px solid #eee;margin:16px 0;}
+.bef-tagline{font-size:11px;color:#bbb;text-align:center;margin-bottom:10px;}
+.bef-footer-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:6px;}
+.bef-footer-link{font-size:11px;color:#999;}
+.bef-addr{font-size:10px;color:#ccc;text-align:center;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline-sm{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;width:100%;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-step{padding:22px 28px;border-bottom:1px solid var(--border-light);background:var(--bg-secondary);}
+.step-badge{display:inline-block;background:#0a0a0a;color:var(--green-pale);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:12px;}
+.step-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.step-desc{font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:14px;}
+.step-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.step-pill{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border-mid);color:var(--text-secondary);}
+.after-secondary{padding:20px 28px;border-bottom:1px solid var(--border-light);}
+.secondary-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:10px;}
+.secondary-links{display:flex;gap:8px;flex-wrap:wrap;}
+.secondary-link{font-size:12px;color:var(--text-secondary);padding:5px 12px;border:1px solid var(--border-light);border-radius:20px;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border-light);padding-bottom:1px;cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:repeat(3,1fr);}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Figma — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Figma &lt;announcements@figma.com&gt;</div>
+        <div class="meta-row"><span>To:</span> New user</div>
+        <div class="subject-line">Your next steps inside →</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Figma</div>
+      </div>
+
+      <div class="bef-body">
+        <img src="https://static.figma.com/uploads/36655a4001150dd5c58a1c6df341691514e61a7f" width="100%" style="width:100%;border-radius:8px;margin-bottom:20px;display:block;" alt="Figma product screenshot"/>
+        <div class="bef-h1">Welcome to Figma</div>
+        <div class="bef-copy">Figma is the home for your entire design process. From early explorations to polished prototypes, Figma helps you go from idea to finished product, faster.</div>
+        <div class="bef-copy">If you're new here, here are some helpful resources to get you started.</div>
+        <a href="#" class="bef-cta">Start creating</a>
+        <div class="bef-section-title">Start strong with these tools</div>
+        <div class="bef-tool-item">
+          <div class="bef-tool-icon icon-blue">⊞</div>
+          <div>
+            <div class="bef-tool-name">Get inspired by templates</div>
+            <div class="bef-tool-desc">Discover thousands of templates made by designers like you — everything from UI kits and wireframes to presentations and design systems.</div>
+            <a href="https://www.figma.com/community?utm_campaign=Onboarding+-+FD+New+User&utm_content=Day+00+-+Designer+Welcome&utm_medium=email&utm_source=figma" class="bef-tool-link">Explore the Community →</a>
+          </div>
+        </div>
+        <div class="bef-tool-item">
+          <div class="bef-tool-icon icon-purple">⊡</div>
+          <div>
+            <div class="bef-tool-name">Figma Design for Beginners</div>
+            <div class="bef-tool-desc">This beginner-friendly course teaches you the basics, from how to navigate the interface to creating components.</div>
+            <a href="https://e.customeriomail.com/e/c/eyJlbWFpbF9pZCI6ImRnVDZ1UWtBQU9QT2dTeml6b0VzQVozM29MUW9VcXY3Ui1Lc0o3U0YyQT09IiwiaHJlZiI6Imh0dHBzOi8vaGVscC5maWdtYS5jb20vaGMvZW4tdXMvc2VjdGlvbnMvMzA4ODA2MzI1NDI3NDM_dXRtX2NhbXBhaWduPU9uYm9hcmRpbmcrLStGRCtOZXcrVXNlclx1MDAyNnV0bV9jb250ZW50PURheSswMCstK0Rlc2lnbmVyK1dlbGNvbWVcdTAwMjZ1dG1fbWVkaXVtPWVtYWlsXHUwMDI2dXRtX3NvdXJjZT1maWdtYSIsImludGVybmFsIjoiZmFiOTA5ODQxOGEyYTUwMWUzY2U4MTJjIiwibGlua19pZCI6MTcxMzZ9/ae3eab1b69eff9bd2b59fe12a93e45bb92396066c1e0940fbad674a15c0ee135" class="bef-tool-link">Start learning →</a>
+          </div>
+        </div>
+        <div class="bef-tool-item">
+          <div class="bef-tool-icon icon-gradient">✦</div>
+          <div>
+            <div class="bef-tool-name">Create with Figma Make</div>
+            <div class="bef-tool-desc">Figma Make generates functional prototypes from your prompts. It's the fastest way to see your ideas take shape.</div>
+            <a href="https://e.customeriomail.com/e/c/eyJlbWFpbF9pZCI6ImRnVDZ1UWtBQU9QT2dTeml6b0VzQVozM29MUW9VcXY3Ui1Lc0o3U0YyQT09IiwiaHJlZiI6Imh0dHBzOi8vd3d3LmZpZ21hLmNvbS9tYWtlL25ldz91dG1fY2FtcGFpZ249T25ib2FyZGluZystK0ZEK05ldytVc2VyXHUwMDI2dXRtX2NvbnRlbnQ9RGF5KzAwKy0rRGVzaWduZXIrV2VsY29tZVx1MDAyNnV0bV9tZWRpdW09ZW1haWxcdTAwMjZ1dG1fc291cmNlPWZpZ21hIiwiaW50ZXJuYWwiOiJmYWI5MDk4NDE4YTJhNTAxZTNjZTgxMmMiLCJsaW5rX2lkIjoxNDA0MX0/aa237bd2d118fe11db580b679a807eb6e49530e7e3928b9c4f46b46beb220c8a" class="bef-tool-link">Start creating →</a>
+          </div>
+        </div>
+        <div class="bef-tool-item" style="border-bottom:none;margin-bottom:0;padding-bottom:0;">
+          <div class="bef-tool-icon icon-amber">?</div>
+          <div>
+            <div class="bef-tool-name">Get answers anytime</div>
+            <div class="bef-tool-desc">When you run into questions, the Help Center offers clear answers that keep you moving forward.</div>
+            <a href="https://e.customeriomail.com/e/c/eyJlbWFpbF9pZCI6ImRnVDZ1UWtBQU9QT2dTeml6b0VzQVozM29MUW9VcXY3Ui1Lc0o3U0YyQT09IiwiaHJlZiI6Imh0dHBzOi8vaGVscC5maWdtYS5jb20vaGMvZW4tdXM_dXRtX2NhbXBhaWduPU9uYm9hcmRpbmcrLStGRCtOZXcrVXNlclx1MDAyNnV0bV9jb250ZW50PURheSswMCstK0Rlc2lnbmVyK1dlbGNvbWVcdTAwMjZ1dG1fbWVkaXVtPWVtYWlsXHUwMDI2dXRtX3NvdXJjZT1maWdtYSIsImludGVybmFsIjoiZmFiOTA5ODQxOGEyYTUwMWUzY2U4MTJjIiwibGlua19pZCI6MTcxMzd9/bf443dbe3c478723a03cb6a3efa301e01146b21545ed1f892e60949699be1b67" class="bef-tool-link">Visit the Help Center →</a>
+          </div>
+        </div>
+        <hr class="bef-divider"/>
+        <div class="bef-tagline">Figma is a design platform for teams who build products together.</div>
+        <div class="bef-footer-links">
+          <span class="bef-footer-link">About Us</span>
+          <span class="bef-footer-link">Help Center</span>
+          <span class="bef-footer-link">Privacy Policy</span>
+          <span class="bef-footer-link">Unsubscribe</span>
+        </div>
+        <div class="bef-addr">760 Market Street, Floor 10 · San Francisco, CA 94102</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Hook describes Figma to someone who already chose Figma — they signed up, they know what it is. The first sentence needs to address their real situation: they don't know where to start.</div>
+        <div class="issue-item"><span>⚠</span> Four options at equal visual weight — Community, course, Figma Make, Help Center — no priority signal. Equal weight creates paralysis, not action.</div>
+        <div class="issue-item"><span>⚠</span> Four competing CTAs — "Explore", "Start learning", "Start creating", "Visit" — none state what happens after the click. Suggestion language, zero consequence.</div>
+        <div class="issue-item"><span>⚠</span> No quantified claims — "beginner-friendly", "powerful", "fastest way" are adjectives. New users need time estimates and concrete anchors to reduce activation friction.</div>
+        <div class="issue-item"><span>⚠</span> No consequence for inaction — the email never names what the user misses by not clicking. No before/after framing, no urgency.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Figma &lt;welcome@figma.com&gt;</div>
+        <div class="meta-row"><span>To:</span> New user</div>
+        <div class="subject-line">You just signed up. Here's what to do in the next 10 minutes.</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Figma</div>
+          <div class="after-tagline-sm">Welcome · Day 0</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">All Plans · Free to start</div>
+      </div>
+
+      <div class="after-hero">
+        <div class="after-kicker">Day 0 · One action · 60 seconds · No setup required</div>
+        <div class="after-h1">Most people open Figma<br>and don't know <em>where to start.</em></div>
+        <div class="after-lead">This email fixes that. One action. You'll know immediately whether Figma works for what you're building — and you won't need to read a course to figure it out.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">60s</div>
+            <div class="stat-label">to open your first file</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">setup required</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Free</div>
+            <div class="stat-label">all plans included</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://www.figma.com/new" class="after-cta-primary">Open my first file now →</a>
+          <span class="after-cta-ghost">See what's possible</span>
+        </div>
+      </div>
+
+      <div class="after-step">
+        <div class="step-badge">THE ONLY STEP</div>
+        <div class="step-title">Pick a template. Change one thing. That's the onboarding.</div>
+        <div class="step-desc">Thousands of templates are ready the moment you open Figma. Pick any one. Move a button. Change a colour. In 60 seconds you'll understand the tool better than any tutorial can explain.</div>
+        <div class="step-pills">
+          <span class="step-pill">No tutorial needed</span>
+          <span class="step-pill">Any template works</span>
+          <span class="step-pill">Undo is always there</span>
+        </div>
+      </div>
+
+      <div class="after-secondary">
+        <div class="secondary-label">When you're ready — not today</div>
+        <div class="secondary-links">
+          <span class="secondary-link">Figma Design for Beginners</span>
+          <span class="secondary-link">Figma Make</span>
+          <span class="secondary-link">Help Center</span>
+          <span class="secondary-link">Community</span>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">About Us</span>
+          <span class="footer-link">Help Center</span>
+          <span class="footer-link">Privacy Policy</span>
+          <span class="footer-link">Unsubscribe</span>
+        </div>
+        <div class="footer-note">© 2026 Figma</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> Your next steps inside →<br><br>Good subject — but wasted on a hook that describes Figma to someone who just signed up for it. The opening sentence needs to address the reader's actual situation.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> You just signed up. Here's what to do in the next 10 minutes.<br><br>Addresses the real anxiety of a new user: they don't know where to start. Promises a time-bounded resolution before they even open.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 5 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Hook: name the problem before pitching the solution</div>
+          <div class="upgrade-desc">"Most people open Figma and don't know where to start." — this is the actual situation for a new user. Acknowledging it earns trust. Solving it earns the click. The original hook describes Figma to someone who already chose Figma.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Structure: one primary action, everything else secondary</div>
+          <div class="upgrade-desc">Four equal options create paralysis. The rebuild gives one instruction: open a file, pick a template, change one thing. All other resources move below the fold — available but not competing for attention.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · CTA: ownership language over invitation</div>
+          <div class="upgrade-desc">"Open my first file now →" is a commitment the reader makes. "Start creating" is an offer from the brand. One creates forward momentum and a sense of possession. The other creates hesitation before the click.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Stat cards replace vague adjectives</div>
+          <div class="upgrade-desc">60s / 0 setup / Free gives the eye three concrete anchors before reading a word. "Beginner-friendly" and "powerful" are claims. "60 seconds, no setup" are facts. New users need facts to reduce activation friction.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Consequence framing — what inaction costs</div>
+          <div class="upgrade-desc">The original never names what the user misses by not clicking. The rebuild frames it: "you'll know immediately whether Figma works for what you're building." The cost of waiting is personal, not abstract.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Every word earns its place. The reader outcome leads the feature spec. The CTA uses ownership language. The proof is specific, not vague. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original email'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">
+    ← Back to all teardowns
+  </a>
+</div>
+</body>
+</html>
