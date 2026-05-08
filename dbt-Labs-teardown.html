@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dbt Labs — Strategic Flow Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dbt-orange:#FF694A;
+    --dbt-black:#0F1117;
+    --dbt-white:#FFFFFF;
+    --dbt-gray-50:#F9FAFB;
+    --dbt-gray-100:#F3F4F6;
+    --dbt-gray-200:#E5E7EB;
+    --dbt-gray-300:#D1D5DB;
+    --dbt-gray-500:#6B7280;
+    --dbt-gray-700:#374151;
+    --dbt-gray-900:#111827;
+    --dbt-text:#111827;
+    --dbt-muted:#6B7280;
+    --dbt-border:#E5E7EB;
+    --bug:#DC2626;
+    --bug-bg:#FEF2F2;
+    --bug-br:#FECACA;
+    --fix:#059669;
+    --fix-bg:#F0FDF4;
+    --fix-br:#6EE7B7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',-apple-system,sans-serif;background:var(--dbt-white);color:var(--dbt-text);font-size:16px;line-height:1.75;}
+
+  /* ── TEARDOWN BANNER ── */
+  .teardown-bar{
+    background:var(--dbt-black);
+    border-bottom:2px solid var(--dbt-orange);
+    position:sticky;top:0;z-index:200;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 32px;height:48px;
+    font-size:13px;
+  }
+  .tb-left{display:flex;align-items:center;gap:12px;}
+  .sf-badge{background:var(--dbt-orange);color:#fff;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:4px;}
+  .tb-title{color:rgba(255,255,255,.55);font-size:12px;}
+  .tb-title strong{color:#fff;}
+  .tb-scores{display:flex;align-items:center;gap:10px;}
+  .sc{padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.03em;}
+  .sc.bad{background:#DC2626;color:#fff;border:1px solid #DC2626;}
+  .sc.good{background:#059669;color:#fff;border:1px solid #059669;}
+  .sc.warn{background:#B45309;color:#fff;border:1px solid #B45309;}
+
+  /* ── TAB ROW (inside banner) ── */
+  .tab-row{display:flex;align-items:flex-end;gap:2px;margin-left:24px;}
+  .tab-btn{
+    padding:10px 22px 10px;
+    border:none;background:transparent;
+    font-family:inherit;font-size:13px;font-weight:600;
+    color:rgba(255,255,255,.45);
+    cursor:pointer;border-radius:6px 6px 0 0;
+    position:relative;transition:all .15s;
+    letter-spacing:.01em;
+  }
+  .tab-btn:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.05);}
+  .tab-btn.active{
+    background:var(--dbt-white);
+    color:var(--dbt-text);
+  }
+  .tab-btn.active.before-tab{color:var(--bug);}
+  .tab-btn.active.after-tab{color:var(--fix);}
+  .tab-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .before-dot{background:var(--bug);}
+  .after-dot{background:var(--fix);}
+
+  /* ── dbt NAV ── */
+  .dbt-nav{
+    height:56px;border-bottom:1px solid var(--dbt-border);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 32px;background:var(--dbt-white);
+  }
+  .dbt-logo{font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--dbt-black);}
+  .dbt-logo span{color:var(--dbt-orange);}
+  .nav-links{display:flex;gap:24px;font-size:14px;color:var(--dbt-gray-700);font-weight:500;}
+  .nav-right{display:flex;gap:10px;align-items:center;}
+  .btn{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;}
+  .btn-ghost{background:transparent;border:1px solid var(--dbt-border);color:var(--dbt-text);}
+  .btn-primary{background:var(--dbt-orange);color:#fff;}
+
+  /* ── PAGE LAYOUT ── */
+  .page{max-width:1200px;margin:0 auto;padding:48px 32px 80px;display:grid;grid-template-columns:1fr 268px;gap:56px;}
+
+  /* ── ARTICLE ── */
+  .article{}
+
+  /* breadcrumb */
+  .breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--dbt-muted);margin-bottom:20px;}
+  .breadcrumb a{color:var(--dbt-muted);text-decoration:none;}
+  .breadcrumb a:hover{color:var(--dbt-orange);}
+  .bc-sep{color:var(--dbt-gray-300);}
+
+  /* title */
+  .article-title{font-size:36px;font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--dbt-gray-900);margin-bottom:16px;}
+
+  /* meta */
+  .article-meta{display:flex;align-items:center;gap:10px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--dbt-border);font-size:14px;color:var(--dbt-muted);}
+  .meta-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;background:var(--dbt-gray-200);flex-shrink:0;}
+  .meta-avatar img{width:100%;height:100%;object-fit:cover;}
+  .meta-authors{color:var(--dbt-gray-900);font-weight:500;}
+
+  /* hero */
+  .hero{width:100%;aspect-ratio:16/7;border-radius:8px;overflow:hidden;background:var(--dbt-gray-100);margin-bottom:32px;}
+  .hero img{width:100%;height:100%;object-fit:cover;}
+
+  /* body text */
+  .article-body{font-size:16px;line-height:1.8;color:var(--dbt-gray-700);}
+  .article-body p{margin-bottom:20px;}
+  .article-body h2{font-size:24px;font-weight:700;color:var(--dbt-gray-900);margin:44px 0 14px;letter-spacing:-.01em;}
+  .article-body h3{font-size:20px;font-weight:600;color:var(--dbt-gray-900);margin:32px 0 10px;}
+  .article-body ul{margin-bottom:20px;padding-left:22px;}
+  .article-body ul li{margin-bottom:10px;}
+  .article-body a{color:var(--dbt-orange);text-decoration:none;}
+  .article-body a:hover{text-decoration:underline;}
+  .article-body strong{color:var(--dbt-gray-900);font-weight:600;}
+  .article-body code{background:var(--dbt-gray-100);border:1px solid var(--dbt-gray-200);border-radius:4px;padding:1px 6px;font-size:14px;font-family:'JetBrains Mono','Fira Code',monospace;color:var(--dbt-orange);}
+  .article-body em{font-style:italic;}
+
+  /* quote */
+  .dbt-quote{border-left:4px solid var(--dbt-orange);padding:14px 20px;background:var(--dbt-gray-50);border-radius:0 6px 6px 0;margin:24px 0;font-style:italic;font-size:15px;color:var(--dbt-gray-700);line-height:1.65;}
+  .dbt-quote cite{display:block;font-style:normal;font-size:13px;color:var(--dbt-muted);margin-top:8px;}
+
+  /* cta block */
+  .cta-block{background:var(--dbt-gray-50);border:1px solid var(--dbt-border);border-radius:10px;padding:28px 32px;margin:36px 0;}
+  .cta-block h3{font-size:18px;font-weight:700;color:var(--dbt-gray-900);margin-bottom:8px;}
+  .cta-block p{font-size:15px;color:var(--dbt-muted);margin-bottom:16px;}
+
+  /* divider */
+  .divider{border:none;border-top:1px solid var(--dbt-border);margin:36px 0;}
+
+  /* sf footer */
+  .sf-footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--dbt-border);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--dbt-muted);}
+  .sf-footer a{color:var(--dbt-orange);text-decoration:none;font-weight:500;}
+
+  /* ── BEFORE SPECIFIC ── */
+  /* bug highlight on text */
+  .bug-text{
+    background:rgba(220,38,38,.07);
+    text-decoration:underline;
+    text-decoration-color:var(--bug);
+    text-decoration-thickness:2px;
+    text-underline-offset:3px;
+    border-radius:2px;
+    padding:0 2px;
+  }
+  .bug-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:17px;height:17px;border-radius:50%;
+    background:var(--bug);color:#fff;
+    font-size:10px;font-weight:700;
+    vertical-align:super;position:relative;top:-3px;margin-left:3px;
+    cursor:default;
+  }
+  /* para-level bug border */
+  .para-bug{
+    border-left:3px solid var(--bug);
+    padding-left:16px;margin-left:-19px;
+    background:rgba(220,38,38,.03);
+    border-radius:0 4px 4px 0;
+    margin-bottom:20px;
+  }
+  .para-bug p{margin-bottom:0;}
+  .inline-bug{
+    display:inline-flex;align-items:center;gap:4px;
+    background:var(--bug-bg);border:1px solid var(--bug-br);border-radius:4px;
+    padding:1px 8px;font-size:11px;color:var(--bug);font-weight:600;
+    margin-left:6px;white-space:nowrap;vertical-align:middle;
+  }
+
+  /* ── AFTER SPECIFIC ── */
+  /* rebuilt title */
+  .rebuilt-title-block{
+    background:var(--fix-bg);border:1px solid var(--fix-br);border-left:4px solid var(--fix);
+    border-radius:6px;padding:16px 20px;margin-bottom:16px;
+  }
+  .rebuilt-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--fix);margin-bottom:6px;}
+  .rebuilt-title-text{font-size:36px;font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--dbt-gray-900);}
+
+  /* rebuilt paragraph */
+  .rebuilt-para{
+    border-left:3px solid var(--fix);
+    padding-left:16px;margin-left:-19px;
+    background:rgba(5,150,105,.03);
+    border-radius:0 4px 4px 0;
+    margin-bottom:20px;
+  }
+  .rebuilt-para p{margin-bottom:0;}
+  .inline-fix{
+    display:inline-flex;align-items:center;gap:4px;
+    background:var(--fix-bg);border:1px solid var(--fix-br);border-radius:4px;
+    padding:1px 8px;font-size:11px;color:var(--fix);font-weight:600;
+    margin-left:6px;white-space:nowrap;vertical-align:middle;
+  }
+
+  /* stat cards */
+  .stat-cards{display:flex;gap:12px;margin:20px 0;}
+  .stat-card{
+    background:var(--dbt-gray-900);color:#fff;
+    border-radius:8px;padding:16px 20px;flex:1;text-align:center;
+  }
+  .stat-num{font-size:28px;font-weight:700;color:var(--fix);line-height:1;}
+  .stat-label{font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;text-transform:uppercase;letter-spacing:.05em;}
+
+  /* rebuilt cta */
+  .rebuilt-cta-btn{
+    display:inline-block;background:var(--fix);color:#fff;
+    padding:11px 22px;border-radius:6px;font-size:15px;font-weight:600;
+    cursor:default;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:sticky;top:calc(48px + 56px + 24px);height:fit-content;max-height:calc(100vh - 160px);overflow-y:auto;}
+
+  .score-box{background:var(--dbt-gray-50);border:1px solid var(--dbt-border);border-radius:8px;padding:16px;margin-bottom:20px;}
+  .score-box-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--dbt-muted);margin-bottom:12px;}
+  .score-line{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px;border-bottom:1px solid var(--dbt-border);}
+  .score-line:last-child{border:none;}
+  .score-k{color:var(--dbt-muted);}
+  .score-v{font-weight:700;}
+  .score-v.r{color:var(--bug);}
+  .score-v.g{color:var(--fix);}
+  .score-v.a{color:#d97706;}
+  .sbar{height:4px;background:var(--dbt-gray-200);border-radius:2px;margin-top:5px;overflow:hidden;}
+  .sfill{height:100%;border-radius:2px;}
+
+  .ann-header{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--dbt-muted);padding-bottom:8px;border-bottom:1px solid var(--dbt-border);margin-bottom:10px;}
+  .ann-card{border-radius:6px;padding:11px 13px;margin-bottom:9px;border:1px solid;font-size:12px;line-height:1.5;}
+  .ann-card.bug{background:var(--bug-bg);border-color:var(--bug-br);}
+  .ann-card.fix{background:var(--fix-bg);border-color:var(--fix-br);}
+  .ann-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:5px;margin-bottom:3px;}
+  .ann-l.bug{color:var(--bug);}
+  .ann-l.fix{color:var(--fix);}
+  .ann-circle{width:15px;height:15px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+  .ann-circle.bug{background:var(--bug);color:#fff;}
+  .ann-circle.fix{background:var(--fix);color:#fff;}
+  .ann-title{font-weight:600;color:var(--dbt-gray-900);margin-bottom:2px;}
+  .ann-body{color:var(--dbt-gray-700);font-size:11px;}
+
+  /* what changed */
+  .wc{background:var(--dbt-black);color:#fff;border-radius:10px;padding:28px 28px;margin:36px 0;}
+  .wc-head{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+  .wc-head::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08);}
+  .wc-cols{display:grid;grid-template-columns:110px 1fr 1fr;gap:14px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:4px;}
+  .wc-col-h{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.3);}
+  .wc-row{display:grid;grid-template-columns:110px 1fr 1fr;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;line-height:1.55;}
+  .wc-row:last-child{border:none;}
+  .wc-fix{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--dbt-orange);}
+  .wc-b{color:#ff8080;}
+  .wc-a{color:#6ee7b7;}
+
+  /* view switching */
+  .before-only{display:block;}
+  .after-only{display:none;}
+  body.after-view .before-only{display:none;}
+  body.after-view .after-only{display:block;}
+
+  /* sidebar switching */
+  .before-ann{display:block;}
+  .after-ann{display:none;}
+  body.after-view .before-ann{display:none;}
+  body.after-view .after-ann{display:block;}
+
+  @media(max-width:900px){
+    .page{grid-template-columns:1fr;}
+    .sidebar{position:static;max-height:none;}
+    .wc-cols,.wc-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body id="body">
+
+<!-- BANNER + TABS -->
+<div class="teardown-bar">
+  <div class="tb-left">
+    <span class="sf-badge">Strategic Flow Teardown</span>
+    <span class="tb-title"><strong>dbt Labs</strong> — Developer Agent · May 6, 2026</span>
+
+    <!-- TABS -->
+    <div class="tab-row">
+      <button class="tab-btn before-tab active" id="tab-before" onclick="setView('before')">
+        <span class="tab-dot before-dot"></span>Before
+      </button>
+      <button class="tab-btn after-tab" id="tab-after" onclick="setView('after')">
+        <span class="tab-dot after-dot"></span>After
+      </button>
+    </div>
+  </div>
+
+  <div class="tb-scores">
+    <span class="sc bad">Original: 2/10</span>
+    <span class="sc good">Rebuilt: 9/10</span>
+    <span class="sc warn">7 bugs fixed</span>
+  </div>
+</div>
+
+<!-- dbt NAV -->
+<nav class="dbt-nav">
+  <div class="dbt-logo"><span>dbt</span> Labs</div>
+  <div class="nav-links">
+    <span>Product</span><span>Solutions</span><span>Customers</span>
+    <span>Resources</span><span>Community</span><span>Pricing</span>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-ghost">Login</button>
+    <button class="btn btn-primary">Book a demo</button>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <article class="article">
+
+    <!-- breadcrumb -->
+    <div class="breadcrumb">
+      <a href="https://www.getdbt.com/blog" target="_blank">Blog</a><span class="bc-sep">/</span>
+      <a href="https://www.getdbt.com/blog/category/product-news" target="_blank">Product</a><span class="bc-sep">/</span>
+      <span>dbt Developer Agent</span>
+    </div>
+
+    <!-- ── TITLE ── -->
+
+    <!-- BEFORE: original buggy title -->
+    <div class="before-only">
+      <h1 class="article-title">
+        <span class="bug-text">The dbt Developer Agent is now in Preview: the coding agent for analytics engineering</span>
+        <span class="bug-num">1</span>
+      </h1>
+      <div style="margin-bottom:16px;">
+        <span class="inline-bug">Bug #1 — Filing label. Announces product status, not reader consequence.</span>
+      </div>
+    </div>
+
+    <!-- AFTER: rebuilt title -->
+    <div class="after-only">
+      <div class="rebuilt-title-block">
+        <div class="rebuilt-tag">✦ Rebuilt Title — Fix #1</div>
+        <div class="rebuilt-title-text">Your analytics engineer just renamed a model.<br>Here's what broke downstream — and what just got fixed.</div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <span class="inline-fix">✓ Consequence-first. Reader is the subject before the product is announced.</span>
+      </div>
+    </div>
+
+    <!-- META (same both views) -->
+    <div class="article-meta">
+      <div class="meta-avatar">
+        <img src="https://www.getdbt.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fwl0ndo6t%2Fmain%2Fde9177b66b52a9d9948af99c462ffbeebd0859fa-400x400.jpg%3Ffit%3Dmax%26auto%3Dformat&w=828&q=75" alt="author" />
+      </div>
+      <div>
+        <div class="meta-authors">Chakshu Mehta, Sam Ferguson</div>
+        <div>last updated on May 06, 2026</div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <img src="https://cdn.sanity.io/images/wl0ndo6t/main/381f3a2bf8771a1f644e6c0a7cb649cfd92b9dd3-1200x630.webp?w=1200&h=630" alt="dbt Developer Agent" />
+    </div>
+
+    <!-- ── BODY ── -->
+    <div class="article-body">
+
+      <!-- PARA 1 — Bug #2 caveat opener / Fix #2 consequence hook -->
+      <div class="before-only para-bug">
+        <p><span class="bug-text">Every few years, the way we work with data evolves. We've gone from SQL editors to BI dashboards to conversational chat, and each shift moves data work forward. Now we're entering a new phase defined by agents that can reason through tasks, plan, and act on their own.</span>
+        <span class="bug-num">2</span>
+        <span class="inline-bug">Bug #2 — Caveat opener. 3 sentences before any consequence is named.</span></p>
+      </div>
+      <div class="after-only rebuilt-para">
+        <p><strong>Your last refactor broke something three models downstream. You found it four hours later.</strong> That's not a syntax error — it's a data problem. And it's the problem coding agents built for software engineering can't solve, because they don't know your dbt graph.
+        <span class="inline-fix">✓ Fix #2 — Consequence-first hook. Reader's operational reality in sentence 1.</span></p>
+      </div>
+
+      <!-- PARA 2 — same both (problem context) -->
+      <p>But despite being remarkably good at general software engineering, today's coding agents struggle on dbt projects, because the project itself is the context and the guardrails. Without that grounding, they write SQL that looks right but references a column that doesn't exist, breaks a dialect rule, or silently breaks tests, contracts, and governed definitions three models later.</p>
+
+      <!-- PARA 3 — Bug #3 feature-first / Fix #3 outcome-first -->
+      <div class="before-only para-bug">
+        <p>The <strong>dbt Developer Agent</strong> is now available in Preview for dbt platform customers. <span class="bug-text">It's the next evolution of dbt Copilot, built directly in the Studio IDE, and it works across every file a change touches.</span>
+        <span class="bug-num">3</span>
+        <span class="inline-bug">Bug #3 — Feature-first. Architecture described before the outcome for the reader.</span></p>
+      </div>
+      <div class="after-only rebuilt-para">
+        <p>The <strong>dbt Developer Agent</strong> is now available in Preview. It reads your full dbt graph — lineage, contracts, semantic definitions, governance — before it touches a single file. Then it drafts the change across every file that needs to move, and surfaces them as reviewable diffs. You approve. Nothing lands without your say.
+        <span class="inline-fix">✓ Fix #3 — Outcome first. What the engineer no longer has to do, not what the product is built on.</span></p>
+      </div>
+
+      <!-- STAT CARDS — only in after -->
+      <div class="after-only">
+        <div class="stat-cards">
+          <div class="stat-card">
+            <div class="stat-num">60→7</div>
+            <div class="stat-label">Conformance errors (Brighte)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">Manual SOC interventions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Live</div>
+            <div class="stat-label">In dbt Studio now</div>
+          </div>
+        </div>
+        <div style="margin-bottom:20px;"><span class="inline-fix">✓ Fix #5 — Numbers moved from bottom quote to stat cards at top of body.</span></div>
+      </div>
+
+      <p>No new tools to install. No context switching. Nothing to set up. It ships with <a href="https://github.com/dbt-labs/dbt-agent-skills" target="_blank">dbt Agent Skills</a> and <a href="https://docs.getdbt.com/docs/dbt-ai/mcp-available-tools?version=2.0#product-docs" target="_blank">dbt's product docs toolset</a> built in, so best practices and canonical answers are there while you build.</p>
+
+      <h2>Agents that can think across your dbt project</h2>
+
+      <p>When we launched <a href="https://www.getdbt.com/blog/introducing-dbt-copilot" target="_blank">dbt Copilot</a> in 2024, we were solving a real but bounded problem. Writing boilerplate, drafting tests, documentation, and YAML configs by hand slows everyone down without making anything better. dbt Copilot made those workflows much faster.</p>
+
+      <!-- Bug #7 buried before/after -->
+      <div class="before-only para-bug">
+        <p>But the thing that actually slows teams down isn't writing a model. It's what happens <em>around</em> the model. <span class="bug-text">You rename a column and something three dashboards deep breaks. You add a metric and spend an hour chasing down every semantic definition and exposure that needs to move with it.</span>
+        <span class="bug-num">7</span>
+        <span class="inline-bug">Bug #7 — Before/after contrast buried in prose. Never labeled. Reader must infer it.</span></p>
+      </div>
+      <div class="after-only rebuilt-para">
+        <p>But the thing that actually slows teams down isn't writing a model. It's what happens <em>around</em> the model.<br><br>
+        <strong>Before:</strong> You rename a column, something three dashboards deep breaks, and you spend an hour tracing every semantic definition that moved with it.<br>
+        <strong>After:</strong> Describe the change. The Agent reads your full graph, coordinates every file, and shows you the diffs before anything saves.
+        <span class="inline-fix">✓ Fix #7 — Before/After made explicit in body. Contrast is structural, not implied.</span></p>
+      </div>
+
+      <p>So we built it.</p>
+
+      <h2>Meet the dbt Developer Agent</h2>
+
+      <p>The dbt Developer Agent lives right in dbt Studio. You describe the change you want to make — renaming a model, updating a column, adding a metric — and the agent analyzes your full dbt graph. Not just file dependencies, but lineage, contracts, semantic definitions, tests, and governance. Then the agent drafts edits across those files and shows them to you as a sequence of reviewable diffs.</p>
+
+      <div class="dbt-quote">
+        "What really sets the dbt Developer Agent apart is its precision in identifying and resolving bottlenecks. It understands our existing tests and lineage well enough to troubleshoot issues almost instantly."
+        <cite>— Vishal Kaviraj, AVP Data Architect</cite>
+      </div>
+
+      <h2>How it works</h2>
+
+      <p>The Developer Agent runs on a loop. You describe what you want. It drafts the edits. It proactively asks to run <code>dbt compile</code> or <code>dbt build</code> to validate its own work. It sees the result, adjusts if needed, and keeps going until the change is ready for review.</p>
+
+      <!-- Bug #4 flat hierarchy / Fix #4 tiered -->
+      <div class="before-only para-bug">
+        <p><strong>A few things that make it great for developer workflows:</strong>
+        <span class="bug-num">4</span>
+        <span class="inline-bug">Bug #4 — Flat hierarchy. 8 bullets, identical weight. No major vs minor split.</span></p>
+        <ul>
+          <li><strong>It's grounded in your whole project, not just the file you have open.</strong> The agent understands your full dbt graph.</li>
+          <li><strong>It keeps related files in sync.</strong> A single prompt can produce coordinated changes across models, YAML configs, and documentation.</li>
+          <li><strong>It ships with dbt Agent Skills.</strong> A decade of analytics engineering best practices, out-of-the-box.</li>
+          <li><strong>It ships with dbt's product docs.</strong> Verify documented behavior without leaving dbt Studio.</li>
+          <li><strong>It shows its work.</strong> You see the agent's reasoning and tool calls as it works.</li>
+          <li><strong>It keeps a human in the loop.</strong> "Ask-for-approval" mode surfaces every edit as an inline diff before anything saves.</li>
+          <li><strong>It validates as it goes.</strong> A built-in comparison loop catches problems before you see the final diff.</li>
+          <li><strong>It runs commands on your behalf.</strong> Execute dbt commands, open pull requests, handle the workflow steps.</li>
+        </ul>
+      </div>
+      <div class="after-only rebuilt-para">
+        <p><strong>Three things that matter most:</strong>
+        <span class="inline-fix">✓ Fix #4 — Major announcements lead. Routine capabilities follow.</span></p>
+        <ul>
+          <li><strong>Grounded in your whole project.</strong> The agent reads your full dbt graph — upstream, downstream, contracts, semantic definitions — before drafting a single change.</li>
+          <li><strong>Every related file stays in sync.</strong> Rename a model and the refs follow. Change a column and the downstream tests update with it. One prompt, coordinated changes.</li>
+          <li><strong>Human in the loop by default.</strong> "Ask-for-approval" mode shows you every diff before anything saves. You pick the autonomy level for the task.</li>
+        </ul>
+        <p style="margin-top:12px;font-size:14px;color:var(--dbt-muted);">Also included: <a href="https://github.com/dbt-labs/dbt-agent-skills" target="_blank">dbt Agent Skills</a>, product docs integration, command execution, Fusion out-of-the-box.</p>
+      </div>
+
+      <!-- Bug #5 zero numbers (before only callout — stat cards shown above in after) -->
+      <div class="before-only para-bug">
+        <p><em>"We went from about 60 conformance errors to 7, using the Fusion migration agent. That's the difference between too hard and actually doable."</em> — Michael Fridolfsson, Data Architect, Brighte
+        <span class="bug-num">5</span>
+        <span class="inline-bug">Bug #5 — Only number in the post. Buried at the very bottom. Should be a stat card near the top.</span></p>
+      </div>
+      <div class="after-only">
+        <div class="dbt-quote">
+          "We went from about 60 conformance errors to 7, using the Fusion migration agent. That's the difference between too hard and actually doable."
+          <cite>— Michael Fridolfsson, Data Architect, Brighte</cite>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- CTA BLOCK -->
+      <div class="cta-block">
+        <h3>Get started</h3>
+        <p>The Developer Agent is available in preview for dbt platform customers with dbt Copilot enabled. Open dbt Studio, find the dbt Copilot agent pane, and describe what you want to build or change. Not on the platform yet? <a href="https://www.getdbt.com/contact" target="_blank">Talk to our team</a>.</p>
+
+        <!-- Before: weak CTA -->
+        <div class="before-only">
+          <div style="display:inline-block;background:var(--dbt-black);color:#fff;padding:11px 22px;border-radius:6px;font-size:15px;font-weight:500;cursor:default;text-decoration:line-through;text-decoration-color:var(--bug);opacity:.6;">Open dbt Studio to try it</div>
+          <span class="bug-num" style="margin-left:6px;">6</span>
+          <div style="margin-top:8px;"><span class="inline-bug">Bug #6 — Generic CTA. No ownership language. Reader-neutral action.</span></div>
+        </div>
+
+        <!-- After: rebuilt CTA -->
+        <div class="after-only">
+          <div class="rebuilt-cta-btn">See what the Agent would change in my project →</div>
+          <div style="margin-top:8px;"><span class="inline-fix">✓ Fix #6 — "My project" = ownership language. Result feels already theirs.</span></div>
+        </div>
+      </div>
+
+      <!-- WHAT CHANGED — always visible -->
+      <div class="wc">
+        <div class="wc-head">Strategic Flow — What Changed & Why</div>
+        <div class="wc-cols">
+          <div class="wc-col-h">Fix</div>
+          <div class="wc-col-h">Before ❌</div>
+          <div class="wc-col-h">After ✅</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-fix">Fix #1<br>Title</div>
+          <div class="wc-b">"The dbt Developer Agent is now in Preview: the coding agent for analytics engineering" — filing label, zero curiosity gap.</div>
+          <div class="wc-a">"Your analytics engineer just renamed a model. Here's what broke downstream." — reader is the subject before the product is announced.</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-fix">Fix #2<br>Hook</div>
+          <div class="wc-b">"Every few years, the way we work with data evolves..." — 3 sentences of category history before any consequence.</div>
+          <div class="wc-a">"Your last refactor broke something three models downstream. You found it four hours later." — consequence in sentence 1.</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-fix">Fix #3<br>Feature-first</div>
+          <div class="wc-b">"Built directly in the Studio IDE, works across every file a change touches." — architecture before outcome.</div>
+          <div class="wc-a">"Reads your full graph before it touches a file. Drafts the change. You approve the diffs." — outcome first, then how.</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-fix">Fix #4<br>Hierarchy</div>
+          <div class="wc-b">8 bullets, identical visual weight. "Runs commands on your behalf" equals "grounded in your whole project."</div>
+          <div class="wc-a">3 major capabilities lead. Routine features listed in smaller text below. Visual hierarchy restored.</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-fix">Fix #5<br>Numbers</div>
+          <div class="wc-b">"60 conformance errors to 7" — only quantified claim, buried in a bottom quote.</div>
+          <div class="wc-a">Stat cards near top of body: 60→7 / 0 SOC interventions / Live. Proof is structural, not decorative.</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-fix">Fix #6<br>CTA</div>
+          <div class="wc-b">"Open dbt Studio to try it" — describes an action. Reader-neutral.</div>
+          <div class="wc-a">"See what the Agent would change in my project →" — "my project" makes the result feel already theirs.</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-fix">Fix #7<br>Before/After</div>
+          <div class="wc-b">Before/after contrast implied in prose, never labeled. Reader must infer it.</div>
+          <div class="wc-a">Explicit "Before: / After:" in body copy. Contrast is structural and visible at first scroll.</div>
+        </div>
+      </div>
+
+      <!-- SF FOOTER -->
+      <div class="sf-footer">
+        <span>Teardown by <strong>Strategic Flow</strong> · <a href="https://strategicflow-tech.github.io/showcase">See all 21 teardowns →</a></span>
+        <span><a href="https://strategic-flow-audit.replit.app">Run your own audit →</a></span>
+      </div>
+
+    </div><!-- /article-body -->
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="score-box">
+      <div class="score-box-title">Strategic Flow Score</div>
+      <div class="score-line"><span class="score-k">Original</span><span class="score-v r">2 / 10</span></div>
+      <div class="sbar"><div class="sfill" style="width:20%;background:var(--bug);"></div></div>
+      <div class="score-line" style="margin-top:8px;"><span class="score-k">Rebuilt</span><span class="score-v g">9 / 10</span></div>
+      <div class="sbar"><div class="sfill" style="width:90%;background:var(--fix);"></div></div>
+      <div class="score-line" style="margin-top:8px;"><span class="score-k">Open rate est.</span><span class="score-v a">18% → 31–38%</span></div>
+    </div>
+
+    <!-- BEFORE annotations -->
+    <div class="before-ann">
+      <div class="ann-header">Bugs Found — 7/7</div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">1</span>Bug #1</div><div class="ann-title">Filing Label Title</div><div class="ann-body">Announces product status. Zero curiosity gap. Reader doesn't know why it matters before clicking.</div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">2</span>Bug #2</div><div class="ann-title">Caveat Opener</div><div class="ann-body">3 sentences of category history before any consequence is named. Reader disengages first.</div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">3</span>Bug #3</div><div class="ann-title">Feature-First Language</div><div class="ann-body">"Built in Studio IDE, works across every file" = architecture. Outcome is paragraph 4.</div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">4</span>Bug #4</div><div class="ann-title">Flat Hierarchy</div><div class="ann-body">8 bullets, same weight. No major vs minor distinction. Stat cards absent.</div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">5</span>Bug #5</div><div class="ann-title">Zero Numbers in Body</div><div class="ann-body">"60→7 conformance errors" is the only proof — buried in a bottom quote.</div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">6</span>Bug #6</div><div class="ann-title">Weak CTA</div><div class="ann-body">"Open dbt Studio to try it" — no ownership language. Reader-neutral.</div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">7</span>Bug #7</div><div class="ann-title">Buried Before/After</div><div class="ann-body">Contrast implied in prose, never explicit. Reader must infer the before/after.</div></div>
+    </div>
+
+    <!-- AFTER annotations -->
+    <div class="after-ann">
+      <div class="ann-header">Fixes Applied — 7/7</div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">1</span>Fix #1</div><div class="ann-title">Consequence-First Title</div><div class="ann-body">Reader is the subject. Consequence named before the product is announced.</div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">2</span>Fix #2</div><div class="ann-title">Consequence Hook</div><div class="ann-body">"Your last refactor broke something." Operational reality, sentence 1.</div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">3</span>Fix #3</div><div class="ann-title">Outcome-First Language</div><div class="ann-body">What the engineer no longer has to do, before explaining how the product works.</div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">4</span>Fix #4</div><div class="ann-title">Tiered Hierarchy</div><div class="ann-body">3 major capabilities lead. Routine features listed smaller below. Visual priority restored.</div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">5</span>Fix #5</div><div class="ann-title">Stat Cards Added</div><div class="ann-body">60→7 / 0 SOC / Live — moved from footnote quote to stat cards at scroll position 2.</div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">6</span>Fix #6</div><div class="ann-title">Ownership CTA</div><div class="ann-body">"See what the Agent would change in my project →" — result feels already theirs.</div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">7</span>Fix #7</div><div class="ann-title">Explicit Before/After</div><div class="ann-body">"Before: / After:" labeled in body. Contrast visible at first scroll, not buried.</div></div>
+    </div>
+
+  </aside>
+
+</div><!-- /page -->
+
+<script>
+  function setView(view) {
+    const body = document.getElementById('body');
+    const tabBefore = document.getElementById('tab-before');
+    const tabAfter = document.getElementById('tab-after');
+    if (view === 'after') {
+      body.classList.add('after-view');
+      tabAfter.classList.add('active');
+      tabBefore.classList.remove('active');
+    } else {
+      body.classList.remove('after-view');
+      tabBefore.classList.add('active');
+      tabAfter.classList.remove('active');
+    }
+  }
+</script>
+</body>
+</html>
