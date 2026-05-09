@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" id="body">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>LinkedIn Post Audit — Strategic Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:     #4A8FE7;
+    --blue-dim: rgba(74,143,231,.12);
+    --black:    #0C0C0C;
+    --white:    #F4F2EE;
+    --gray:     #161616;
+    --gray-2:   #222222;
+    --muted:    rgba(244,242,238,.35);
+    --muted-2:  rgba(244,242,238,.6);
+    --red:      #E85454;
+    --red-bg:   rgba(232,84,84,.1);
+    --red-br:   rgba(232,84,84,.25);
+    --green:    #3ECF8E;
+    --green-bg: rgba(62,207,142,.1);
+    --green-br: rgba(62,207,142,.25);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;overflow-x:hidden;}
+  body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);font-size:16px;line-height:1.7;}
+
+  /* ── GATE ── */
+  #emailGate{position:fixed;inset:0;z-index:9999;background:rgba(12,12,12,.98);display:none;align-items:center;justify-content:center;padding:24px;}
+  .gate-inner{width:100%;max-width:440px;background:var(--gray);border:1px solid var(--gray-2);border-top:3px solid var(--blue);border-radius:14px;padding:40px 32px;text-align:center;}
+  .gate-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .gate-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.02em;color:var(--white);margin-bottom:10px;line-height:1.1;}
+  .gate-sub{font-size:13px;color:var(--muted-2);line-height:1.6;margin-bottom:28px;}
+  .gate-input{width:100%;padding:13px 16px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:8px;color:var(--white);font-size:14px;font-family:inherit;outline:none;margin-bottom:12px;transition:border-color .2s;}
+  .gate-input::placeholder{color:rgba(255,255,255,.25);}
+  .gate-input:focus{border-color:var(--blue);}
+  .gate-btn{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s;}
+  .gate-btn:hover{opacity:.88;}
+  .gate-note{font-size:11px;color:var(--muted);margin-top:12px;font-family:'DM Mono',monospace;}
+
+  /* ── PAYWALL ── */
+  #paywallOverlay{position:fixed;inset:0;z-index:9999;background:rgba(12,12,12,.98);display:none;align-items:center;justify-content:center;padding:24px;}
+  .paywall-inner{width:100%;max-width:460px;background:var(--gray);border:1px solid var(--gray-2);border-top:3px solid var(--blue);border-radius:14px;padding:40px 32px;text-align:center;}
+  .paywall-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+  .paywall-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.02em;color:var(--white);margin-bottom:10px;line-height:1.1;}
+  .paywall-sub{font-size:13px;color:var(--muted-2);line-height:1.6;margin-bottom:24px;}
+  .paywall-cta{display:block;width:100%;padding:15px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;text-decoration:none;text-align:center;margin-bottom:12px;transition:opacity .15s;}
+  .paywall-cta:hover{opacity:.88;}
+  .paywall-back{font-size:12px;color:var(--muted);cursor:pointer;font-family:'DM Mono',monospace;}
+  .paywall-back:hover{color:var(--white);}
+
+  /* ── HEADER ── */
+  .sf-header{width:100%;background:var(--black);position:sticky;top:0;z-index:200;border-bottom:2px solid var(--blue);box-shadow:0 4px 32px rgba(0,0,0,.5);}
+  .sf-header-top{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.05);gap:10px;}
+  .sf-header-brand{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .sf-badge{background:var(--blue);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:5px;white-space:nowrap;}
+  .cl-badge{color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+  .sf-header-scores{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  .sc{padding:4px 10px;border-radius:5px;font-size:10px;font-weight:700;white-space:nowrap;font-family:'DM Mono',monospace;}
+  .sc.bad{background:#DC2626;color:#fff;}
+  .sc.good{background:#059669;color:#fff;}
+  .sf-header-tabs{display:flex;align-items:stretch;}
+  .tab-btn{flex:1;padding:11px 20px;border:none;background:transparent;font-family:'Barlow',sans-serif;font-size:14px;font-weight:700;color:rgba(255,255,255,.3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;border-bottom:3px solid transparent;margin-bottom:-1px;transition:all .2s;}
+  .tab-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);}
+  .tab-btn.active.before-tab{color:var(--red);border-bottom-color:var(--red);}
+  .tab-btn.active.after-tab{color:var(--green);border-bottom-color:var(--green);}
+  .tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .before-dot{background:var(--red);}
+  .after-dot{background:var(--green);}
+
+  /* ── SCRAPER BAR ── */
+  .scraper-bar{width:100%;background:var(--gray);border-bottom:1px solid var(--gray-2);padding:20px;display:flex;flex-direction:column;gap:12px;}
+  .scraper-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.08em;color:var(--white);}
+  .scraper-title span{color:var(--blue);}
+  .scraper-guide{font-size:13px;color:var(--muted-2);line-height:1.5;}
+  .scraper-guide strong{color:var(--white);}
+  textarea.scraper-input{width:100%;min-height:100px;max-height:220px;padding:12px 14px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:8px;color:var(--white);font-size:13px;font-family:inherit;outline:none;resize:vertical;line-height:1.55;transition:border-color .2s;}
+  textarea.scraper-input::placeholder{color:rgba(255,255,255,.2);}
+  textarea.scraper-input:focus{border-color:var(--blue);}
+  .run-btn{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .15s;letter-spacing:.02em;}
+  .run-btn:hover{opacity:.88;}
+  .run-btn:disabled{opacity:.5;cursor:not-allowed;}
+  .scraper-status{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;font-style:italic;min-height:16px;}
+
+  /* ── PROGRESS ── */
+  #progressWrap{display:none;width:100%;}
+  .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .progress-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-2);}
+  .progress-pct{font-size:13px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;}
+  .progress-track{width:100%;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:3px;transition:width .4s ease;}
+
+  /* ── DOWNLOAD GATE ── */
+  #downloadGate{display:none;border-top:1px solid rgba(255,255,255,.06);padding-top:16px;margin-top:4px;}
+  .dl-label{font-family:'DM Mono',monospace;font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;}
+  .dl-sub{font-size:12px;color:var(--muted-2);margin-bottom:10px;line-height:1.4;}
+  .dl-row{display:flex;gap:8px;}
+  .dl-input{flex:1;padding:10px 12px;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:7px;color:var(--white);font-size:13px;font-family:inherit;outline:none;}
+  .dl-input::placeholder{color:rgba(255,255,255,.2);}
+  .dl-btn{padding:10px 16px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;transition:opacity .15s;}
+  .dl-btn:hover{opacity:.88;}
+  .dl-status{font-size:12px;color:var(--muted);margin-top:8px;font-family:'DM Mono',monospace;}
+
+  /* ── USED BANNER ── */
+  #usedBanner{display:none;background:rgba(74,143,231,.1);border:1px solid rgba(74,143,231,.2);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--muted-2);line-height:1.5;margin-top:8px;}
+  #usedBanner a{color:var(--blue);font-weight:700;text-decoration:none;}
+
+  /* ── COMPANY BAR ── */
+  .company-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--white);border-bottom:1px solid #e0ddd8;}
+  .company-logo{font-size:17px;font-weight:800;color:#111;letter-spacing:-.01em;display:flex;align-items:center;gap:6px;}
+  .company-logo span{color:var(--blue);}
+  .company-nav-btns{display:flex;gap:8px;}
+  .nav-btn{padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;border:none;}
+  .nav-btn-ghost{background:transparent;border:1px solid #ddd;color:#444;}
+  .nav-btn-primary{background:var(--blue);color:#fff;}
+
+  /* ── MAIN LAYOUT ── */
+  .main{max-width:960px;margin:0 auto;padding:36px 20px 80px;display:grid;grid-template-columns:1fr 260px;gap:40px;}
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin-bottom:24px;font-family:'DM Mono',monospace;}
+  .breadcrumb a{color:var(--blue);text-decoration:none;}
+  .bc-sep{opacity:.4;}
+
+  /* ── POST CARD ── */
+  .post-card{border-radius:10px;overflow:hidden;border:1px solid #e0ddd8;background:var(--white);color:#111;margin-bottom:20px;}
+  .post-card-header{padding:14px 16px;border-bottom:1px solid #e8e5e0;display:flex;align-items:center;gap:10px;background:#faf9f7;}
+  .post-avatar{width:40px;height:40px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;font-family:'DM Mono',monospace;}
+  .post-author-name{font-size:14px;font-weight:700;color:#111;}
+  .post-role{font-size:12px;color:#888;}
+  .post-body-wrap{padding:20px 18px;}
+  .post-hook{font-size:17px;font-weight:700;color:#111;line-height:1.35;margin-bottom:14px;border-left:3px solid var(--red);padding-left:14px;}
+  .post-hook.rebuilt{border-color:var(--green);color:#111;}
+  .post-body-text{font-size:14px;color:#333;line-height:1.7;}
+  .post-body-text p{margin-bottom:10px;}
+  .post-cta-pill{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:7px;font-size:13px;font-weight:700;}
+  .post-cta-pill.before{background:#f0eeeb;color:#666;text-decoration:line-through;text-decoration-color:var(--red);}
+  .post-cta-pill.after{background:var(--blue);color:#fff;}
+
+  /* ── INLINE BADGES ── */
+  .inline-bug{display:inline-flex;align-items:center;gap:4px;background:var(--red-bg);border:1px solid var(--red-br);border-radius:4px;padding:2px 8px;font-size:11px;color:var(--red);font-weight:600;margin:6px 0;font-family:'DM Mono',monospace;}
+  .inline-fix{display:inline-flex;align-items:center;gap:4px;background:var(--green-bg);border:1px solid var(--green-br);border-radius:4px;padding:2px 8px;font-size:11px;color:var(--green);font-weight:600;margin:6px 0;font-family:'DM Mono',monospace;}
+
+  /* ── BEFORE/AFTER TOGGLE ── */
+  .before-only{display:block;}
+  .after-only{display:none;}
+  body.after-view .before-only{display:none;}
+  body.after-view .after-only{display:block;}
+
+  /* ── WHAT CHANGED ── */
+  .wc{background:#0a0a0a;border-radius:10px;padding:24px 20px;margin:32px 0;border:1px solid #1a1a1a;}
+  .wc-head{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+  .wc-head::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06);}
+  .wc-row{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05);}
+  .wc-row:last-child{border:none;}
+  .wc-fix-label{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:6px;}
+  .wc-b{font-size:13px;line-height:1.6;color:#FF6B6B;background:rgba(232,84,84,.08);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 12px;margin-bottom:4px;}
+  .wc-a{font-size:13px;line-height:1.6;color:#69F0AE;background:rgba(62,207,142,.08);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 12px;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{position:sticky;top:calc(96px + 24px);height:fit-content;max-height:calc(100vh-140px);overflow-y:auto;}
+  .score-box{background:var(--gray);border:1px solid var(--gray-2);border-radius:8px;padding:16px;margin-bottom:16px;}
+  .score-box-title{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px;}
+  .score-line{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px;}
+  .score-k{color:var(--muted-2);}
+  .score-v{font-weight:700;font-family:'DM Mono',monospace;}
+  .score-v.r{color:#DC2626;}.score-v.g{color:#059669;}.score-v.a{color:#d97706;}
+  .sbar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin:6px 0 10px;overflow:hidden;}
+  .sfill{height:100%;border-radius:2px;transition:width .6s ease;}
+  .ann-header{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding-bottom:8px;border-bottom:1px solid var(--gray-2);margin-bottom:10px;}
+  .ann-card{border-radius:7px;padding:11px 13px;margin-bottom:8px;border:1px solid;font-size:12px;line-height:1.5;}
+  .ann-card.bug{background:var(--red-bg);border-color:var(--red-br);}
+  .ann-card.fix{background:var(--green-bg);border-color:var(--green-br);}
+  .ann-l{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:5px;margin-bottom:3px;font-family:'DM Mono',monospace;}
+  .ann-l.bug{color:var(--red);}.ann-l.fix{color:var(--green);}
+  .ann-circle{width:15px;height:15px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+  .ann-circle.bug{background:var(--red);color:#fff;}.ann-circle.fix{background:var(--green);color:#111;}
+  .ann-title{font-weight:700;color:var(--white);margin-bottom:2px;}
+  .ann-body{color:var(--muted-2);font-size:11px;}
+
+  /* ── SF FOOTER ── */
+  .sf-footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--gray-2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+  .sf-footer a{color:var(--blue);text-decoration:none;}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){.main{grid-template-columns:1fr;gap:28px;}.sidebar{position:static;max-height:none;}}
+  @media(max-width:600px){
+    *{max-width:100%;}
+    .sf-header-top{padding:10px 14px;}.cl-badge{display:none;}
+    .sf-header-tabs .tab-btn{font-size:14px;padding:12px 16px;}
+    .scraper-bar{padding:16px;}.company-bar{padding:10px 14px;}
+    .main{padding:24px 14px 60px;}
+    .post-hook{font-size:15px;}
+    .wc{padding:14px 12px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<div id="emailGate" style="display:none;">
+  <div class="gate-inner">
+    <div class="gate-eyebrow">LinkedIn Post Audit</div>
+    <h1 class="gate-title">Enter your email to run your free audit</h1>
+    <p class="gate-sub">One free audit. Full diagnostic. No credit card required.</p>
+    <input class="gate-input" id="gateEmailInput" type="email" placeholder="your@email.com" />
+    <button class="gate-btn" id="gateSubmitBtn">Run Free Audit</button>
+    <p class="gate-note">No spam. Strategic Flow only.</p>
+  </div>
+</div>
+
+<!-- PAYWALL -->
+<div id="paywallOverlay" style="display:none;">
+  <div class="paywall-inner">
+    <div class="paywall-tag">LinkedIn Post Audit</div>
+    <h2 class="paywall-title">You have used your free audit.</h2>
+    <p class="paywall-sub">Get unlimited access to LinkedIn, Changelog, and Onboarding audits via Architecture.</p>
+    <a href="https://strategicflow-tech.github.io/showcase/enterprise.html" class="paywall-cta">Get Architecture access</a>
+    <p class="paywall-back" id="paywallBack">View Architecture details below</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="sf-header">
+  <div class="sf-header-top">
+    <div class="sf-header-brand">
+      <span class="sf-badge">Strategic Flow</span>
+      <span class="cl-badge">LinkedIn Post Audit</span>
+    </div>
+    <div class="sf-header-scores">
+      <span class="sc bad" id="score-before">Original: —</span>
+      <span class="sc good" id="score-after">Rebuilt: —</span>
+    </div>
+  </div>
+  <div class="sf-header-tabs">
+    <button class="tab-btn before-tab active" id="tab-before"><span class="tab-dot before-dot"></span>Before</button>
+    <button class="tab-btn after-tab" id="tab-after"><span class="tab-dot after-dot"></span>After</button>
+  </div>
+</header>
+
+<!-- SCRAPER BAR -->
+<div class="scraper-bar">
+  <div class="scraper-title">LinkedIn Post Audit <span>— Strategic Flow</span></div>
+  <div class="scraper-guide">Copy the full text of the LinkedIn post. Include the <strong>hook, body, and CTA</strong>. Paste below and tap Run Audit.</div>
+  <textarea class="scraper-input" id="manualText" placeholder="Paste the full LinkedIn post here — hook, body, CTA, hashtags."></textarea>
+  <button class="run-btn" id="runAuditBtn">Run Audit</button>
+  <div class="scraper-status" id="scraperStatus">Paste a LinkedIn post above and tap Run Audit</div>
+  <div id="progressWrap">
+    <div class="progress-top"><span class="progress-label" id="progressLabel">Analyzing...</span><span class="progress-pct" id="progressPct">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+  </div>
+  <div id="downloadGate">
+    <div class="dl-label">Download the full audit HTML</div>
+    <div class="dl-sub">Architecture clients download instantly. Enter your email to check access.</div>
+    <div class="dl-row">
+      <input class="dl-input" id="downloadEmail" type="email" placeholder="your@email.com" />
+      <button class="dl-btn" id="downloadBtn">Download</button>
+    </div>
+    <div class="dl-status" id="downloadStatus"></div>
+  </div>
+  <div id="usedBanner">You have used your free audit. <a href="https://strategicflow-tech.github.io/showcase/enterprise.html" target="_blank">Get unlimited access via Architecture</a></div>
+</div>
+
+<!-- COMPANY BAR -->
+<div class="company-bar">
+  <div class="company-logo" id="client-logo">Company<span>.</span></div>
+  <div class="company-nav-btns">
+    <button class="nav-btn nav-btn-ghost" id="loginBtn">Log in</button>
+    <button class="nav-btn nav-btn-primary" id="startBtn">Get started</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <article>
+    <div class="breadcrumb">
+      <a href="#" id="bc-home">Company</a><span class="bc-sep">/</span>
+      <a href="#">LinkedIn</a><span class="bc-sep">/</span>
+      <span id="bc-current">LinkedIn Post Audit</span>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="before-only">
+      <div class="post-card">
+        <div class="post-card-header">
+          <div class="post-avatar" id="avatar-before">CO</div>
+          <div><div class="post-author-name" id="author-before">Company Page</div><div class="post-role">Original post</div></div>
+        </div>
+        <div class="post-body-wrap">
+          <div class="post-hook" id="original-title">Paste a LinkedIn post above and tap Run Audit.</div>
+          <div class="inline-bug" id="bug1-badge" style="display:none;">Bug #1 — Hook Without Consequence</div>
+          <div class="post-body-text" id="original-lead"></div>
+          <div class="post-cta-pill before" id="cta-before" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="after-only">
+      <div class="post-card">
+        <div class="post-card-header">
+          <div class="post-avatar" id="avatar-after">CO</div>
+          <div><div class="post-author-name" id="author-after">Company Page</div><div class="post-role" style="color:var(--green);">Rebuilt by Strategic Flow</div></div>
+        </div>
+        <div class="post-body-wrap">
+          <div class="post-hook rebuilt" id="rebuilt-title">Run the audit to see the rebuilt post.</div>
+          <div class="inline-fix" id="fix1-badge" style="display:none;">Fix #1 — Consequence-First Hook</div>
+          <div class="post-body-text" id="rebuilt-lead"></div>
+          <div class="post-cta-pill after" id="cta-after" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHAT CHANGED -->
+    <div class="wc">
+      <div class="wc-head">Strategic Flow — LinkedIn Post Audit: What Changed and Why</div>
+      <div class="wc-row"><div class="wc-fix-label" id="wc-fix-1">Fix #1 — Hook</div><div class="wc-b" id="wc-b-1">Run audit to see diagnosis.</div><div class="wc-a" id="wc-a-1">Run audit to see rebuild.</div></div>
+      <div class="wc-row"><div class="wc-fix-label" id="wc-fix-2">Fix #2 — Body</div><div class="wc-b" id="wc-b-2"></div><div class="wc-a" id="wc-a-2"></div></div>
+      <div class="wc-row"><div class="wc-fix-label" id="wc-fix-3">Fix #3 — Specificity</div><div class="wc-b" id="wc-b-3"></div><div class="wc-a" id="wc-a-3"></div></div>
+      <div class="wc-row"><div class="wc-fix-label" id="wc-fix-4">Fix #4 — Structure</div><div class="wc-b" id="wc-b-4"></div><div class="wc-a" id="wc-a-4"></div></div>
+      <div class="wc-row"><div class="wc-fix-label" id="wc-fix-5">Fix #5 — CTA</div><div class="wc-b" id="wc-b-5"></div><div class="wc-a" id="wc-a-5"></div></div>
+      <div class="wc-row"><div class="wc-fix-label" id="wc-fix-6">Fix #6 — Proof</div><div class="wc-b" id="wc-b-6"></div><div class="wc-a" id="wc-a-6"></div></div>
+      <div class="wc-row"><div class="wc-fix-label" id="wc-fix-7">Fix #7 — Audience</div><div class="wc-b" id="wc-b-7"></div><div class="wc-a" id="wc-a-7"></div></div>
+    </div>
+
+    <div class="sf-footer">
+      <span>LinkedIn Post Audit by <strong>Strategic Flow</strong> · <a href="https://strategicflow-tech.github.io/showcase">See all audits</a></span>
+      <a href="https://strategic-flow-audit.replit.app/linkedin-audit-page">Run your own audit</a>
+    </div>
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="score-box">
+      <div class="score-box-title">Strategic Flow Score</div>
+      <div class="score-line"><span class="score-k">Original</span><span class="score-v r" id="sb-score-before">— / 10</span></div>
+      <div class="sbar"><div class="sfill" id="bar-before" style="width:0%;background:#DC2626;"></div></div>
+      <div class="score-line"><span class="score-k">Rebuilt</span><span class="score-v g" id="sb-score-after">— / 10</span></div>
+      <div class="sbar"><div class="sfill" id="bar-after" style="width:0%;background:#059669;"></div></div>
+      <div class="score-line"><span class="score-k">Bugs found</span><span class="score-v a" id="sb-bugs">— / 7</span></div>
+    </div>
+    <div class="before-ann before-only">
+      <div class="ann-header">Bugs Found</div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">1</span>Bug #1</div><div class="ann-title" id="bug-title-1">Hook Without Consequence</div><div class="ann-body" id="bug-body-1">Run audit to see diagnosis.</div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">2</span>Bug #2</div><div class="ann-title" id="bug-title-2">Feature-First Body</div><div class="ann-body" id="bug-body-2"></div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">3</span>Bug #3</div><div class="ann-title" id="bug-title-3">Zero Specificity</div><div class="ann-body" id="bug-body-3"></div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">4</span>Bug #4</div><div class="ann-title" id="bug-title-4">Wall of Text</div><div class="ann-body" id="bug-body-4"></div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">5</span>Bug #5</div><div class="ann-title" id="bug-title-5">Absent or Generic CTA</div><div class="ann-body" id="bug-body-5"></div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">6</span>Bug #6</div><div class="ann-title" id="bug-title-6">No Proof No Stakes</div><div class="ann-body" id="bug-body-6"></div></div>
+      <div class="ann-card bug"><div class="ann-l bug"><span class="ann-circle bug">7</span>Bug #7</div><div class="ann-title" id="bug-title-7">Wrong Audience Signal</div><div class="ann-body" id="bug-body-7"></div></div>
+    </div>
+    <div class="after-ann after-only">
+      <div class="ann-header">Fixes Applied</div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">1</span>Fix #1</div><div class="ann-title" id="fix-title-1">Consequence-First Hook</div><div class="ann-body" id="fix-body-1">Run audit to see fixes.</div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">2</span>Fix #2</div><div class="ann-title" id="fix-title-2">Outcome-First Body</div><div class="ann-body" id="fix-body-2"></div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">3</span>Fix #3</div><div class="ann-title" id="fix-title-3">Numbers Added</div><div class="ann-body" id="fix-body-3"></div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">4</span>Fix #4</div><div class="ann-title" id="fix-title-4">White Space Added</div><div class="ann-body" id="fix-body-4"></div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">5</span>Fix #5</div><div class="ann-title" id="fix-title-5">Specific CTA</div><div class="ann-body" id="fix-body-5"></div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">6</span>Fix #6</div><div class="ann-title" id="fix-title-6">Proof Hardcoded</div><div class="ann-body" id="fix-body-6"></div></div>
+      <div class="ann-card fix"><div class="ann-l fix"><span class="ann-circle fix">7</span>Fix #7</div><div class="ann-title" id="fix-title-7">Audience Signal Sharpened</div><div class="ann-body" id="fix-body-7"></div></div>
+    </div>
+  </aside>
+</div>
+
+<!-- GATE SCRIPT — runs immediately -->
+<script>
+(function() {
+  var savedEmail = localStorage.getItem('sf_email');
+  var auditUsed = localStorage.getItem('sf_used_audit_linkedin');
+  var isAdmin = localStorage.getItem('sf_admin') === 'true';
+  var adminEmails = ['strategicflow@proton.me', 'consultantcalatorii@gmail.com'];
+
+  if (savedEmail && adminEmails.indexOf(savedEmail.toLowerCase()) !== -1) {
+    localStorage.setItem('sf_admin', 'true');
+    localStorage.removeItem('sf_used_audit_linkedin');
+    isAdmin = true; auditUsed = null;
+  }
+
+  if (!isAdmin && savedEmail && auditUsed) {
+    document.getElementById('paywallOverlay').style.display = 'flex';
+  } else if (!savedEmail) {
+    document.getElementById('emailGate').style.display = 'flex';
+  }
+
+  var gateBtn = document.getElementById('gateSubmitBtn');
+  var gateInput = document.getElementById('gateEmailInput');
+  var gateOverlay = document.getElementById('emailGate');
+
+  if (gateBtn) {
+    gateBtn.onclick = function() {
+      var email = gateInput ? gateInput.value.trim() : '';
+      if (!email || !email.includes('@')) { if (gateInput) gateInput.style.borderColor = 'var(--red)'; return; }
+      gateBtn.textContent = 'Checking...'; gateBtn.disabled = true;
+      fetch('https://strategic-flow-audit.replit.app/changelog-audit/check-email', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: 'linkedin_audit_gate' })
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        localStorage.setItem('sf_email', email);
+        if (adminEmails.indexOf(email.toLowerCase()) !== -1 || data.allowed) localStorage.setItem('sf_admin', 'true');
+        if (gateOverlay) gateOverlay.style.display = 'none';
+        gateBtn.textContent = 'Run Free Audit'; gateBtn.disabled = false;
+      })
+      .catch(function() {
+        localStorage.setItem('sf_email', email);
+        if (gateOverlay) gateOverlay.style.display = 'none';
+        gateBtn.textContent = 'Run Free Audit'; gateBtn.disabled = false;
+      });
+    };
+  }
+
+  var pb = document.getElementById('paywallBack');
+  if (pb) pb.onclick = function() { document.getElementById('paywallOverlay').style.display = 'none'; };
+})();
+</script>
+
+<!-- MAIN SCRIPT -->
+<script>
+var btn = document.getElementById('runAuditBtn');
+var tabB = document.getElementById('tab-before');
+var tabA = document.getElementById('tab-after');
+
+if (tabB) tabB.onclick = function() { document.getElementById('body').classList.remove('after-view'); tabB.classList.add('active'); tabA.classList.remove('active'); };
+if (tabA) tabA.onclick = function() { document.getElementById('body').classList.add('after-view'); tabA.classList.add('active'); tabB.classList.remove('active'); };
+
+var loginBtn = document.getElementById('loginBtn');
+var startBtn = document.getElementById('startBtn');
+if (loginBtn) loginBtn.onclick = function() { window.location.href = 'https://strategic-flow-audit.replit.app/login.html'; };
+if (startBtn) startBtn.onclick = function() { window.location.href = 'https://strategicflow-tech.github.io/showcase/enterprise.html'; };
+
+function el(id) { return document.getElementById(id); }
+function set(id, val) { var e = el(id); if (e && val !== undefined && val !== null) e.textContent = val; }
+
+if (btn) {
+  btn.onclick = function() {
+    var text = el('manualText').value.trim();
+    var status = el('scraperStatus');
+    var pw = el('progressWrap'); var pb = el('progressBar'); var pp = el('progressPct'); var pl = el('progressLabel');
+
+    if (!text || text.length < 50) { status.textContent = 'Paste a LinkedIn post first.'; status.style.color = 'var(--red)'; return; }
+
+    status.textContent = ''; status.style.color = '';
+    if (pw) pw.style.display = 'block';
+    btn.textContent = 'Analyzing...'; btn.disabled = true;
+
+    var steps = [
+      {pct:10, label:'Reading post structure...', time:200},
+      {pct:25, label:'Analyzing hook strength...', time:600},
+      {pct:40, label:'Checking specificity and proof...', time:1100},
+      {pct:55, label:'Diagnosing audience signal...', time:1700},
+      {pct:70, label:'Running Strategic Flow audit...', time:2300},
+      {pct:82, label:'Rebuilding post copy...', time:2900},
+      {pct:91, label:'Generating fixes...', time:3500},
+      {pct:96, label:'Almost done...', time:4000}
+    ];
+    steps.forEach(function(s) {
+      setTimeout(function() {
+        if (pb) pb.style.width = s.pct+'%';
+        if (pp) pp.textContent = s.pct+'%';
+        if (pl) pl.textContent = s.label;
+      }, s.time);
+    });
+
+    fetch('https://strategic-flow-audit.replit.app/linkedin-audit', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ url: '', text: text })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(a) {
+      if (a.error) throw new Error(a.error);
+
+      if (pb) pb.style.width = '100%';
+      if (pp) pp.textContent = '100%';
+      if (pl) pl.textContent = 'Audit complete';
+      setTimeout(function() { if (pw) pw.style.display = 'none'; }, 700);
+
+      var company = a.company || 'Company';
+      status.textContent = 'Audit complete — ' + company + ' · Score: ' + (a.original_score||'?') + ' to ' + (a.rebuilt_score||'?');
+      status.style.color = 'var(--green)'; status.style.fontStyle = 'normal'; status.style.fontWeight = '600';
+
+      set('score-before', 'Original: '+(a.original_score||'?')+'/10');
+      set('score-after', 'Rebuilt: '+(a.rebuilt_score||'?')+'/10');
+      set('sb-score-before', (a.original_score||'?')+' / 10');
+      set('sb-score-after', (a.rebuilt_score||'?')+' / 10');
+      set('sb-bugs', (a.bugs_found||7)+' / 7');
+      var bb = el('bar-before'); if (bb) bb.style.width = ((a.original_score||2)*10)+'%';
+      var ba = el('bar-after'); if (ba) ba.style.width = ((a.rebuilt_score||9)*10)+'%';
+
+      var logo = el('client-logo');
+      if (logo) logo.innerHTML = company.slice(0,-1)+'<span>'+company.slice(-1)+'</span>';
+      set('bc-home', company); set('bc-current', company+' LinkedIn Post');
+      var initials = company.slice(0,2).toUpperCase();
+      set('avatar-before', initials); set('avatar-after', initials);
+      set('author-before', company+' Page'); set('author-after', company+' Page');
+
+      // Clearbit logo
+      var logoUrl = 'https://logo.clearbit.com/'+company.toLowerCase().replace(/\s+/g,'')+'.com';
+      var img = new Image();
+      img.onload = function() {
+        var cl = el('client-logo');
+        if (cl) cl.innerHTML = '<img src="'+logoUrl+'" style="height:24px;object-fit:contain;vertical-align:middle;margin-right:4px;">'+company.slice(0,-1)+'<span>'+company.slice(-1)+'</span>';
+      };
+      img.src = logoUrl;
+
+      // Post content
+      if (a.original_title) { set('original-title', a.original_title); el('bug1-badge').style.display='inline-flex'; }
+      if (a.rebuilt_title) { set('rebuilt-title', a.rebuilt_title); el('fix1-badge').style.display='inline-flex'; }
+      if (a.original_lead) { var ol = el('original-lead'); if (ol) ol.innerHTML = a.original_lead.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>'); }
+      if (a.rebuilt_lead) { var rl = el('rebuilt-lead'); if (rl) rl.innerHTML = '<p>'+a.rebuilt_lead.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>'; }
+      if (a.cta_before) { set('cta-before', a.cta_before); el('cta-before').style.display='inline-block'; }
+      if (a.cta_after) { set('cta-after', a.cta_after); el('cta-after').style.display='inline-block'; }
+
+      // What Changed
+      if (a.wc && a.wc.length) {
+        a.wc.forEach(function(item, i) {
+          var n = i+1;
+          if (item.fix) set('wc-fix-'+n, item.fix);
+          set('wc-b-'+n, item.before);
+          set('wc-a-'+n, item.after);
+        });
+      }
+
+      // Sidebar
+      if (a.bugs) a.bugs.forEach(function(b,i) { set('bug-title-'+(i+1), b.title); set('bug-body-'+(i+1), b.body); });
+      if (a.fixes) a.fixes.forEach(function(f,i) { set('fix-title-'+(i+1), f.title); set('fix-body-'+(i+1), f.body); });
+
+      if (!localStorage.getItem('sf_admin')) {
+        localStorage.setItem('sf_used_audit_linkedin', 'true');
+        var ub = el('usedBanner'); if (ub) ub.style.display = 'block';
+      }
+      var dg = el('downloadGate'); if (dg) dg.style.display = 'block';
+
+      btn.textContent = 'Run Audit'; btn.disabled = false;
+      document.querySelector('.company-bar').scrollIntoView({behavior:'smooth'});
+    })
+    .catch(function(err) {
+      if (pw) pw.style.display = 'none';
+      status.textContent = 'ERROR: '+err.message;
+      status.style.color = 'var(--red)';
+      btn.textContent = 'Run Audit'; btn.disabled = false;
+    });
+  };
+}
+
+// Download
+var dlBtn = el('downloadBtn');
+if (dlBtn) {
+  dlBtn.onclick = function() {
+    var email = el('downloadEmail').value.trim();
+    var dlStatus = el('downloadStatus');
+    if (!email || !email.includes('@')) { dlStatus.textContent = 'Enter a valid email.'; dlStatus.style.color='var(--red)'; return; }
+    if (localStorage.getItem('sf_admin')==='true') { downloadPage(); return; }
+    dlStatus.textContent = 'Checking access...';
+    fetch('https://strategic-flow-audit.replit.app/changelog-audit/check-email', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({email:email})
+    })
+    .then(function(r){return r.json();})
+    .then(function(d) {
+      if (d.allowed) { dlStatus.textContent='Access confirmed. Downloading...'; dlStatus.style.color='var(--green)'; downloadPage(); }
+      else { dlStatus.innerHTML='Download included in Architecture. <a href="https://strategicflow-tech.github.io/showcase/enterprise.html" target="_blank" style="color:var(--blue);font-weight:700;">Book access</a>'; }
+    })
+    .catch(function() { dlStatus.textContent='Error. Try again.'; dlStatus.style.color='var(--red)'; });
+  };
+}
+
+function downloadPage() {
+  var content = document.documentElement.outerHTML;
+  var blob = new Blob([content], {type:'text/html'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href=url; a.download='strategic-flow-linkedin-audit.html'; a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
