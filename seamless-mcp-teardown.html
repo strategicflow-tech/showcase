@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Seamless.AI MCP Server Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.panel{display:none;}.panel.active{display:block;}
+.bef-topbar{background:#f8f8fa;border-bottom:1px solid #e8e8ec;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-wrap{display:flex;align-items:center;gap:8px;}
+.bef-logo-icon{width:28px;height:28px;}
+.bef-logo-text{font-size:15px;font-weight:700;color:#0a0a1a;}
+.bef-nav{display:flex;gap:16px;align-items:center;}
+.bef-nav-link{font-size:12px;color:#555;cursor:pointer;}
+.bef-nav-cta{font-size:12px;font-weight:600;color:#fff;background:#0077CC;padding:5px 12px;border-radius:4px;cursor:pointer;}
+.bef-breadcrumb{padding:10px 22px;font-size:11px;color:#999;border-bottom:1px solid #f0f0f0;}
+.bef-breadcrumb span{color:#0077CC;cursor:pointer;}
+.bef-hero-img{width:100%;display:block;max-height:260px;object-fit:contain;object-position:center;background:#f0f4f8;}
+.bef-body{padding:28px 22px;background:#fff;}
+.bef-category{font-size:11px;font-weight:600;color:#0077CC;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.bef-h1{font-size:24px;font-weight:700;color:#0a0a1a;line-height:1.3;margin-bottom:14px;}
+.bef-meta{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid #f0f0f0;}
+.bef-meta-icon{width:28px;height:28px;border-radius:50%;}
+.bef-meta-author{font-size:12px;font-weight:600;color:#333;}
+.bef-meta-date{font-size:12px;color:#888;}
+.bef-copy{font-size:14px;color:#333;line-height:1.8;margin-bottom:14px;}
+.bef-h2{font-size:17px;font-weight:700;color:#0a0a1a;margin:24px 0 12px;}
+.bef-h3{font-size:14px;font-weight:700;color:#0a0a1a;margin:18px 0 8px;}
+.bef-list{padding-left:20px;margin-bottom:16px;}
+.bef-list li{font-size:14px;color:#333;line-height:1.8;margin-bottom:3px;}
+.bef-img-mid{width:100%;border-radius:8px;display:block;margin:20px 0;}
+.bef-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.bef-table th{background:#f5f7fa;padding:9px 12px;text-align:left;font-weight:600;color:#333;border:1px solid #e0e4ea;}
+.bef-table td{padding:9px 12px;border:1px solid #e0e4ea;color:#444;vertical-align:top;}
+.bef-table tr:nth-child(even) td{background:#fafbfc;}
+.bef-cta-block{background:#f0f7ff;border:1px solid #c0d8f0;border-radius:8px;padding:20px;margin:24px 0;}
+.bef-cta-title{font-size:15px;font-weight:700;color:#0a0a1a;margin-bottom:6px;}
+.bef-cta-copy{font-size:13px;color:#444;margin-bottom:14px;line-height:1.6;}
+.bef-cta-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.bef-cta-primary{font-size:13px;font-weight:600;color:#fff;background:#0077CC;padding:9px 18px;border-radius:5px;text-decoration:none;display:inline-block;}
+.bef-cta-secondary{font-size:13px;font-weight:600;color:#0077CC;border:1px solid #0077CC;padding:9px 18px;border-radius:5px;text-decoration:none;display:inline-block;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+.after-topbar{background:#0a0a1a;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-wrap{display:flex;align-items:center;gap:8px;}
+.after-logo-icon{width:28px;height:28px;filter:brightness(0) invert(1);}
+.after-logo-text{font-size:15px;font-weight:700;color:#ffffff;}
+.after-nav-cta{font-size:12px;font-weight:600;color:#0a0a1a;background:#1D9E75;padding:6px 14px;border-radius:4px;cursor:pointer;}
+.after-hero{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.after-kicker::before{content:'';display:inline-block;width:20px;height:2px;background:var(--green);}
+.after-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.25;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-section{padding:24px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-h2{font-size:17px;font-weight:600;color:var(--text-primary);margin-bottom:10px;}
+.after-copy{font-size:13.5px;color:var(--text-secondary);line-height:1.75;margin-bottom:12px;}
+.after-contrast-img{width:100%;border-radius:8px;display:block;margin:16px 0;border:1px solid var(--border-light);}
+.workflow-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+.workflow-item{background:var(--bg-secondary);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--text-primary);display:flex;align-items:flex-start;gap:8px;}
+.workflow-item::before{content:'\2192';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;}
+.workflow-secondary{background:transparent;border:1px solid var(--border-light);}
+.after-compare{width:100%;border-collapse:collapse;font-size:12.5px;margin:14px 0;}
+.after-compare th{padding:9px 14px;text-align:left;font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-compare th.bad{background:#fef2f2;color:#991b1b;border-bottom:2px solid #fca5a5;}
+.after-compare th.good{background:var(--green-light);color:var(--green-dark);border-bottom:2px solid var(--green-pale);}
+.after-compare td{padding:10px 14px;vertical-align:top;border-bottom:1px solid var(--border-light);font-size:13px;}
+.after-compare td.bad{color:#555;background:#fffafa;}
+.after-compare td.good{color:#1a3a2e;background:#f6fdf9;}
+.after-compare tr:last-child td{border-bottom:none;}
+.after-prompts{background:var(--bg-secondary);border-radius:10px;padding:18px;margin:14px 0;}
+.prompt-category{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin:14px 0 8px;}
+.prompt-category:first-child{margin-top:0;}
+.prompt-item{background:#fff;border:1px solid var(--border-light);border-radius:6px;padding:9px 12px;font-size:12px;color:var(--text-primary);margin-bottom:6px;font-family:'DM Mono',monospace;line-height:1.5;}
+.step-badge{display:inline-block;background:#0a0a0a;color:var(--green-pale);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.1em;padding:4px 10px;border-radius:4px;margin-bottom:12px;}
+.step-title{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:8px;}
+.step-desc{font-size:13px;color:var(--text-secondary);line-height:1.65;margin-bottom:14px;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--bg-secondary);}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:600px){
+  body{padding:16px 8px;}
+  .toolbar-url{display:none!important;}
+  .bef-nav .bef-nav-link{display:none;}
+  .toggle-btn{padding:6px 12px;font-size:12px;}
+  .page-title{font-size:22px;}
+  .bef-hero-img{max-height:180px;}
+  .bef-topbar{padding:8px 14px;}
+  .bef-body{padding:18px 14px;}
+  .bef-h1{font-size:19px;}
+  .after-hero{padding:24px 16px 20px;}
+  .after-h1{font-size:22px;}
+  .after-section{padding:18px 16px;}
+  .after-topbar{padding:10px 16px;}
+  .notes-body{padding:18px 14px;}
+  .before-issues{margin:0 14px 14px;}
+  .after-footer{padding:14px 16px;}
+  .bef-table{font-size:11px;}
+  .bef-table th,.bef-table td{padding:6px 8px;}
+  .after-compare{font-size:11px;}
+  .after-compare th,.after-compare td{padding:7px 9px;}
+  .after-stat-row{gap:8px;}
+  .stat-card{padding:12px 8px;}
+  .stat-num{font-size:22px;}
+  .workflow-grid{grid-template-columns:1fr;}
+  .notes-grid{grid-template-columns:1fr;}
+  .email-toolbar{padding:8px 12px;flex-wrap:wrap;gap:6px;}
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Seamless.AI MCP Server &mdash; <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow product update teardown &mdash; before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After &mdash; Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original product update</span>
+      </div>
+      <div style="font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;display:none;" class="toolbar-url">seamless.ai/blog/products/seamless-mcp-server</div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="bef-topbar">
+        <div class="bef-logo-wrap">
+          <img class="bef-logo-icon" src="https://cdn.prod.website-files.com/6259ade77cb0136a227528c3/69a8739134f2dc34f92a6889_seamless-bsky-icon.png" alt="Seamless">
+          <span class="bef-logo-text">Seamless.AI</span>
+        </div>
+        <div class="bef-nav">
+          <a href="https://seamless.ai/products/platform-overview" class="bef-nav-link" style="text-decoration:none;">Products</a>
+          <a href="https://seamless.ai/customers/blog" class="bef-nav-link" style="text-decoration:none;">Resources</a>
+          <a href="https://seamless.ai/pricing" class="bef-nav-link" style="text-decoration:none;">Pricing</a>
+          <span class="bef-nav-cta">Sign up free</span>
+        </div>
+      </div>
+      <div class="bef-breadcrumb"><a href="https://seamless.ai/" style="color:#0077CC;text-decoration:none;">Home</a> / <a href="https://seamless.ai/customers/blog" style="color:#0077CC;text-decoration:none;">Blog</a> / <a href="https://seamless.ai/customers/blog/products" style="color:#0077CC;text-decoration:none;">Products</a></div>
+      <img class="bef-hero-img" src="https://cdn.prod.website-files.com/6259ade77cb0136a227528c3/69fb94d24cf7b2de95dd70bb_seamless-mcp-server.jpg" alt="Seamless MCP Server">
+      <div class="bef-body">
+        <div class="bef-category">Products &middot; 7 mins to read</div>
+        <h1 class="bef-h1">Native MCP Server Makes Seamless AI Integration Possible</h1>
+        <div class="bef-meta">
+          <img class="bef-meta-icon" src="https://cdn.prod.website-files.com/6259ade77cb0136a227528c3/69a8739134f2dc34f92a6889_seamless-bsky-icon.png" alt="">
+          <span class="bef-meta-author">Seamless Team</span>
+          <span class="bef-meta-date">May 6, 2026</span>
+        </div>
+        <p class="bef-copy">It&rsquo;s no surprise that sales teams are adopting AI faster than ever. They are using tools like <a href="https://seamless.ai/customers/blog/sales/ai-sales-prospecting-automation" style="color:#0077CC;">Claude, ChatGPT, and other AI assistants</a> to write emails, summarize research, score leads, prepare for calls, and improve productivity.</p>
+        <p class="bef-copy">But, there was still a missing piece in the sales process that no one had solved for yet: reliable and updated sales data.</p>
+        <p class="bef-copy">AI assistants are powerful, but they need accurate context and access to be useful in real revenue workflows. A generic AI model may know how to write a cold email, but it does not automatically know which prospects match your ICP, what contacts have verified emails, where accounts are missing key CRM fields, or when buyers are most relevant for your campaign.</p>
+        <p class="bef-copy">That is why <a href="https://seamless.ai/products/api" style="color:#0077CC;">Seamless built a MCP Server</a>. Seamless MCP Server connects existing AI-powered workflows through the <a href="https://seamless.ai/products/api" style="color:#0077CC;">Seamless API</a> to provide the sales intelligence data that teams need to find contacts, enrich records, build lists, and act on accurate B2B contact information.</p>
+        <h2 class="bef-h2">Connecting Seamless to AI Apps Like Claude Improves Output</h2>
+        <p class="bef-copy">The problem with that workflow is because without connected sales data, these AI assistants often require manual context. A rep has to paste in prospect details, company information, CRM notes, or enrichment data before the AI can produce a useful answer.</p>
+        <p class="bef-copy">That means sales teams can use AI tools more effectively for workflows such as:</p>
+        <ul class="bef-list">
+          <li><a href="https://seamless.ai/products/autopilot" style="color:#0077CC;">Prospect list building</a></li><li>Contact discovery</li><li>Email and phone enrichment</li>
+          <li><a href="https://seamless.ai/customers/blog/technology/automate-b2b-lead-research-prospecting" style="color:#0077CC;">Account research</a></li><li>Territory planning</li><li>Sales messaging</li>
+          <li><a href="https://seamless.ai/products/data-enrichment" style="color:#0077CC;">CRM cleanup</a></li><li><a href="https://seamless.ai/products/buyer-intent-data" style="color:#0077CC;">Lead prioritization</a></li><li>Pre-call preparation</li>
+        </ul>
+        <img class="bef-img-mid" src="https://cdn.prod.website-files.com/6259ade77cb0136a227528c3/69fb9f4a0e9f76dd81de2117_seamless-mcp-integrates-ai-tools.jpg" alt="Seamless MCP integrates AI tools">
+        <h2 class="bef-h2">Seamless MCP Server Benefits</h2>
+        <table class="bef-table">
+          <thead><tr><th>Without Seamless MCP</th><th>With Seamless MCP</th></tr></thead>
+          <tbody>
+            <tr><td>AI gives generic sales advice</td><td>AI can use Seamless-powered sales context</td></tr>
+            <tr><td>Reps manually copy prospect data into AI tools</td><td>Reps can access sales intelligence through connected AI workflows</td></tr>
+            <tr><td>Prospecting requires multiple disconnected tools</td><td>Prospecting can become more conversational and automated</td></tr>
+            <tr><td>Outreach is based on limited context</td><td>Outreach can be informed by contact and company data</td></tr>
+            <tr><td>CRM enrichment requires manual exports and cleanup</td><td>AI workflows can help identify and enrich missing fields</td></tr>
+          </tbody>
+        </table>
+        <h2 class="bef-h2">Examples of Sales Prompts for Prospecting</h2>
+        <h3 class="bef-h3">Prospecting Prompts</h3>
+        <ul class="bef-list">
+          <li>&ldquo;Find sales leaders at B2B SaaS companies with 100-500 employees in North America.&rdquo;</li>
+          <li>&ldquo;Build a list of RevOps leaders at companies using Salesforce.&rdquo;</li>
+        </ul>
+        <h3 class="bef-h3">Enrichment Prompts</h3>
+        <ul class="bef-list">
+          <li>&ldquo;Enrich this list with business emails and direct phone numbers.&rdquo;</li>
+          <li>&ldquo;Identify CRM records that are missing key contact data.&rdquo;</li>
+        </ul>
+        <div class="bef-cta-block">
+          <div class="bef-cta-title">Learn more about Seamless MCP</div>
+          <div class="bef-cta-copy">Learn more about how MCP can help your sales teams by talking with one of our reps today with a demo or sign-up for a free account to get 50 credits to try it now.</div>
+          <div class="bef-cta-btns">
+            <a href="https://seamless.ai/book-a-demo" class="bef-cta-primary">Get a demo</a>
+            <a href="https://login.seamless.ai/register" class="bef-cta-secondary">Sign up free &mdash; 50 credits</a>
+          </div>
+        </div>
+      </div>
+      <div class="before-issues">
+        <div class="issue-item"><span>&#9888;</span> Title is a filing label. &ldquo;Native MCP Server Makes Seamless AI Integration Possible&rdquo; announces a feature. It doesn&rsquo;t name the reader&rsquo;s problem or create a curiosity gap.</div>
+        <div class="issue-item"><span>&#9888;</span> Caveat opener. &ldquo;It&rsquo;s no surprise that sales teams are adopting AI faster than ever&rdquo; &mdash; a truism the reader already knows. The team is the subject. The reader is absent from the first three paragraphs.</div>
+        <div class="issue-item"><span>&#9888;</span> Feature-first language throughout. Every section describes what the product connects and enables. Zero sentences name what the rep stops doing manually or how many minutes they save per prompt.</div>
+        <div class="issue-item"><span>&#9888;</span> Flat workflow hierarchy. Nine workflow types in a flat bullet list with identical visual weight. No signal on where to start or what delivers value fastest.</div>
+        <div class="issue-item"><span>&#9888;</span> Comparison table uses &ldquo;can&rdquo; language. &ldquo;AI can use Seamless-powered context&rdquo; &mdash; modal verbs signal possibility, not proof. The reader needs to know what actually changes.</div>
+        <div class="issue-item"><span>&#9888;</span> Dead-end CTA. &ldquo;Learn more&rdquo; and &ldquo;Get a demo&rdquo; are company-owned actions. No ownership language. No specific promise. No reason to act now vs later.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="after-topbar">
+        <div class="after-logo-wrap">
+          <img class="after-logo-icon" src="https://cdn.prod.website-files.com/6259ade77cb0136a227528c3/69a8739134f2dc34f92a6889_seamless-bsky-icon.png" alt="Seamless">
+          <span class="after-logo-text">Seamless.AI</span>
+        </div>
+        <span class="after-nav-cta">Run my first MCP prompt &rarr;</span>
+      </div>
+      <div class="after-hero">
+        <div class="after-kicker">Products &middot; May 2026</div>
+        <h1 class="after-h1">Your AI assistant is running on guesswork.<br><em>Seamless MCP fixes the data layer.</em></h1>
+        <p class="after-lead">Every time your rep asks Claude or ChatGPT for help, they spend 3&ndash;5 minutes copy-pasting prospect details before getting a useful answer. Seamless MCP eliminates that step &mdash; connecting your AI tools directly to verified B2B data, so every prompt starts with real context.</p>
+        <div class="after-stat-row">
+          <div class="stat-card"><div class="stat-num">3&ndash;5 min</div><div class="stat-label">saved per AI prompt</div></div>
+          <div class="stat-card"><div class="stat-num">9+</div><div class="stat-label">workflow types automated</div></div>
+          <div class="stat-card"><div class="stat-num">6,000+</div><div class="stat-label">tool integrations</div></div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://login.seamless.ai/register" class="after-cta-primary">Run my first MCP prompt &rarr;</a>
+          <span class="after-cta-ghost">50 free credits, no card required</span>
+        </div>
+      </div>
+      <div class="after-section">
+        <div class="after-section-label">The problem it solves</div>
+        <h2 class="after-h2">Before MCP: 3&ndash;5 minutes of manual setup before every prompt</h2>
+        <p class="after-copy">Your reps are already using Claude and ChatGPT every day. The workflow looks like this: rep opens AI tool, types the task, AI asks for context, rep opens three other tabs, copies prospect details, company information, CRM notes, pastes everything in, then finally gets a useful answer.</p>
+        <p class="after-copy">That&rsquo;s 3&ndash;5 minutes of setup per prompt &mdash; repeated every time a rep needs AI to do anything useful with a real account. Seamless MCP removes that entirely.</p>
+        <img class="after-contrast-img" src="https://cdn.prod.website-files.com/6259ade77cb0136a227528c3/69fb9f4a0e9f76dd81de2117_seamless-mcp-integrates-ai-tools.jpg" alt="Seamless MCP integrates AI tools">
+        <table class="after-compare">
+          <thead><tr><th class="bad">Without Seamless MCP</th><th class="good">With Seamless MCP</th></tr></thead>
+          <tbody>
+            <tr><td class="bad">Rep manually copies prospect data into AI before every prompt</td><td class="good">AI pulls verified contact data from Seamless automatically</td></tr>
+            <tr><td class="bad">AI gives generic advice based on whatever the rep remembered to paste</td><td class="good">AI uses live Seamless sales intelligence &mdash; verified emails, firmographics, job data</td></tr>
+            <tr><td class="bad">Prospecting requires 3&ndash;4 disconnected tools open simultaneously</td><td class="good">Prospecting runs from a single conversational prompt in the AI tool the team already uses</td></tr>
+            <tr><td class="bad">Outreach drafted without verified contact or company data</td><td class="good">Outreach informed by real prospect records &mdash; personalisation at scale without manual research</td></tr>
+            <tr><td class="bad">CRM cleanup requires manual exports, formatting, and re-import</td><td class="good">AI identifies and enriches missing CRM fields via natural language &mdash; no exports required</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="after-section" style="background:var(--bg-secondary);">
+        <div class="step-badge">START HERE</div>
+        <div class="step-title">Three workflows that pay off fastest &mdash; then build from there</div>
+        <div class="step-desc">Start with the three workflows where manual research costs your reps the most time. The rest follow once the connection is running.</div>
+        <div class="workflow-grid">
+          <div class="workflow-item">Prospect list building &mdash; find decision-makers matching your ICP without leaving the AI window</div>
+          <div class="workflow-item">Contact enrichment &mdash; fill missing emails, phone numbers, and job titles in seconds</div>
+          <div class="workflow-item">Pre-call preparation &mdash; get a verified brief on any account before picking up the phone</div>
+          <div class="workflow-item workflow-secondary">Also: account research, territory planning, sales messaging, CRM cleanup, lead prioritisation</div>
+        </div>
+      </div>
+      <div class="after-section">
+        <div class="after-section-label">What to say to your AI assistant</div>
+        <h2 class="after-h2">Prompts that work &mdash; with what comes back</h2>
+        <div class="after-prompts">
+          <div class="prompt-category">Prospecting</div>
+          <div class="prompt-item">&ldquo;Find 25 VP-level sales contacts at B2B SaaS companies with 100&ndash;500 employees in North America. Include verified emails and direct dials.&rdquo; &rarr; Returns enriched contact list in under 10 seconds.</div>
+          <div class="prompt-item">&ldquo;Build a list of RevOps leaders at Salesforce customers with 200+ employees. Flag anyone who changed roles in the last 90 days.&rdquo; &rarr; Prioritised list with job-change signals at the top.</div>
+          <div class="prompt-category">Enrichment</div>
+          <div class="prompt-item">&ldquo;Enrich these 50 contacts with verified business emails, direct phone numbers, and current job titles. Flag outdated records.&rdquo; &rarr; Fills gaps without leaving the AI window. A 20-minute manual task in 30 seconds.</div>
+          <div class="prompt-category">Pre-call research</div>
+          <div class="prompt-item">&ldquo;Create a 3-minute pre-call brief for [Company]. Include decision-makers, recent news, likely pain points, and 2 personalised opening angles.&rdquo; &rarr; Call-ready brief before the rep finishes their coffee.</div>
+        </div>
+      </div>
+      <div class="after-footer">
+        <div class="footer-links"><a href="https://seamless.ai/company/about-us" class="footer-link" style="text-decoration:none;">About Seamless.AI</a><a href="https://seamless.ai/products/platform-overview" class="footer-link" style="text-decoration:none;">Products</a><a href="https://seamless.ai/policies/privacy-policy" class="footer-link" style="text-decoration:none;">Privacy Policy</a><a href="https://seamless.ai/policies/terms-of-use" class="footer-link" style="text-decoration:none;">Terms of Use</a></div>
+        <div class="footer-note">&copy; 2026 Seamless.AI</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">&#10060; Before &mdash; Title</div>
+            <p><strong>Native MCP Server Makes Seamless AI Integration Possible</strong><br><br>Announces a feature. Reads like a press release header. No reader problem named, no curiosity gap. A sales rep scanning the blog has no reason to click.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">&#9989; After &mdash; Title</div>
+            <p><strong>Your AI assistant is running on guesswork. Seamless MCP fixes the data layer.</strong><br><br>Names the reader&rsquo;s operational reality in the first clause. Creates a gap they need to close. The reader is the subject &mdash; not the product.</p>
+          </div>
+        </div>
+        <div class="upgrades-title">The 6 structural fixes &mdash; and why they work</div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 &middot; Title: consequence-first over filing label</div>
+          <div class="upgrade-desc">The original could be a folder name. It describes the product, not the reader&rsquo;s problem. The rebuild opens with the reader&rsquo;s operational reality &mdash; AI running on guesswork &mdash; then delivers the solution. Curiosity gap formula: [problem the reader is already experiencing] + [what changes].</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 &middot; Lead: reader-first hook over caveat opener</div>
+          <div class="upgrade-desc">&ldquo;It&rsquo;s no surprise that sales teams are adopting AI&rdquo; is a truism. The rebuild opens with what the rep is physically doing right now: copy-pasting context before every prompt. Naming that specific action earns trust before asking for attention.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 &middot; Language: outcome-first over feature-first</div>
+          <div class="upgrade-desc">The original describes what Seamless MCP connects and enables. It never names what the rep stops doing or how many minutes they recover. The rebuild translates every feature into a specific operational change: &ldquo;A 20-minute manual task in 30 seconds.&rdquo;</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 &middot; Structure: priority hierarchy over flat list</div>
+          <div class="upgrade-desc">Nine workflows in a flat bullet list creates paralysis. The rebuild identifies the three that deliver fastest time-to-value and leads with those. Everything else is listed below, available but not competing for attention. The reader has a clear entry point.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 &middot; Comparison table: proof over possibility</div>
+          <div class="upgrade-desc">The original uses &ldquo;can&rdquo; language throughout &mdash; modal verbs signal potential, not proof. The rebuild removes every &ldquo;can&rdquo; and states the actual change: &ldquo;AI pulls verified contact data automatically.&rdquo; The reader needs to see what happens, not what might happen.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 &middot; CTA: ownership language over company-owned actions</div>
+          <div class="upgrade-desc">&ldquo;Get a demo&rdquo; is an action the company owns. &ldquo;Run my first MCP prompt &rarr;&rdquo; is an action the reader owns. The reader is already inside the task before they click. The specific promise &mdash; 50 free credits, no card &mdash; removes the last objection before it forms.</div>
+        </div>
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method applied to product updates</div>
+          <div class="cta-note-body">Same content. Same product. Different architecture. The reader outcome leads the feature spec. The comparison shows what actually changes, not what might change. The CTA uses ownership language with a specific promise. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to run your own teardown.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow &copy; 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={before:['before-pill','Original product update'],after:['after-pill','Strategic Flow rewrite'],notes:['notes-pill','Analysis']};
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="https://strategicflow-tech.github.io/showcase/" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">&larr; Back to all teardowns</a>
+</div>
+
+</body>
+</html>
