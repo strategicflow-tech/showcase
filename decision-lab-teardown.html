@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — The Decision Lab Newsletter Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#0a4a6e;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:17px;font-weight:700;color:#fff;letter-spacing:-.01em;}
+.bef-logo span{color:#9FE1CB;}
+.bef-body{padding:28px 22px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-hero{width:100%;height:140px;background:linear-gradient(135deg,#0a4a6e 0%,#1a6a9e 100%);border-radius:8px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:8px;line-height:1.3;}
+.bef-kicker{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px;}
+.bef-intro{font-size:14px;color:#555;line-height:1.75;margin-bottom:20px;}
+.bef-section{font-size:15px;font-weight:700;color:#111;margin:20px 0 6px;padding-top:16px;border-top:1px solid #eee;}
+.bef-section-body{font-size:13px;color:#555;line-height:1.65;margin-bottom:4px;}
+.bef-topics{background:#f0f4f8;border-radius:8px;padding:14px 18px;margin:18px 0;}
+.bef-topics-label{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-topic-item{font-size:13px;color:#444;padding:4px 0;border-bottom:1px solid #e0e4e8;}
+.bef-topic-item:last-child{border-bottom:none;}
+.bef-cta-box{margin:24px 0;padding:16px;background:#f0f0f0;border-radius:8px;text-align:center;}
+.bef-cta{display:inline-block;background:#0a4a6e;color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-sign{font-size:13px;color:#555;margin-top:16px;font-style:italic;}
+.bef-divider{border:none;border-top:1px solid #eee;margin:20px 0;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline-sm{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:500px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">The Decision Lab — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original newsletter</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> The Decision Lab Newsletter</div>
+        <div class="meta-row"><span>Type:</span> Monthly Behavioral Science Newsletter</div>
+        <div class="post-title">The game within the game</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">The Decision <span>Lab</span></div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;">Nov 2025</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-hero">[ Sports newsletter header image ]</div>
+        <div class="bef-kicker">Monthly Newsletter · November 2025</div>
+        <div class="bef-h1">The game within the game</div>
+        <div class="bef-intro">The dramatic finale of the World Series has been hard to ignore, whether it left you mourning, celebrating, or confused as to how a single game could possibly take so long. Since TDL is currently working with one of the most iconic sports franchises, we're taking a peek behind the curtains of the world's favorite pastimes.</div>
+
+        <div class="bef-topics">
+          <div class="bef-topics-label">Today's topics</div>
+          <div class="bef-topic-item">🏈 Deep Dive: Trade Secrets</div>
+          <div class="bef-topic-item">🏆 Field Notes: The Cost of Competition</div>
+          <div class="bef-topic-item">🥊 Viewpoints: Calling the Shots</div>
+        </div>
+
+        <div class="bef-section">Deep Dive: Trade Secrets</div>
+        <div class="bef-section-body">Stories sell. With the massive growth of sports analytics, training and hard work is no longer enough to win — you need data. But as teams become more optimized than ever, are we losing the thrill of the game? AI is already influencing in-game strategy. Audiences are increasingly invested in behind-the-scenes management.</div>
+
+        <div class="bef-section">Field Notes: The Cost of Competition</div>
+        <div class="bef-section-body">Professional sports are driven by cold, hard cash, all the way from player development to the final buzzer. Across the industry, the winningest teams are typically those with the most money to spend.</div>
+
+        <div class="bef-section">Viewpoints: Calling the Shots</div>
+        <div class="bef-section-body">Invest in the underrepresented. Debias the selection process. Think about accessibility. Embrace individuality — many fans are no longer loyal to the team, but to a specific person.</div>
+
+        <div class="bef-cta-box">
+          <a href="#" class="bef-cta">Subscribe to our newsletter</a>
+        </div>
+
+        <div class="bef-sign">Until next time, Celine and the couch coaches @ TDL</div>
+        <hr class="bef-divider"/>
+        <div class="bef-footer">© 2025 The Decision Lab · thedecisionlab.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Subject line is wordplay, not a curiosity gap. "The game within the game" announces the theme — it does not give the reader a reason to open. No consequence named.</div>
+        <div class="issue-item"><span>⚠</span> Hook is 2 paragraphs of context before any insight appears. Reader still has no reason to care by the end of paragraph 1.</div>
+        <div class="issue-item"><span>⚠</span> Three sections at equal visual weight every edition. Reader cannot identify the most important insight. When everything is equal, nothing gets read.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Subscribe to our newsletter" is passive, carries no consequence, and is buried after all content. A reader already engaged has no meaningful next step.</div>
+        <div class="issue-item"><span>⚠</span> Zero proprietary claims. All evidence is external links. The single strongest authority signal — "TDL is working with one of the most iconic sports franchises" — is buried in the intro and never leveraged.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> The Decision Lab Newsletter</div>
+        <div class="meta-row"><span>Type:</span> Monthly Behavioral Science Newsletter — Rebuilt</div>
+        <div class="post-title">The decisions behind the decisions — how franchises win before the first whistle</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">The Decision Lab</div>
+          <div class="after-tagline-sm">Behavioral Science Applied · Nov 2025</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">Selection · Strategy · Bias</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Sports Decision Science · TDL Client Work · Applied Research</div>
+        <div class="after-h1">The best franchises make their most important decisions <em>before the season starts.</em></div>
+        <div class="after-lead">Most teams are still reacting when the season ends. The gap between them is not budget. It is not talent. It is the quality of the decision-making architecture behind every trade, selection, and strategy call. TDL is currently working with one of the most iconic franchises in professional sports — here is what we found.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">3</div>
+            <div class="stat-label">reader profiles this edition</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2</div>
+            <div class="stat-label">Nobel prizes in this field</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-label">finding that changes how you hire</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="#" class="after-cta-primary">Read the full breakdown →</a>
+          <span class="after-cta-ghost">See all TDL research</span>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">If you manage people and selection decisions</div>
+        <div class="after-section-title">How bias enters the scouting process — and the structural fix.</div>
+        <div class="after-section-body">The "right fit" evaluation is where most bias lives. Across professional sports, AI tools are now being used to surface candidates coaches would have filtered out based on subjective criteria. The same logic applies to any organization making high-stakes selection calls under time pressure. The bias is not in the decision — it is in the inputs the decision is built on.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">If you work in sports or performance industries</div>
+        <div class="after-section-title">The moneyball era is over. What the next competitive edge looks like.</div>
+        <div class="after-section-body">Data-driven scouting is now table stakes. The teams pulling ahead are not running better models — they are building better decision-making processes around those models. Knowing the data is not enough if the culture defaults to gut instinct when the stakes are highest. The edge is behavioral, not analytical.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">If you study behavioral science applied to organizations</div>
+        <div class="after-section-title">Why data-driven decisions still fail — and what in-group bias has to do with it.</div>
+        <div class="after-section-body">In-group bias shapes how we perceive performance and potential. Sports franchises are a controlled environment for studying this — decisions are visible, outcomes are measurable, and the stakes are high enough that the bias is costly. What we learn from locker rooms applies directly to boardrooms.</div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <span class="footer-link">About TDL</span>
+          <span class="footer-link">Research</span>
+          <span class="footer-link">Consulting</span>
+        </div>
+        <div class="footer-note">© 2025 The Decision Lab</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Subject:</strong> The game within the game<br><br>Clever wordplay. Announces the theme. No curiosity gap. No consequence for the reader. A busy subscriber has no reason to open this over the 12 other emails in their inbox.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Subject:</strong> The decisions behind the decisions — how franchises win before the first whistle<br><br>Names the insight. Creates a gap the reader must open to close. Signals the content goes deeper than the obvious sports story.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 5 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Subject line: curiosity gap over wordplay</div>
+          <div class="upgrade-desc">Wordplay signals personality. A curiosity gap signals value. The rebuilt subject names an insight the reader does not yet have — which is the only reason anyone opens a newsletter they are not already deeply loyal to.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Hook: consequence before context</div>
+          <div class="upgrade-desc">The original opens with World Series jokes — two paragraphs before the central idea appears. The rebuild names the consequence in line 1. Reader knows in five seconds whether this edition is for them.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Structure: three reader profiles instead of three equal sections</div>
+          <div class="upgrade-desc">Deep Dive / Field Notes / Viewpoints is an internal editorial structure, not a reader-facing one. The rebuild replaces it with three situations: people managers, sports industry professionals, behavioral science practitioners. Each reader self-selects in five seconds.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · CTA moved above the fold with ownership language</div>
+          <div class="upgrade-desc">"Subscribe to our newsletter" at the bottom is the lowest-converting CTA position possible. The rebuild places "Read the full breakdown" immediately after the hook and stat cards — before the reader has scrolled through content they may not all read.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Proprietary claim hardcoded in the hook</div>
+          <div class="upgrade-desc">"TDL is working with one of the most iconic franchises in professional sports" is buried at the end of the original intro. The rebuild surfaces it in the lead paragraph — it is the single strongest authority signal in the newsletter and it was invisible.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Every word earns its place. The reader's curiosity leads the editorial. The CTA appears before the reader needs to scroll. The proof is specific and owned, not borrowed. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original newsletter'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
