@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — QuickSpark Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#999}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#666;text-decoration:none}.tb-back:hover{color:#aaa}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#777}
+.byline{font-family:var(--mono);font-size:11px;color:#555;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#666;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#555;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#aaa}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+/* source card */
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+/* QS nav */
+.qs-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.qs-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#e85c1a;letter-spacing:-.2px}
+.qs-links{font-family:var(--mono);font-size:10px;color:#666;display:flex;gap:14px;flex-wrap:wrap}
+.qs-cta-p{background:#e85c1a;color:#fff;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:700;text-decoration:none;display:inline-block}
+.qs-cta-s{background:#fff;color:#e85c1a;border:2px solid #e85c1a;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:700;text-decoration:none;display:inline-block;margin-right:6px}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:4px;font-family:var(--sans)}
+.oh1b{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#e85c1a;margin-bottom:12px;font-family:var(--sans)}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+
+/* two audience block */
+.audience-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+@media(max-width:480px){.audience-row{grid-template-columns:1fr}}
+.aud-card{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:14px;text-align:center}
+.aud-card .at{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:5px}
+.aud-card .ah{font-weight:700;font-size:13px;color:#0f0f0e;margin-bottom:4px}
+.aud-card .ac{font-size:12px;color:#555;line-height:1.5}
+.aud-cta{display:inline-block;margin-top:8px;background:#e85c1a;color:#fff;border-radius:4px;padding:5px 12px;font-size:11px;font-weight:700;text-decoration:none}
+
+/* feature trio */
+.feat-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}
+@media(max-width:520px){.feat-trio{grid-template-columns:1fr}}
+.feat-box{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:14px}
+.feat-box .fh{font-weight:700;font-size:13px;color:#0f0f0e;margin-bottom:4px}
+.feat-box .fb{font-size:12px;color:#555;line-height:1.5}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+/* rebuilt card */
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#555}.rb-meta strong{color:#aaa}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#e85c1a;letter-spacing:-.2px}
+.rb-nav-links{font-family:var(--mono);font-size:10px;color:#555}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#666}
+.rb-sub{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:22px}
+
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ccc;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#555;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#aaa;line-height:1.65}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#444;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* what changed */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;word-break:break-word}
+.ubody{font-size:13px;color:#444;line-height:1.7;word-break:break-word}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#aaa;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#444}
+.footer a{color:#666;text-decoration:none}.footer a:hover{color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>quickspark.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      QuickSpark has two buyers — equipment vendors and equipment buyers — and speaks to neither one
+      with a consequence. The hero is a mission statement. Both CTAs appear side by side with equal weight.
+      The vendor's real problem — losing a sale because the customer couldn't get financing — is
+      never named. Neither is the buyer's — needing equipment now but being turned away by a bank.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · quickspark.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: quickspark.com &nbsp;·&nbsp; Type: Fintech Homepage &nbsp;·&nbsp; Target: Equipment Vendors + Equipment Buyers (SMB)</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> quickspark.com &nbsp;·&nbsp; <strong>Type:</strong> Fintech Homepage</div>
+        <div class="src-meta">B2B Fintech · Equipment Finance · May 2026</div>
+      </div>
+
+      <div class="qs-nav">
+        <div class="qs-logo">QuickSpark</div>
+        <div class="qs-links">
+          <span>Equipment Sellers</span>
+          <span>Equipment Buyers</span>
+          <span>Working Capital</span>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">Equipment Financing Solutions</div>
+        <div class="oh1b">For America's Small Businesses</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Hero has two lines stacked — "Equipment Financing Solutions" and "For America's Small Businesses." The first is a category label. The second is a market definition. Neither names a consequence for the two buyers who land on this page: the vendor who just lost a sale because financing fell through, or the business owner who was told no by their bank.
+        </div>
+
+        <!-- Two CTAs equal weight -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 20px">
+          <a href="https://quickspark.com/equipment-seller/" class="qs-cta-s" target="_blank" rel="noopener">BECOME A PARTNER</a>
+          <a href="https://quickspark.com/equipment-buyers-application/" class="qs-cta-p" target="_blank" rel="noopener">APPLY FOR FINANCING</a>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Two CTAs at equal visual weight — "BECOME A PARTNER" and "APPLY FOR FINANCING" — appear side by side with no hierarchy. The vendor and the buyer have completely different problems and completely different next steps. Presenting both with equal weight forces every visitor to first identify which category they belong to before they can take any action. This is friction, not clarity.
+        </div>
+
+        <div class="oh2">Who is QuickSpark?</div>
+        <div class="op">QuickSpark is a leading FinTech company that helps businesses grow with innovative, technology-driven, simple financing solutions. We've helped thousands of businesses obtain the financing they need for their equipment purchases and are proud to be their trusted source for equipment financing.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Who is QuickSpark?" as a section header forces the visitor to read a company description before understanding what the product does for them. The answer — "leading FinTech company... innovative, technology-driven, simple financing solutions" — is generic. "Thousands of businesses" is social proof with no specificity. No industry, no dollar amount, no approval rate, no time-to-funding.
+        </div>
+
+        <!-- Two audience sections equal weight -->
+        <div class="audience-row">
+          <div class="aud-card">
+            <div class="at">For Vendors</div>
+            <div class="ah">We Give You the Power to Offer Business Financing to Your Customers</div>
+            <div class="ac">Apply today and we will do the heavy lifting so your customers can finance their equipment.</div>
+            <a href="https://quickspark.com/equipment-seller/" class="aud-cta" target="_blank" rel="noopener">LEARN MORE</a>
+          </div>
+          <div class="aud-card">
+            <div class="at">For Buyers</div>
+            <div class="ah">Ignite Your Dream With A Spark</div>
+            <div class="ac">Take your business to the next level with QuickSpark. We are committed to your success.</div>
+            <a href="https://quickspark.com/equipment-buyers/" class="aud-cta" target="_blank" rel="noopener">LEARN MORE</a>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Ignite Your Dream With A Spark" — the buyer-facing headline is motivational copy, not a consequence. A small business owner who needs a CNC machine, a refrigeration unit, or a delivery vehicle is not searching for inspiration. They are searching for approval. Their problem is not ambition — it's access. The headline speaks to neither.
+        </div>
+
+        <!-- Feature trio -->
+        <div class="feat-trio">
+          <div class="feat-box">
+            <div class="fh">Quick Application Process</div>
+            <div class="fb">QuickSpark partners with multiple funding sources to find the best financing solution.</div>
+          </div>
+          <div class="feat-box">
+            <div class="fh">Equipment On Your Terms</div>
+            <div class="fb">We understand every situation is different. We develop the perfect financing plan for each need.</div>
+          </div>
+          <div class="feat-box">
+            <div class="fh">We're Here For You</div>
+            <div class="fb">Our goal is to empower equipment retailers and customers by eliminating financial obstacles.</div>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Three feature boxes — "Quick Application Process," "Equipment On Your Terms," "We're Here For You" — all describe QuickSpark's approach, not the buyer's outcome. "Quick" is unquantified. "On Your Terms" is vague. "We're Here For You" is filler. None of these answer the two questions every vendor and buyer has: how fast is approval, and what happens if my credit isn't perfect?
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">quickspark.com &nbsp;·&nbsp; Fintech Homepage — Rebuilt &nbsp;·&nbsp; Two audiences, one consequence each</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>quickspark.com</strong> &nbsp;·&nbsp; Equipment Finance · B2B Fintech · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">QuickSpark</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="rb-nav-links">Vendors &nbsp; Buyers &nbsp; Working Capital</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">Get approved in minutes</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">Your customer wants the equipment.<br><em>Financing is the only thing stopping the sale.</em></div>
+
+        <div class="rb-sub">
+          QuickSpark gives your customers an instant financing option at the point of sale — so you stop losing orders to budget constraints you can't control. No bank. No long forms. Approvals in minutes, including startups and challenged credit.
+        </div>
+
+        <div class="proof-strip">
+          <div class="ps"><div class="n">50+</div><div class="l">Industries<br>served</div></div>
+          <div class="ps"><div class="n">3,500+</div><div class="l">Vendor<br>partners</div></div>
+          <div class="ps"><div class="n">$1K+</div><div class="l">Minimum<br>financing</div></div>
+          <div class="ps"><div class="n">60mo</div><div class="l">Max repayment<br>term</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">Add financing to my store</a>
+          <a href="#" class="cta-s">Get equipment financing</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">For equipment vendors — primary</div>
+          <div class="rsec-h">Stop losing sales at the checkout because your customer can't pay upfront</div>
+          <div class="rsec-hl">Add a financing option. Turn the "I can't afford it" into a monthly payment they can.</div>
+          <div class="rsec-p">QuickSpark integrates directly into your website or e-commerce workflow. Your customer sees a financing option at the point of sale, applies in minutes, and gets an instant decision. You get paid. They get the equipment. The sale that was about to walk out the door doesn't.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">For equipment buyers — supporting</div>
+          <div class="rsec-h">Your bank said no. We look at more than your credit score.</div>
+          <div class="rsec-hl">Startups, challenged credit, new businesses — we approve when banks won't.</div>
+          <div class="rsec-p">QuickSpark works with multiple funding sources to find the best match for your situation. Apply online in minutes. Get a decision fast. Equipment financed from $1,000 to well above — with repayment terms from 12 to 60 months built around your cash flow, not a bank's risk model.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">How it works</div>
+          <div class="rsec-h">3 steps. Minutes, not weeks.</div>
+          <div class="rsec-hl">Apply online. Get a decision. Equipment ships.</div>
+          <div class="rsec-p">No lengthy bank relationships. No collateral requirements that kill small business deals. QuickSpark's automated process matches your application to the right funder instantly — so the equipment your business needs doesn't sit waiting on a credit committee.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>quickspark.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">Equipment Financing Solutions for America's Small Businesses</div>
+        <div class="ba-n">Category label plus market definition. No consequence named for either audience. Could belong to any equipment finance company.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">Your customer wants the equipment. Financing is the only thing stopping the sale.</div>
+        <div class="ba-n">Names the vendor's exact moment of loss. The sale is already there — QuickSpark removes the blocker. Immediate recognition for any vendor who has watched a deal fall apart at checkout.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: name the vendor's lost sale, not the product category</div>
+        <div class="ubody">QuickSpark has two audiences, but the vendor is the primary growth lever — they bring repeat volume, embed the product into their store, and generate the buyer pipeline. The vendor's problem is not "I need a financing solution." It is "I just watched a $12,000 sale disappear because the customer couldn't pay upfront and my bank doesn't offer point-of-sale financing." That is the consequence to name. "Equipment Financing Solutions for America's Small Businesses" could be the homepage of any one of QuickSpark's 30 competitors. The rebuilt title belongs only to a company that sits between the vendor and the lost sale.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">Two equal CTAs replaced with one primary + one secondary</div>
+        <div class="ubody">"BECOME A PARTNER" and "APPLY FOR FINANCING" at equal weight forces visitors to categorise themselves before they can act. This is a navigation problem disguised as a CTA. The rebuild leads with the vendor CTA — "Add financing to my store" — as primary, because vendors are the growth driver and their conversion has compounding value. The buyer CTA — "Get equipment financing" — becomes secondary. Each is specific enough that a visitor immediately knows which one is theirs. No forced decision, no cognitive friction.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">Proof strip with real numbers replaces "thousands of businesses"</div>
+        <div class="ubody">"We've helped thousands of businesses" is the weakest form of social proof — unverifiable, unspecific, and used by every competitor. QuickSpark's actual numbers are specific and credible: 50+ industries, 3,500+ vendor partners, financing from $1,000, repayment terms to 60 months. These four facts answer the four questions every prospect has before they engage: does this work in my industry, do others like me use it, can they handle my deal size, and will the terms fit my cash flow? Specific proof converts skeptics. Generic claims don't.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">Buyer headline: replace inspiration with access</div>
+        <div class="ubody">"Ignite Your Dream With A Spark" is motivational copy. A small business owner who needs a refrigeration unit, a piece of medical equipment, or a commercial vehicle is not looking for inspiration — they are looking for a yes. Their blocker is access, not ambition. The rebuilt buyer headline — "Your bank said no. We look at more than your credit score." — names the exact situation that drives a buyer to search for alternative financing. It also immediately signals QuickSpark's primary differentiation from banks: broader approval criteria, including startups and challenged credit.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">Feature boxes: outcome language replaces approach language</div>
+        <div class="ubody">"Quick Application Process," "Equipment On Your Terms," "We're Here For You" — all three describe how QuickSpark operates, not what changes for the buyer. "Quick" means nothing without a number. "On Your Terms" is a promise without a mechanism. "We're Here For You" is filler that every service company uses. The rebuild replaces all three with sections that name the outcome: the vendor stops losing sales at checkout, the buyer gets approved when banks say no, the process takes minutes not weeks. Every claim is anchored to a consequence the buyer already feels.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. Two audiences need two clear consequence statements — not one generic mission claim. Proof is specific or it isn't proof. CTAs have hierarchy — the growth driver leads. Inspiration doesn't convert. Access does.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
