@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Alt21 Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── topbar ── */
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#999}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#666;text-decoration:none}.tb-back:hover{color:#aaa}
+
+/* ── hero ── */
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#777}
+.byline{font-family:var(--mono);font-size:11px;color:#555;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#666;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+/* ── tabs ── */
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#555;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#aaa}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+/* ── panels ── */
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+/* ── SOURCE CARD (Before) — fon alb ── */
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+/* Alt21 nav CSS */
+.a21-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.a21-logo{font-family:var(--sans);font-size:15px;font-weight:800;color:#0f0f0e;letter-spacing:-.5px}
+.a21-logo span{color:#555;font-weight:400;font-size:13px;margin-left:4px}
+.a21-cta-nav{background:#0f0f0e;color:#fff;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:600;text-decoration:none;display:inline-block}
+.a21-cta-ghost{border:1px solid #ccc;color:#444;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:500;text-decoration:none;display:inline-block;margin-right:6px}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:10px;font-family:var(--sans)}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.o-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.o-cta-p{background:#0f0f0e;color:#fff;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;display:inline-block}
+.o-cta-s{border:1px solid #ccc;color:#444;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:500;text-decoration:none;display:inline-block}
+
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+
+/* comparison table in Before */
+.comp-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:18px;margin:16px 0;overflow-x:auto}
+.comp-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:10px}
+.comp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+@media(max-width:480px){.comp-row{grid-template-columns:1fr}}
+.comp-bad{background:#fff;border:1px solid var(--redbr);border-radius:6px;padding:10px 12px;font-size:12px;color:#444;line-height:1.5}
+.comp-good{background:var(--greenbg);border:1px solid var(--greenbr);border-radius:6px;padding:10px 12px;font-size:12px;color:#1a6640;line-height:1.5}
+.comp-bad strong,.comp-good strong{display:block;font-size:10px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.comp-bad strong{color:var(--red)}.comp-good strong{color:var(--green)}
+
+/* bug note */
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+/* ── REBUILT CARD (After) — fond închis ── */
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#555}.rb-meta strong{color:#aaa}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.rb-logo span{color:#666;font-weight:400;font-size:12px}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#666}
+.rb-sub{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:10px}
+.rb-line{font-size:13px;font-weight:600;color:var(--neon);margin-bottom:22px;line-height:1.4;font-style:italic}
+
+/* proof strip */
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ccc;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+
+/* competitor contrast in After */
+.rb-comp{background:#1a1a18;border:1px solid #2a2a28;border-radius:8px;padding:16px;margin:18px 0}
+.rb-comp-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#555;margin-bottom:12px}
+.rb-comp-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+@media(max-width:480px){.rb-comp-row{grid-template-columns:1fr}}
+.rb-comp-bad{background:#1f1715;border:1px solid #3a2020;border-radius:5px;padding:10px;font-size:11px;color:#888;line-height:1.5}
+.rb-comp-bad strong{display:block;font-size:9px;font-family:var(--mono);color:#c8341f;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.rb-comp-good{background:#151f17;border:1px solid #1a3a22;border-radius:5px;padding:10px;font-size:11px;color:#aaa;line-height:1.5}
+.rb-comp-good strong{display:block;font-size:9px;font-family:var(--mono);color:var(--neon);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#555;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#aaa;line-height:1.65}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#444;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* ── WHAT CHANGED ── */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;word-break:break-word}
+.ubody{font-size:13px;color:#444;line-height:1.7;word-break:break-word}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#aaa;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#444}
+.footer a{color:#666;text-decoration:none}.footer a:hover{color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>alt21.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      Alt21's strongest competitive line lives in a blog post written by their VP of Marketing.
+      It doesn't appear once on the homepage. A finance director landing here today
+      leaves without understanding why their bank is the problem — because nobody told them.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · alt21.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: alt21.com &nbsp;·&nbsp; Type: Fintech SaaS Homepage &nbsp;·&nbsp; Target: Finance Directors, CFOs, growing UK businesses</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> alt21.com &nbsp;·&nbsp; <strong>Type:</strong> Fintech Homepage</div>
+        <div class="src-meta">B2B Fintech · May 2026</div>
+      </div>
+
+      <div class="a21-nav">
+        <div class="a21-logo">alt·21 <span>Business FX &amp; Hedging</span></div>
+        <div>
+          <a href="#" class="a21-cta-ghost">Log in</a>
+          <a href="#" class="a21-cta-nav">Get Started</a>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">The finance platform your bank should have built.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Title is a positioning claim about the bank, not a consequence for the buyer. "Should have built" names the competitor's failure — but it doesn't name what the buyer is losing right now because of that failure. A finance director reading this knows their bank is frustrating. They don't yet know their bank is costing them money they can't see.
+        </div>
+
+        <div class="osub">FX execution, rate hedging and full pricing transparency — one platform built for growing businesses operating internationally.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Subheadline is a feature list at equal weight: FX execution, rate hedging, pricing transparency. The buyer's actual blocker — hidden margin embedded in every rate — is not named. "Full pricing transparency" appears as item three in a list. It is the entire value proposition. It should be the opening consequence.
+        </div>
+
+        <div class="o-ctas">
+          <a href="#" class="o-cta-p">Get started</a>
+          <a href="#" class="o-cta-s">Speak to an expert</a>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Get started" is neutral. "Speak to an expert" is a sales escalation. Neither CTA names what the buyer gets. A finance director who just realised their bank has been embedding margin in every rate has one question: what am I actually paying? The CTA should answer that, not open an account form.
+        </div>
+
+        <!-- Comparison section as in original -->
+        <div class="oh2">Why we exist</div>
+        <div class="op">The tools to manage money across currencies have always existed. They just haven't been built for you. For too long, the choice has been between a bank that makes it opaque, a broker that makes it complicated, or a payments app that doesn't go far enough.</div>
+
+        <div class="comp-box">
+          <div class="comp-label">Your bank · Your broker · Your payments app · vs Alt21</div>
+          <div class="comp-row">
+            <div class="comp-bad">
+              <strong>❌ Your bank</strong>
+              Rates bundled with embedded margin. You see one number. The cost is never disclosed.
+            </div>
+            <div class="comp-bad">
+              <strong>❌ Your broker</strong>
+              Built for relationships, not platforms. You need to call to get a rate, every time.
+            </div>
+          </div>
+          <div class="comp-row">
+            <div class="comp-bad">
+              <strong>❌ Payments app</strong>
+              Built for consumers. Useful for spot — not designed for businesses with real FX exposure.
+            </div>
+            <div class="comp-good">
+              <strong>✅ Alt21</strong>
+              Platform-first. Full pricing visibility before every trade. Experts available when the trade matters.
+            </div>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          The comparison table is the right structure but it appears below the fold, after "Why we exist" copy that repeats the same point twice. The sharpest line in the entire table — "The margin isn't a fee you approve — it's built into the rate before you see it" — does not appear here at all. It lives in a blog post. This is the sentence that would make a finance director stop and recalculate every FX transaction they've ever made.
+        </div>
+
+        <div class="oh2">Free to get started</div>
+        <div class="op">See exactly what you'd pay. Open an account in 10 minutes. No subscription fee. No commitment. No credit card.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Free to get started" is a feature statement at the bottom. The zero-friction opening — no subscription, no commitment — is the strongest conversion argument for a sceptical finance team. It belongs in the hero zone next to the primary CTA, not at the bottom as a section header.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">alt21.com &nbsp;·&nbsp; Fintech Homepage — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>alt21.com</strong> &nbsp;·&nbsp; Fintech Homepage · B2B · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">alt·21 <span>Business FX &amp; Hedging</span></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span style="font-family:var(--mono);font-size:10px;color:#555">Payments &nbsp; Hedging &nbsp; About</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">See what my FX is really costing me</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">Your bank built their margin<br><em>into your rate. You just can't see it.</em></div>
+
+        <div class="rb-sub">
+          Every time you convert currency, your bank takes a spread embedded in the rate itself — not as a fee, not as a line item. You approve one number. The cost is invisible. Alt21 shows you the margin before you confirm every trade.
+        </div>
+
+        <div class="rb-line">"The margin isn't a fee you approve — it's built into the rate before you see it."</div>
+
+        <!-- proof strip -->
+        <div class="proof-strip">
+          <div class="ps"><div class="n">0.2–0.5%</div><div class="l">Avg bank spread<br>per transaction</div></div>
+          <div class="ps"><div class="n">1,200+</div><div class="l">Bank &amp; accounting<br>integrations</div></div>
+          <div class="ps"><div class="n">10 min</div><div class="l">Account open<br>no commitment</div></div>
+          <div class="ps"><div class="n">£0</div><div class="l">Subscription fee<br>to get started</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">See what my FX is really costing me</a>
+          <a href="#" class="cta-s">Price a trade first</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <!-- competitor contrast rebuilt -->
+        <div class="rb-comp">
+          <div class="rb-comp-label">Three tools that weren't built for this problem</div>
+          <div class="rb-comp-row">
+            <div class="rb-comp-bad">
+              <strong>❌ Your bank</strong>
+              Margin embedded in the rate. Not disclosed. Not negotiable. You just pay it.
+            </div>
+            <div class="rb-comp-bad">
+              <strong>❌ Your broker</strong>
+              Call to get a rate every time. No platform. No self-serve. No accounting integrations.
+            </div>
+            <div class="rb-comp-bad">
+              <strong>❌ Payments app</strong>
+              Spot only. No forward contracts. No options. No hedging for real FX exposure.
+            </div>
+          </div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Primary differentiator — leads</div>
+          <div class="rsec-h">Full cost visibility before every trade</div>
+          <div class="rsec-hl">You see the rate, the spread, and the all-in cost. Every time. Before you confirm.</div>
+          <div class="rsec-p">Your bank shows you one number. The margin is already in it. Alt21 separates the mid-market rate from the spread so your finance team can report, benchmark, and negotiate what they're actually paying — not what they're told they're paying.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 02</div>
+          <div class="rsec-h">Spot, forwards and options — in the platform, not on a call</div>
+          <div class="rsec-hl">No relationship manager required. No phone call to get a rate.</div>
+          <div class="rsec-p">Forward contracts, FX options, and limit orders — self-serve. 1,200+ bank and accounting integrations. Xero, QuickBooks, NetSuite. API available. The infrastructure your bank charges enterprise rates for, available to growing businesses on day one.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 03</div>
+          <div class="rsec-h">Open in 10 minutes. No subscription. No commitment.</div>
+          <div class="rsec-hl">No credit card. No contract. Price a trade before you decide.</div>
+          <div class="rsec-p">The friction your bank uses to keep you in place — long onboarding, relationship reviews, account minimums — is gone. Alt21 opens in 10 minutes. You can price a live trade before committing to anything.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>alt21.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">The finance platform your bank should have built.</div>
+        <div class="ba-n">Positions against the bank but names their failure, not the buyer's loss. A claim, not a consequence.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">Your bank built their margin into your rate. You just can't see it.</div>
+        <div class="ba-n">Names the exact mechanism of loss. Every finance director who has ever approved an FX conversion immediately understands what this means for their numbers.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: name the buyer's loss, not the bank's failure</div>
+        <div class="ubody">"The finance platform your bank should have built" is a competitive positioning statement. It tells the buyer that banks failed — which they already know. What it doesn't tell them is that the failure is currently costing them money on every transaction they approve. "Your bank built their margin into your rate. You just can't see it." names the specific mechanism of loss that a finance director can trace back to their last FX report. Recognition is the trigger. The original headline generates agreement. The rebuilt headline generates urgency.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">The buried blog line belongs in the hero</div>
+        <div class="ubody">"The margin isn't a fee you approve — it's built into the rate before you see it." This sentence appears in a blog post written by Alt21's own VP of Marketing. It is the clearest, most specific, most competitive statement in all of Alt21's content. It names exactly how the bank extracts money without disclosure. It does not appear once on the homepage. Moving it verbatim into the hero — as a pull quote below the subheadline — costs nothing and immediately sharpens the competitive position for every visitor who has ever looked at an FX confirmation and accepted the number they were given.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">CTAs: name what the buyer gets, not the action they take</div>
+        <div class="ubody">"Get started" and "Speak to an expert" tell the buyer what to do. "See what my FX is really costing me" and "Price a trade first" tell the buyer what they get. Ownership language — where the CTA is about the buyer's outcome, not Alt21's process — converts higher because the button feels relevant, not transactional. The secondary CTA "Price a trade first" directly removes the primary objection: commitment. A finance director who has been with the same bank for 10 years is not ready to "get started." They are ready to run a number.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">Proof strip above the fold — before any explanation</div>
+        <div class="ubody">0.2–0.5% average bank spread, 1,200+ integrations, 10-minute account open, £0 subscription. These four facts answer the four questions every sceptical finance director has before they engage: how much is this actually costing me, will this connect to my systems, how long will this take, and what does this cost to try. In the original, none of these appear before the fold. The "Free to get started" message is buried at the bottom as a section header. Moving proof above the fold converts the sceptic before they start scrolling through feature explanation.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">Competitor contrast restructured — three failures, one solution</div>
+        <div class="ubody">The original comparison table has four columns: bank, broker, payments app, Alt21. The layout presents Alt21 as the fourth option rather than the answer to three specific failures. The rebuild shows three separate failure cards — each naming a specific mechanism of failure — followed by Alt21 as the resolution. The structure changes the reader's cognitive path: they identify their current situation in one of the three failure cards, then move to the solution. It's not a comparison. It's a diagnosis and a fix.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The reader's consequence leads — not a claim about the competition. The strongest line in your content belongs in the hero, not in a blog post nobody reads before deciding. Proof appears before explanation. The CTA names what the buyer gets, not what they have to do.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
