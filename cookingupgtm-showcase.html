@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Cooking Up GTM Newsletter Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#bbb}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#999;text-decoration:none}.tb-back:hover{color:#fff}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#aaa}
+.byline{font-family:var(--mono);font-size:11px;color:#aaa;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#aaa;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#aaa;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#aaa}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+/* email card */
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+/* email fields */
+.email-fields{padding:14px 18px;border-bottom:1px solid var(--border);background:#fafaf8}
+.ef{display:flex;gap:8px;margin-bottom:6px;font-size:12px}
+.ef:last-child{margin-bottom:0}
+.ef-label{font-family:var(--mono);font-size:10px;color:var(--gray);min-width:80px;flex-shrink:0;padding-top:1px}
+.ef-val{color:var(--ink);line-height:1.5}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(18px,3vw,22px);font-weight:700;line-height:1.2;color:#0f0f0e;margin-bottom:6px;font-family:var(--sans)}
+.oh1-sub{font-size:13px;color:#888;font-style:italic;margin-bottom:16px}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:10px}
+.oh2{font-size:14px;font-weight:700;margin:18px 0 5px;color:#0f0f0e}
+
+/* pull quote */
+.pq{border-left:3px solid #d8d6cf;padding:10px 14px;margin:14px 0;font-size:13px;font-style:italic;color:#555;background:var(--bg2);border-radius:0 5px 5px 0;line-height:1.65}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+/* rebuilt email */
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#999}.rb-meta strong{color:#fff}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+
+.rb-fields{padding:14px 20px;border-bottom:1px solid #1e1e1c;background:#0a0a09}
+.rbf{display:flex;gap:8px;margin-bottom:6px;font-size:12px}
+.rbf:last-child{margin-bottom:0}
+.rbf-label{font-family:var(--mono);font-size:10px;color:#aaa;min-width:80px;flex-shrink:0;padding-top:1px}
+.rbf-val{color:#ccc;line-height:1.5}
+.rbf-val.hl{color:var(--neon);font-weight:600}
+
+.rb-body{padding:26px 20px 22px}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,3.5vw,28px);font-weight:400;line-height:1.15;color:#fff;margin-bottom:6px}
+.rb-h1 em{font-style:italic;color:#aaa}
+.rb-sub{font-size:13px;color:#ddd;line-height:1.7;margin-bottom:18px}
+
+.rb-hook{background:#1a1a18;border:1px solid #2a2a28;border-left:3px solid var(--neon);border-radius:0 6px 6px 0;padding:12px 16px;margin-bottom:18px;font-size:13px;color:#e0e0de;line-height:1.65}
+.rb-hook strong{color:var(--neon);display:block;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
+
+.rb-section{margin-bottom:20px}
+.rb-section-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#aaa;margin-bottom:5px}
+.rb-section-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.rb-section-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:6px}
+.rb-section-p{font-size:13px;color:#ddd;line-height:1.65}
+
+.rb-cta{display:inline-block;background:var(--neon);color:#0f0f0e;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;margin:14px 0}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* what changed */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;word-break:break-word}
+.ubody{font-size:13px;color:#444;line-height:1.7;word-break:break-word}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#ddd;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#888}
+.footer a{color:#aaa;text-decoration:none}.footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Newsletter Teardown</div>
+    <h1>Cooking Up GTM — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      The subject line announces a tool. The reader needs to hear their afternoon. An ops
+      manager receiving this email at 3pm with a list that just came in hot, three meetings
+      booked, and a sales team waiting — that person is not searching for "a Claude skill."
+      They are searching for relief. The subject line never names what they are living.
+      The best line in the entire email — "5 to 10 minutes versus multiple hours per import" —
+      appears in the last paragraph. It belongs in the subject line.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · Cooking Up GTM · May 8, 2026</span>
+    <h2 class="ph">Newsletter as shipped</h2>
+    <p class="psub">Source: cookingupgtm.substack.com &nbsp;·&nbsp; Author: Crissy Saunders + Xander Broeffle · CS2 &nbsp;·&nbsp; Audience: GTM Ops professionals, RevOps leaders, Marketing Ops managers</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> Crissy Saunders — CS2 &nbsp;·&nbsp; <strong>Newsletter:</strong> Cooking Up GTM</div>
+        <div class="src-meta">May 8, 2026</div>
+      </div>
+
+      <div class="email-fields">
+        <div class="ef">
+          <div class="ef-label">Subject</div>
+          <div class="ef-val">A Claude Skill For Speedier and Cleaner List Imports</div>
+        </div>
+        <div class="ef">
+          <div class="ef-label">Preview</div>
+          <div class="ef-val">A guest post by Xander, Head of GTM Eng at CS2!</div>
+        </div>
+        <div class="ef">
+          <div class="ef-label">From</div>
+          <div class="ef-val">Crissy Saunders — CS2 · Cooking Up GTM</div>
+        </div>
+      </div>
+
+      <div class="bug"><span class="bi">⚠</span>
+        Subject line announces the solution — "A Claude Skill For Speedier and Cleaner List Imports." The ops manager receiving this email at 3pm doesn't open it for the tool. They open it because list imports are the operational version of a small fire. The subject line should name the fire, not the extinguisher. "Speedier and Cleaner" are adjectives without stakes. The reader's problem — hours of manual work when they are already triple-booked — is never named.
+      </div>
+
+      <div class="bug"><span class="bi">⚠</span>
+        Preview text — "A guest post by Xander, Head of GTM Eng at CS2!" — uses the preview slot to announce who wrote the email, not what the reader gets from reading it. Preview text is the second subject line. Its only job is to complete the curiosity gap opened by the subject. "A guest post by..." closes the gap with metadata, not consequence.
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">A Claude Skill For Speedier and Cleaner List Imports</div>
+        <div class="oh1-sub">A guest post by Xander, Head of GTM Eng at CS2!</div>
+
+        <div class="op">This week, we have a special issue of the newsletter because the incredible Xander Broeffle, Senior Director of GTM Ops &amp; GTM Engineering Lead here at CS2, is taking over and doing a guest post! Xander has been getting his hands dirty (in a good way) with GTM AI for months here, and he is sharing his story about a specific tool to help with list imports he built recently for a client.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Opening paragraph is an internal announcement about who wrote the email. "The incredible Xander Broeffle... is taking over and doing a guest post!" is context about the newsletter's production, not the reader's problem. The first paragraph has one job: name the reader's situation before anything else. An ops manager who has managed list imports knows exactly what "comes in hot" means. That phrase — buried in the second paragraph — should open the email.
+        </div>
+
+        <div class="op">I really dislike list imports. They always come in hot, the sales team is eager to start working the leads that were sourced from the latest event, and you're triple-booked all afternoon.</div>
+
+        <div class="pq">"Wouldn't it be great if AI could help this process?"</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Wouldn't it be great if AI could help this process?" is a rhetorical question used as a hook. The reader already knows AI can help — they subscribed to a GTM AI newsletter. The question creates no tension. The consequence-first alternative: "Here's what it looks like when it does." Every word after the question is the answer the reader already assumed. Lead with the result, not the hypothesis.
+        </div>
+
+        <div class="op">That's just what we did last month with a client who had a rather complex list import process. They had unique processes for their tradeshows and a completely different process for 3rd party webinars. Each required a set of steps that took hours of manual work to prepare by a person.</div>
+
+        <div class="oh2">Three options to automate</div>
+        <div class="op">1) Use a middleware tool like Make.com<br>2) Build a Claude Code skill<br>3) Build a custom app.</div>
+
+        <div class="op">After further consideration, we pivoted to using Claude Code to build a custom app... After demo'ing it internally, Charlie gave me feedback: "It's really great, but it's not an AI project. You used AI to create a tool, but the tool isn't using AI to solve the problem."</div>
+
+        <div class="pq">"Scripts can only fix what you code them to. LLMs can infer data based on context and truly give you the lift you want from AI."</div>
+
+        <div class="op">Best of all? It only takes 5-10 minutes to review the data compared to multiple hours per import, meaning that sales gets their leads and you get to make it to one of your three meetings booked this afternoon.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "5 to 10 minutes to review the data compared to multiple hours per import" is the strongest claim in the entire email. It is specific, verifiable, and directly consequential for the ops manager who currently spends those hours manually. It appears in the last paragraph — after the process narrative, the pivot story, the technical explanation, and the sneak peek screenshots. This number belongs in the subject line. It is the reason to open the email. Placing it last means every reader who doesn't reach the final paragraph never sees the only claim that justifies the time they spent reading.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Newsletter — rebuilt</h2>
+    <p class="psub">Cooking Up GTM · May 8, 2026 — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>Cooking Up GTM</strong> &nbsp;·&nbsp; Newsletter · May 8, 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-fields">
+        <div class="rbf">
+          <div class="rbf-label">Subject</div>
+          <div class="rbf-val hl">The list came in hot. Here's how to process it in 10 minutes, not 3 hours.</div>
+        </div>
+        <div class="rbf">
+          <div class="rbf-label">Preview</div>
+          <div class="rbf-val hl">Xander built a Claude skill that cuts list import time from hours to minutes — here's exactly how.</div>
+        </div>
+        <div class="rbf">
+          <div class="rbf-label">From</div>
+          <div class="rbf-val">Crissy Saunders — CS2 · Cooking Up GTM</div>
+        </div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-h1">The list came in hot.<br><em>Here's how to process it in 10 minutes.</em></div>
+
+        <div class="rb-hook">
+          <strong>Hook — consequence first</strong>
+          The sales team is waiting. You're triple-booked. The event list just landed in your inbox and every row needs to be cleaned, normalized, enriched, and imported before anyone can work it.
+          This is the part of GTM ops that nobody talks about — and the part that eats the rest of your afternoon.
+          Xander Broeffle, our Head of GTM Engineering, just shipped a Claude skill that cuts this from multiple hours to 10 minutes. Here's exactly what he built and why it works.
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rb-section">
+          <div class="rb-section-tag">The problem — named precisely</div>
+          <div class="rb-section-h">List imports always come in at the worst possible moment</div>
+          <div class="rb-section-hl">Tradeshow lists. Third-party webinar lists. Each with different fields, different conventions, different processes.</div>
+          <div class="rb-section-p">The manual version: hours of normalizing job titles, flagging hot leads, cleaning junk rows, mapping UTM parameters, and matching campaign statuses — all while the sales team sends the first of many "when will this be ready?" messages. Xander built a skill that handles the parts AI is actually good at, and uses declarative scripts for the parts where consistency matters more than inference.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rb-section">
+          <div class="rb-section-tag">What the skill does — outcome framing</div>
+          <div class="rb-section-h">It flags hot leads your booth team missed. It removes junk. It normalizes titles using AI inference, not a fixed list.</div>
+          <div class="rb-section-hl">Scripts handle naming conventions and UTMs. AI handles the unstructured data humans get wrong.</div>
+          <div class="rb-section-p">The key architectural decision: declarative scripts for deterministic rules (UTM parameters, campaign statuses, phone normalization), Claude for the judgment calls (job title levels from unstructured context, buying signal detection in Notes fields). The result is a skill that improves over time — ask it what should be updated based on the last import and it tells you.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rb-section">
+          <div class="rb-section-tag">The result — the number that should have been the subject line</div>
+          <div class="rb-section-h">5 to 10 minutes of review. Not multiple hours.</div>
+          <div class="rb-section-hl">Sales gets their leads. You make it to your 3pm meeting.</div>
+          <div class="rb-section-p">The skill includes human review to maintain data integrity — but the review takes minutes, not the import itself. Over time, as the skill learns from each interaction, even that review shrinks. The ops leader moves from doing the work to monitoring the output.</div>
+        </div>
+
+        <a href="https://cookingupgtm.substack.com/p/a-claude-skill-for-speedier-and-cleaner" class="rb-cta" target="_blank" rel="noopener">Read the full breakdown →</a>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>Cooking Up GTM · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">A Claude Skill For Speedier and Cleaner List Imports</div>
+        <div class="ba-n">Announces the solution. No consequence named. "Speedier and Cleaner" are adjectives without stakes. Could be the subject of any ops tool newsletter.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">The list came in hot. Here's how to process it in 10 minutes, not 3 hours.</div>
+        <div class="ba-n">Names the moment the reader is living. Delivers the result immediately. The "10 minutes, not 3 hours" contrast creates the open — every ops manager calculates what that gap means for their afternoon.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Subject line: the result belongs here, not in the last paragraph</div>
+        <div class="ubody">"5 to 10 minutes to review the data compared to multiple hours per import" is the most consequential claim in the email. It is specific, verifiable, and immediately meaningful to every ops manager who has spent an afternoon manually processing an event list. It appears in the last paragraph — after the process narrative, the pivot story, the architectural explanation, and the screenshots. Moving the number to the subject line converts it from a reward for reading to the reason to read. Every subscriber who doesn't open the email never sees the only claim that makes the tool worth adopting.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">Preview text: completes the subject line, doesn't announce the author</div>
+        <div class="ubody">"A guest post by Xander, Head of GTM Eng at CS2!" tells the reader who wrote the email. The preview text slot has one job: continue the curiosity gap opened by the subject line. "Xander built a Claude skill that cuts list import time from hours to minutes — here's exactly how" delivers the mechanism behind the subject line's promise. The reader now knows what happened (hours to minutes), who solved it (Xander, a practitioner at CS2, not a vendor), and what they get by opening (exactly how). Author attribution belongs inside the email, not in the preview slot.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">Opening paragraph: reader's situation leads, not newsletter's production</div>
+        <div class="ubody">The original opens with "This week, we have a special issue of the newsletter because the incredible Xander Broeffle... is taking over and doing a guest post!" This is internal context about how the newsletter was produced. The reader is not subscribed to learn about CS2's guest post rotation. They subscribed to solve GTM ops problems. "The sales team is waiting. You're triple-booked. The event list just landed in your inbox" names the reader's situation in the first sentence. Recognition precedes explanation — always. The guest post credit belongs after the hook, not before it.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">Rhetorical question replaced with the answer</div>
+        <div class="ubody">"Wouldn't it be great if AI could help this process?" is a hypothesis directed at a reader who is already subscribed to a GTM AI newsletter. They know AI can help. The question creates no tension and buys no time — it delays the answer the reader already assumed. The rebuild replaces the question with the consequence: "Here's what it looks like when it does." Every word after the question in the original is the answer. Lead with the answer. The hypothesis is implicit in the problem statement that precedes it.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">Section structure: outcome framing replaces process narrative</div>
+        <div class="ubody">The original structures the content as a development story: we tried middleware, we built a web app, Charlie gave feedback, we pivoted, here is what we built. This is the correct sequence for a postmortem — it is not the correct sequence for an email to a busy ops manager. The rebuild restructures around three outcomes: the problem named precisely, what the skill does (with the architectural distinction that makes it trustworthy), and the result with the number. The development story is valuable context — it belongs inside the email for readers who want it, not as the primary narrative structure. Consequence before process, always.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The best number in the email belongs in the subject line. The preview text completes the subject — it never announces the author. The opening names the reader's situation, not the newsletter's production. Rhetorical questions delay the answer the reader already assumed. Structure follows outcome, not process narrative.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
