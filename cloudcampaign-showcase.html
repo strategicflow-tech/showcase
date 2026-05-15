@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Cloud Campaign Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --cc:#7c3aed;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#bbb}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#999;text-decoration:none}.tb-back:hover{color:#fff}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#aaa}
+.byline{font-family:var(--mono);font-size:11px;color:#aaa;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#aaa;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#aaa;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#fff}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+.cc-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.cc-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--cc);letter-spacing:-.2px}
+.cc-links{font-family:var(--mono);font-size:10px;color:#666;display:flex;gap:14px;flex-wrap:wrap}
+.cc-cta{background:var(--cc);color:#fff;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:600;text-decoration:none;display:inline-block}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:6px;font-family:var(--sans)}
+.oh1-sub{font-size:14px;color:#555;margin-bottom:14px;font-family:var(--sans)}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+
+.cc-cta-main{background:var(--cc);color:#fff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block;margin-bottom:20px}
+
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:480px){.feat-grid{grid-template-columns:1fr}}
+.fg{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:13px}
+.fg .fh{font-weight:700;font-size:13px;color:#0f0f0e;margin-bottom:2px}
+.fg .fb{font-size:12px;color:#555;line-height:1.55}
+
+.stat-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.sc .n{font-size:20px;font-weight:800;color:var(--cc);line-height:1;margin-bottom:2px;font-family:var(--sans)}
+.sc .l{font-family:var(--mono);font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;line-height:1.4}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#999}.rb-meta strong{color:#fff}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#a78bfa;letter-spacing:-.2px}
+.rb-nav-links{font-family:var(--mono);font-size:10px;color:#aaa}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#777}
+.rb-sub{font-size:13px;color:#ddd;line-height:1.7;margin-bottom:22px}
+.rb-line{font-size:13px;font-weight:600;color:var(--neon);margin-bottom:22px;line-height:1.4}
+
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ddd;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#aaa;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#ddd;line-height:1.65}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px}
+.ubody{font-size:13px;color:#444;line-height:1.7}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#ddd;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#888}
+.footer a{color:#aaa;text-decoration:none}.footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>cloudcampaign.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      Cloud Campaign won 4 Capterra 2026 Awards, is rated #1 on G2, and has thousands of agencies
+      on the platform. None of this appears in the hero. The homepage opens with a category description —
+      "The only white-label social media management platform built to support rapidly growing agencies."
+      The agency owner who is drowning in browser tabs managing 40 clients doesn't see their
+      situation named. They see a positioning claim they've read on every other SMM platform.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · cloudcampaign.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: cloudcampaign.com &nbsp;·&nbsp; Type: SaaS Homepage &nbsp;·&nbsp; Target: Digital marketing agencies, white-label SMM resellers</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> cloudcampaign.com &nbsp;·&nbsp; <strong>Type:</strong> SaaS Homepage</div>
+        <div class="src-meta">SMM Platform · Agency-focused · May 2026</div>
+      </div>
+
+      <div class="cc-nav">
+        <div class="cc-logo">Cloud Campaign</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div class="cc-links">
+            <span>Features</span><span>Pricing</span><span>Why CC</span><span>Blog</span>
+          </div>
+          <a href="https://www.cloudcampaign.com/" class="cc-cta" target="_blank" rel="noopener">Start Free Trial</a>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">The only white-label social media management platform built to support rapidly growing agencies and SaaS products.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Hero is a category description with a uniqueness claim — "the only white-label SMM platform." An agency owner evaluating platforms has read this framing on every competitor's homepage. "Built to support rapidly growing agencies" describes who the product is for, not what breaks without it. The agency drowning in browser tabs, losing hours to manual reporting, or watching a client churn because content went out late — that person is nowhere in this headline. The consequence is missing before a single feature is described.
+        </div>
+
+        <div class="oh1-sub">Cloud Campaign offers best-in-class, user-friendly solutions to make managing social media effortless and scalable.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Best-in-class, user-friendly solutions to make managing social media effortless and scalable" — four adjectives with no specificity. "Best-in-class" is unverifiable. "User-friendly" is table stakes. "Effortless and scalable" describes a promise without naming the pain. Cloud Campaign won Best Ease of Use and Best Value at Capterra 2026 — those are third-party verified claims. Neither appears in the hero. The strongest proof is replaced by the weakest copy.
+        </div>
+
+        <a href="https://www.cloudcampaign.com/" class="cc-cta-main" target="_blank" rel="noopener">Start your free trial</a>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Single CTA — "Start your free trial" — with no secondary path. An agency owner comparing 4-5 platforms simultaneously is not ready to start a trial on the first visit. There is no lower-commitment option — no case study, no ROI calculator, no "see how it works for agencies like yours." Cloud Campaign has a 2-week free trial as the primary differentiator, but the CTA doesn't say "2 weeks free, no credit card" — it just says "Start your free trial" which reads identically to every SaaS CTA on the internet.
+        </div>
+
+        <!-- Features at equal weight -->
+        <div class="oh2">Everything your agency needs</div>
+        <div class="feat-grid">
+          <div class="fg">
+            <div class="fh">White-label platform</div>
+            <div class="fb">Brand the platform as your own with your agency's logo, colors, and custom domain.</div>
+          </div>
+          <div class="fg">
+            <div class="fh">Unlimited seats &amp; profiles</div>
+            <div class="fb">Add team members and manage unlimited client accounts at no extra cost.</div>
+          </div>
+          <div class="fg">
+            <div class="fh">AI content creation</div>
+            <div class="fb">ChatGPT-powered caption writer, bulk importing, and Canva integration.</div>
+          </div>
+          <div class="fg">
+            <div class="fh">Scheduling &amp; approval</div>
+            <div class="fb">Drag-and-drop calendar, evergreen campaigns, and client approval workflows.</div>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Four feature cards at equal visual weight. "Unlimited seats &amp; profiles" is the primary differentiator over Hootsuite and Sprout Social — agencies switching from per-seat pricing save thousands per month as they scale. It appears as card number two with the same font size and weight as "AI content creation." The one feature that makes the pricing model irreversible belongs in the hero stat strip, not as a feature bullet at equal weight to scheduling.
+        </div>
+
+        <!-- Social proof section -->
+        <div class="oh2">Trusted by thousands of agencies</div>
+        <div class="op">"I love the white-labeling feature. It creates a very high-end look for our clients." — Ava L., Capterra</div>
+        <div class="op">"If you are using Hootsuite or some other expensive service that locks you into a year-long contract, mark your calendar for switching to Cloud Campaign ASAP!" — G2 Reviewer</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Social proof leads with a feature compliment ("I love the white-labeling feature") rather than an outcome. The G2 review names the consequence — switching from Hootsuite — but it's buried in the second quote. The most powerful proof Cloud Campaign has is a direct competitive replacement story: agency switches from Hootsuite or Sprout, eliminates per-seat fees, saves $X per month. That story is in the reviews but not in the hero where it would stop the evaluation process for every agency currently paying Hootsuite prices.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">cloudcampaign.com &nbsp;·&nbsp; SaaS Homepage — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>cloudcampaign.com</strong> &nbsp;·&nbsp; SMM Platform · Agency-focused · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">Cloud Campaign</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="rb-nav-links">Features &nbsp; Pricing &nbsp; Why CC</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">Try free for 2 weeks — no card</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">Your agency is paying per seat.<br><em>Cloud Campaign doesn't charge that way.</em></div>
+
+        <div class="rb-sub">
+          Cloud Campaign gives growing agencies unlimited users, unlimited social profiles, and a fully white-labeled platform — for a flat monthly rate. No per-seat tax as your team grows. No surprise fees as you onboard more clients. Rated #1 on G2. Most Recommended on Capterra 2026.
+        </div>
+
+        <div class="rb-line">"If you are using Hootsuite or another expensive service that locks you into a year-long contract — mark your calendar for switching to Cloud Campaign." — G2 Reviewer</div>
+
+        <div class="proof-strip">
+          <div class="ps"><div class="n">#1</div><div class="l">SMM platform<br>on G2</div></div>
+          <div class="ps"><div class="n">4x</div><div class="l">Capterra awards<br>2026</div></div>
+          <div class="ps"><div class="n">∞</div><div class="l">Users &amp; profiles<br>no extra cost</div></div>
+          <div class="ps"><div class="n">2wk</div><div class="l">Free trial<br>no credit card</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">Try free for 2 weeks — no card</a>
+          <a href="#" class="cta-s">See how agencies use it</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Primary differentiator — leads</div>
+          <div class="rsec-h">Unlimited users. Unlimited profiles. One flat rate.</div>
+          <div class="rsec-hl">Hootsuite charges per seat. Sprout charges per profile. Cloud Campaign doesn't.</div>
+          <div class="rsec-p">Every agency on a per-seat or per-profile plan pays a hidden tax on growth. Each new team member, each new client account — the bill goes up. Cloud Campaign's pricing model flips this: unlimited users, unlimited linked accounts, and volume discounts as your client list grows. The agency that is crushing it shouldn't be punished with crazy fees. That's the platform's core promise — and it's the reason agencies don't switch back.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 02</div>
+          <div class="rsec-h">Your agency's name on the platform — not ours</div>
+          <div class="rsec-hl">White-label the entire platform with your logo, colors, and custom domain. Charge a higher retainer for it.</div>
+          <div class="rsec-p">Cloud Campaign disappears. Your agency brand stays. Clients log in to your dashboard, see your logo, and experience your agency's product — powered by Cloud Campaign underneath. The white-label layer lets agencies charge a premium for a branded client experience while paying Cloud Campaign's flat rate. That margin is the business model agencies don't see coming until they've switched.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 03</div>
+          <div class="rsec-h">AI content creation, scheduling, and reporting — from one place</div>
+          <div class="rsec-hl">Stop managing 6 tools. Your entire SMM workflow in one platform.</div>
+          <div class="rsec-p">ChatGPT-powered caption writer. Canva integration. Bulk importing. Drag-and-drop calendar. Evergreen campaigns that recycle content automatically. Client approval workflows. Reporting. All inside one platform your whole team uses — with no per-seat charge for adding someone new. The browser tab switching ends on day one of the trial.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>cloudcampaign.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">The only white-label social media management platform built to support rapidly growing agencies.</div>
+        <div class="ba-n">Category description with a uniqueness claim. Doesn't name what the agency is losing to their current platform. Indistinguishable from competitor homepage copy.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">Your agency is paying per seat. Cloud Campaign doesn't charge that way.</div>
+        <div class="ba-n">Names the exact pricing pain every Hootsuite or Sprout Social customer feels every time they add a team member or a client account. Immediate recognition for every agency that has done the math on their current bill.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: name the pricing pain, not the product category</div>
+        <div class="ubody">Every agency evaluating Cloud Campaign came from somewhere — Hootsuite, Sprout Social, Buffer, Later. The one thing they have in common: they paid a per-seat or per-profile tax that grew as their agency grew. "Your agency is paying per seat. Cloud Campaign doesn't charge that way." names the specific mechanism of loss that every competitor's pricing model creates. A Hootsuite customer who just added their third team member and watched the invoice go up knows exactly what this means — before they read another word. Recognition is the trigger. A category claim is not.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">Proof strip: third-party awards replace adjective claims</div>
+        <div class="ubody">"Best-in-class, user-friendly solutions" are claims the brand makes about itself. "#1 on G2, 4 Capterra 2026 Awards, Most Recommended" are claims the market made about Cloud Campaign. The distinction matters to a buyer who is comparing platforms simultaneously — self-descriptions carry zero weight in a competitive evaluation. The Capterra awards appear in a blog post from January 2026. The G2 ranking is in the LinkedIn headline. Neither appears in the hero. Moving third-party proof to the hero stat strip converts the evaluation from "this company claims to be good" to "thousands of agencies and two independent review platforms confirmed it."</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">Unlimited seats differentiator promoted to lead</div>
+        <div class="ubody">The pricing model — unlimited users, unlimited profiles, flat rate — is Cloud Campaign's sharpest competitive differentiator. It appears as feature card number two in the original, at equal visual weight to "AI content creation." For an agency owner currently paying Hootsuite $249/month for 3 users and 10 social profiles, "unlimited users and profiles at no extra cost" is the reason to switch. Promoting it to lead the feature section — framed as "Hootsuite charges per seat. Sprout charges per profile. Cloud Campaign doesn't." — makes the competitive switch feel obvious before any feature comparison has been made.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">CTA: name the trial terms in the button text</div>
+        <div class="ubody">"Start your free trial" is identical to the CTA on every SaaS homepage. "Try free for 2 weeks — no card" names the specific commitment the buyer is making — two weeks, no credit card required — before they click. The difference between "free trial" and "2 weeks free, no card" is the difference between a button that creates hesitation ("what are the terms?") and a button that removes the last objection before it forms. Cloud Campaign's trial terms are a competitive advantage — no credit card removes the primary risk for an agency that has been burned by annual contract lock-ins. That advantage belongs in the button text, not in the fine print.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">Social proof: competitive replacement story over feature compliment</div>
+        <div class="ubody">The original leads social proof with "I love the white-labeling feature" — a feature compliment. The G2 review that names the competitive switch — "If you are using Hootsuite or another expensive service that locks you into a year-long contract, mark your calendar for switching" — appears second. The competitive replacement story is the most powerful proof Cloud Campaign owns because it names the exact situation every prospective customer is in: currently paying more, locked in, and aware that there are alternatives. Moving that review to a pull quote in the hero — above the feature section — converts it from social proof to a trigger. The buyer reads it and thinks "that's me." That thought is the conversion.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The buyer's pricing pain leads — not a category claim. Third-party proof replaces self-description. The primary differentiator gets the primary position. The trial terms belong in the button. The competitive replacement story is the hook — not the fourth review in the carousel.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
