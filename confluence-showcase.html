@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Confluence Technologies Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#999}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#666;text-decoration:none}.tb-back:hover{color:#aaa}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#777}
+.byline{font-family:var(--mono);font-size:11px;color:#555;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#666;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#555;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#aaa}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+/* source card */
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+/* Confluence nav */
+.cf-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.cf-logo{font-family:var(--sans);font-size:14px;font-weight:700;color:#1a6640;letter-spacing:-.2px}
+.cf-links{font-family:var(--mono);font-size:10px;color:#666;display:flex;gap:14px;flex-wrap:wrap}
+.cf-cta{background:#1a6640;color:#fff;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:600;text-decoration:none;display:inline-block}
+
+/* hero word rotation */
+.cf-rotate{font-size:clamp(14px,2.5vw,20px);font-weight:400;font-style:italic;color:#888;margin-bottom:4px}
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:4px;font-family:var(--sans)}
+.oh1-sub{font-size:16px;font-weight:400;color:#555;margin-bottom:14px;font-family:var(--sans)}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+
+/* stat row */
+.stat-row{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.sc .n{font-size:22px;font-weight:800;color:#1a6640;line-height:1;margin-bottom:2px;font-family:var(--sans)}
+.sc .l{font-family:var(--mono);font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.08em}
+
+/* segment grid */
+.seg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:480px){.seg-grid{grid-template-columns:1fr}}
+.seg-card{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:13px;font-size:13px}
+.seg-card .sh{font-weight:700;color:#0f0f0e;margin-bottom:3px}
+.seg-card .sb{color:#555;line-height:1.55;font-size:12px}
+
+/* solution list */
+.sol-list{margin:12px 0}
+.sol-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:#444;line-height:1.5}
+.sol-item:last-child{border-bottom:none}
+.sol-item .si{color:#1a6640;font-weight:700;flex-shrink:0}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+/* rebuilt card */
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#555}.rb-meta strong{color:#aaa}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:700;color:#3ddc84;letter-spacing:-.2px}
+.rb-nav-links{font-family:var(--mono);font-size:10px;color:#555}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#666}
+.rb-sub{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:22px}
+.rb-line{font-size:13px;font-weight:600;color:var(--neon);margin-bottom:22px;line-height:1.4}
+
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ccc;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#555;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#aaa;line-height:1.65}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#444;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* what changed */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;word-break:break-word}
+.ubody{font-size:13px;color:#444;line-height:1.7;word-break:break-word}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#aaa;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#444}
+.footer a{color:#666;text-decoration:none}.footer a:hover{color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>confluence.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      Confluence has 30 years of experience, 1,000+ clients, and 40 countries. None of this appears before the fold in any meaningful form. The hero is a rotating word animation followed by a category description. A compliance officer at an asset manager landing here today cannot identify their problem in the first 200 pixels. They see a tagline and a nav with 14 dropdown items.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · confluence.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: confluence.com &nbsp;·&nbsp; Type: Enterprise SaaS Homepage &nbsp;·&nbsp; Target: Asset Managers, Asset Owners, Asset Servicers, Investment Consultants</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> confluence.com &nbsp;·&nbsp; <strong>Type:</strong> Enterprise SaaS Homepage</div>
+        <div class="src-meta">Investment Data &amp; Analytics · May 2026</div>
+      </div>
+
+      <div class="cf-nav">
+        <div class="cf-logo">Confluence Technologies</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div class="cf-links">
+            <span>Segments</span><span>Solutions</span><span>Products</span><span>Resources</span><span>About</span>
+          </div>
+          <a href="https://www.confluence.com/contact" class="cf-cta" target="_blank" rel="noopener">Contact</a>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <!-- Rotating word animation -->
+        <div class="cf-rotate">Expect service integrity discipline imagination</div>
+        <div class="oh1">Regulatory, Analytics &amp; Investor Communications Solutions</div>
+        <div class="oh1-sub">For the investment management industry.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Hero is a rotating word animation ("service integrity discipline imagination") followed by a category description. "Regulatory, Analytics &amp; Investor Communications Solutions for the investment management industry" is a nav label, not a consequence. It lists three solution categories — it does not name what any buyer loses when their current system fails to deliver any of them. A compliance officer, a performance analyst, and an investor communications manager all land on this page and see the same generic headline.
+        </div>
+
+        <a href="https://www.confluence.com/contact" class="cf-cta" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:20px">Talk to us</a>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Single CTA — "Talk to us" — with no secondary path and no indication of what the conversation covers. For an enterprise buyer at a regulated asset management firm, "Talk to us" creates immediate friction: who, about what, for how long, committing to what? There is no lower-commitment option to explore the solution before engaging a sales team.
+        </div>
+
+        <!-- Stats -->
+        <div class="stat-row">
+          <div class="sc"><div class="n">1,000+</div><div class="l">Firms served</div></div>
+          <div class="sc"><div class="n">40+</div><div class="l">Countries</div></div>
+          <div class="sc"><div class="n">30+</div><div class="l">Years experience</div></div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Stat strip has the right numbers but the wrong framing. "1,000+ firms," "40+ countries," "30+ years" are authority signals — they tell the buyer Confluence is established. They do not tell the buyer what problem those 1,000+ firms came to Confluence to solve. A stat that reads "83% of top-10 asset servicers globally" or "Regulatory filings across 40 jurisdictions automated" would name the consequence. "Over 30 years of experience" tells the buyer nothing about their situation.
+        </div>
+
+        <!-- Who we serve -->
+        <div class="oh2">Who we serve</div>
+        <div class="op">The world's largest asset servicers, asset managers, asset owners and investment consultants rely on Confluence Technologies.</div>
+        <div class="seg-grid">
+          <div class="seg-card">
+            <div class="sh">Asset Managers</div>
+            <div class="sb">Streamline regulatory reporting, analytics, and investor communications.</div>
+          </div>
+          <div class="seg-card">
+            <div class="sh">Asset Owners</div>
+            <div class="sb">Gain efficiency and accuracy in institutional plan reporting and analytics.</div>
+          </div>
+          <div class="seg-card">
+            <div class="sh">Asset Service Providers</div>
+            <div class="sb">Increase accuracy and regulatory compliance across fund administration services.</div>
+          </div>
+          <div class="seg-card">
+            <div class="sh">Investment Consultants</div>
+            <div class="sb">Automate data aggregation, streamline plan analysis, and simplify reporting.</div>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Four segment cards at equal visual weight — asset managers, asset owners, asset service providers, investment consultants — each with a generic one-liner. Not one of the four descriptions names a consequence. "Streamline regulatory reporting" describes an action, not a failure. The asset manager who missed a regulatory filing deadline, the pension plan CIO who discovered a data error in client reporting, the compliance officer managing 40 jurisdictions manually — none of them see their specific situation named here.
+        </div>
+
+        <!-- Solutions -->
+        <div class="oh2">Our solutions</div>
+        <div class="sol-list">
+          <div class="sol-item"><span class="si">→</span> Regulatory Reporting &amp; Filing — accuracy across global jurisdictions</div>
+          <div class="sol-item"><span class="si">→</span> Investor Communications — institutional, retail fund, and portfolio reporting</div>
+          <div class="sol-item"><span class="si">→</span> Performance &amp; Attribution — multi-asset class analytics</div>
+          <div class="sol-item"><span class="si">→</span> Investment Monitoring &amp; Shareholder Disclosures — near real-time monitoring</div>
+          <div class="sol-item"><span class="si">→</span> Composites &amp; GIPS® — award-winning, audited service</div>
+          <div class="sol-item"><span class="si">→</span> Global Data Services — pricing, valuations, index data</div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Solution list is a feature inventory with no outcome framing. "Regulatory Reporting &amp; Filing — accuracy across global jurisdictions" describes what the product does. It does not name what happens to a compliance team that currently manages this manually across 40+ jurisdictions — the hours, the errors, the deadline risk. Every solution is listed at equal weight. The buyer has no signal about what Confluence is actually best at or what most clients come for first.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">confluence.com &nbsp;·&nbsp; Enterprise SaaS Homepage — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>confluence.com</strong> &nbsp;·&nbsp; Investment Data &amp; Analytics · Enterprise SaaS · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">Confluence Technologies</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="rb-nav-links">Solutions &nbsp; Products &nbsp; About</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">See how we solve this</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">Your regulatory deadlines don't move.<br><em>Your data processes shouldn't either.</em></div>
+
+        <div class="rb-sub">
+          Confluence automates the reporting, analytics, and investor communications workflows that investment management firms currently run manually — across every regulation, every jurisdiction, every asset class. Trusted by the world's largest asset servicers, asset managers, and investment consultants for over 30 years.
+        </div>
+
+        <div class="rb-line">1,000+ firms. 40 countries. The compliance deadline is the same for all of them.</div>
+
+        <div class="proof-strip">
+          <div class="ps"><div class="n">1,000+</div><div class="l">Firms<br>globally</div></div>
+          <div class="ps"><div class="n">40+</div><div class="l">Countries<br>served</div></div>
+          <div class="ps"><div class="n">30+</div><div class="l">Years in<br>investment data</div></div>
+          <div class="ps"><div class="n">10/10</div><div class="l">Top asset<br>servicers</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">See how we solve this</a>
+          <a href="#" class="cta-s">Explore solutions by role</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Primary differentiator — leads</div>
+          <div class="rsec-h">Regulatory reporting that files itself — across 40+ jurisdictions</div>
+          <div class="rsec-hl">From data collection to filing. No manual intervention at the deadline.</div>
+          <div class="rsec-p">Confluence manages the full regulatory reporting lifecycle — data collection, enrichment, fund and transaction reporting, ESG reporting, document production, filing — across every major global jurisdiction. The compliance officer's job is to verify. Not to compile, format, reconcile, and reformat before a deadline that does not move.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 02</div>
+          <div class="rsec-h">Performance analytics that don't require a data engineering project to set up</div>
+          <div class="rsec-hl">Multi-asset class attribution, risk, and GIPS — on a single platform, audited.</div>
+          <div class="rsec-p">Revolution integrates performance, risk measurement, fixed income attribution, liquidity assessment, and compliance monitoring across asset classes. The performance analyst gets granular attribution without stitching together three systems. GIPS composites are audited and automated. The operational overhead that used to sit between the data and the insight is gone.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 03</div>
+          <div class="rsec-h">Investor communications that scale without adding headcount</div>
+          <div class="rsec-hl">Institutional, retail fund, portfolio reporting — and compelling marketing documents.</div>
+          <div class="rsec-p">Client reporting volumes increase every year. Confluence's investor communications solutions automate the production, personalisation, and distribution of institutional and retail reporting, tailored shareholder reports, and marketing documents — so your team scales output without scaling the team.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>confluence.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">Regulatory, Analytics &amp; Investor Communications Solutions for the investment management industry.</div>
+        <div class="ba-n">Category description. Three solution areas listed. No consequence named. Indistinguishable from any enterprise data vendor in the space.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">Your regulatory deadlines don't move. Your data processes shouldn't either.</div>
+        <div class="ba-n">Names the operational tension every compliance officer at an asset manager feels. The deadline is fixed. The process is the variable. Confluence removes the friction between the two.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: replace category description with operational consequence</div>
+        <div class="ubody">"Regulatory, Analytics &amp; Investor Communications Solutions for the investment management industry" is the kind of headline that could sit on the homepage of 20 competitors. It describes what Confluence offers. It does not name what breaks without it. A compliance officer managing regulatory filings across 40 jurisdictions manually knows exactly what the consequence is: missed deadlines, data errors, and teams working weekends before every filing date. "Your regulatory deadlines don't move. Your data processes shouldn't either." names the tension directly. It creates recognition before the buyer reads a single feature description.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">Rotating word animation removed — consequence replaces decoration</div>
+        <div class="ubody">"Expect service integrity discipline imagination" cycling through words is a brand values animation, not a hook. Brand values earn the right to be stated after the buyer understands what the product does for them — not before. The animation occupies the highest-attention real estate on the page and delivers zero information about the buyer's situation. Every second a buyer spends watching words rotate is a second they haven't yet understood why Confluence solves their problem. The rebuild removes the animation entirely and leads with the operational consequence instead.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">Proof reframed: "30 years" becomes competitive evidence, not tenure</div>
+        <div class="ubody">"30+ years of experience" tells the buyer Confluence is old. It does not tell them what that experience means for a firm evaluating them today. The rebuild reframes the same numbers as competitive evidence: 1,000+ firms trusted Confluence with their most regulated workflows, the top 10 asset servicers globally chose them, and 40+ countries means they have already solved the jurisdiction problem the buyer is about to encounter. The stat "10/10 top asset servicers" — which appears in Confluence's own client page but not on the homepage — is the most specific proof point available and belongs in the hero zone.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">Segment cards: replace generic one-liners with role-specific failure states</div>
+        <div class="ubody">Four segment cards with four identical-weight descriptions — "streamline," "gain efficiency," "increase accuracy," "automate" — tell the buyer what Confluence does but not what they are suffering without it. An asset manager does not search for a vendor to "streamline regulatory reporting." They search because a junior analyst spent 60 hours preparing a regulatory filing that should have taken 6. The rebuild replaces each generic one-liner with the specific failure mode that drives each segment to evaluate Confluence. Recognition drives engagement. Generic descriptions drive bounces.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">Solutions list: outcome framing replaces feature inventory</div>
+        <div class="ubody">Six solution items listed at equal weight with short descriptors that name the function but not the outcome. "Regulatory Reporting &amp; Filing — accuracy across global jurisdictions" describes what the product does. The rebuilt version leads each solution section with the operational consequence — "Regulatory reporting that files itself across 40+ jurisdictions" — and names specifically what the team member responsible no longer has to do. The compliance officer, the performance analyst, the investor communications team each have a section that names their problem before it names the solution. Consequence-first architecture always outperforms feature-first architecture for enterprise buyers with specific, painful problems.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The reader's consequence leads — not a brand values animation. Proof is reframed as competitive evidence, not tenure. Each segment sees their specific failure state named, not a generic one-liner. Solutions lead with what the buyer no longer has to do, not what the product does.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
