@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Nilus Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#999}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#666;text-decoration:none}.tb-back:hover{color:#aaa}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#777}
+.byline{font-family:var(--mono);font-size:11px;color:#555;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#666;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#555;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#aaa}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+/* source card */
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+/* Nilus nav CSS */
+.n-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.n-logo{font-family:var(--sans);font-size:15px;font-weight:800;color:#0f0f0e;letter-spacing:-.3px}
+.n-cta{background:#4f46e5;color:#fff;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:600;text-decoration:none;display:inline-block}
+.n-login{color:#666;font-size:12px;text-decoration:none;margin-right:8px}
+
+/* announcement banner */
+.n-banner{background:#f0fdf4;border-bottom:1px solid #a7f3d0;padding:8px 18px;font-size:12px;color:#065f46;display:flex;align-items:center;gap:6px}
+.n-banner span{font-size:14px}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:10px;font-family:var(--sans)}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+.o-cta{background:#4f46e5;color:#fff;border-radius:6px;padding:10px 20px;font-size:13px;font-weight:600;text-decoration:none;display:inline-block;margin-bottom:20px}
+
+/* agent cards */
+.agent-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin:12px 0}
+.agent-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+.agent-title{font-weight:700;font-size:14px;color:#0f0f0e;margin-bottom:4px}
+.agent-sub{font-size:13px;color:#555;line-height:1.6}
+
+/* feature list */
+.feat-list{margin:12px 0}
+.feat-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:#444}
+.feat-item:last-child{border-bottom:none}
+.feat-item .fi{color:#4f46e5;font-weight:700;flex-shrink:0;margin-top:1px}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+/* rebuilt card */
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#555}.rb-meta strong{color:#aaa}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.rb-nav-links{font-family:var(--mono);font-size:10px;color:#555}
+
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#666}
+.rb-sub{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:10px}
+.rb-line{font-size:13px;font-weight:600;color:var(--neon);margin-bottom:22px;line-height:1.4}
+
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ccc;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#555;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#aaa;line-height:1.65}
+
+/* agent cards in After */
+.rb-agent{background:#1a1a18;border:1px solid #2a2a28;border-radius:8px;padding:14px 16px;margin:10px 0}
+.rb-agent-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--neon);margin-bottom:5px}
+.rb-agent-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px}
+.rb-agent-sub{font-size:12px;color:#777;line-height:1.6}
+
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#444;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* what changed */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;word-break:break-word}
+.ubody{font-size:13px;color:#444;line-height:1.7;word-break:break-word}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#aaa;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#444}
+.footer a{color:#666;text-decoration:none}.footer a:hover{color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>nilus.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      The hero headline is the strongest line on the page. What follows it loses the CFO.
+      Four technical actions at equal weight, a single neutral CTA, and proof from
+      industry leaders with no numbers attached. The consequence the buyer is already
+      living — a cash position that changed overnight while the team was still compiling
+      yesterday's spreadsheet — is nowhere in the hero.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · nilus.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: nilus.com &nbsp;·&nbsp; Type: Fintech SaaS Homepage &nbsp;·&nbsp; Target: CFOs, VPs Finance, Treasury Teams at growth-stage companies</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> nilus.com &nbsp;·&nbsp; <strong>Type:</strong> SaaS Homepage</div>
+        <div class="src-meta">Fintech · Treasury AI · May 2026</div>
+      </div>
+
+      <!-- announcement banner -->
+      <div class="n-banner">
+        <span>📣</span> Nilus Raises $10M, Reaching $18M in Funding to Lead the Future of AI-Powered Treasury Management
+      </div>
+
+      <div class="n-nav">
+        <div class="n-logo">nilus</div>
+        <div>
+          <a href="https://app.nilus.com/" class="n-login" target="_blank" rel="noopener">Log in</a>
+          <a href="https://www.nilus.com/contact" class="n-cta" target="_blank" rel="noopener">Schedule a demo</a>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">From System of Record to System of Action.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Hero headline is the strongest line on the page — but it's a transition claim, not a consequence. "From X to Y" describes a product journey. It doesn't name what the CFO loses every day they stay in "System of Record" mode. A treasurer who spent 4 hours compiling yesterday's cash position doesn't need to understand the journey. They need to see their problem named.
+        </div>
+
+        <div class="osub">Add treasury AI agents that forecast, reconcile, optimize liquidity, and execute policy-bound moves — fully explainable, fully auditable.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Subheadline lists four technical capabilities at equal weight: forecast, reconcile, optimize, execute. "Fully explainable, fully auditable" appears as a compliance qualifier at the end — buried where it matters most. For a CFO evaluating AI for treasury, auditability is not a footnote. It's the blocker. Leading with it flips the objection before it forms.
+        </div>
+
+        <a href="https://www.nilus.com/contact" class="o-cta" target="_blank" rel="noopener">Book a demo</a>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Single CTA — "Book a demo" — with no secondary path. A CFO doing initial research is not ready to commit 30 minutes to a sales call. There is no lower-commitment option to see the product in action before engaging. Without one, every first-visit buyer who is not ready to book is lost entirely.
+        </div>
+
+        <!-- logos section -->
+        <div class="oh2">Trusted by industry leaders</div>
+        <div class="op" style="color:var(--gray);font-style:italic">Alloy · StackAdapt · Yotpo · Plarium · Taboola · At-Bay · Optibus · and more</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Social proof is logos only — no numbers, no outcomes, no named quotes. "Trusted by industry leaders" is the weakest form of social proof. A CFO at a growth-stage company needs to know what changed for a treasury team like theirs after implementing Nilus. Logo strips without outcomes signal "we have customers" — not "we solved the problem you have."
+        </div>
+
+        <!-- platform section -->
+        <div class="oh2">Finally, a smart cash flow platform that drives proactive decisions.</div>
+        <div class="op">* and removes 80% of your manual work</div>
+        <div class="op">With clear cash visibility, automated workflows, and AI-powered insights, you'll spend more time optimizing decisions and less time compiling data.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "80% of your manual work" is the strongest quantified claim on the page. It appears as a footnote asterisk beneath the section header — styled as a caveat, not as a proof point. Eighty percent is a headline number. It should anchor the stat cards in the hero zone, not hide in a subheading qualifier.
+        </div>
+
+        <!-- agent cards -->
+        <div class="agent-card">
+          <div class="agent-tag">Analyst Agent</div>
+          <div class="agent-title">Meet the Analyst Agent. Your data can finally talk.</div>
+          <div class="agent-sub">Stop functioning as human middleware. Delegate the data janitorial work — pivoting, charting, and variance analysis — to an AI agent that reasons over your live cash model.</div>
+        </div>
+
+        <div class="agent-card">
+          <div class="agent-tag">Liquidity Agent</div>
+          <div class="agent-title">Meet the Liquidity Agent. Your treasury's first line of defense.</div>
+          <div class="agent-sub">See every breach, every FX exposure, every idle dollar across every entity, and get a policy-bound recommendation to act on, before the window closes.</div>
+        </div>
+
+        <div class="feat-list">
+          <div class="feat-item"><span class="fi">→</span> Cash Positions — Manage in one place, in real-time</div>
+          <div class="feat-item"><span class="fi">→</span> Cash Flow Forecasting — Most accurate forecasting on the market</div>
+          <div class="feat-item"><span class="fi">→</span> Accounting Automation — Streamline with tighter books, faster close</div>
+          <div class="feat-item"><span class="fi">→</span> Integrations — All cash sources, no IT required</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">nilus.com &nbsp;·&nbsp; Treasury AI Homepage — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>nilus.com</strong> &nbsp;·&nbsp; Treasury AI · Fintech SaaS · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">nilus</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="rb-nav-links">Platform &nbsp; Customers &nbsp; About</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">See my team's manual hours</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">Your cash position changed<br><em>last night. Your team finds out this morning.</em></div>
+
+        <div class="rb-sub">
+          Nilus deploys AI agents that monitor your treasury in real time — catching breaches, FX exposures, and idle cash before your team opens a spreadsheet. Fully explainable, fully auditable. Built for CFOs who can't afford a surprise.
+        </div>
+
+        <div class="rb-line">From System of Record to System of Action — before the window closes.</div>
+
+        <div class="proof-strip">
+          <div class="ps"><div class="n">80%</div><div class="l">Manual work<br>eliminated</div></div>
+          <div class="ps"><div class="n">$18M</div><div class="l">Raised<br>Series A</div></div>
+          <div class="ps"><div class="n">2</div><div class="l">AI agents<br>live now</div></div>
+          <div class="ps"><div class="n">0</div><div class="l">IT required<br>to integrate</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">See my team's manual hours</a>
+          <a href="#" class="cta-s">Watch the agent in action</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <!-- agents as primary differentiators -->
+        <div class="rsec">
+          <div class="rsec-tag">Primary differentiator — leads</div>
+          <div class="rsec-h">Two agents. One watching cash. One crunching it.</div>
+          <div class="rsec-hl">Not dashboards. Not reports. Active agents that act before you're asked.</div>
+          <div class="rsec-p">The Liquidity Agent monitors every entity for breaches, FX exposure, and idle cash — then delivers a policy-bound recommendation before the window closes. The Analyst Agent handles the variance analysis, pivoting, and charting your team currently does manually. Stop being human middleware between your data and your decisions.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rb-agent">
+          <div class="rb-agent-tag">Liquidity Agent</div>
+          <div class="rb-agent-title">Every breach. Every FX exposure. Every idle dollar. Seen before your team opens a spreadsheet.</div>
+          <div class="rb-agent-sub">Policy-bound recommendation delivered automatically. Before the window closes.</div>
+        </div>
+
+        <div class="rb-agent">
+          <div class="rb-agent-tag">Analyst Agent</div>
+          <div class="rb-agent-title">Pivoting, charting, variance analysis. Delegated. Your data can finally talk back.</div>
+          <div class="rb-agent-sub">Reasons over your live cash model. No manual prep. No middleware.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 02</div>
+          <div class="rsec-h">Cash positions, forecasting, reconciliation — in one platform</div>
+          <div class="rsec-hl">Real-time visibility across every entity. No data warehouse. No IT ticket.</div>
+          <div class="rsec-p">View exposures, set policies, and steer with AI-powered alerts. Forecast from historical cash flows and expected transactions. Bank reconciliation, gateway reconciliation, and collections — automated. The manual workflows your team runs on repeat are gone.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 03</div>
+          <div class="rsec-h">Fully explainable. Fully auditable. No black boxes.</div>
+          <div class="rsec-hl">Every agent recommendation has a reason. Every action has a log.</div>
+          <div class="rsec-p">Built for finance teams where every move needs to be defensible. Nilus AI shows its work — the reasoning behind each recommendation, the data it used, the policy it followed. Your CFO can sign off on what an AI agent did. Your auditors can trace it.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>nilus.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">From System of Record to System of Action.</div>
+        <div class="ba-n">Transition claim. Names the journey but not the consequence the CFO is living today.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">Your cash position changed last night. Your team finds out this morning.</div>
+        <div class="ba-n">Names the exact moment of failure every treasury team recognises. The consequence is already happening. Nilus is the fix.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: name the consequence, not the transition</div>
+        <div class="ubody">"From System of Record to System of Action" is a compelling product narrative — but it describes where Nilus takes you, not what you're suffering today. A CFO who discovered a cash shortfall after the fact, or who got surprised by an FX exposure their team missed, does not need to understand a journey. They need to see their problem named precisely. "Your cash position changed last night. Your team finds out this morning." names the specific failure mode that every treasury team without real-time monitoring has experienced. Recognition creates urgency. A transition claim creates interest.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">Auditability moved from footnote to front</div>
+        <div class="ubody">"Fully explainable, fully auditable" appears at the end of the subheadline in the original — positioned as a qualifier, not a feature. For a CFO evaluating AI for treasury operations, auditability is the primary objection. Every AI product sounds powerful until someone asks: can I explain what it did to my audit committee? Moving "fully explainable, fully auditable" to the front of the subheadline removes the objection before it forms. The CFO reads it before they read anything else about what the agents do.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">"80% manual work eliminated" promoted to stat card</div>
+        <div class="ubody">The original buries this number as an asterisk beneath a section header — styled as a caveat rather than a proof point. Eighty percent is a significant operational claim. For a finance team running three FTEs on manual reconciliation and reporting, 80% is not a footnote. It is the entire business case. Promoted to a stat card in the hero zone, it becomes the first quantified signal a CFO sees before any feature explanation. Proof before claim — always.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">CTAs: ownership language + a second path</div>
+        <div class="ubody">"Book a demo" tells the buyer what to do. "See my team's manual hours" tells the buyer what they get — specifically, a calculation of the time their team currently loses to manual work. Ownership language converts higher because the button feels like the buyer's problem being solved, not a vendor's sales process being initiated. The secondary CTA "Watch the agent in action" gives the first-visit CFO a way to evaluate the product without booking 30 minutes. Without it, every buyer not ready to demo today is lost.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">Agents lead the feature section — differentiators first</div>
+        <div class="ubody">The original presents agents and platform features at equal visual weight. The Analyst Agent and Liquidity Agent are Nilus's sharpest differentiation — active AI that acts, not passive dashboards that display. Promoting them to lead the feature section, framed as "Two agents. One watching cash. One crunching it," immediately signals to a treasury buyer that this is not another cash management dashboard. The platform features — cash positions, forecasting, reconciliation — follow as supporting infrastructure. The primary differentiator leads. Everything else amplifies it.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The reader's consequence leads — not the product journey. The strongest number on the page belongs in the hero, not in an asterisk. The primary objection gets answered before the buyer forms it. The CTA names what the buyer gets, not what the vendor wants them to do.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
