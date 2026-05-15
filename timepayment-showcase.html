@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — TimePayment Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --tp-green:#317F04;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#999}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#666;text-decoration:none}.tb-back:hover{color:#aaa}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#777}
+.byline{font-family:var(--mono);font-size:11px;color:#555;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#666;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#555;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#aaa}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+/* source card */
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+/* TP nav */
+.tp-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.tp-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--tp-green);letter-spacing:-.2px}
+.tp-links{font-family:var(--mono);font-size:10px;color:#666;display:flex;gap:14px;flex-wrap:wrap}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(22px,4vw,32px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:4px;font-family:var(--sans)}
+.oh1-sub{font-size:15px;font-weight:400;color:#555;margin-bottom:14px;font-family:var(--sans)}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+
+/* CTA pair */
+.cta-pair{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px}
+.tp-cta-p{background:var(--tp-green);color:#fff;border-radius:5px;padding:9px 20px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.tp-cta-s{border:2px solid var(--tp-green);color:var(--tp-green);border-radius:5px;padding:9px 20px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+
+/* feature grid */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:480px){.feat-grid{grid-template-columns:1fr}}
+.fg{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:14px}
+.fg .fh{font-weight:700;font-size:13px;color:#0f0f0e;margin-bottom:2px}
+.fg .ft{font-family:var(--mono);font-size:9px;color:var(--tp-green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.fg .fb{font-size:12px;color:#555;line-height:1.55}
+
+/* differentiator strip */
+.diff-strip{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:14px 16px;margin:14px 0;font-size:13px;color:#0f0f0e;font-weight:600;display:flex;flex-wrap:wrap;gap:12px}
+.diff-strip span{color:var(--tp-green)}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+/* rebuilt */
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#555}.rb-meta strong{color:#aaa}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#4ade80;letter-spacing:-.2px}
+.rb-nav-links{font-family:var(--mono);font-size:10px;color:#555}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#666}
+.rb-sub{font-size:13px;color:#aaa;line-height:1.7;margin-bottom:22px}
+.rb-line{font-size:13px;font-weight:600;color:var(--neon);margin-bottom:22px;line-height:1.4}
+
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ccc;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#555;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#aaa;line-height:1.65}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#444;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* what changed */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;word-break:break-word}
+.ubody{font-size:13px;color:#444;line-height:1.7;word-break:break-word}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#aaa;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#444}
+.footer a{color:#666;text-decoration:none}.footer a:hover{color:#aaa}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>timepayment.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      "The Fastest Way To YES" is a promise without a number behind it. The hero names the outcome
+      but not the consequence of not having it. TimePayment's own Insights section contains the
+      number that would stop every equipment vendor on the page — "31% more website visitors convert
+      with embedded financing" — and it appears nowhere in the hero. The vendor who is losing sales
+      today does not see their problem named.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · timepayment.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: timepayment.com &nbsp;·&nbsp; Type: Fintech Homepage &nbsp;·&nbsp; Target: Equipment Vendors, Brokers, Equipment Buyers</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> timepayment.com &nbsp;·&nbsp; <strong>Type:</strong> Fintech Homepage</div>
+        <div class="src-meta">Equipment Finance · B2B Fintech · May 2026</div>
+      </div>
+
+      <div class="tp-nav">
+        <div class="tp-logo">TimePayment</div>
+        <div class="tp-links">
+          <span>Sellers</span><span>Brokers</span><span>Industries</span><span>Buyers</span><span>Apply</span>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">The Fastest Way To YES</div>
+        <div class="oh1-sub">Equipment Financing</div>
+        <div class="oh1-sub" style="margin-top:-8px;font-size:13px;color:#666">Close more deals with equipment financing</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "The Fastest Way To YES" is a brand promise, not a consequence. It names the speed of approval — but not what the vendor loses every day they don't have financing on their page. A vendor who just watched a customer walk out because they couldn't afford full price doesn't need to be told about speed. They need to see their lost sale named. "YES" is the product's benefit. The vendor's problem is all the lost deals that happened before they found TimePayment.
+        </div>
+
+        <div class="cta-pair">
+          <a href="https://timepayment.com/sellers/" class="tp-cta-p" target="_blank" rel="noopener">OFFER FINANCING</a>
+          <a href="https://timepayment.com/buyers/" class="tp-cta-s" target="_blank" rel="noopener">GET FINANCING</a>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Two CTAs at equal visual weight — "OFFER FINANCING" and "GET FINANCING" — presented side by side. Vendors and buyers are completely different audiences with different problems and different value propositions. The vendor adding financing to their store is the primary growth driver. Presenting both CTAs equally forces every visitor to self-identify before they can act. This is navigation friction, not conversion clarity.
+        </div>
+
+        <div class="oh2">How It Works</div>
+        <div class="osub">Make your equipment more affordable with our equipment financing technology. Lead with the low monthly payment, not the full sticker price, and turn shoppers into buyers.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Lead with the low monthly payment, not the full sticker price" is sales training advice, not a consequence. It tells the vendor what to do — it doesn't name what they're losing right now by not doing it. The vendor's problem isn't that they don't know about monthly payments. It's that they're quoting full sticker price and watching customers choose competitors who offer financing. The consequence — a lost sale — is never named.
+        </div>
+
+        <!-- Feature grid -->
+        <div class="feat-grid">
+          <div class="fg">
+            <div class="ft">Financing &amp; Sales</div>
+            <div class="fh">Low Monthly Payments</div>
+            <div class="fb">Credit profiles from Excellent down to 550 FICO. Flexible terms and custom options.</div>
+          </div>
+          <div class="fg">
+            <div class="ft">User Technology</div>
+            <div class="fh">Tools for Wherever You Sell</div>
+            <div class="fb">InfoHub™ portal, integrated e-comm tools, showroom merchandising and collateral.</div>
+          </div>
+          <div class="fg">
+            <div class="ft">Back-end Services</div>
+            <div class="fh">Let Us Be Your Back Office</div>
+            <div class="fb">Invoicing, pass-through billing, processing, and customer service handled for you.</div>
+          </div>
+          <div class="fg">
+            <div class="ft">Sales Tools &amp; Training</div>
+            <div class="fh">Learn How To Sell Financing</div>
+            <div class="fb">Staff-wide onboarding, InfoHub training, point-of-sale paperwork automation.</div>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Four feature sections at equal visual weight — Financing, Technology, Back Office, Training. All four describe what TimePayment provides. None of them name the vendor's operational consequence. "Let Us Be Your Back Office" is the sharpest differentiator — a vendor who no longer has to handle invoicing, billing, and customer service is free to focus on selling. But it appears third, equal in weight to a training section. The differentiator that justifies the switch should lead.
+        </div>
+
+        <!-- Differentiator strip -->
+        <div class="diff-strip">
+          <span>Technology That's Seamless</span>
+          <span>Faster Approvals</span>
+          <span>More Credit Profiles</span>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Technology That's Seamless / Faster Approvals / More Credit Profiles" — three differentiators listed as text without proof. "Faster" than what? "More credit profiles" — how many? TimePayment's own data shows approvals down to 550 FICO and credit decisions within 4 hours on deals over $25K. These are specific, verifiable numbers that competitors cannot match. They do not appear in the hero or the differentiator section — they are buried in feature copy.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">timepayment.com &nbsp;·&nbsp; Fintech Homepage — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>timepayment.com</strong> &nbsp;·&nbsp; Equipment Finance · B2B Fintech · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">TimePayment</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="rb-nav-links">Sellers &nbsp; Brokers &nbsp; Buyers</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">Add financing to my store</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">31% more visitors convert<br><em>when financing is on the page.</em></div>
+
+        <div class="rb-sub">
+          Most equipment vendors quote the full sticker price and lose the sale when the customer can't pay upfront. TimePayment puts an instant financing option on your website, your showroom floor, and your checkout — so customers see a monthly payment they can afford, not a price tag they can't.
+        </div>
+
+        <div class="rb-line">Approvals down to 550 FICO. Credit decisions in 4 hours on deals over $25K. No cost to join.</div>
+
+        <div class="proof-strip">
+          <div class="ps"><div class="n">31%</div><div class="l">More visitors<br>convert</div></div>
+          <div class="ps"><div class="n">550</div><div class="l">Minimum FICO<br>approved</div></div>
+          <div class="ps"><div class="n">4hr</div><div class="l">Credit decision<br>deals over $25K</div></div>
+          <div class="ps"><div class="n">50+</div><div class="l">Industries<br>served</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">Add financing to my store</a>
+          <a href="#" class="cta-s">Apply for equipment financing</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Primary differentiator — leads</div>
+          <div class="rsec-h">We handle the back office. You focus on closing.</div>
+          <div class="rsec-hl">Invoicing, billing, processing, customer service — all ours. Zero cost to you.</div>
+          <div class="rsec-p">TimePayment is not just a financing option you add to your store — it's a back-office operation you stop running. Invoicing, pass-through billing, processing, and customer service are handled by TimePayment's Vendor Desk team. You sell. We do the rest. No extra personnel, no lost productivity, no admin backlog eating into your margins.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 02</div>
+          <div class="rsec-h">We approve the customers your competitors can't finance</div>
+          <div class="rsec-hl">550 FICO minimum. Startups. New entities. Challenged credit.</div>
+          <div class="rsec-p">Most financing providers stop at prime credit. TimePayment approves credit profiles from Excellent down to 550 FICO — including startups and businesses that banks routinely decline. The customer who gets turned away by your current financing provider is a sale TimePayment can close. Transactions from $1,000. Same-day funding available.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 03</div>
+          <div class="rsec-h">Financing everywhere you sell — website, showroom, mobile</div>
+          <div class="rsec-hl">One integration. Every touchpoint. No cost to join the Vendor Program.</div>
+          <div class="rsec-p">InfoHub™ manages applications and tracks growth from one dashboard. E-comm tools put a financing button on your product pages. QR codes and physical collateral put financing on your showroom floor. Every customer touchpoint becomes a financing opportunity — and every financing opportunity becomes a closed deal.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>timepayment.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">The Fastest Way To YES Equipment Financing</div>
+        <div class="ba-n">Brand promise without a number. Names the product's speed but not the vendor's lost sale. No consequence named.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">31% more visitors convert when financing is on the page.</div>
+        <div class="ba-n">Specific, verifiable, consequential. Every vendor doing the math on their own traffic immediately understands what they are losing without this number.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: replace brand promise with vendor's lost conversion</div>
+        <div class="ubody">"The Fastest Way To YES" is memorable but it describes TimePayment's strength, not the vendor's problem. A vendor landing on this page is not searching for speed — they are searching because they are losing sales they should be closing. "31% more visitors convert when financing is on the page" — a number from TimePayment's own Insights content — names the consequence of not having financing embedded. Every vendor who does the arithmetic on their own monthly traffic immediately knows what that 31% means in dollars. That calculation is the trigger to act. "Fastest Way To YES" is not.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">Proof strip: specific numbers replace unverified claims</div>
+        <div class="ubody">"Technology That's Seamless / Faster Approvals / More Credit Profiles" are differentiators without evidence. TimePayment's actual numbers are specific and defensible: 550 FICO minimum approval, 4-hour credit decisions on deals over $25K, 31% conversion lift, 50+ industries. These four numbers answer the four questions every vendor asks before they add a new financing partner: will it approve my harder customers, how fast is the decision, will it actually increase my sales, and does it work in my industry? Specific proof strips answer all four before the vendor reads a single feature description.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">CTA hierarchy: vendor leads, buyer follows</div>
+        <div class="ubody">"OFFER FINANCING" and "GET FINANCING" at equal weight create a fork in the road. The vendor adding financing to their store drives compounding value — every vendor who signs up brings their entire customer base. The buyer is transactional. Leading with the vendor CTA — "Add financing to my store" — and naming it with ownership language instead of a generic imperative signals immediately which audience this page is built for. The buyer CTA remains secondary, available without competing for attention.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">Back office differentiator promoted to lead the feature section</div>
+        <div class="ubody">"Let Us Be Your Back Office" appears third in the original feature grid, equal in weight to a training section. It is TimePayment's sharpest operational differentiator — a vendor who no longer runs invoicing, billing, processing, and customer service has fundamentally changed their cost structure. No competitor offers this at the same depth. Promoting it to lead the feature section — framed as "We handle the back office. You focus on closing." — signals to every vendor tired of admin overhead that this is not just a financing product. It is an operational partner.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">"How It Works" replaced with the consequence of not acting</div>
+        <div class="ubody">"Make your equipment more affordable with our equipment financing technology. Lead with the low monthly payment, not the full sticker price" is sales coaching. It tells the vendor what to do after they sign up — not why they should sign up today. The rebuilt subheadline names the vendor's current situation: they are quoting full sticker price, customers who can't pay upfront are walking away or choosing competitors who offer financing, and that is a sale they are losing right now. The consequence is named before any feature is described. Consequence before feature — always.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The vendor's lost conversion comes before the product's brand promise. The best number on the site belongs in the hero, not in a blog post. The sharpest operational differentiator leads the feature section. CTA hierarchy mirrors audience value — the growth driver gets the primary button.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
