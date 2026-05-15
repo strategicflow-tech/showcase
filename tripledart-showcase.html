@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — TripleDart Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --td:#7c3aed;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#bbb}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#999;text-decoration:none}.tb-back:hover{color:#fff}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#aaa}
+.byline{font-family:var(--mono);font-size:11px;color:#aaa;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#aaa;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#aaa;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#fff}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+/* source card */
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+/* TD nav */
+.td-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.td-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--td);letter-spacing:-.2px}
+.td-links{font-family:var(--mono);font-size:10px;color:#666;display:flex;gap:14px;flex-wrap:wrap}
+.td-cta{background:var(--td);color:#fff;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:600;text-decoration:none;display:inline-block}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:4px;font-family:var(--sans)}
+.oh1-sub{font-size:14px;color:#555;margin-bottom:14px;font-family:var(--sans)}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+
+.td-cta-main{background:var(--td);color:#fff;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block;margin-bottom:20px}
+
+/* stat row */
+.stat-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.sc .n{font-size:20px;font-weight:800;color:var(--td);line-height:1;margin-bottom:2px;font-family:var(--sans)}
+.sc .l{font-family:var(--mono);font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;line-height:1.4}
+
+/* service grid */
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:480px){.svc-grid{grid-template-columns:1fr}}
+.svc{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:13px}
+.svc .sh{font-weight:700;font-size:13px;color:#0f0f0e;margin-bottom:3px}
+.svc .sb{font-size:12px;color:#555;line-height:1.55}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+/* rebuilt */
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#999}.rb-meta strong{color:#fff}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#a78bfa;letter-spacing:-.2px}
+.rb-nav-links{font-family:var(--mono);font-size:10px;color:#aaa}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#777}
+.rb-sub{font-size:13px;color:#ddd;line-height:1.7;margin-bottom:22px}
+.rb-line{font-size:13px;font-weight:600;color:var(--neon);margin-bottom:22px;line-height:1.4}
+
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ddd;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#aaa;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#ddd;line-height:1.65}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* what changed */
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;word-break:break-word}
+.ubody{font-size:13px;color:#444;line-height:1.7;word-break:break-word}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#ddd;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#888}
+.footer a{color:#aaa;text-decoration:none}.footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>tripledart.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      TripleDart manages $60M+ in ad spend, has 250+ clients, and published a benchmark report
+      from 84 real Google Ads accounts. None of this appears in the hero. The homepage opens with
+      "Finally, a SaaS Marketing Agency that Owns Real Growth Numbers" — a claim without a number.
+      The founder's best line is in a press release, not on the homepage.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · tripledart.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: tripledart.com &nbsp;·&nbsp; Type: B2B Agency Homepage &nbsp;·&nbsp; Target: SaaS Founders, CMOs, VP Marketing at B2B SaaS companies</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> tripledart.com &nbsp;·&nbsp; <strong>Type:</strong> Agency Homepage</div>
+        <div class="src-meta">B2B SaaS Marketing Agency · May 2026</div>
+      </div>
+
+      <div class="td-nav">
+        <div class="td-logo">TripleDart</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <div class="td-links">
+            <span>Services</span><span>Solutions</span><span>Resources</span><span>About</span>
+          </div>
+          <a href="https://www.tripledart.com/book-meeting" class="td-cta" target="_blank" rel="noopener">Book Intro Call</a>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">Finally, a SaaS Marketing Agency that Owns Real Growth Numbers</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Finally, a SaaS Marketing Agency that Owns Real Growth Numbers" — the word "finally" signals frustration with the category, which is legitimate. But the claim that follows — "Owns Real Growth Numbers" — is a promise without a number. A CMO evaluating agencies already knows that every agency claims to own growth numbers. What stops the scroll is the number itself. TripleDart has it: $60M+ managed ad spend, 22% ROAS improvement, 250+ clients. None of these appear in the hero headline.
+        </div>
+
+        <div class="oh1-sub">Join 250+ successful B2B SaaS companies on the path to achieving T2D3 with our SaaS marketing services.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "T2D3" — Triple, Double, Double, Double, Double — is VC jargon for a specific growth trajectory. A CMO at a Series B SaaS company may know it. A VP Marketing at a scaling startup doing $5M ARR may not. More importantly, T2D3 is a goal frame, not a consequence frame. The buyer landing on this page is not thinking "I need T2D3." They are thinking "my paid CAC is climbing and I don't know why" or "we're 60% behind pipeline target with 6 weeks left in the quarter." The hero should name one of those situations, not a growth abbreviation.
+        </div>
+
+        <a href="https://www.tripledart.com/book-meeting" class="td-cta-main" target="_blank" rel="noopener">Book Intro Call</a>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Single CTA — "Book Intro Call" — as the only conversion path. For a CMO doing initial vendor evaluation, booking a call is a high-commitment action. They are comparing 3-5 agencies simultaneously and are not ready to commit 30 minutes to a sales call based on a headline and a subheadline. There is no lower-commitment option — no benchmark report, no free audit, no case study prompt. TripleDart has a free AI visibility report tool linked in an announcement bar at the top of the page. It should be in the hero.
+        </div>
+
+        <!-- Stats -->
+        <div class="stat-row">
+          <div class="sc"><div class="n">250+</div><div class="l">SaaS clients</div></div>
+          <div class="sc"><div class="n">$60M+</div><div class="l">Ad spend managed</div></div>
+          <div class="sc"><div class="n">150+</div><div class="l">PPC accounts</div></div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Stat strip has the right numbers but no outcome framing. "250+ SaaS clients" is a volume signal. "$60M+ Ad spend managed" is a scale signal. Neither tells the evaluating CMO what those clients achieved. TripleDart's own benchmark report contains the outcome: 22% ROAS improvement, 18% CPL reduction across AI-optimized accounts, 3.2x ROAS for agency partnerships vs 2.1x for in-house teams. These numbers — from real managed data — belong in the stat strip, not in a press release.
+        </div>
+
+        <!-- Services -->
+        <div class="oh2">Our services</div>
+        <div class="svc-grid">
+          <div class="svc">
+            <div class="sh">SEO &amp; Content</div>
+            <div class="sb">Drive organic growth for your SaaS business with content that speaks to your audience.</div>
+          </div>
+          <div class="svc">
+            <div class="sh">Paid Media</div>
+            <div class="sb">Maximize ROI with targeted Google Ads, LinkedIn, and Facebook campaigns.</div>
+          </div>
+          <div class="svc">
+            <div class="sh">ABM</div>
+            <div class="sb">Target key accounts with personalized marketing across channels.</div>
+          </div>
+          <div class="svc">
+            <div class="sh">RevOps</div>
+            <div class="sb">Optimize your revenue operations with end-to-end solutions.</div>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Four service cards at equal visual weight — SEO, Paid Media, ABM, RevOps — each with a generic one-liner. Not one describes a failure state. "Maximize ROI with targeted campaigns" is what every paid media agency says. TripleDart's own benchmark data names the failure: "The biggest shift we've seen is what happens when you remove humans from the parts of PPC they're worst at — reactive bid management, daily budget reallocation, and search term mining." That sentence, from Shiyam's own press release, is a better homepage subheadline than any of the four service cards.
+        </div>
+
+        <div class="oh2">Why TripleDart?</div>
+        <div class="op">We plan, execute, and manage integrated digital marketing campaigns across organic, paid, and social channels that grow your marketing and sales pipeline. 100+ SaaS Companies across the globe already trust us.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "We plan, execute, and manage integrated digital marketing campaigns across organic, paid, and social channels" — this is a job description, not a value proposition. Every agency does this. "100+ SaaS Companies across the globe already trust us" is the weakest form of social proof — an unverified count with no outcome attached. The section header "Why TripleDart?" is a question the page then fails to answer with anything specific.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">tripledart.com &nbsp;·&nbsp; Agency Homepage — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>tripledart.com</strong> &nbsp;·&nbsp; B2B SaaS Marketing Agency · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">TripleDart</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="rb-nav-links">Services &nbsp; Case Studies &nbsp; Benchmark Report</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">See what we'd fix in your pipeline</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">Your paid CAC is climbing.<br><em>Most SaaS teams don't know which campaign is causing it.</em></div>
+
+        <div class="rb-sub">
+          TripleDart manages $60M+ in monthly ad spend across 150+ SaaS companies — and built the benchmark data to prove what actually moves pipeline. Across 47 AI-optimized accounts: 22% ROAS improvement, 18% CPL reduction. Not projections. Real managed numbers.
+        </div>
+
+        <div class="rb-line">"The biggest shift: remove humans from the parts of PPC they're worst at. Let AI handle reactive bid management in real time." — Shiyam Sunder, Co-Founder</div>
+
+        <div class="proof-strip">
+          <div class="ps"><div class="n">22%</div><div class="l">ROAS improvement<br>AI-optimized accounts</div></div>
+          <div class="ps"><div class="n">18%</div><div class="l">CPL reduction<br>across portfolio</div></div>
+          <div class="ps"><div class="n">$60M+</div><div class="l">Monthly ad spend<br>managed</div></div>
+          <div class="ps"><div class="n">250+</div><div class="l">B2B SaaS<br>clients</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">See what we'd fix in your pipeline</a>
+          <a href="#" class="cta-s">Read the 2026 SaaS PPC Benchmark Report</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Primary differentiator — leads</div>
+          <div class="rsec-h">We built our benchmark data from 84 real accounts — not industry surveys</div>
+          <div class="rsec-hl">Vertical-level CPC benchmarks, funnel conversion data, and the 7 most common campaign failures across the portfolio.</div>
+          <div class="rsec-p">Most agencies benchmark your campaigns against generic industry data. TripleDart benchmarks against 84 actively managed Google Ads accounts across FinTech, MarTech, HR Tech, Sales Tech, Document Management, and Customer Support. The number that matters for your vertical is the one from accounts that match your buyer, price point, and sales cycle — not a category that lumps a $15/month app with a $100K/year HRIS platform.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 02</div>
+          <div class="rsec-h">A full marketing team for the cost of one hire</div>
+          <div class="rsec-hl">Year-one in-house: $287K average cost, 2.1x ROAS. TripleDart: $118 CPL, 3.2x ROAS.</div>
+          <div class="rsec-p">The in-house vs agency math is in the data. TripleDart's portfolio delivers a $118 CPL and 3.2x ROAS compared to the $142 CPL and 2.1x ROAS benchmark for year-one in-house teams — at a fraction of the build cost. SEO, paid media, content, ABM, RevOps, and web — covered. The CMO gets a full-stack team without the 6-month hiring cycle.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 03</div>
+          <div class="rsec-h">Check your AI search visibility before the intro call</div>
+          <div class="rsec-hl">Free AI visibility report — see if your brand shows up in ChatGPT, Perplexity, and Google AI before your competitors do.</div>
+          <div class="rsec-p">GEO is the channel most SaaS teams are ignoring while their competitors compound citations. TripleDart's free AI visibility report shows exactly where your brand appears (or doesn't) in AI search results — and what it would take to change that. No call required to get the data.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>tripledart.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">Finally, a SaaS Marketing Agency that Owns Real Growth Numbers</div>
+        <div class="ba-n">Claim without a number. "Finally" signals category frustration correctly but the headline that follows never names the consequence the buyer is living — or the number that proves TripleDart solves it.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">Your paid CAC is climbing. Most SaaS teams don't know which campaign is causing it.</div>
+        <div class="ba-n">Names the operational failure every SaaS CMO has experienced — rising CAC with no clear attribution. TripleDart exists to solve exactly that. Recognition before explanation.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: replace the claim with the buyer's failure state</div>
+        <div class="ubody">"Finally, a SaaS Marketing Agency that Owns Real Growth Numbers" makes two moves: it signals frustration with the category ("finally") and promises something ("real growth numbers"). Both are correct directions but the headline never arrives at a consequence. The CMO evaluating TripleDart is not searching for an agency that "owns growth numbers" — they are searching because their paid CAC climbed 34% last quarter and they don't know which campaign caused it, or because they're 60% behind pipeline target and their current agency's dashboard shows green while the pipeline shows red. Naming one of those situations in the hero creates recognition before any claim is made. Recognition triggers evaluation. A claim triggers skepticism.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">Proof strip: replace volume signals with outcome numbers</div>
+        <div class="ubody">"250+ clients" and "$60M+ managed" tell the buyer TripleDart is large. They do not tell the buyer what changed for those 250 clients. TripleDart's own 2026 PPC Benchmark Report contains the outcome data: 22% ROAS improvement and 18% CPL reduction across 47 AI-optimized accounts, validated at 95% confidence. These numbers are specific, verifiable, and directly relevant to any CMO evaluating paid media performance. Moving them from a press release into the hero stat strip converts the buyer's question from "are they big enough" to "can they do this for me." The difference between a volume signal and an outcome signal is the difference between credibility and urgency.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">Founder's best line moved from press release to hero</div>
+        <div class="ubody">"The biggest shift we've seen across our book of business is what happens when you remove humans from the parts of PPC they're worst at — reactive bid management, daily budget reallocation, and search term mining — and let AI agents handle those in real time." This sentence appears in a GlobalNewswire press release. It does not appear on the homepage. It is the most specific, most differentiated, most credible statement in all of TripleDart's public content — because it names a specific mechanism of improvement that no generic agency can claim. A pull quote from the co-founder, placed below the subheadline, converts a positioning claim into a named method. Positioning without mechanism is just a promise.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">Secondary CTA: benchmark report beats "Book Intro Call"</div>
+        <div class="ubody">"Book Intro Call" as the only CTA forces every first-visit buyer into a sales conversation before they have evaluated TripleDart against 4 other agencies. The 2026 State of SaaS PPC Benchmark Report — built from 84 real accounts, covering 6 verticals, with vertical-level CPC benchmarks and funnel conversion data — is the best lead generation asset TripleDart owns. It belongs as the secondary CTA in the hero. A CMO who reads the benchmark report and finds their vertical's data has already evaluated TripleDart through their own work product. That is the highest-quality top-of-funnel conversion possible: the prospect convinced themselves.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">In-house vs agency comparison: put the math in the hero</div>
+        <div class="ubody">TripleDart's own benchmark data contains the most compelling agency sales argument available: year-one in-house teams average a $142 CPL and 2.1x ROAS at $287K average cost, compared to TripleDart's $118 CPL and 3.2x ROAS at a fraction of the build cost. This comparison — specific, data-backed, sourced from their own managed portfolio — answers the single most common objection to hiring an agency: "wouldn't it be cheaper to build in-house?" The answer is no, by a measurable margin, and TripleDart has the data to prove it. That data belongs in the homepage feature section, not in an April press release that the CMO will never find.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The buyer's failure state leads — not a claim about the agency. The best numbers in the business belong in the hero, not in press releases. The founder's sharpest line belongs on the homepage, not in a GlobalNewswire filing. The benchmark report is the best CTA — it lets the buyer convince themselves.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
