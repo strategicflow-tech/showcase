@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Userpilot Homepage Teardown</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111;--bg:#f5f4ef;--bg2:#eeecea;--border:#d8d6cf;
+  --gray:#6b6965;--gd:#444240;
+  --red:#c8341f;--redbg:#fef1f0;--redbr:#f5c0bb;
+  --green:#1a6640;--greenbg:#f0faf4;--greenbr:#a3d9b8;
+  --night:#0f0f0e;--night2:#1a1a18;
+  --neon:#3ddc84;
+  --up:#6366f1;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.topbar{background:var(--night);border-bottom:1px solid #1e1e1c;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tb-brand{font-family:var(--mono);font-size:12px;color:#bbb}.tb-brand strong{color:#fff}
+.tb-back{font-family:var(--mono);font-size:11px;color:#999;text-decoration:none}.tb-back:hover{color:#fff}
+
+.hero{background:var(--night);padding:48px 20px 40px;border-bottom:2px solid var(--red)}
+.hero-in{max-width:740px;margin:0 auto}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.kicker::after{content:'';flex:1;height:1px;background:#1e1e1c}
+.hero h1{font-family:var(--serif);font-size:clamp(26px,5vw,48px);font-weight:400;line-height:1.1;color:#fff;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:#aaa}
+.byline{font-family:var(--mono);font-size:11px;color:#aaa;margin-bottom:24px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.pill{background:#1e1e1c;border:1px solid #2a2a28;border-radius:100px;padding:5px 14px;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:7px}
+.pill b{font-size:14px}.pill b.r{color:var(--red)}.pill b.g{color:var(--neon)}
+.pill span{color:#aaa;font-size:10px}
+.verdict{border-left:3px solid var(--red);background:rgba(200,52,31,.08);padding:13px 16px;border-radius:0 5px 5px 0;font-size:13px;color:#e0a09a;font-style:italic;line-height:1.6}
+
+.tabs{background:var(--night2);border-bottom:1px solid #252523;position:sticky;top:0;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-in{max-width:740px;margin:0 auto;padding:0 20px;display:flex;min-width:max-content}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#aaa;cursor:pointer;transition:color .15s,border-color .15s;white-space:nowrap}
+.tab:hover{color:#fff}.tab.on{color:#fff;border-bottom-color:var(--red)}
+
+.panel{display:none}.panel.on{display:block}
+.pb{max-width:740px;margin:0 auto;padding:40px 20px 64px}
+.plabel{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:block}
+.ph{font-family:var(--serif);font-size:clamp(18px,3vw,26px);font-weight:400;margin-bottom:6px}
+.psub{font-size:13px;color:var(--gd);line-height:1.65;margin-bottom:26px}
+
+.src{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.src-hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:11px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.src-meta{font-family:var(--mono);font-size:10px;color:var(--gray)}.src-meta strong{color:var(--ink)}
+
+.up-nav{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+.up-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:var(--up);letter-spacing:-.2px}
+.up-links{font-family:var(--mono);font-size:10px;color:#666;display:flex;gap:14px;flex-wrap:wrap}
+.up-cta{background:var(--up);color:#fff;border-radius:5px;padding:7px 15px;font-size:12px;font-weight:600;text-decoration:none;display:inline-block}
+.up-cta-ghost{border:1px solid #ccc;color:#555;border-radius:5px;padding:7px 15px;font-size:12px;text-decoration:none;display:inline-block;margin-right:6px}
+
+.src-body{padding:22px 18px}
+.oh1{font-size:clamp(20px,4vw,28px);font-weight:800;line-height:1.15;color:#0f0f0e;margin-bottom:6px;font-family:var(--sans)}
+.oh1-sub{font-size:14px;color:#555;margin-bottom:14px}
+.osub{font-size:14px;color:#555;line-height:1.7;margin-bottom:16px}
+.oh2{font-size:15px;font-weight:700;margin:20px 0 5px;color:#0f0f0e}
+.op{font-size:13px;color:#444;line-height:1.7;margin-bottom:8px}
+
+.feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:520px){.feat-grid{grid-template-columns:1fr}}
+.fg{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:13px;text-align:center}
+.fg .fi{font-size:20px;margin-bottom:5px}
+.fg .fh{font-weight:700;font-size:12px;color:#0f0f0e;margin-bottom:2px}
+.fg .fb{font-size:11px;color:#555;line-height:1.5}
+
+.stat-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.sc .n{font-size:20px;font-weight:800;color:var(--up);line-height:1;margin-bottom:2px;font-family:var(--sans)}
+.sc .l{font-family:var(--mono);font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;line-height:1.4}
+
+.pq{border-left:3px solid #d8d6cf;padding:10px 14px;margin:14px 0;font-size:13px;font-style:italic;color:#555;background:var(--bg2);border-radius:0 5px 5px 0;line-height:1.65}
+
+.bug{display:flex;gap:9px;background:var(--redbg);border:1px solid var(--redbr);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;margin:12px 0;font-size:12px;color:#7a2520;line-height:1.55}
+.bi{font-size:13px;flex-shrink:0;margin-top:1px}
+
+.rb{background:var(--night);border:1px solid #2a2a28;border-radius:12px;overflow:hidden}
+.rb-hdr{border-bottom:1px solid #1e1e1c;padding:11px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.rb-meta{font-family:var(--mono);font-size:10px;color:#999}.rb-meta strong{color:#fff}
+.rb-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:rgba(61,220,132,.1);color:var(--neon);border:1px solid rgba(61,220,132,.2);padding:3px 9px;border-radius:100px}
+.rb-body{padding:26px 20px 22px}
+.rb-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:14px;border-bottom:1px solid #1e1e1c;flex-wrap:wrap;gap:10px}
+.rb-logo{font-family:var(--sans);font-size:14px;font-weight:800;color:#a5b4fc;letter-spacing:-.2px}
+.rb-nav-links{font-family:var(--mono);font-size:10px;color:#aaa}
+.rb-h1{font-family:var(--serif);font-size:clamp(20px,4vw,34px);font-weight:400;line-height:1.12;color:#fff;margin-bottom:12px}
+.rb-h1 em{font-style:italic;color:#777}
+.rb-sub{font-size:13px;color:#ddd;line-height:1.7;margin-bottom:22px}
+.rb-line{font-size:13px;font-weight:600;color:var(--neon);margin-bottom:22px;line-height:1.4}
+
+.proof-strip{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.ps{background:#1a1a18;border:1px solid #2a2a28;border-radius:7px;padding:12px 16px;text-align:center;flex:1;min-width:80px}
+.ps .n{font-family:var(--serif);font-size:24px;color:var(--neon);line-height:1;margin-bottom:3px}
+.ps .l{font-family:var(--mono);font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+
+.rb-ctas{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.cta-p{background:var(--neon);color:#0f0f0e;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block}
+.cta-s{background:#1a1a18;color:#ddd;padding:9px 18px;border-radius:6px;font-size:13px;text-decoration:none;display:inline-block;border:1px solid #2a2a28}
+.rdiv{height:1px;background:#1e1e1c;margin:16px 0}
+.rsec{margin-bottom:18px}
+.rsec-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#aaa;margin-bottom:4px}
+.rsec-h{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+.rsec-hl{font-size:12px;font-style:italic;color:var(--neon);margin-bottom:5px}
+.rsec-p{font-size:13px;color:#ddd;line-height:1.65}
+.rb-foot{background:#0a0a09;border-top:1px solid #1a1a18;padding:10px 20px;font-family:var(--mono);font-size:10px;color:#888;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+.ba-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px}
+@media(max-width:520px){.ba-row{grid-template-columns:1fr}}
+.ba{border-radius:8px;padding:14px}
+.ba.bef{background:var(--redbg);border:1px solid var(--redbr)}
+.ba.aft{background:var(--greenbg);border:1px solid var(--greenbr)}
+.ba-tag{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:500;margin-bottom:7px}
+.ba.bef .ba-tag{color:var(--red)}.ba.aft .ba-tag{color:var(--green)}
+.ba-h{font-weight:700;font-size:13px;line-height:1.4;color:var(--ink);margin-bottom:4px}
+.ba-n{font-size:12px;font-style:italic;color:#444;line-height:1.5}
+
+.upg{border-bottom:1px solid var(--border);padding:20px 0;display:grid;grid-template-columns:36px 1fr;gap:14px;min-width:0}
+.upg:last-of-type{border-bottom:none}
+.unum{font-family:var(--serif);font-size:28px;color:#bbb;font-style:italic;line-height:1;padding-top:2px;flex-shrink:0}
+.upg-b{min-width:0}
+.utitle{font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px}
+.ubody{font-size:13px;color:#444;line-height:1.7}
+
+.method{background:var(--night);border-radius:10px;padding:26px;margin-top:36px;border-top:3px solid var(--neon)}
+.method h3{font-family:var(--serif);font-size:20px;font-weight:400;color:#fff;margin-bottom:10px}
+.method p{font-size:13px;color:#ddd;line-height:1.7}
+.method a{color:var(--neon);text-decoration:none}
+
+.footer{background:var(--night);border-top:1px solid #1a1a18;padding:20px 24px;text-align:center;font-family:var(--mono);font-size:10px;color:#888}
+.footer a{color:#aaa;text-decoration:none}.footer a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-brand"><strong>Strategic Flow</strong> — Showcase</div>
+  <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tb-back">← Back to all teardowns</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="kicker">Strategic Flow — Homepage Teardown</div>
+    <h1>userpilot.com — <em>Rewritten.</em></h1>
+    <div class="byline">A Strategic Flow showcase — before &amp; after &nbsp;·&nbsp; strategicflow.carrd.co</div>
+    <div class="pills">
+      <div class="pill"><b class="r">3</b><span>Before</span></div>
+      <div class="pill"><b class="g">9</b><span>After</span></div>
+      <div class="pill"><b class="r">5</b><span>Bugs found</span></div>
+      <div class="pill"><b class="g">+6</b><span>Score lift</span></div>
+    </div>
+    <div class="verdict">
+      Userpilot has 1,000+ teams, published SaaS benchmark data from 547 companies,
+      and customer results including a 10% activation improvement and 100% improvement
+      in onboarding completion. None of this appears in the hero.
+      The homepage opens with a category list — "Product Adoption, Onboarding and Engagement" —
+      and a CTA to book a demo. The product manager whose trial-to-paid conversion is 8%
+      does not see their problem named before they scroll.
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tabs-in">
+    <button class="tab on" onclick="show('before',this)">Before</button>
+    <button class="tab" onclick="show('after',this)">After — Strategic Flow</button>
+    <button class="tab" onclick="show('why',this)">What changed &amp; why</button>
+  </div>
+</div>
+
+<!-- ═══ BEFORE ═══ -->
+<div id="before" class="panel on">
+  <div class="pb">
+    <span class="plabel">Original · userpilot.com homepage</span>
+    <h2 class="ph">Homepage as shipped</h2>
+    <p class="psub">Source: userpilot.com &nbsp;·&nbsp; Type: SaaS Homepage &nbsp;·&nbsp; Target: Product Managers, Product Growth teams, Customer Success at SaaS companies</p>
+
+    <div class="src">
+      <div class="src-hdr">
+        <div class="src-meta"><strong>From:</strong> userpilot.com &nbsp;·&nbsp; <strong>Type:</strong> SaaS Homepage</div>
+        <div class="src-meta">Product Growth Platform · May 2026</div>
+      </div>
+
+      <div class="up-nav">
+        <div class="up-logo">Userpilot</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <div class="up-links"><span>Product</span><span>Solutions</span><span>Pricing</span><span>Resources</span></div>
+          <a href="#" class="up-cta-ghost">Log in</a>
+          <a href="https://userpilot.com/" class="up-cta" target="_blank" rel="noopener">Get a demo</a>
+        </div>
+      </div>
+
+      <div class="src-body">
+
+        <div class="oh1">Product Adoption, Onboarding and Engagement Platform</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Hero is a category label — three disciplines listed at equal weight. "Product Adoption, Onboarding and Engagement" describes what Userpilot covers. It does not name what breaks without it. A product manager whose activation rate is 22% and whose trial-to-paid conversion hasn't moved in 6 months does not see their problem in this headline. They see a filing label for a software category they were already researching.
+        </div>
+
+        <div class="oh1-sub">Drive user activation, feature adoption, and expansion revenue — without engineering.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Subheadline lists three outcomes at equal weight — activation, feature adoption, expansion revenue — with one differentiator appended at the end: "without engineering." The "without engineering" angle is Userpilot's sharpest operational differentiator for a PM who has been waiting 3 weeks for a developer to implement an onboarding checklist. It appears at the end of a three-item list, equal in weight to generic growth outcomes that every competitor also claims.
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px">
+          <a href="https://userpilot.com/" class="up-cta" target="_blank" rel="noopener">Get a demo</a>
+          <a href="https://userpilot.com/" class="up-cta-ghost" target="_blank" rel="noopener">Start free trial</a>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "Get a demo" as primary CTA and "Start free trial" as secondary. For a product manager evaluating tools solo — without budget approval — booking a demo is a high-commitment first step that signals they are ready to engage a sales team. The free trial is the right first CTA for a PM who wants to validate the tool before proposing it internally. The hierarchy is inverted.
+        </div>
+
+        <!-- Stats buried -->
+        <div class="oh2">Trusted by 1,000+ product teams</div>
+        <div class="op">Teams at companies including Notion, HubSpot, Loom, Mixpanel, and others use Userpilot to drive activation and reduce churn.</div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          "1,000+ product teams" and a logo strip appear below the fold, after the CTAs. This is the single most credible proof signal on the page. A PM who doesn't scroll past the hero never sees it. Userpilot also has a SaaS Product Metrics Benchmark Report from 547 companies — real data that any PM evaluating their own metrics would find immediately relevant. Neither the report nor the 1,000+ number appears in the hero zone where they would stop the evaluation.
+        </div>
+
+        <!-- Features at equal weight -->
+        <div class="oh2">Everything you need to grow your product</div>
+        <div class="feat-grid">
+          <div class="fg">
+            <div class="fi">🎯</div>
+            <div class="fh">User Onboarding</div>
+            <div class="fb">Build in-app onboarding flows without code. Tooltips, modals, checklists, and product tours.</div>
+          </div>
+          <div class="fg">
+            <div class="fi">📊</div>
+            <div class="fh">Product Analytics</div>
+            <div class="fb">Track activation, feature adoption, and retention with funnel and cohort analysis.</div>
+          </div>
+          <div class="fg">
+            <div class="fi">💬</div>
+            <div class="fh">User Feedback</div>
+            <div class="fb">Collect NPS, CSAT, and in-app surveys to understand what users think and why they churn.</div>
+          </div>
+        </div>
+
+        <div class="bug"><span class="bi">⚠</span>
+          Three feature cards at equal visual weight — Onboarding, Analytics, Feedback. The "no-code" angle — build in-app flows without engineering involvement — is the primary purchase driver for product teams in companies where engineering is the bottleneck. It appears as a parenthetical in the Onboarding card description rather than as the lead differentiator. A PM who has been queuing requests for 3 months already knows what they need — they need to know they can do it themselves, today.
+        </div>
+
+        <!-- Social proof -->
+        <div class="oh2">What teams are saying</div>
+        <div class="pq">"Userpilot helped Kontentino improve their first and second run user experience. Kontentino saw a 10% increase in user activation as well as improvements in 1-week retention."</div>
+        <div class="pq">"Userpilot helps us reduce a lot of 1:1 onboarding calls. We never had such a high rate of trained people getting live on the first day."</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ AFTER ═══ -->
+<div id="after" class="panel">
+  <div class="pb">
+    <span class="plabel">Rebuilt · Strategic Flow Method</span>
+    <h2 class="ph">Homepage — rebuilt</h2>
+    <p class="psub">userpilot.com &nbsp;·&nbsp; SaaS Homepage — Rebuilt &nbsp;·&nbsp; Consequence-first architecture applied</p>
+
+    <div class="rb">
+      <div class="rb-hdr">
+        <div class="rb-meta"><strong>userpilot.com</strong> &nbsp;·&nbsp; Product Growth Platform · May 2026</div>
+        <div class="rb-tag">After — Strategic Flow</div>
+      </div>
+
+      <div class="rb-body">
+
+        <div class="rb-nav">
+          <div class="rb-logo">Userpilot</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span class="rb-nav-links">Product &nbsp; Solutions &nbsp; Pricing</span>
+            <a href="#" class="cta-p" style="padding:6px 14px;font-size:12px">Start free trial — no card</a>
+          </div>
+        </div>
+
+        <div class="rb-h1">Your users signed up.<br><em>Most of them never reached the moment that made it worth it.</em></div>
+
+        <div class="rb-sub">
+          Userpilot gives product teams the tools to build in-app onboarding, track activation, and collect feedback — without waiting for engineering. No code. No developer queue. The onboarding flow that's been on your backlog for 3 months ships today.
+        </div>
+
+        <div class="rb-line">"We never had such a high rate of trained people getting live on the first day." — Userpilot customer</div>
+
+        <div class="proof-strip">
+          <div class="ps"><div class="n">1,000+</div><div class="l">Product teams<br>worldwide</div></div>
+          <div class="ps"><div class="n">547</div><div class="l">Companies in the<br>SaaS benchmark</div></div>
+          <div class="ps"><div class="n">10%</div><div class="l">Activation lift<br>Kontentino</div></div>
+          <div class="ps"><div class="n">0</div><div class="l">Engineering tickets<br>to get started</div></div>
+        </div>
+
+        <div class="rb-ctas">
+          <a href="#" class="cta-p">Start free trial — no card</a>
+          <a href="#" class="cta-s">See the benchmark data</a>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Primary differentiator — leads</div>
+          <div class="rsec-h">Build onboarding flows, product tours, and in-app guidance. No engineering required.</div>
+          <div class="rsec-hl">Install the Chrome extension. Build directly on your product. Ship today, not next sprint.</div>
+          <div class="rsec-p">Userpilot's no-code builder works as a Chrome extension on top of your live product. You select the UI element, add the tooltip or checklist, preview it in real-time, and publish. No handoff. No ticket. No waiting for a developer to deprioritize it for something else. The onboarding experience your users need doesn't have to compete with your engineering backlog.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 02</div>
+          <div class="rsec-h">See exactly where users drop off — and fix it without guessing</div>
+          <div class="rsec-hl">Funnel analysis, cohort tables, feature engagement — all in one platform.</div>
+          <div class="rsec-p">Userpilot tracks what users do inside your product in real time. Funnels show where activation breaks. Cohort analysis shows which user segments retain. Feature engagement shows which features get used and which get ignored. When you find the drop-off point, you build the fix — a tooltip, a modal, a checklist — in the same platform. No switching between analytics and experimentation tools.</div>
+        </div>
+
+        <div class="rdiv"></div>
+
+        <div class="rsec">
+          <div class="rsec-tag">Supporting proof — 03</div>
+          <div class="rsec-h">Benchmark your activation and retention against 547 SaaS companies</div>
+          <div class="rsec-hl">Free SaaS Product Metrics Benchmark Report — see where your product stands.</div>
+          <div class="rsec-p">Before you can improve activation, you need to know if 22% is good or bad for your category, price point, and sales motion. Userpilot's benchmark report covers 547 companies across SaaS. It gives product teams the external reference point most have never had access to — so you're not optimizing against a number you invented yourself.</div>
+        </div>
+
+      </div>
+
+      <div class="rb-foot">
+        <span>userpilot.com · Rebuilt by Strategic Flow · May 2026</span>
+        <span>strategicflow.carrd.co</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WHAT CHANGED & WHY ═══ -->
+<div id="why" class="panel">
+  <div class="pb">
+    <span class="plabel">Diagnostic</span>
+    <h2 class="ph">What changed &amp; why</h2>
+    <p class="psub">Five structural upgrades. Each one addresses a specific bug in the original.</p>
+
+    <div class="ba-row">
+      <div class="ba bef">
+        <div class="ba-tag">❌ Before</div>
+        <div class="ba-h">Product Adoption, Onboarding and Engagement Platform</div>
+        <div class="ba-n">Category label. Three disciplines at equal weight. No consequence named. Identical to how every competitor describes themselves.</div>
+      </div>
+      <div class="ba aft">
+        <div class="ba-tag">✅ After</div>
+        <div class="ba-h">Your users signed up. Most of them never reached the moment that made it worth it.</div>
+        <div class="ba-n">Names the exact failure every PM with a low activation rate is living. The "aha moment" gap is the reason they're evaluating Userpilot. Recognition creates urgency before a feature is described.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">1</div>
+      <div class="upg-b">
+        <div class="utitle">Title: name the activation failure, not the product category</div>
+        <div class="ubody">Every product manager evaluating Userpilot came from a specific moment: they looked at their activation funnel and saw that most users signed up and never reached the feature that would have made them stay. "Product Adoption, Onboarding and Engagement Platform" describes where Userpilot sits in the market. "Your users signed up. Most of them never reached the moment that made it worth it." names the operational consequence that drove the PM to open a browser tab and start researching in the first place. Recognition precedes evaluation. A category label does not create recognition — it creates comparison.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">2</div>
+      <div class="upg-b">
+        <div class="utitle">"Without engineering" is the lead differentiator — not the third bullet</div>
+        <div class="ubody">For a product manager at a SaaS company where engineering is the bottleneck, "no engineering required" is not a feature — it is the purchase decision. A PM who has had onboarding improvements deprioritized three sprints in a row does not need to read a feature comparison. They need to know that on day one, they can build and publish a flow themselves. "Without engineering" appears at the end of the subheadline in the original, after two generic growth outcomes. The rebuild promotes it to the primary claim in the subheadline and the secondary claim in the differentiator section. The product that removes the bottleneck before the PM finishes their evaluation wins.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">3</div>
+      <div class="upg-b">
+        <div class="utitle">CTA hierarchy: free trial leads, demo follows</div>
+        <div class="ubody">The original leads with "Get a demo" as primary CTA. A PM evaluating tools independently — building a business case to present to their manager — is not ready to talk to a sales rep on their first visit. They want to see if the tool works before committing to a conversation. "Start free trial — no card" as the primary CTA removes the risk and reduces the decision to a single click. "See the benchmark data" as secondary gives a first-visit PM something to do that builds trust before they evaluate features — because the benchmark report is directly relevant to the problem they are already trying to solve. The secondary CTA converts a visitor into a qualified lead before any sales interaction.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">4</div>
+      <div class="upg-b">
+        <div class="utitle">Proof strip above the fold: 1,000+ teams, 547 benchmark companies, 10% activation lift, 0 engineering tickets</div>
+        <div class="ubody">"1,000+ product teams" appears below the fold in the original, after the CTAs, as a section header with a logo strip. The 547-company benchmark report is mentioned only in a blog sidebar. The Kontentino 10% activation improvement is in a testimonial section. The "0 engineering tickets" claim is implicit in the feature descriptions. Moving all four numbers to a proof strip in the hero zone converts them from supporting evidence to lead arguments. A PM scanning the page decides in 8 seconds whether to continue reading. Four specific numbers in the hero zone give them four reasons to continue before they have read a single feature description.</div>
+      </div>
+    </div>
+
+    <div class="upg">
+      <div class="unum">5</div>
+      <div class="upg-b">
+        <div class="utitle">Benchmark report as secondary CTA instead of buried blog content</div>
+        <div class="ubody">The SaaS Product Metrics Benchmark Report — built from 547 real companies — is the highest-value lead magnet Userpilot owns for a product manager evaluating their own metrics. A PM who downloads the report and finds their activation rate benchmarked against their category has already been convinced by Userpilot's data before they've seen a single feature. The report currently lives in a blog sidebar and a newsletter prompt. Making it a secondary CTA in the hero — "See the benchmark data" — converts a resource into a conversion mechanism. The PM who reads the report has a specific reason to return and evaluate the product: they now know exactly what they need to improve, and they know Userpilot tracked it.</div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>This is the Strategic Flow method</h3>
+      <p>Every word earns its place. The activation failure leads — not the product category. The sharpest differentiator ("no engineering") gets the primary position, not the third bullet. Proof is in the hero, not below the fold. The free trial leads the CTA — not the sales demo. The benchmark report is a CTA, not a blog post.<br><br>Visit <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a> to get started.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  Strategic Flow © 2026 &nbsp;·&nbsp;
+  <a href="https://strategicflow.carrd.co">strategicflow.carrd.co</a>
+  &nbsp;·&nbsp;
+  <a href="https://strategicflow-tech.github.io/showcase/index.html">← Back to all teardowns</a>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
