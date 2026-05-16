@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Walls.io Blog Teardown — Strategic Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f5f0;
+    --green: #00ff88;
+    --red: #ff4444;
+    --grey: #888;
+    --mid: #1a1a1a;
+    --border: #222;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .brand span {
+    color: var(--green);
+  }
+
+  .type-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 64px 48px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .company-line {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    max-width: 800px;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .score-block {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .score-number {
+    font-size: 72px;
+    font-weight: 800;
+    color: var(--red);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .score-denom {
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--grey);
+  }
+
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .meta-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-left: auto;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    color: var(--grey);
+  }
+
+  .pill.green { border-color: var(--green); color: var(--green); }
+
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--green); }
+
+  .company-line a {
+    color: var(--grey);
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .company-line a:hover {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  /* TABS */
+  .tabs-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    background: var(--black);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .tab-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+    padding: 18px 24px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .tab-btn:hover { color: var(--white); }
+
+  .tab-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  @media (max-width: 768px) {
+    .tabs-nav { padding: 0 16px; overflow-x: auto; }
+    .tab-btn { padding: 16px 16px; white-space: nowrap; }
+  }
+
+  /* FOOTER LINKS */
+  .footer-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(0,255,136,0.3);
+    transition: border-color 0.2s;
+  }
+  .footer-link:hover { border-bottom-color: var(--green); }
+
+  .footer-left a {
+    color: var(--grey);
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    transition: color 0.2s;
+  }
+  .footer-left a:hover { color: var(--green); }
+
+  /* MAIN GRID */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+  }
+
+  @media (max-width: 768px) {
+    .main { grid-template-columns: 1fr; }
+    .header { padding: 24px; }
+    .hero { padding: 40px 24px 32px; }
+  }
+
+  .col {
+    padding: 48px;
+    border-right: 1px solid var(--border);
+  }
+
+  .col:last-child { border-right: none; }
+
+  .col-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .col-header.before { color: var(--red); }
+  .col-header.after { color: var(--green); }
+
+  /* BUG ITEMS */
+  .bug-item {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bug-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .bug-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+
+  .bug-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .bug-desc {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  .bug-example {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: rgba(255,68,68,0.05);
+    border-left: 2px solid var(--red);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #cc4444;
+    line-height: 1.5;
+  }
+
+  /* FIX ITEMS */
+  .fix-item {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .fix-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .fix-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+
+  .fix-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .fix-desc {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  .fix-example {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: rgba(0,255,136,0.05);
+    border-left: 2px solid var(--green);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #00cc66;
+    line-height: 1.5;
+  }
+
+  /* BEFORE/AFTER SECTION */
+  .ba-section {
+    border-top: 1px solid var(--border);
+  }
+
+  .ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 768px) {
+    .ba-grid { grid-template-columns: 1fr; }
+    .col { padding: 32px 24px; }
+  }
+
+  .ba-col {
+    padding: 48px;
+    border-right: 1px solid var(--border);
+  }
+
+  .ba-col:last-child { border-right: none; }
+
+  .ba-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ba-label.before { color: var(--red); }
+  .ba-label.after { color: var(--green); }
+
+  .ba-item {
+    margin-bottom: 28px;
+  }
+
+  .ba-item-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ba-text {
+    font-size: 14px;
+    line-height: 1.65;
+    padding: 16px;
+  }
+
+  .ba-text.before {
+    background: rgba(255,68,68,0.04);
+    border-left: 2px solid var(--red);
+    color: #cc6666;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .ba-text.after {
+    background: rgba(0,255,136,0.04);
+    border-left: 2px solid var(--green);
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  .ba-why {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--grey);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* WHY SECTION */
+  .why-section {
+    border-top: 1px solid var(--border);
+    padding: 48px;
+  }
+
+  .why-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+  }
+
+  .why-item {}
+
+  .why-fix-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+  }
+
+  .why-fix-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .why-before {
+    font-size: 12px;
+    color: var(--red);
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .why-after {
+    font-size: 12px;
+    color: var(--green);
+    margin-bottom: 10px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .why-text {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 16px;
+  }
+
+  .footer-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--grey);
+    line-height: 1.8;
+  }
+
+  .footer-left span {
+    color: var(--white);
+  }
+
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.05em;
+  }
+
+  .lift-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 48px;
+    background: rgba(0,255,136,0.03);
+    border-top: 1px solid rgba(0,255,136,0.15);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lift-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .lift-score {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  .lift-arrow {
+    color: var(--grey);
+    font-size: 12px;
+  }
+
+  .lift-score.after {
+    color: var(--green);
+  }
+
+  .lift-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--grey);
+    margin-left: auto;
+  }
+
+  @media (max-width: 768px) {
+    .footer { padding: 24px; }
+    .why-section { padding: 32px 24px; }
+    .ba-col { padding: 32px 24px; }
+    .lift-bar { padding: 16px 24px; flex-wrap: wrap; }
+    .lift-note { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand"><a href="https://strategicflow.carrd.co" target="_blank" style="color:var(--grey);">Strategic Flow</a> <span>/ Blog Teardown</span></div>
+  <div class="type-badge">Article Audit</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="company-line">
+    <a href="https://blog.walls.io/events/events-linkedin-event-marketing/" target="_blank">Walls.io</a>
+    &nbsp;·&nbsp; blog.walls.io &nbsp;·&nbsp; Author: Daniela Turcanu &nbsp;·&nbsp; March 2026
+  </div>
+  <h1 class="hero-title">LinkedIn Event Marketing:<br>A Strategy Guide for B2B Event Marketers</h1>
+  <div class="score-row">
+    <div class="score-block">
+      <div class="score-number">4</div>
+      <div class="score-denom">/10</div>
+    </div>
+    <div class="score-label">Strategic Flow<br>Score</div>
+    <div class="meta-pills">
+      <div class="pill">7 bugs found</div>
+      <div class="pill">Blog article</div>
+      <div class="pill green">Rebuilt</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS NAV -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('diagnostic')">Diagnostic</button>
+  <button class="tab-btn" onclick="switchTab('before-after')">Before / After</button>
+  <button class="tab-btn" onclick="switchTab('why')">What Changed & Why</button>
+</nav>
+
+<!-- SCORE LIFT BAR -->
+<div class="lift-bar">
+  <div class="lift-label">Score lift</div>
+  <div class="lift-score">4/10</div>
+  <div class="lift-arrow">→</div>
+  <div class="lift-score after">9/10</div>
+  <div class="lift-note">The content is strong. The architecture was hiding it.</div>
+</div>
+
+<!-- TAB: DIAGNOSTIC -->
+<div id="tab-diagnostic" class="tab-panel active">
+<div class="main">
+
+  <!-- BEFORE: BUGS -->
+  <div class="col">
+    <div class="col-header before">
+      <span>Before — 7 Structural Bugs</span>
+      <span>4/10</span>
+    </div>
+
+    <div class="bug-item">
+      <div class="bug-number">BUG 01</div>
+      <div class="bug-name">Filing Label Title</div>
+      <div class="bug-desc">Describes the subject like a folder. No curiosity gap, no consequence. The strongest asset in the article — "420 people didn't show up" — is buried halfway down.</div>
+      <div class="bug-example">"LinkedIn Event Marketing: A Strategy Guide for B2B Event Marketers"</div>
+    </div>
+
+    <div class="bug-item">
+      <div class="bug-number">BUG 02</div>
+      <div class="bug-name">Caveat Opener</div>
+      <div class="bug-desc">First paragraph defines LinkedIn event marketing instead of naming the reader's consequence. The reader already knows the definition. They lose three lines before reaching anything useful.</div>
+      <div class="bug-example">"LinkedIn event marketing is the practice of using LinkedIn content, before, during, and after a conference..."</div>
+    </div>
+
+    <div class="bug-item">
+      <div class="bug-number">BUG 03</div>
+      <div class="bug-name">Feature-First Structure</div>
+      <div class="bug-desc">Sections describe post types as options, not solutions to specific problems. Reads like a menu. The reader selects, but never feels the cost of not acting.</div>
+      <div class="bug-example">"The what I learned post" / "Behind-the-scenes content" / "Social proof from your events"</div>
+    </div>
+
+    <div class="bug-item">
+      <div class="bug-number">BUG 04</div>
+      <div class="bug-name">Flat Hierarchy</div>
+      <div class="bug-desc">Post types, calendar framework, what to avoid — all at the same visual weight. The reader cannot tell what is critical and what is secondary. The most actionable insight is buried in the FAQ.</div>
+    </div>
+
+    <div class="bug-item">
+      <div class="bug-number">BUG 05</div>
+      <div class="bug-name">Zero Quantified Claims in Opening</div>
+      <div class="bug-desc">First real number appears at the halfway point. "420 people didn't show up" is the most powerful claim in the article — used as a secondary example, not the hook.</div>
+    </div>
+
+    <div class="bug-item">
+      <div class="bug-number">BUG 06</div>
+      <div class="bug-name">Weak CTA</div>
+      <div class="bug-desc">Quick-start checklist as the final section. No ownership language, no consequence, no specific next step. A convinced reader has no reason to act immediately.</div>
+      <div class="bug-example">"Define your one primary goal / Map the next event's content calendar / Set up a system..."</div>
+    </div>
+
+    <div class="bug-item">
+      <div class="bug-number">BUG 07</div>
+      <div class="bug-name">Buried Before/After Contrast</div>
+      <div class="bug-desc">The article has one excellent before/after example in the hook section. It is not used consistently. The most persuasive technique in the article appears exactly once.</div>
+      <div class="bug-example">Bad: "We just wrapped our annual customer conference..." — used as a footnote, not a framework.</div>
+    </div>
+
+  </div>
+
+  <!-- AFTER: FIXES -->
+  <div class="col">
+    <div class="col-header after">
+      <span>After — 7 Fixes Applied</span>
+      <span>9/10</span>
+    </div>
+
+    <div class="fix-item">
+      <div class="fix-number">FIX 01</div>
+      <div class="fix-name">Curiosity Gap Title</div>
+      <div class="fix-desc">Move the strongest asset to the front. The number already exists in the article — it just needs to lead.</div>
+      <div class="fix-example">"420 people didn't show up to our event. Here's the LinkedIn strategy that closed the gap."</div>
+    </div>
+
+    <div class="fix-item">
+      <div class="fix-number">FIX 02</div>
+      <div class="fix-name">Consequence-First Opening</div>
+      <div class="fix-desc">Paragraph 2 of the original is stronger than paragraph 1. Move it first. Name the problem the reader is already living before explaining the solution.</div>
+      <div class="fix-example">"Most event marketers post a recap photo three days after the event, get 40 likes from colleagues, and call it done. That's not a LinkedIn problem. That's a content architecture problem."</div>
+    </div>
+
+    <div class="fix-item">
+      <div class="fix-number">FIX 03</div>
+      <div class="fix-name">Outcome-First Section Headers</div>
+      <div class="fix-desc">Rename each section from content type to reader outcome. The format is secondary — the result is what earns the click.</div>
+      <div class="fix-example">"The post that proves you know what you're doing" → (replaces "The what I learned post")</div>
+    </div>
+
+    <div class="fix-item">
+      <div class="fix-number">FIX 04</div>
+      <div class="fix-name">Clear Visual Hierarchy</div>
+      <div class="fix-desc">Lead with the 2 highest-impact actions. Secondary tips follow. The FAQ insight — "Follower count matters far less than post quality" — moves to the opening, not the end.</div>
+    </div>
+
+    <div class="fix-item">
+      <div class="fix-number">FIX 05</div>
+      <div class="fix-name">Numbers Lead Every Section</div>
+      <div class="fix-desc">Each section opens with a specific number or outcome before the explanation. The reader understands the stakes before the method.</div>
+      <div class="fix-example">"78% attendance rate. One number. Here's what produced it." → leads the results section.</div>
+    </div>
+
+    <div class="fix-item">
+      <div class="fix-number">FIX 06</div>
+      <div class="fix-name">Ownership CTA</div>
+      <div class="fix-desc">Replace the checklist with a single action that names the consequence of doing it and the cost of not. One sentence, one link, zero friction.</div>
+      <div class="fix-example">"Your next event is content you haven't captured yet. Start with one post this week — one specific number, one real outcome. That post compounds. The recap photo doesn't."</div>
+    </div>
+
+    <div class="fix-item">
+      <div class="fix-number">FIX 07</div>
+      <div class="fix-name">Before/After as Structural Pattern</div>
+      <div class="fix-desc">Apply the before/after contrast format consistently across all 5 post type sections, not just the hook section. Each section shows what failing looks like before showing what works.</div>
+      <div class="fix-example">Every section: Bad version first → diagnosis → rebuilt version. Same pattern the reader already responded to in the hook section.</div>
+    </div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+</div>
+
+<!-- TAB: BEFORE / AFTER -->
+<div id="tab-before-after" class="tab-panel">
+<!-- BEFORE / AFTER REBUILT -->
+<div class="ba-section">
+  <div class="ba-grid">
+
+    <div class="ba-col">
+      <div class="ba-label before">Before</div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">Title</div>
+        <div class="ba-text before">LinkedIn Event Marketing: A Strategy Guide for B2B Event Marketers</div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">Opening paragraph</div>
+        <div class="ba-text before">LinkedIn event marketing is the practice of using LinkedIn content, before, during, and after a conference or corporate event, to build professional authority, grow registrations, attract sponsors, and prove business impact to leadership.</div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">Section header (post type 1)</div>
+        <div class="ba-text before">1. The "what I learned" post</div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">CTA / Final section</div>
+        <div class="ba-text before">Quick-start checklist:
+— Define your one primary goal
+— Map the next event's content calendar
+— Set up a system to capture attendee content
+— Write your first opinion post this week
+— Commit to a posting schedule</div>
+      </div>
+    </div>
+
+    <div class="ba-col">
+      <div class="ba-label after">After</div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">Title</div>
+        <div class="ba-text after">420 people didn't show up to our event. Here's the LinkedIn strategy that closed the gap.</div>
+        <div class="ba-why">The number was already in the article. It just needed to lead. Curiosity gap opens before the reader decides whether to click.</div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">Opening paragraph</div>
+        <div class="ba-text after">Most event marketers post a recap photo three days after the event, get 40 likes from colleagues, and call it done.
+
+That's not a LinkedIn problem. That's a content architecture problem.
+
+Here's what a strategy that actually compounds looks like.</div>
+        <div class="ba-why">Paragraph 2 of the original was stronger than paragraph 1. Moved to lead. Names the problem before offering the solution.</div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">Section header (post type 1)</div>
+        <div class="ba-text after">1. The post that proves you understand events — not just that you ran one</div>
+        <div class="ba-why">Names the outcome the reader wants, not the format they need to use. The consequence pulls them in before the method explains how.</div>
+      </div>
+
+      <div class="ba-item">
+        <div class="ba-item-label">CTA / Final section</div>
+        <div class="ba-text after">Your next event is content you haven't captured yet.
+
+Start with one post this week — one specific number, one real outcome, one thing that surprised you.
+
+That post compounds. The recap photo doesn't.</div>
+        <div class="ba-why">Ownership language. Consequence of acting vs not acting stated in the same breath. No list, no friction, one direction.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+</div>
+
+<!-- TAB: WHAT CHANGED & WHY -->
+<div id="tab-why" class="tab-panel">
+<!-- WHAT CHANGED AND WHY -->
+<div class="why-section">
+  <div class="why-header">What Changed & Why — Diagnostic Per Fix</div>
+  <div class="why-grid">
+
+    <div class="why-item">
+      <div class="why-fix-label">Fix 01</div>
+      <div class="why-fix-name">Title: curiosity gap over filing label</div>
+      <div class="why-before">BEFORE: Subject description. Reader knows what to expect before clicking.</div>
+      <div class="why-after">AFTER: Number + consequence + implied story. Reader clicks to close the gap.</div>
+      <div class="why-text">The strongest claim in the article was buried at paragraph 8. Moving it to the title costs nothing and earns the open. Every reader who has experienced attendance drop recognizes themselves immediately.</div>
+    </div>
+
+    <div class="why-item">
+      <div class="why-fix-label">Fix 02</div>
+      <div class="why-fix-name">Opening: consequence before definition</div>
+      <div class="why-before">BEFORE: Definition of LinkedIn event marketing. Reader already knows this.</div>
+      <div class="why-after">AFTER: The failure pattern the reader is already living. Named in 2 lines.</div>
+      <div class="why-text">The original paragraph 2 was the actual hook. It diagnosed a real problem: recap photo, 40 colleague likes, done. That observation earns the read. The definition did not.</div>
+    </div>
+
+    <div class="why-item">
+      <div class="why-fix-label">Fix 03</div>
+      <div class="why-fix-name">Section headers: outcome over format</div>
+      <div class="why-before">BEFORE: Content type named. Reader chooses based on format preference.</div>
+      <div class="why-after">AFTER: Outcome named. Reader chooses based on what they need to achieve.</div>
+      <div class="why-text">The distinction matters for B2B event marketers specifically. They are not looking for content formats. They are trying to prove impact to leadership and build pipeline before the next event. Headers that name that job get read first.</div>
+    </div>
+
+    <div class="why-item">
+      <div class="why-fix-label">Fix 04 + 05</div>
+      <div class="why-fix-name">Hierarchy: priority visible, numbers lead</div>
+      <div class="why-before">BEFORE: All sections equal weight. Numbers appear mid-article.</div>
+      <div class="why-after">AFTER: Two critical actions lead. Every section opens with a number.</div>
+      <div class="why-text">The FAQ contained the most important insight in the article: follower count matters far less than post quality. That belongs in the opening, not the FAQ. Numbers at the top of each section give the reader a reason to read the explanation.</div>
+    </div>
+
+    <div class="why-item">
+      <div class="why-fix-label">Fix 06</div>
+      <div class="why-fix-name">CTA: ownership language over checklist</div>
+      <div class="why-before">BEFORE: 5-item checklist. Reader nods and closes the tab.</div>
+      <div class="why-after">AFTER: One action, one consequence, one direction. Reader knows exactly what to do next.</div>
+      <div class="why-text">Checklists create perceived effort. Ownership language creates perceived progress. "Start with one post this week" is a decision the reader can make in 10 seconds. The checklist required five.</div>
+    </div>
+
+    <div class="why-item">
+      <div class="why-fix-label">Fix 07</div>
+      <div class="why-fix-name">Before/after: pattern not exception</div>
+      <div class="why-before">BEFORE: One before/after example in the hook section. Not repeated.</div>
+      <div class="why-after">AFTER: Before/after structure applied to every post type section.</div>
+      <div class="why-text">The reader already responded to the bad/good hook example — it was the most concrete moment in the article. That response pattern belongs in every section, not just one. Consistency makes the diagnostic credible.</div>
+    </div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">
+    <span>Strategic Flow</span> &nbsp;·&nbsp; Blog Article Teardown<br>
+    <a href="https://blog.walls.io/events/events-linkedin-event-marketing/" target="_blank">Walls.io</a> &nbsp;·&nbsp; Daniela Turcanu &nbsp;·&nbsp; March 2026<br>
+    <a href="https://strategic-flow-audit.replit.app" target="_blank">strategic-flow-audit.replit.app</a>
+  </div>
+  <div class="footer-right">
+    <a href="https://strategicflow.carrd.co" target="_blank" class="footer-link">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
