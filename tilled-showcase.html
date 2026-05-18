@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Tilled Blog Post Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#1a1a2e;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:-.01em;}
+.bef-logo span{color:#6EC6A0;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:16px;line-height:1.35;}
+.bef-italic{font-size:14px;color:#555;font-style:italic;line-height:1.7;margin-bottom:20px;padding:14px 16px;background:#f0f0f0;border-left:3px solid #ccc;border-radius:0 6px 6px 0;}
+.bef-copy{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-h2{font-size:17px;font-weight:700;color:#111;margin:24px 0 10px;}
+.bef-list{list-style:none;padding:0;margin-bottom:16px;}
+.bef-list li{font-size:13px;color:#444;line-height:1.7;padding:10px 14px;background:#f5f5f5;border-radius:6px;margin-bottom:8px;}
+.bef-list li strong{color:#111;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:#1a1a2e;color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'DM Serif Display',serif;font-size:20px;color:#e8f5e0;}
+.after-tagline-sm{font-size:10px;color:#5a8a6a;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Tilled — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> tilled.com/blog</div>
+        <div class="meta-row"><span>Type:</span> Educational Blog Post</div>
+        <div class="meta-row"><span>Date:</span> March 2, 2026</div>
+        <div class="post-title">Embedded Payments Revenue: Why Volume Beats Low Processing Rates</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Tilled<span>.</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;">BLOG</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">General · March 2, 2026</div>
+        <div class="bef-h1">Embedded Payments Revenue: Why Volume Beats Low Processing Rates</div>
+        <div class="bef-italic">Software companies that are only focused on finding the cheapest solution for embedded payments processing may be making, as one software CEO recently said, the "biggest mistake of their professional careers."</div>
+
+        <div class="bef-copy">Is it more important for your software platform to have the lowest-cost solution for embedded payments processing, or to make the most money from your embedded payments solution?</div>
+        <div class="bef-copy">While this may seem like a trick question, it's often difficult for partners to answer. For almost all ISVs, it's the latter.</div>
+
+        <div class="bef-h2">Lever #1: Price-hunting for the lowest-cost payments partner</div>
+        <div class="bef-copy">In a perfect world where every partner offered the same functionality, user experience, onboarding, customer service, and sales and marketing support, this would be the right approach. Unfortunately, payment processing services are not a commodity...</div>
+
+        <div class="bef-h2">Lever #2: Increase the payments volume flowing through your platform</div>
+        <div class="bef-copy">If you're really looking to boost your margins when it comes to embedded payments processing, the best solution is not to find a lower-cost provider, but to increase the volume of payments flowing through your platform.</div>
+
+        <ul class="bef-list">
+          <li><strong>Sales Support:</strong> Does your payments provider offer to train your team on how to sell payments?</li>
+          <li><strong>Marketing Support:</strong> Will your partner provide websites, email campaigns, and social media copy?</li>
+          <li><strong>Onboarding Support:</strong> There will always be merchants who need extra help.</li>
+          <li><strong>Ongoing Support:</strong> A true partner will continue to ensure you have the right products and features.</li>
+        </ul>
+
+        <div class="bef-copy">Remember the CEO I mentioned earlier? His ISV is now partnered with Tilled, and receiving all the support they need. The result so far — a 56% increase in their attach rates.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://www.tilled.com/contact" class="bef-cta">Reach out today!</a>
+        </div>
+
+        <div class="bef-footer">© 2026 Tilled PayFac-as-a-Service · tilled.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title names a concept, not a consequence — "Why Volume Beats Low Processing Rates" tells the reader the conclusion before they've felt the problem. No tension, no reason to keep reading.</div>
+        <div class="issue-item"><span>⚠</span> Opening paragraph asks a rhetorical question the reader can't answer — "Is it more important to have the lowest cost or make the most money?" Both feel like the right answer. The question creates confusion, not urgency.</div>
+        <div class="issue-item"><span>⚠</span> The CEO story appears at the end — it's the strongest proof in the article (56% attach rate lift) but it's buried after the framework. It should open the post.</div>
+        <div class="issue-item"><span>⚠</span> "Lever #1" and "Lever #2" framing is mechanical — it signals a listicle, not a diagnostic. The reader feels like they're reading documentation, not a business argument.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Reach out today!" has no specific offer — what happens when you reach out? What will you get? No consequence named at the conversion moment.</div>
+        <div class="issue-item"><span>⚠</span> No numbers in the hook — the 56% stat exists in the post but is never used to lead. A reader scanning the first paragraph gets no data point to anchor on.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> tilled.com/blog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Educational Blog Post — Strategic Flow Rewrite</div>
+        <div class="post-title">A software CEO called it the worst decision of his career. He was chasing lower rates.</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">Tilled</div>
+          <div class="after-tagline-sm">PayFac-as-a-Service · Mar 2026</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#5a8a6a;letter-spacing:.06em;">Embedded Payments · Revenue</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Embedded Payments · Revenue Strategy · ISV Growth</div>
+        <div class="after-h1">The rate you pay your processor is <em>not the number that matters.</em></div>
+        <div class="after-lead">A software CEO recently told us chasing a lower-cost payments provider was the worst decision of his professional career. His attach rates were low, his merchants were churning, and his payments revenue was flat — despite a competitive rate. Here is what he was missing.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">56%</div>
+            <div class="stat-label">attach rate increase after switching focus</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">9</div>
+            <div class="stat-label">days avg. merchant onboarding with Tilled</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">fraud liability on your balance sheet</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://www.tilled.com/contact/sales" class="after-cta-primary">See your revenue potential →</a>
+          <a href="https://www.tilled.com/pricing" class="after-cta-ghost">Calculate your upside</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The real variable</div>
+        <div class="after-section-title">Your rate is fixed. Your volume is not.</div>
+        <div class="after-section-body">Two ISVs with identical processing rates can generate 5x different revenue. The one pulling ahead is not paying less per transaction. They are processing more of them. Attach rate — the percentage of merchants actually using your payments solution — is the lever that compounds. A 10% improvement in attach rate outperforms a 20% reduction in processing costs every time.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">What a real partner looks like</div>
+        <div class="after-section-title">Four things a low-cost provider will never give you.</div>
+        <div class="after-section-body">
+          Sales training for your team on how to position and close payments. Marketing assets — landing pages, email campaigns, in-app copy — to drive merchant adoption. Onboarding support for merchants who stall mid-process. And a product roadmap that includes you.<br><br>
+          Without these, you are responsible for your own attach rate. With them, your processor is as invested in your volume as you are.
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The consequence of getting it wrong</div>
+        <div class="after-section-title">Low rates plus low support equals low revenue.</div>
+        <div class="after-section-body">The CEO who made this mistake is now a Tilled partner. In the time since switching focus from rate to volume, his attach rate increased 56%. That is not a marginal improvement — it is a different business. The rate he pays his processor is largely the same. What changed is how many merchants are actually using it.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Next step</div>
+        <div class="after-section-title">Run the numbers on your platform before your next renewal.</div>
+        <div class="after-section-body">Enter three data points about your merchants and transaction volume. We will show you what your payments revenue could look like with the right attach rate and the right partner.</div>
+        <div style="margin-top:16px;">
+          <a href="https://www.tilled.com/contact/sales" class="after-cta-primary" style="font-size:13px;">Talk to the team →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.tilled.com/pricing" class="footer-link">Pricing calculator</a>
+          <a href="https://www.tilled.com/why-pfaas" class="footer-link">Why PayFac-as-a-Service</a>
+          <a href="https://www.tilled.com/blog" class="footer-link">Blog</a>
+        </div>
+        <div class="footer-note">© 2026 Tilled</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Embedded Payments Revenue: Why Volume Beats Low Processing Rates<br><br>Gives away the conclusion before the reader has felt the problem. No tension. A scanning ISV has no reason to stop and read.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> A software CEO called it the worst decision of his career. He was chasing lower rates.<br><br>Opens with a real person, a real consequence, and a named mistake. The reader who has considered rate-shopping immediately slows down.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Hook: lead with the proof, not the framework</div>
+          <div class="upgrade-desc">The original buries the CEO story at the end of the article — the most credible and emotionally resonant element. The rebuild opens with it. A real person, a real mistake, and a specific outcome (56% attach rate lift) give the reader a reason to keep reading before they have processed a single concept.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Title names the consequence, not the lesson</div>
+          <div class="upgrade-desc">The original title announces the conclusion: volume beats rates. The rebuild names the mistake and the person who made it. Readers who have considered rate-shopping recognize themselves. That recognition creates urgency the original title cannot generate.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Rhetorical question replaced with a diagnostic statement</div>
+          <div class="upgrade-desc">"Is it more important to have the lowest cost or make the most money?" creates confusion — both feel like valid answers. The rebuild opens with an observation: "Your rate is fixed. Your volume is not." This is specific, falsifiable, and immediately useful.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Stat cards above the fold anchor the decision</div>
+          <div class="upgrade-desc">56% attach rate increase / 9-day onboarding / 0 fraud liability — three numbers that answer the three questions an ISV has before they engage: what result is realistic, how fast does it happen, and what risk am I taking on. Specificity replaces adjectives.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · "Lever #1 / Lever #2" replaced with named consequences</div>
+          <div class="upgrade-desc">The lever framing is mechanical and signals a listicle. The rebuild names the real commercial logic: attach rate compounds, low-cost providers cannot support volume growth, and a real partner is invested in your upside. The reader understands the stakes without needing to process a framework.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA names what happens next, not just the action</div>
+          <div class="upgrade-desc">"Reach out today!" is a generic close with no consequence. "See your revenue potential" and "Run the numbers before your next renewal" are specific, time-sensitive, and tied to a concrete output — a revenue calculation. The reader knows exactly what they will get when they click.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Consequence before concept. The proof leads, not the framework. Every section answers the reader's silent question — "why does this matter for my business?" — before asking them to act. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
