@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Ahrefs Changelog Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --ahrefs:#054ADA;--ahrefs-dark:#032E8A;--ahrefs-light:#EEF3FE;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#054ADA;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:16px;line-height:1.35;}
+.bef-intro{font-size:14px;color:#555;line-height:1.75;margin-bottom:20px;}
+.bef-h2{font-size:15px;font-weight:700;color:#111;margin:22px 0 8px;padding-top:18px;border-top:1px solid #eee;}
+.bef-date{font-size:11px;font-weight:600;color:var(--ahrefs);font-family:'DM Mono',monospace;margin-bottom:6px;}
+.bef-update{font-size:13px;color:#444;line-height:1.7;margin-bottom:10px;padding:10px 14px;background:#f5f5f5;border-radius:6px;}
+.bef-update.minor{font-size:12px;color:#777;background:#fafafa;border:1px solid #eee;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--ahrefs);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#032E8A;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--ahrefs);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;font-family:'DM Mono',monospace;letter-spacing:.04em;margin-bottom:10px;}
+.after-badge.major{background:var(--ahrefs-light);color:var(--ahrefs);}
+.after-badge.minor{background:var(--bg-secondary);color:var(--text-secondary);}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Ahrefs Changelog — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> ahrefs.com/blog/new-features/</div>
+        <div class="meta-row"><span>Type:</span> Product Changelog</div>
+        <div class="meta-row"><span>Date:</span> Updated May 1, 2026</div>
+        <div class="post-title">Ahrefs Changelog: Running List of New Features</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Ahrefs</div>
+        <div class="bef-nav">Product Blog</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">Product Blog · Updated May 1, 2026</div>
+        <div class="bef-h1">Ahrefs Changelog: Running List of New Features</div>
+        <div class="bef-intro">This is the Ahrefs changelog, a simple list of all our newest features for you to browse.</div>
+
+        <div class="bef-h2">April 2026</div>
+
+        <div class="bef-date">30 Apr</div>
+        <div class="bef-update minor">There's a new metric for the Keywords report in GSC Insights: The average position of the highest-ranking URL. This can be useful to monitor when you have multiple URLs ranking for the same term, such as a branded query.</div>
+
+        <div class="bef-date">28 Apr</div>
+        <div class="bef-update">We've massively increased API limits for Lite, Standard and Advanced plans. In this AI era, we're opening up more data to power your marketing. Changes depend on your account level, but as an example, Standard plans now get 2.67x more credits and up to 10x more rows per request.</div>
+
+        <div class="bef-date">24 Apr</div>
+        <div class="bef-update minor">Grok responses are now available to monitor in Brand Radar for both Ahrefs prompts and custom prompts. It's available in the All indexes add-on or available as a separate subscription.</div>
+
+        <div class="bef-h2">March 2026</div>
+
+        <div class="bef-date">5 Mar</div>
+        <div class="bef-update minor">We've launched our new tool: Brand Radar, which lets you track and analyze your brand's presence in AI search.</div>
+
+        <div class="bef-date">21 Mar</div>
+        <div class="bef-update minor">In Site Explorer's Organic keywords report, see all your keywords across all locations in one place. Traffic dropped? Instantly pinpoint the keywords — and locations — behind it.</div>
+
+        <div class="bef-h2">February 2026</div>
+
+        <div class="bef-date">20 Feb</div>
+        <div class="bef-update minor">Group traffic sources by acquisition channel in Web Analytics. See Search, Direct, LLM, Email, Newsletter, and more — all in one view.</div>
+
+        <div class="bef-date">6 Feb</div>
+        <div class="bef-update minor">We've added a Chat function in AI Content Helper that helps you improve your content for both humans and search engines.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://ahrefs.com/pricing" class="bef-cta">View all plans</a>
+        </div>
+        <div class="bef-footer">© 2026 Ahrefs Pte Ltd · ahrefs.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title announces a filing system, not a value — "Running List of New Features" signals a database entry, not a communication. An SEO who scans this has no reason to slow down or feel the update matters to them.</div>
+        <div class="issue-item"><span>⚠</span> The 28 Apr API update is buried in a flat list — 2.67x more credits and 10x more rows per request on Standard plans is a structural change to how every user can work with Ahrefs data. It appears at the same visual weight as "there's a new metric for the Keywords report."</div>
+        <div class="issue-item"><span>⚠</span> No hierarchy between major and minor updates — every entry uses identical formatting. The reader cannot scan and identify what requires their attention versus what is background noise.</div>
+        <div class="issue-item"><span>⚠</span> "In this AI era, we're opening up more data to power your marketing" is the only hook in the API update — and it arrives mid-paragraph after the feature is already announced. The consequence leads nothing.</div>
+        <div class="issue-item"><span>⚠</span> No stat cards — 2.67x, 10x, and 284K newsletter subscribers are buried in prose. The numbers that justify upgrading or changing workflows never get visual treatment.</div>
+        <div class="issue-item"><span>⚠</span> CTA "View all plans" is disconnected from every update listed — there is no bridge between what just changed and why right now is the moment to review your plan.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> ahrefs.com/blog/new-features/ — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Product Changelog — Strategic Flow Rewrite</div>
+        <div class="post-title">Standard plan users just got 2.67x more API credits. Here is what changed — and what it unlocks.</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">Ahrefs</div>
+          <div class="after-tagline-sm">Product Updates · May 2026</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.06em;">API · Brand Radar · Analytics</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Product Update · API · May 2026</div>
+        <div class="after-h1">Your API limits just changed. <em>Significantly.</em></div>
+        <div class="after-lead">Standard plan users now get 2.67x more credits and up to 10x more rows per request. Advanced plans scale even further. This is not a minor quality-of-life update — it changes what you can build, automate, and analyse without hitting a wall.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">2.67x</div>
+            <div class="stat-label">more API credits on Standard plans</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">10x</div>
+            <div class="stat-label">more rows per request on Standard plans</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">284K</div>
+            <div class="stat-label">SEOs and marketers reading the Ahrefs Digest weekly</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">AI platforms tracked in Brand Radar simultaneously</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://ahrefs.com/pricing" class="after-cta-primary">Review your plan limits →</a>
+          <a href="https://docs.ahrefs.com/docs/api" class="after-cta-ghost">See API documentation</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-badge major">MAJOR UPDATE</div>
+        <div class="after-section-label">28 April — API limits</div>
+        <div class="after-section-title">More data, same plan. The ceiling just moved.</div>
+        <div class="after-section-body">Lite, Standard, and Advanced plans all got increased API credits and row limits this month. The practical effect: workflows that previously required Enterprise-level access — large-scale keyword pulls, bulk backlink analysis, automated rank tracking across thousands of URLs — are now within reach on Standard. If you have scripts or pipelines hitting the old limits, they will run further without additional cost.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-badge major">MAJOR UPDATE</div>
+        <div class="after-section-label">Brand Radar — AI visibility across 5 platforms</div>
+        <div class="after-section-title">ChatGPT, Perplexity, Gemini, Copilot, Grok. Your brand in all of them.</div>
+        <div class="after-section-body">Brand Radar now tracks brand mentions and citations across every major AI platform — including Grok, added 24 April. For each platform, you get mentions, impressions, citations, and AI Share of Voice. The data goes back five months on ChatGPT and Perplexity, three on Gemini and Copilot. If your buyers are asking AI assistants who to use, this is where you find out what they are being told.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-badge minor">MINOR UPDATES</div>
+        <div class="after-section-label">Everything else this month</div>
+        <div class="after-section-title">Three smaller changes worth knowing about.</div>
+        <div class="after-section-body">GSC Insights now shows average position of the highest-ranking URL per keyword — useful when multiple pages compete for the same term. Web Analytics groups traffic by acquisition channel including LLM and Newsletter, not just Search and Direct. AI Content Helper added a Chat function for improving content structure and topical depth without leaving the editor.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Next step</div>
+        <div class="after-section-title">Check your current plan limits before building around the old ones.</div>
+        <div class="after-section-body">If you have automated workflows or reporting pipelines using the Ahrefs API, the new limits may already affect what you can pull. Review what your plan now supports before your next build cycle.</div>
+        <div style="margin-top:16px;">
+          <a href="https://ahrefs.com/pricing" class="after-cta-primary" style="font-size:13px;">Review your plan limits →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://ahrefs.com/blog/new-features/" class="footer-link">Full changelog</a>
+          <a href="https://docs.ahrefs.com/docs/api" class="footer-link">API docs</a>
+          <a href="https://ahrefs.com/brand-radar" class="footer-link">Brand Radar</a>
+        </div>
+        <div class="footer-note">© 2026 Ahrefs Pte Ltd</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Ahrefs Changelog: Running List of New Features<br><br>A filing label. Tells the reader what the page is, not what changed or why it matters. An SEO scanning their inbox has no reason to open it.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Standard plan users just got 2.67x more API credits. Here is what changed — and what it unlocks.<br><br>Names the reader, names the number, names the consequence. The reader who has ever hit an API limit recognises their situation immediately.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title leads with the reader's outcome, not the content type</div>
+          <div class="upgrade-desc">The original announces that this page is a changelog. The rebuild announces that something changed that affects the reader directly. "Standard plan users just got 2.67x more API credits" is a fact that creates immediate relevance — anyone on Standard who uses the API needs to read this. The original gives them no reason to.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · 2.67x and 10x elevated from prose to stat cards</div>
+          <div class="upgrade-desc">The original buries both numbers mid-paragraph. They are the most operationally significant data points in the entire update — they determine what workflows are now possible — and they have no visual prominence. The rebuild makes them the first thing the reader sees above the fold. Numbers that change what users can build should never appear in a sentence.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Major vs minor hierarchy introduced</div>
+          <div class="upgrade-desc">The original gives identical visual treatment to a 10x API increase and a new metric in GSC Insights. The rebuild separates them explicitly: MAJOR UPDATE badges on the API and Brand Radar changes, MINOR UPDATES for everything else. The reader can now scan and immediately understand what requires their attention this month.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Consequence named before feature description</div>
+          <div class="upgrade-desc">The original API entry opens with "We've massively increased API limits" — feature first. The rebuild opens with the operational consequence: "workflows that previously required Enterprise-level access are now within reach on Standard." The reader understands the business implication before processing the technical detail.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Brand Radar rebuilt as a single coherent section, not 12 scattered entries</div>
+          <div class="upgrade-desc">The original changelog has Brand Radar updates spread across eight months with no consolidation. A reader trying to understand what Brand Radar now is has to reconstruct it from fragments. The rebuild presents Brand Radar as a complete capability — five platforms, five months of history, AI Share of Voice — in one section that lands as a product decision, not a list of patches.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the update's consequence</div>
+          <div class="upgrade-desc">"View all plans" in the original has no logical link to the changelog content. The rebuild closes with "Check your current plan limits before building around the old ones" — a direct consequence of the API update. The action follows naturally from what the reader just learned, instead of appearing as a disconnected commercial insert.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Consequence before feature. Numbers as architecture, not prose. Hierarchy that tells the reader what matters before they have to decide. Every section answers the silent question — "does this affect me, and what should I do?" — before asking them to act. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
