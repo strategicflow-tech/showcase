@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Lodgify Airbnb Partner Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --lodgify:#FF385C;--lodgify-dark:#C8003B;--lodgify-light:#FFF0F3;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#ffffff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee;}
+.bef-logo{display:flex;align-items:center;gap:10px;}
+.bef-logo-text{font-family:'Figtree',sans-serif;font-size:22px;font-weight:800;color:#111;letter-spacing:-.03em;}
+.bef-nav{font-size:11px;color:#999;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:16px;line-height:1.35;}
+.bef-copy{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-h2{font-size:17px;font-weight:700;color:#111;margin:24px 0 10px;}
+.bef-quote{font-size:13px;color:#444;font-style:italic;line-height:1.7;margin-bottom:16px;padding:14px 16px;background:#f0f0f0;border-left:3px solid #ccc;border-radius:0 6px 6px 0;}
+.bef-quote cite{font-style:normal;font-size:11px;color:#888;display:block;margin-top:6px;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--lodgify);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'DM Serif Display',serif;font-size:20px;color:#fff;}
+.after-logo span{color:var(--lodgify);}
+.after-tagline-sm{font-size:10px;color:#666;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:600px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Lodgify — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> lodgify.com/blog</div>
+        <div class="meta-row"><span>Type:</span> Product Announcement</div>
+        <div class="meta-row"><span>Date:</span> 2026</div>
+        <div class="post-title">Lodgify Named Airbnb Preferred+ Software Partner for 2026</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">
+          <div class="bef-logo-text">Lodgify</div>
+        </div>
+        <div class="bef-nav">BLOG · Updates</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">Lodgify Updates · 2026</div>
+        <div class="bef-h1">Lodgify Named Airbnb Preferred+ Software Partner for 2026</div>
+
+        <div class="bef-copy">We're excited to announce that Lodgify has been selected as an Airbnb Preferred+ Partner for 2026! Lodgify has had a fully functioning, two-way connection with Airbnb for several years, and we have continued to expand our integration to achieve the deepest connectivity possible.</div>
+
+        <div class="bef-copy">Our commitment to providing outstanding channel management services has led to accolades such as Airbnb Preferred+ partnership status, as well as premier partnership status with Vrbo, Booking.com, and Expedia. The recent achievement of Airbnb Preferred+ Partner places us among the top 18 providers globally who have met and exceeded Airbnb's rigorous standards.</div>
+
+        <div class="bef-h2">What Preferred+ status means for our users</div>
+
+        <div class="bef-quote">
+          "This recognition confirms Lodgify's status as a top-tier software integration."
+          <cite>— Sofia Vierci, Channel Product Manager, Lodgify</cite>
+        </div>
+
+        <div class="bef-copy">As a Preferred+ Partner, Lodgify enjoys benefits that include fast-tracked and dedicated technical support from Airbnb's API support team. We will also have the opportunity to provide feedback on API features and enjoy other benefits that enhance our status — all perks that help us improve our product for our users.</div>
+
+        <div class="bef-copy">Being named as one of only 18 Preferred+ Partners is a testament to Lodgify's commitment to excellence, secure practices, and our unwavering dedication to supporting our clients in their hosting journey. We are incredibly proud of this achievement and look forward to leveraging this partnership to create enhanced experiences for our users.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://www.lodgify.com" class="bef-cta">Start free trial</a>
+        </div>
+
+        <div class="bef-footer">© 2026 Lodgify · lodgify.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title announces the company's award, not the host's gain — "Lodgify Named Airbnb Preferred+ Software Partner" is Lodgify's moment. The reader's question is: what does this change for my listings tomorrow?</div>
+        <div class="issue-item"><span>⚠</span> Opening paragraph leads with Lodgify's history, not the reader's problem — "we have had a fully functioning connection for several years" is background noise. The host scanning this post has no reason to slow down.</div>
+        <div class="issue-item"><span>⚠</span> The concrete benefits are buried in the third paragraph — fast-tracked support, API feedback, deeper integration. These are the actual value to the user. They appear after two paragraphs of company achievement language.</div>
+        <div class="issue-item"><span>⚠</span> No numbers that speak to host outcomes — "top 18 globally" is a Lodgify stat. Missing: what does Preferred+ status mean in terms of sync speed, support response time, or booking reliability for the host?</div>
+        <div class="issue-item"><span>⚠</span> Sofia Vierci quote confirms internal pride, not external value — "top-tier software integration" is how Lodgify talks about itself. A host testimonial about a resolved sync issue would convert harder.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Start free trial" is disconnected from the announcement — there is no bridge between the partnership news and the call to action. Why does Preferred+ status make right now the moment to start a trial?</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> lodgify.com/blog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Product Announcement — Strategic Flow Rewrite</div>
+        <div class="post-title">Your Airbnb listings now have a faster, more reliable connection. Here is what changed.</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">lodgify<span>.</span></div>
+          <div class="after-tagline-sm">Vacation Rental Software · 2026</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#666;letter-spacing:.06em;">Platform Update · Airbnb</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Channel Management · Airbnb Integration · Host Tools</div>
+        <div class="after-h1">Your Airbnb listings now run on <em>deeper infrastructure.</em></div>
+        <div class="after-lead">Lodgify is one of 18 providers globally to hold Airbnb Preferred+ status in 2026. That is not a badge. It means faster sync, dedicated API support, and early access to Airbnb features before they reach the general market. Here is what it means for your properties.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">18</div>
+            <div class="stat-label">providers globally with Preferred+ status</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">major OTA premier partnerships held simultaneously</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">14</div>
+            <div class="stat-label">years of Airbnb integration development</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1st</div>
+            <div class="stat-label">access to new Airbnb API features before general release</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://www.lodgify.com/start" class="after-cta-primary">Connect your Airbnb listings →</a>
+          <a href="https://www.lodgify.com/airbnb-management-software/" class="after-cta-ghost">See the full integration</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">What Preferred+ means in practice</div>
+        <div class="after-section-title">Faster support. Earlier features. No surprises at sync.</div>
+        <div class="after-section-body">Preferred+ is Airbnb's highest tier for software partners. It grants dedicated technical support from Airbnb's API team — not the general queue. It means Lodgify engineers work directly with Airbnb on integration issues before they become visible to hosts. When something changes in Airbnb's system, Lodgify knows first.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The network behind your listings</div>
+        <div class="after-section-title">Airbnb, Vrbo, Booking.com, Expedia — all at premier level.</div>
+        <div class="after-section-body">Lodgify holds premier partnership status with every major OTA simultaneously. That is not a common position. Most software tools prioritise one channel. Managing four at the highest integration tier means one calendar, one dashboard, and one sync that does not break when two bookings arrive at once.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">What this changes for you</div>
+        <div class="after-section-title">The integration is not new. The access level is.</div>
+        <div class="after-section-body">The two-way Airbnb connection has been live for years. What Preferred+ changes is the layer underneath it — API feedback rights, fast-tracked issue resolution, and early feature access. If Airbnb ships a new tool for hosts, Lodgify users see it before the broader market. That gap compounds over time.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Next step</div>
+        <div class="after-section-title">Your Airbnb integration is already running. Make sure it is running at the right level.</div>
+        <div class="after-section-body">If your listings are still managed through a standard integration or a tool without Preferred+ access, the difference shows up in sync reliability, support speed, and feature availability. It is not dramatic until it is.</div>
+        <div style="margin-top:16px;">
+          <a href="https://www.lodgify.com/start" class="after-cta-primary" style="font-size:13px;">Connect your Airbnb listings →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.lodgify.com/airbnb-hosts/" class="footer-link">Airbnb hosting tools</a>
+          <a href="https://www.lodgify.com/pricing/" class="footer-link">Pricing</a>
+          <a href="https://www.lodgify.com/blog/" class="footer-link">Blog</a>
+        </div>
+        <div class="footer-note">© 2026 Lodgify</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Lodgify Named Airbnb Preferred+ Software Partner for 2026<br><br>Announces Lodgify's achievement. The host reading this has one question: what does this mean for my listings? That question goes unanswered until paragraph three.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Your Airbnb listings now have a faster, more reliable connection. Here is what changed.<br><br>Leads with the host's outcome. "Your listings" puts the reader first. "Here is what changed" creates an obligation to keep reading.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title reframes from company achievement to host outcome</div>
+          <div class="upgrade-desc">The original celebrates Lodgify. The rebuild tells the host what changed in their business. A host managing five properties does not care that Lodgify won an award — they care that their sync is faster and their support is better. The title earns the read by answering the reader's actual question first.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · "18 globally" reframed from a brag to a signal</div>
+          <div class="upgrade-desc">The original uses "top 18 globally" as social proof for Lodgify. The rebuild uses the same number as a signal of scarcity and access: most tools are not in this tier, and the difference is operational. Same stat, different angle, different conversion value.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Four stat cards replace the credential paragraph</div>
+          <div class="upgrade-desc">The original lists achievements in prose. The rebuild surfaces four numbers that answer the host's real questions: how rare is this, how long has the integration been proven, and what does early access actually mean. Numbers above the fold anchor the business case before the explanation begins.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · "Not a badge" pre-empts the reader's scepticism</div>
+          <div class="upgrade-desc">Partnership announcements read as marketing. The rebuild names that scepticism directly — "that is not a badge" — and immediately delivers the operational translation: faster sync, dedicated support, early feature access. Acknowledging the obvious objection before the reader forms it builds credibility faster than ignoring it.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Four OTA partnerships reframed as infrastructure, not a list</div>
+          <div class="upgrade-desc">The original lists partner logos. The rebuild explains why holding all four at premier level simultaneously is structurally unusual and what it means operationally — one calendar, no double bookings, no sync that breaks under load. Features become architecture.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the announcement's consequence</div>
+          <div class="upgrade-desc">"Start free trial" in the original has no logical connection to the Preferred+ news. The rebuild closes with "Connect your Airbnb listings" — a direct consequence of reading about what the integration now delivers. The action follows naturally from the content instead of interrupting it.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Consequence before credential. The reader's outcome leads, not the company's achievement. Every section answers the host's silent question — "what does this mean for my properties?" — before asking them to act. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
