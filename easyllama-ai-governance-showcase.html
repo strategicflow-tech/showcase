@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — EasyLlama AI Governance Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --el-green:#2DB670;--el-yellow:#F5C842;--el-dark:#1a2e1e;--el-green-light:#E8F7EF;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee;}
+.bef-logo{display:flex;align-items:center;gap:8px;}
+.bef-logo-icon{width:28px;height:28px;background:var(--el-yellow);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.bef-logo-icon svg{width:16px;height:16px;}
+.bef-logo-text{font-size:17px;font-weight:700;color:var(--el-dark);letter-spacing:-.02em;}
+.bef-logo-text span{color:var(--el-green);}
+.bef-nav{font-size:11px;color:#999;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{padding:28px 24px;background:linear-gradient(160deg,#f0faf4 0%,#fff 100%);border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:var(--el-green);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;font-weight:600;}
+.bef-h1{font-size:24px;font-weight:700;color:var(--el-dark);line-height:1.25;margin-bottom:12px;}
+.bef-sub{font-size:14px;color:#555;line-height:1.65;margin-bottom:0;}
+.bef-body{padding:24px 24px;background:#fff;border-bottom:1px solid #eee;}
+.bef-h2{font-size:16px;font-weight:700;color:var(--el-dark);margin:20px 0 8px;}
+.bef-copy{font-size:14px;color:#444;line-height:1.75;margin-bottom:12px;}
+.bef-list{padding-left:18px;margin-bottom:14px;}
+.bef-list li{font-size:13px;color:#444;line-height:1.7;margin-bottom:4px;}
+.bef-list li strong{color:var(--el-dark);}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--el-green);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--el-dark);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{display:flex;align-items:center;gap:8px;}
+.after-logo-icon{width:26px;height:26px;background:var(--el-yellow);border-radius:5px;display:flex;align-items:center;justify-content:center;}
+.after-logo-icon svg{width:14px;height:14px;}
+.after-logo-text{font-size:17px;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.after-logo-text span{color:var(--el-yellow);}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--el-green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">EasyLlama AI Governance — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> easyllama.com/blog/ai-governance-best-practices</div>
+        <div class="meta-row"><span>Type:</span> Educational Blog Post</div>
+        <div class="meta-row"><span>Date:</span> 2026</div>
+        <div class="post-title">6 AI Governance Best Practices for HR and People Leaders</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">
+          <img src="https://d230yvp9l0f4m2.cloudfront.net/easyllama_main_logo_9ee5462eab.png" alt="EasyLlama" style="height:32px;">
+        </div>
+        <div class="bef-nav">Blog · AI &amp; Compliance</div>
+      </div>
+
+      <div class="bef-hero">
+        <div class="bef-tag">Compliance · AI Governance · 2026</div>
+        <div class="bef-h1">6 AI Governance Best Practices for HR and People Leaders</div>
+        <div class="bef-sub">Most organizations are deploying AI faster than they can govern it. Here are 6 best practices HR and compliance leaders need to manage risk, ensure transparency, and stay audit-ready.</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-copy">AI adoption is outpacing policy development in most organizations, which can result in data leaks, algorithmic bias, regulatory penalties, and reputational damage.</div>
+
+        <div class="bef-copy">Major regulatory frameworks are starting to take shape. The EU AI Act uses a risk-based approach with high-risk AI requirements starting August 2, 2026. NIST's AI RMF offers flexible guidance for organizations of any size, while ISO/IEC 42001 provides the first global standard for AI Management Systems.</div>
+
+        <div class="bef-h2">Responsible AI principles worth building policies around</div>
+        <div class="bef-copy">Before you write a single rule, start with the commitments those rules should protect. Here are the five principles your policies should reference directly:</div>
+        <ul class="bef-list">
+          <li><strong>Fairness.</strong> AI outputs and decisions should be actively tested for bias.</li>
+          <li><strong>Transparency.</strong> Employees should know when AI is being used and how it influences decisions.</li>
+          <li><strong>Accountability.</strong> Every AI system needs a named owner responsible for its outcomes.</li>
+          <li><strong>Privacy.</strong> Personal data must be protected — 38% of employees have shared sensitive company data with AI tools without permission.</li>
+          <li><strong>Security.</strong> 61% of IT leaders say AI is increasing cybersecurity risks. Only 31% are confident in their ability to address them.</li>
+        </ul>
+
+        <div class="bef-h2">6 AI governance best practices</div>
+        <div class="bef-copy"><strong>1. Establish cross-functional ownership.</strong> Effective AI governance can't live in a single department. It requires shared ownership across HR, Legal, IT, Security, and Compliance.</div>
+        <div class="bef-copy"><strong>2. Conduct AI risk assessments before tools enter the workflow.</strong> 80% of American office workers use AI, but only 22% rely exclusively on employer-provided tools. Shadow AI is where governance breaks down.</div>
+        <div class="bef-copy"><strong>3. Build training and AI literacy into the rollout.</strong> 31% of AI users say their employer doesn't offer training. Publishing a policy without training employees on it creates a governance gap.</div>
+        <div class="bef-copy"><strong>4-6.</strong> Maintain living documentation, establish an incident response plan, and build continuous monitoring into governance operations.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://learn.easyllama.com/demo" class="bef-cta">Get a Demo</a>
+        </div>
+        <div class="bef-footer">© 2026 EasyLlama Inc.</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a generic listicle label — "6 AI Governance Best Practices for HR and People Leaders" announces format and audience but no consequence. The meta description is stronger: "Most organizations are deploying AI faster than they can govern it." That is the hook — it never made it to the title.</div>
+        <div class="issue-item"><span>⚠</span> The 38% stat is buried in a sub-bullet under principle 4 — 38% of employees sharing sensitive data with AI tools without permission is the single most alarming operational risk in the article. It appears as a parenthetical in a list of principles, not as the diagnostic opener it should be.</div>
+        <div class="issue-item"><span>⚠</span> 80% usage / 22% sanctioned tools gap buried in section 2 — this is the core shadow AI problem that makes governance urgent. It appears in the body of best practice 2, not in the introduction where it would anchor the entire piece.</div>
+        <div class="issue-item"><span>⚠</span> 6 best practices presented as a flat numbered list — structural foundations (ownership, risk assessments) and operational execution (training, monitoring) are presented at equal weight. The reader cannot distinguish which to implement first or which failures are most costly.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Get a Demo" is disconnected from everything the reader just learned — there is no bridge between reading about shadow AI risk and being asked to book a demo. The CTA does not name what EasyLlama solves for the HR leader who just absorbed all of this.</div>
+        <div class="issue-item"><span>⚠</span> EU AI Act deadline not surfaced as urgency — August 2, 2026 is a hard regulatory date. It appears in the second paragraph with no visual emphasis, treating a compliance deadline as background context rather than the reason to act now.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> easyllama.com/blog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Educational Blog Post — Strategic Flow Rewrite</div>
+        <div class="post-title">38% of your employees are sharing sensitive data with AI tools right now. Most of them don't know the policy exists.</div>
+      </div>
+
+      <div class="after-header">
+        <div class="after-logo">
+          <img src="https://d230yvp9l0f4m2.cloudfront.net/easyllama_main_logo_9ee5462eab.png" alt="EasyLlama" style="height:30px;filter:brightness(0) invert(1);">
+        </div>
+        <div class="after-tagline-sm">AI Governance · Compliance · 2026</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">AI Governance · HR Compliance · EU AI Act</div>
+        <div class="after-h1">38% of employees are sharing sensitive data with AI tools. <em>Most have never seen your policy.</em></div>
+        <div class="after-lead">80% of office workers use AI. Only 22% use tools their employer has sanctioned. That gap — between what employees are doing and what IT knows about — is where governance breaks down. The EU AI Act's high-risk requirements take effect August 2, 2026. This guide covers the 6 practices that close the gap before it closes you.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">38%</div>
+            <div class="stat-label">of employees share sensitive data with AI tools without permission</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">80%</div>
+            <div class="stat-label">of office workers use AI — only 22% use employer-sanctioned tools</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">61%</div>
+            <div class="stat-label">of IT leaders say AI is increasing cybersecurity risk</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Aug 2</div>
+            <div class="stat-label">EU AI Act high-risk requirements enforcement date, 2026</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://learn.easyllama.com/demo" class="after-cta-primary">See how EasyLlama closes the gap →</a>
+          <a href="https://www.easyllama.com/blog/ai-governance-best-practices" class="after-cta-ghost">Read the full guide</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Foundation — do this first</div>
+        <div class="after-section-title">Governance without ownership is a document, not a program.</div>
+        <div class="after-section-body">The most common place governance stalls is assigning it to nobody specific. Effective AI governance requires named owners across HR, Legal, IT, Security, and Compliance — not a shared committee with collective responsibility. A RACI-style accountability model defines who is responsible, accountable, consulted, and informed on every AI decision. Without it, governance becomes everyone's good intention and nobody's job. This structure should be revisited as your organization scales, adds tools, or enters new regulatory jurisdictions.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The shadow AI problem</div>
+        <div class="after-section-title">Risk assessments before tools enter workflows — not after shadow AI has spread.</div>
+        <div class="after-section-body">Nearly 40% of employees prefer external AI tools for "better features." A standardized intake form for new tool requests is the primary mechanism that prevents unsanctioned tools from entering production workflows without security or compliance review. Every assessment should evaluate data sensitivity, output reliability, regulatory exposure, vendor security practices, and bias potential. The assessment is not a gate — it is the mechanism that makes training relevant when it follows.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Policy to practice</div>
+        <div class="after-section-title">31% of AI users have never received training on how to use it at work.</div>
+        <div class="after-section-body">Publishing a policy without training employees on it creates a governance gap — not a governance program. Training needs to go beyond reading a document. Employees need to practice decisions in realistic scenarios involving privacy, bias, and misuse. EasyLlama's AI Course Collection covers QR code scams, secure AI prompting, AI productivity tools, and AI security tools — built for employees who use AI daily, not just IT teams responsible for it.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">The deadline is real</div>
+        <div class="after-section-title">August 2, 2026. EU AI Act high-risk requirements take effect.</div>
+        <div class="after-section-body">Organizations that haven't built governance foundations by this date face regulatory exposure across hiring tools, performance systems, and any AI that influences decisions about individuals. The organizations that are ready are the ones that started building cross-functional ownership, risk assessment workflows, and training programs before the deadline — not after the first audit.</div>
+        <div style="margin-top:16px;">
+          <a href="https://learn.easyllama.com/demo" class="after-cta-primary" style="font-size:13px;">See how EasyLlama closes the gap →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.easyllama.com/product/ai-course-collection" class="footer-link">AI Course Collection</a>
+          <a href="https://www.easyllama.com/courses/cybersecurity-training" class="footer-link">Cybersecurity Training</a>
+          <a href="https://www.easyllama.com/blog" class="footer-link">Blog</a>
+        </div>
+        <div class="footer-note">© 2026 EasyLlama Inc.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> 6 AI Governance Best Practices for HR and People Leaders<br><br>A category label with a format number. Names the audience and the topic but gives no reason to read. An HR leader scanning their feed has seen this title from ten different vendors.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> 38% of your employees are sharing sensitive data with AI tools right now. Most have never seen your policy.<br><br>Names the failure state the reader is already in. "Your employees" creates immediate ownership. The second sentence names the exact structural reason the problem persists.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rebuilt around the reader's active risk, not a content format</div>
+          <div class="upgrade-desc">The original title announces a listicle. The rebuild announces a situation the reader is already in — and doesn't know it. "38% of your employees are sharing sensitive data with AI tools right now" is a fact that creates immediate relevance for every HR and compliance leader reading it. The original gave them a category. The rebuild gives them a reason to stop scrolling.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · 38% stat moved from buried bullet to opening stat card</div>
+          <div class="upgrade-desc">The original places the 38% data point inside a parenthetical in bullet 4 of a 5-item principles list. It is the most operationally alarming number in the article — employees actively exposing sensitive data right now — and it has no visual prominence. The rebuild makes it the first number the reader sees, in a stat card above the fold, before any explanation. The consequence leads, not the framework.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · 80%/22% shadow AI gap surfaced as the core problem in the opening</div>
+          <div class="upgrade-desc">The original introduces this stat in the body of best practice 2. The rebuild uses it in the opening paragraph to establish why governance is urgent before a single best practice is named. The gap between what employees use and what IT has sanctioned is the diagnostic premise — it belongs at the front, not buried in a section.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · EU AI Act deadline given visual urgency</div>
+          <div class="upgrade-desc">August 2, 2026 appears in the original's second paragraph with no formatting emphasis. It is a hard regulatory date that makes every governance decision time-sensitive. The rebuild closes the article with it as a standalone section titled "The deadline is real" — framing the entire guide as preparation for a specific moment, not general best practice reading.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · 6 practices restructured into foundation vs execution hierarchy</div>
+          <div class="upgrade-desc">The original presents all 6 practices at equal weight in a numbered list. The rebuild separates structural foundations (ownership, risk assessment) from operational execution (training, monitoring), labeling each section with its phase. The reader now knows what to implement first and what compounds if the foundation is missing.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the article's specific diagnosis</div>
+          <div class="upgrade-desc">"Get a Demo" in the original has no logical link to shadow AI, data exposure, or EU AI Act compliance. The rebuild closes with "See how EasyLlama closes the gap" — where "the gap" refers directly to the 80%/22% shadow AI problem named in the opening. The reader who finished this article knows exactly what gap is being referenced and why they should click.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Active risk before best practice list. Numbers that name the problem before the solution. Regulatory deadlines as urgency anchors, not background context. Every section answers the reader's silent question — "is this happening to me, and what does it cost if I don't act?" — before asking them to book a demo. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
