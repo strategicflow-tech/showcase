@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Spreedly LATAM Guide Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --sp-teal:#00B4C8;--sp-blue:#1E6FD9;--sp-navy:#1a2332;--sp-teal-light:#E6F9FB;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:linear-gradient(135deg,#00B4C8,#0091A8);padding:22px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-wrap{display:flex;align-items:center;gap:10px;}
+.bef-logo-icon{width:32px;height:32px;}
+.bef-logo-text{font-size:18px;font-weight:600;color:#fff;letter-spacing:-.02em;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.6);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{background:linear-gradient(160deg,#00B4C8 0%,#5DD6E6 100%);padding:32px 24px;}
+.bef-tag{display:inline-block;font-size:11px;color:rgba(255,255,255,.8);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-h1{font-size:26px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:12px;}
+.bef-sub{font-size:14px;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:10px;}
+.bef-author{font-size:12px;color:rgba(255,255,255,.7);}
+.bef-author strong{color:#fff;}
+.bef-body{padding:28px 24px;background:#fff;border-bottom:1px solid #eee;}
+.bef-h2{font-size:18px;font-weight:700;color:var(--sp-navy);margin:20px 0 10px;line-height:1.3;}
+.bef-copy{font-size:14px;color:#444;line-height:1.75;margin-bottom:14px;}
+.bef-copy strong{color:var(--sp-navy);}
+.bef-toc{background:#f4f8fb;border-radius:10px;padding:20px 24px;margin:20px 0;}
+.bef-toc-title{font-size:14px;font-weight:600;color:var(--sp-navy);margin-bottom:12px;}
+.bef-toc-item{font-size:13px;color:var(--sp-blue);margin-bottom:8px;padding-left:12px;border-left:2px solid var(--sp-teal);}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--sp-blue);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--sp-navy);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-wrap{display:flex;align-items:center;gap:10px;}
+.after-logo-icon{width:28px;height:28px;}
+.after-logo-text{font-size:18px;font-weight:600;color:#fff;letter-spacing:-.02em;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--sp-blue);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Spreedly LATAM Guide — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> spreedly.com/guides/payments-guide-expansion-into-latam</div>
+        <div class="meta-row"><span>Type:</span> Long-form Guide</div>
+        <div class="meta-row"><span>Date:</span> May 11, 2026</div>
+        <div class="post-title">The Payments Guide to Expansion into LATAM</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo-wrap">
+          <span style="font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.03em;">spreedly</span>
+        </div>
+        <div class="bef-nav">Guides</div>
+      </div>
+
+      <div class="bef-hero">
+        <div class="bef-tag">International Payments · May 11, 2026</div>
+        <div class="bef-h1">The Payments Guide to Expansion into LATAM</div>
+        <div class="bef-sub">A practical guide to expanding payments in Latin America. Learn how to navigate Pix, OXXO, wallets, compliance, and local gateways across key LATAM markets.</div>
+        <div class="bef-author">Written by <strong>Andy McHale</strong></div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-toc">
+          <div class="bef-toc-title">In this guide</div>
+          <div class="bef-toc-item">The assumptions that break first in Latin America</div>
+          <div class="bef-toc-item">Brazil: The Engine of Latin American Commerce</div>
+          <div class="bef-toc-item">Mexico: The Cash-Digital Hybrid</div>
+          <div class="bef-toc-item">Argentina: The Resilient Innovator</div>
+          <div class="bef-toc-item">Chile: The Most Predictable Market With a Catch</div>
+          <div class="bef-toc-item">Peru: The Market Moving Faster Than Its Reputation</div>
+          <div class="bef-toc-item">What Enterprise Merchants Actually Need to Internalize About Latin America</div>
+        </div>
+
+        <div class="bef-copy">Latin America is no longer an emerging market warming up on the sidelines. It's already in the game, already playing fast, and already rewriting the rules.</div>
+
+        <div class="bef-copy">This region is home to a digital-first population that adopted mobile commerce, fintech, and alternative payment methods not as experiments, but as necessities. Forecasts suggest the payments ecosystem in Latin America will exceed USD 300 billion by 2027. That number explains the interest. It does not explain the difficulty.</div>
+
+        <div class="bef-copy"><strong>LATAM offers scale, velocity, and demand. What you're not going to get is uniformity.</strong></div>
+
+        <div class="bef-copy">From a distance, the region can look like a single opportunity. Up close, it is thirty-three countries moving at different speeds, under different rules, with different definitions of trust. Internet penetration exceeds 70% across the region.</div>
+
+        <div class="bef-h2">The assumptions that break first in Latin America</div>
+
+        <div class="bef-copy">Most failed expansions in LATAM do not collapse because demand was misread. They collapse because imported assumptions quietly give way under local pressure.</div>
+
+        <div class="bef-copy">The first assumption is that cards are the universal baseline. In much of Latin America, they are not. The second is that one gateway simplifies everything. In practice, a single provider almost always produces uneven results. The third is that fraud behaves consistently across borders. The fourth is that installments are a feature you can add later. The fifth is that compliance stays backstage.</div>
+
+        <div class="bef-h2">Brazil: The Engine of Latin American Commerce</div>
+
+        <div class="bef-copy">Brazil is the gravitational center of Latin American commerce. With a population of more than 210 million people, it accounts for a disproportionate share of the region's e-commerce volume. A full 61% of Brazilian shoppers report using a mobile phone for their most recent retail purchase.</div>
+
+        <div class="bef-copy">Pix isn't just another payment method in Brazil. It's the default. By 2024, Pix transaction volumes exceeded combined credit and debit card volumes by roughly 80%.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://www.spreedly.com/demo-lead-gen-form" class="bef-cta">See a Demo</a>
+        </div>
+        <div class="bef-footer">© 2026 Spreedly, Inc. · spreedly.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a filing label — "The Payments Guide to Expansion into LATAM" announces the topic like a folder tab. It names where the guide goes, not what it costs to get it wrong. No tension, no consequence.</div>
+        <div class="issue-item"><span>⚠</span> The strongest line in the guide is buried on page 2 — "Most failed expansions in LATAM do not collapse because demand was misread. They collapse because imported assumptions quietly give way under local pressure." This is the hook. It appears after the table of contents.</div>
+        <div class="issue-item"><span>⚠</span> $300B stat appears mid-paragraph with no visual treatment — the single number that justifies why any merchant should care about LATAM is embedded in prose. It never gets the prominence it earns.</div>
+        <div class="issue-item"><span>⚠</span> Pix's 80% dominance over cards is buried in the Brazil section — the most operationally disruptive fact in the guide (that the payment method every merchant defaults to is not the dominant one) appears five sections in.</div>
+        <div class="issue-item"><span>⚠</span> Five broken assumptions presented as flat prose — each assumption is equal weight, equal length, equal formatting. There is no cascade showing how each one compounds the previous failure.</div>
+        <div class="issue-item"><span>⚠</span> CTA "See a Demo" is disconnected from the guide's content — there is no bridge between reading about LATAM payment complexity and being asked to book a demo. The CTA does not name what Spreedly solves for the reader who just learned all of this.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> spreedly.com/guides — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Long-form Guide — Strategic Flow Rewrite</div>
+        <div class="post-title">Most LATAM expansions fail not because demand was misread. Because assumptions were never tested.</div>
+      </div>
+
+      <div class="after-header">
+        <div class="after-logo-wrap">
+          <span style="font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.03em;">spreedly</span>
+        </div>
+        <div class="after-tagline-sm">International Payments · May 2026</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">International Payments · LATAM Expansion · May 2026</div>
+        <div class="after-h1">Most LATAM expansions fail not because demand was misread. <em>Because assumptions were never tested.</em></div>
+        <div class="after-lead">LATAM payments will exceed $300B by 2027. The merchants who capture it are not the ones who move fastest. They are the ones who understand that Pix outpaces cards by 80%, that installments are a language not a feature, and that one gateway almost always produces uneven results across thirty-three markets. This guide maps the five assumptions that break first — and what to build instead.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">$300B</div>
+            <div class="stat-label">LATAM payments ecosystem by 2027</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">80%</div>
+            <div class="stat-label">Pix volume lead over combined cards in Brazil (2024)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">61%</div>
+            <div class="stat-label">Brazilian shoppers using mobile for retail purchases</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">broken assumptions that collapse most LATAM expansions</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://www.spreedly.com/demo-lead-gen-form" class="after-cta-primary">See how Spreedly handles LATAM routing →</a>
+          <a href="https://www.spreedly.com/guides/payments-guide-expansion-into-latam" class="after-cta-ghost">Read the full guide</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The failure pattern</div>
+        <div class="after-section-title">Expansions collapse under assumptions, not demand.</div>
+        <div class="after-section-body">From a distance, LATAM looks like a single opportunity. Up close, it is thirty-three countries moving at different speeds, under different rules, with different definitions of trust. The merchants who fail here do not fail because the market rejected them. They fail because they treated cards as the universal baseline, one gateway as sufficient, installments as optional, fraud as consistent, and compliance as backstage. Each assumption compounds the one before it.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Brazil — The engine</div>
+        <div class="after-section-title">Pix is not a payment method. It is the baseline.</div>
+        <div class="after-section-body">By 2024, Pix transaction volumes exceeded combined credit and debit card volumes by roughly 80%. For merchants entering Brazil with a card-first stack, that gap is not a minor calibration issue. It is a structural mismatch. 61% of Brazilian shoppers use mobile for retail purchases. Fees are low, conversion is high, and settlement is immediate. Building a Brazil strategy without Pix as the primary rail is not an oversight — it is a disqualifier.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Mexico, Argentina, Chile, Peru</div>
+        <div class="after-section-title">Four more markets. Four more operating systems.</div>
+        <div class="after-section-body">Mexico runs two economies sharing one checkout — OXXO cash vouchers and SPEI bank transfers sit alongside cards in ways that vary by demographic and region. Argentina prices for inflation and builds volatility into payment design as a constraint, not a footnote. Chile is the most predictable market in LATAM with the most demanding consumer expectations attached. Peru is moving from cash-heavy to mobile-first in a single generation, with A2A payments becoming the default faster than most forecasts predicted.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">What this means operationally</div>
+        <div class="after-section-title">Payments orchestration is not optional infrastructure in LATAM.</div>
+        <div class="after-section-body">One gateway cannot cover thirty-three markets at consistent authorization rates. Vaulting and tokenization define continuity when consumers transact across channels and devices. The entity versus merchant of record decision is a strategic trade-off, not a legal formality. The merchants who grow in LATAM are the ones who built for local rails from day one — not the ones who retrofitted them after their first failed quarter.</div>
+        <div style="margin-top:16px;">
+          <a href="https://www.spreedly.com/demo-lead-gen-form" class="after-cta-primary" style="font-size:13px;">See how Spreedly handles LATAM routing →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.spreedly.com/solutions/open-payments-connectivity" class="footer-link">Open Payments</a>
+          <a href="https://www.spreedly.com/products/connect" class="footer-link">Connect</a>
+          <a href="https://www.spreedly.com/guides" class="footer-link">All Guides</a>
+        </div>
+        <div class="footer-note">© 2026 Spreedly, Inc.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> The Payments Guide to Expansion into LATAM<br><br>A filing label. Names the geography and the document type. A merchant scanning this has no reason to slow down — it could describe any guide from any vendor about any region.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Most LATAM expansions fail not because demand was misread. Because assumptions were never tested.<br><br>The strongest sentence in the original guide, moved to the front. Names the failure state, not the topic. A merchant who has already attempted LATAM expansion recognises themselves immediately.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · The failure diagnosis opens the guide, not the table of contents</div>
+          <div class="upgrade-desc">The original's most powerful sentence — "most failed expansions in LATAM do not collapse because demand was misread, they collapse because imported assumptions quietly give way under local pressure" — appears after the table of contents and a paragraph of scene-setting. The rebuild opens with it. The reader who has already tried LATAM and struggled lands in recognition before they have read a single fact.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · $300B, 80%, 61%, and 5 elevated to stat cards above the fold</div>
+          <div class="upgrade-desc">All four key numbers in the original guide are buried in prose paragraphs. They are the business case for reading further — the size of the opportunity, the scale of Pix's dominance, the mobile commerce penetration, and the number of structural failure points. The rebuild makes them the first thing a scanning merchant sees. Numbers that justify the effort of reading a long-form guide belong above the fold, not inside it.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Pix's 80% dominance repositioned as the guide's central diagnostic</div>
+          <div class="upgrade-desc">The original treats the Pix stat as a Brazil-section detail. The rebuild surfaces it in the opening paragraph as the single most operationally disruptive fact in the guide. A merchant entering Brazil with a card-first stack who reads "Pix outpaces cards by 80%" in the introduction understands the problem before they have read a single recommendation. That's the difference between a guide that informs and a guide that changes behaviour.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Five assumptions rebuilt as a cascade, not a flat list</div>
+          <div class="upgrade-desc">The original presents five broken assumptions in five equal paragraphs. The rebuild names them as a compounding sequence: each assumption builds on the last, and the failure of one makes the next more expensive. Cards as baseline creates gateway dependency. Gateway dependency creates fraud blind spots. Fraud blind spots make installments feel like a later-stage problem. All of it lands in compliance failures. The structure mirrors how expansions actually collapse.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Four markets rebuilt as four operating systems, not four sections</div>
+          <div class="upgrade-desc">The original structures Mexico, Argentina, Chile, and Peru as parallel sections with parallel headers. The rebuild names each market's specific design constraint in one sentence: Mexico is two economies sharing one checkout. Argentina prices for inflation. Chile is predictable with demanding expectations. Peru is moving faster than forecasts. Each description is a positioning decision, not a summary — it tells the merchant what they need to design for before they read the detail.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connects to the guide's operational consequence</div>
+          <div class="upgrade-desc">"See a Demo" in the original has no logical link to what was just read. The rebuild closes with "See how Spreedly handles LATAM routing" — a direct consequence of learning that one gateway produces uneven results across thirty-three markets. The action follows from the diagnosis. The reader does not have to make the connection themselves.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Failure state before topic. Numbers as architecture, not prose. Cascade logic replaces flat lists. Every section answers the reader's silent question — "what does this cost me if I get it wrong?" — before asking them to act. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
