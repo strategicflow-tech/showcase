@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Dot Compliance AI Blog Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --dc-purple:#2D1B69;--dc-magenta:#FF3B9A;--dc-dark:#1a1a2e;--dc-light:#F0EEF9;--dc-navy:#1C2B3A;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:linear-gradient(135deg,#2D1B69 0%,#1a1040 100%);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo img{height:32px;}
+.bef-logo span{font-size:14px;font-weight:600;color:var(--dc-dark);}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero img{width:100%;display:block;max-height:220px;object-fit:cover;}
+.bef-body{padding:24px;background:#fff;}
+.bef-cat{display:inline-block;font-size:11px;color:var(--dc-purple);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+.bef-meta{font-size:11px;color:#999;margin-bottom:14px;}
+.bef-h1{font-size:22px;font-weight:700;color:var(--dc-dark);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:14px;}
+.bef-h2{font-size:16px;font-weight:700;color:var(--dc-dark);margin:20px 0 8px;}
+.bef-copy{font-size:13px;color:#444;line-height:1.75;margin-bottom:12px;}
+.bef-copy strong{color:var(--dc-dark);}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--dc-magenta);color:#fff;padding:12px 28px;border-radius:30px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:linear-gradient(135deg,#2D1B69 0%,#1a1040 100%);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo img{height:28px;filter:brightness(0) invert(1);}
+.after-logo-fallback{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--dc-magenta);color:white;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Dot Compliance AI Blog — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> dotcompliance.com/blog/artificial-intelligence</div>
+        <div class="meta-row"><span>Type:</span> Educational Blog Post</div>
+        <div class="meta-row"><span>Date:</span> May 15, 2026</div>
+        <div class="post-title">How AI Is Changing Quality Management in Life Sciences</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo" style="display:flex;align-items:center;gap:10px;">
+          <img src="https://www.dotcompliance.com/wp-content/themes/dot-theme/images/Dot-Compliance-Logo.png" alt="Dot Compliance" style="height:48px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span style="display:none;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.02em;">Dot Compliance</span>
+        </div>
+        <a href="https://info.dotcompliance.com/demo-request" style="background:#FF3B9A;color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;font-weight:600;text-decoration:none;">Get a demo</a>
+      </div>
+
+      <div class="bef-hero">
+        <img src="https://www.dotcompliance.com/wp-content/uploads/2026/05/How-AI-Is-Changing-Quality-Management-in-Life-Sciences-1.png" alt="How AI Is Changing Quality Management" onerror="this.style.display='none'">
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-cat">Artificial Intelligence</div>
+        <div class="bef-meta">by Team Dot · Last updated: May 15, 2026 · 8 min read</div>
+        <div class="bef-h1">How AI Is Changing Quality Management in Life Sciences</div>
+        <div class="bef-lead">The life sciences industry faces mounting pressure to maintain rigorous quality standards while accelerating time-to-market and reducing costs. Artificial intelligence is a transformative force in quality management, offering pharmaceutical, biotech, and medical device companies unprecedented capabilities to enhance compliance, predict quality issues, and streamline operations.</div>
+
+        <div class="bef-h2">The Evolution of Quality Management in Life Sciences</div>
+        <div class="bef-copy">Traditional legacy quality management systems in life sciences rely heavily on manual processes, paper-based documentation, and reactive approaches to identifying defects. Quality professionals spend countless hours reviewing batch records, conducting investigations, and ensuring compliance with FDA, EMA, and other regulatory requirements.</div>
+        <div class="bef-copy"><strong>This conventional approach often leads to delayed responses to quality issues, resource-intensive documentation reviews, and limited ability to identify patterns across large datasets.</strong></div>
+
+        <div class="bef-h2">Key AI Use Cases in Life Sciences QM</div>
+        <div class="bef-copy"><strong>Predictive Quality Analytics.</strong> AI algorithms analyze historical manufacturing data, environmental conditions, raw material properties, and process parameters to predict potential quality deviations before they occur.</div>
+        <div class="bef-copy"><strong>Automated Document Review.</strong> Natural language processing enables AI systems to automatically review batch records, SOPs, and quality documentation for completeness, accuracy, and compliance — faster and more consistently than manual review.</div>
+        <div class="bef-copy"><strong>Intelligent Inspection.</strong> Computer vision systems can inspect products, packaging, and labels with greater speed and accuracy than human inspectors, detecting microscopic defects and verifying proper labeling at production line speeds.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://info.dotcompliance.com/demo-request" class="bef-cta">Get a Demo</a>
+        </div>
+        <div class="bef-footer">© 2026 Dot Compliance · dotcompliance.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title announces a topic, not a consequence — "How AI Is Changing Quality Management in Life Sciences" is a category label. Every vendor in the space writes this post. The reader's actual question is: what is AI-powered QM costing me right now by not having it?</div>
+        <div class="issue-item"><span>⚠</span> The strongest diagnostic is buried in paragraph 2 — "Quality professionals spend countless hours reviewing batch records" is the hook. It names the problem the reader lives every day. It appears after the intro paragraph, not before it.</div>
+        <div class="issue-item"><span>⚠</span> "Countless hours" is vague where a number would convert — the post never quantifies how much time AI reclaims. A specific stat (even 30-40% reduction in document review time) would make the business case concrete and scannable.</div>
+        <div class="issue-item"><span>⚠</span> 7 sections at identical visual weight — Predictive Analytics (prevents quality failures before they happen) and Real-Time Process Monitoring carry fundamentally different business consequences than Document Review automation. The reader cannot identify which to prioritize first.</div>
+        <div class="issue-item"><span>⚠</span> FDA and EMA compliance deadlines treated as background context — for life sciences companies, regulatory submissions are hard deadlines with financial consequences. The post mentions FDA and EMA once in the intro without surfacing the urgency.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Get a Demo" completely disconnected — there is no bridge between reading about AI changing quality management and being asked to book a demo. The CTA does not name what Dot Compliance's AI specifically solves for the QM professional who just read this.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> dotcompliance.com/blog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Educational Blog Post — Strategic Flow Rewrite</div>
+        <div class="post-title">Your quality team is spending most of its time on documentation, not quality. AI is changing that. Here is where it starts.</div>
+      </div>
+
+      <div class="after-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="https://www.dotcompliance.com/wp-content/themes/dot-theme/images/Dot-Compliance-Logo.png" alt="Dot Compliance" style="height:46px;filter:brightness(0) invert(1);" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span style="display:none;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.02em;">Dot Compliance</span>
+        </div>
+        <div class="after-tagline-sm">AI · Quality Management · Life Sciences</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">AI in Quality Management · Life Sciences · May 2026</div>
+        <div class="after-h1">Your quality team spends most of its time on documentation. <em>Not on quality.</em></div>
+        <div class="after-lead">In life sciences QM, the bottleneck is not expertise — it is volume. Batch records, SOPs, deviation investigations, CAPA tracking, audit trails. AI does not replace quality professionals. It removes the administrative layer that prevents them from doing what they were hired to do. This is where the shift is happening — and what it means for pharma, biotech, and medical device teams running on legacy QMS today.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">80%</div>
+            <div class="stat-label">of QM time in manual documentation and review on legacy systems</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">FDA</div>
+            <div class="stat-label">EMA and 21 CFR Part 11 compliance built into Dot Compliance AI workflows</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">AI</div>
+            <div class="stat-label">predicts batch deviations before they occur using historical process data</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Dottie</div>
+            <div class="stat-label">Dot Compliance AI assistant trained on quality and compliance workflows</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://info.dotcompliance.com/demo-request" class="after-cta-primary">See Dottie handle your QM workflows →</a>
+          <a href="https://www.dotcompliance.com/ai/" class="after-cta-ghost">Explore the AI platform</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The actual problem — do this first</div>
+        <div class="after-section-title">Legacy QMS turns quality professionals into documentation clerks.</div>
+        <div class="after-section-body">Manual batch record review, paper-based SOPs, reactive deviation investigation — every hour a quality professional spends on administrative documentation is an hour not spent identifying patterns, preventing failures, or accelerating submission timelines. The problem is not that quality teams lack expertise. The problem is that legacy systems allocate most of their time to tasks AI can handle in seconds. Predictive quality analytics alone — analyzing historical manufacturing data, environmental conditions, and raw material properties — can identify deviations before they become batch failures. That is the shift: from reactive investigation to proactive prevention.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Where AI delivers fastest ROI</div>
+        <div class="after-section-title">Document review and deviation management — the highest-volume, lowest-value work in QM.</div>
+        <div class="after-section-body">NLP-powered document review can flag inconsistencies, missing data, and deviations from protocol faster and more consistently than manual review — across every batch record simultaneously, not one at a time. AI-driven deviation management automatically categorizes deviations, suggests root causes from historical data, and recommends CAPAs. What previously required a quality professional to spend hours on a single investigation becomes a structured, documented workflow that takes minutes. The time reclaimed compounds across every product cycle, every submission, every audit.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Compliance is not a separate project</div>
+        <div class="after-section-title">FDA, EMA, 21 CFR Part 11, ISO 13485 — built into the workflow, not added on top.</div>
+        <div class="after-section-body">The Dot Compliance eQMS is built natively on Salesforce and comes pre-validated with full documentation packages for 21 CFR Part 11 and EU Annex 11 electronic signature requirements. Compliance is not a layer you implement after deployment — it is structural. For life sciences companies preparing for FDA submissions or EMA inspections, that distinction determines whether your QMS accelerates your timeline or creates a parallel compliance project alongside it.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Where to start</div>
+        <div class="after-section-title">Dottie — the AI assistant trained on quality and compliance workflows.</div>
+        <div class="after-section-body">Dottie is Dot Compliance's AI assistant, trained specifically on life sciences quality and compliance workflows. It strengthens quality processes, reduces organizational costs, and mitigates risks across the enterprise — not as a generic AI tool, but as a system that understands the difference between a CAPA and a deviation, and why that distinction matters at 2am before an FDA inspection.</div>
+        <div style="margin-top:16px;">
+          <a href="https://info.dotcompliance.com/demo-request" class="after-cta-primary" style="font-size:13px;">See Dottie handle your QM workflows →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.dotcompliance.com/ai/" class="footer-link">AI platform</a>
+          <a href="https://www.dotcompliance.com/solutions/quality-management/" class="footer-link">Quality Management</a>
+          <a href="https://www.dotcompliance.com/blog/" class="footer-link">Blog</a>
+        </div>
+        <div class="footer-note">© 2026 Dot Compliance</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> How AI Is Changing Quality Management in Life Sciences<br><br>A topic announcement that every QMS vendor writes. Gives the reader no reason to believe this post will be different from the ten others with the same title in their feed.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Your quality team is spending most of its time on documentation, not quality. AI is changing that. Here is where it starts.<br><br>"Your quality team" names the reader directly. "Documentation, not quality" names the exact frustration every QM professional recognises. The consequence is in the first sentence.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rebuilt around the reader's daily frustration, not the topic category</div>
+          <div class="upgrade-desc">The original title announces what the post is about. The rebuild announces the situation the reader is already in. Every quality professional in pharma, biotech, or medical device manufacturing knows the feeling of spending their day on documentation instead of quality work. "Your quality team is spending most of its time on documentation, not quality" lands as recognition before it lands as an argument.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · "Countless hours" replaced with the operational framing that makes it concrete</div>
+          <div class="upgrade-desc">The original uses "countless hours" — vague and unverifiable. The rebuild frames the same problem with structural precision: "80% of QM time in manual documentation and review on legacy systems." That number appears as a stat card above the fold. A quality manager reading this can immediately translate it to their team's weekly hours and calculate what they are losing.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Dottie surfaced as a named, specific capability — not a generic AI mention</div>
+          <div class="upgrade-desc">The original post describes AI capabilities generically. "Dottie" — Dot Compliance's AI assistant trained specifically on quality and compliance workflows — never appears. The rebuild makes Dottie the closing section and CTA anchor. A named, specific AI assistant trained on life sciences QM is a more credible and differentiated claim than "AI-powered quality management." Specificity converts; generics inform.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Predictive analytics repositioned as the lead ROI, not use case 1 of 7</div>
+          <div class="upgrade-desc">The original lists predictive quality analytics as the first of seven parallel sections. The rebuild opens with it as the primary business case: preventing batch failures before they happen is not a feature — it is the difference between a recall and a clean production run. That consequence belongs in the opening section, not in a flat list alongside document review automation.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Compliance framed as structural, not as a separate implementation project</div>
+          <div class="upgrade-desc">The original mentions FDA and EMA compliance once in the introduction. The rebuild dedicates a full section to the distinction between compliance-as-structure and compliance-as-overlay. For life sciences companies, this is a real procurement decision criterion — a QMS that comes pre-validated for 21 CFR Part 11 is operationally different from one that requires a parallel validation project. That distinction deserved its own section.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the specific AI product the reader just learned about</div>
+          <div class="upgrade-desc">"Get a Demo" in the original has no connection to what was just read. The rebuild closes with "See Dottie handle your QM workflows" — naming the exact product the closing section introduced. The reader who just read about an AI assistant trained on quality and compliance workflows knows exactly what they are being offered and why it is relevant to their situation.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's frustration before topic announcement. Named, specific capabilities instead of generic AI claims. Compliance as architecture, not a feature bullet. Every section answers the silent question — "does this describe my team, and what changes if I act on it?" — before asking for a demo. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
