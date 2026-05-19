@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Tresorit G2 Badges Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --tr-blue:#1A56F0;--tr-dark:#0D1B3E;--tr-light:#EEF3FF;--tr-red:#E8003D;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;}
+.bef-cta-nav{background:var(--tr-blue);color:#fff;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;}
+.bef-hero{background:#f7f9ff;border-bottom:1px solid #eee;}
+.bef-hero img{width:100%;display:block;max-height:200px;object-fit:cover;}
+.bef-body{padding:24px;background:#fff;}
+.bef-cats{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.bef-cat{font-size:11px;color:var(--tr-blue);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;font-weight:500;}
+.bef-meta{font-size:11px;color:#999;margin-bottom:14px;}
+.bef-h1{font-size:22px;font-weight:700;color:var(--tr-dark);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:14px;}
+.bef-h2{font-size:15px;font-weight:700;color:var(--tr-dark);margin:20px 0 8px;}
+.bef-copy{font-size:13px;color:#444;line-height:1.75;margin-bottom:12px;}
+.bef-quote{font-size:13px;color:#444;font-style:italic;line-height:1.7;padding:14px 16px;background:#f7f9ff;border-left:3px solid var(--tr-blue);border-radius:0 6px 6px 0;margin:14px 0;}
+.bef-quote cite{font-style:normal;font-size:11px;color:#888;display:block;margin-top:6px;font-weight:500;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--tr-blue);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--tr-dark);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--tr-blue);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-quote{font-size:13px;color:var(--text-secondary);font-style:italic;line-height:1.7;padding:14px 16px;background:var(--bg-secondary);border-left:2px solid var(--tr-blue);border-radius:0 8px 8px 0;margin-top:12px;}
+.after-quote cite{font-style:normal;font-size:11px;color:var(--text-secondary);display:block;margin-top:6px;font-weight:500;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Tresorit G2 Badges — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> tresorit.com/blog/tresorit-earns-new-g2-badges</div>
+        <div class="meta-row"><span>Type:</span> Company Announcement</div>
+        <div class="meta-row"><span>Date:</span> May 8, 2026 · By Brigitta Finta</div>
+        <div class="post-title">Tresorit earns new G2 badges across encryption, secure collaboration, and data rooms</div>
+      </div>
+
+      <div class="bef-header">
+        <img src="https://cms.tresorit.com/hubfs/tresorit-website/Tresorit_logos/Tresorit_main-logo/Tresorit-SwissPostDigital-logo-DT.svg" alt="Tresorit" style="height:30px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-size:17px;font-weight:700;color:var(--tr-dark);">tresorit</span>
+        <a href="https://tresorit.com/m/select-product" class="bef-cta-nav">Try for free</a>
+      </div>
+
+      <div class="bef-hero">
+        <img src="https://cms.tresorit.com/hubfs/G2_blogcover_withoutlogo_EN@2x-1.png" alt="Tresorit G2 badges 2026 Spring" onerror="this.style.background='#f0f4ff';this.style.minHeight='120px'">
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-cats">
+          <span class="bef-cat">News</span>
+          <span class="bef-cat">·</span>
+          <span class="bef-cat">Company announcements</span>
+        </div>
+        <div class="bef-meta">By Brigitta Finta · May 08, 2026 · 2 min read</div>
+        <div class="bef-h1">Tresorit earns new G2 badges across encryption, secure collaboration, and data rooms</div>
+        <div class="bef-lead">Every Tresorit recognition on G2 is driven by one thing: real customer experiences. That's why we're proud to share that Tresorit has once again been recognized by G2, the world's largest and most trusted software marketplace. We earned a wide range of badges across security, collaboration, and virtual data room categories.</div>
+
+        <div class="bef-h2">Cloud content collaboration: Secure, simple, and high-performing</div>
+        <div class="bef-copy">Tresorit was recognized as a High Performer across global and regional markets. We also earned the Easiest to Use (Mid-Market) badge — reinforcing what customers value most: uncompromising security that doesn't slow teams down.</div>
+        <div class="bef-quote">
+          "I like Tresorit for its strong security features that make it easy to share files and give me confidence that our data is protected. The setup was simple and quick, and we didn't need extra help."
+          <cite>Demir Z., Logistic Team Leader</cite>
+        </div>
+
+        <div class="bef-h2">Security &amp; Encryption: Leadership you can rely on</div>
+        <div class="bef-copy">Tresorit earned Leader badges across Cloud File Security, Cloud Security, and Small Business categories. In Encryption, G2 reviewers awarded badges such as Best Results, Easiest Admin, and Fastest Implementation.</div>
+
+        <div class="bef-h2">Virtual Data Room</div>
+        <div class="bef-copy">Tresorit earned Leader Small Business and Highest User Adoption (Small Business) badges, reflecting growing adoption of Tresorit Engage.</div>
+
+        <div class="bef-h2">What this means for our customers</div>
+        <div class="bef-copy">Every G2 badge represents a real user experience — a team that onboarded faster, collaborated more securely, or met compliance requirements with confidence.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://www.g2.com/products/tresorit/reviews" class="bef-cta">Explore Tresorit reviews on G2</a>
+        </div>
+        <div class="bef-footer">© 2026 Tresorit · tresorit.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title announces Tresorit's achievement, not the reader's gain — "Tresorit earns new G2 badges" is internal news. A prospect evaluating secure collaboration tools has one question: what do other teams like mine say about using this? That question is never answered in the title.</div>
+        <div class="issue-item"><span>⚠</span> The most compelling sentence is at the very end — "Every G2 badge represents a real user experience — a team that onboarded faster, collaborated more securely, or met compliance requirements with confidence." That is the hook. It appears in the closing paragraph, not the opening.</div>
+        <div class="issue-item"><span>⚠</span> No numbers in the title or hook — how many badges? How many categories? How many verified reviews? G2 recognition without quantification reads as marketing noise. Specificity is what makes social proof credible.</div>
+        <div class="issue-item"><span>⚠</span> "Fastest Implementation" and "Easiest Admin" buried in paragraph 3 — these are the two most operationally valuable badges for a buyer evaluating switching cost. They appear inside a body paragraph, not as visual proof points.</div>
+        <div class="issue-item"><span>⚠</span> Customer quotes placed after badge descriptions, not before them — both quotes are more persuasive than anything in the intro paragraph. Demir Z. and Kathrin R. answer the reader's question before Tresorit makes its claims. The sequence should be reversed.</div>
+        <div class="issue-item"><span>⚠</span> CTA sends readers OFF-site to G2 — "Explore reviews on G2" directs traffic away from Tresorit's own conversion funnel. After building social proof for 400 words, the action should be "Try for free" or "Start a trial," not a link to a competitor-adjacent platform.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> tresorit.com/blog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Company Announcement — Strategic Flow Rewrite</div>
+        <div class="post-title">Real teams say Tresorit onboards fast, runs without friction, and meets compliance without a separate project. G2 just confirmed it — again.</div>
+      </div>
+
+      <div class="after-header">
+        <img src="https://cms.tresorit.com/hubfs/tresorit-website/Tresorit_logos/Tresorit_main-logo/Tresorit-SwissPostDigital-logo-DT.svg" alt="Tresorit" style="height:28px;filter:brightness(0) invert(1);" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-size:17px;font-weight:700;color:#fff;">tresorit</span>
+        <div class="after-tagline-sm">G2 Spring 2026 · Verified Reviews</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">G2 Spring 2026 · Social Proof · May 2026</div>
+        <div class="after-h1">Real teams say Tresorit onboards fast, <em>runs without friction,</em> and meets compliance without a separate project.</div>
+        <div class="after-lead">G2 just confirmed it — again. Across encryption, cloud collaboration, email security, and virtual data rooms, Tresorit earned Leader, High Performer, and Fastest Implementation badges based entirely on verified user reviews. Not analyst rankings. Not vendor claims. What actual teams say after using it.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">Leader</div>
+            <div class="stat-label">Cloud File Security, Cloud Security, Encryption — globally and EMEA</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Fastest</div>
+            <div class="stat-label">Implementation badge in Encryption — strong security without long deployment</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Easiest</div>
+            <div class="stat-label">to Use (Mid-Market) and Easiest Admin — uncompromising security that doesn't slow teams down</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Highest</div>
+            <div class="stat-label">User Adoption in Virtual Data Rooms — Tresorit Engage recognized for everyday secure workflows</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://tresorit.com/m/select-product" class="after-cta-primary">Try Tresorit for free →</a>
+          <a href="https://tresorit.com/resources/customer-stories" class="after-cta-ghost">Read customer stories</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">What verified users actually said</div>
+        <div class="after-section-title">Setup was simple. Security was immediate. No extra help needed.</div>
+        <div class="after-section-body">G2 badges are based entirely on verified user reviews — not analyst scoring or vendor submissions. The teams who earned Tresorit these recognitions are logistics managers, clinical development leaders, and regulated-industry professionals who needed security that worked without becoming a project in itself. The pattern across reviews is consistent: fast onboarding, intuitive access control, confidence in compliance.</div>
+        <div class="after-quote">
+          "The setup was simple and quick, and we didn't need extra help. It works smoothly for team collaboration and makes sharing documents simple."
+          <cite>Demir Z., Logistic Team Leader</cite>
+        </div>
+        <div class="after-quote" style="margin-top:10px;">
+          "It's easy to use and intuitive. Tresorit is an all-in-one solution for managing and sharing documents — with different levels of security for internal and external sharing."
+          <cite>Kathrin R., Head of Clinical Development</cite>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Where Tresorit leads</div>
+        <div class="after-section-title">Encryption, collaboration, email security, virtual data rooms — all at Leader level.</div>
+        <div class="after-section-body">Most secure collaboration tools lead in one category. Tresorit earned Leader badges across Cloud File Security, Cloud Security, Email Encryption, Email Security, and Virtual Data Rooms — globally, in EMEA, and in Europe. For organizations that need security to hold across the entire workflow — not just file storage — that breadth matters. It means one platform covers what most teams currently handle with three or four separate tools.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Tresorit Engage</div>
+        <div class="after-section-title">Highest User Adoption in Virtual Data Rooms — because it was built for everyday use, not one-off transactions.</div>
+        <div class="after-section-body">Most data room tools are built for M&A transactions and IPOs — high-stakes, short-duration events. Tresorit Engage earned Highest User Adoption because it is designed for the ongoing, everyday collaboration that regulated businesses run continuously: client onboarding, legal review, compliance workflows, partner management. The adoption signal from G2 reflects a product teams actually keep using after the initial project closes.</div>
+        <div style="margin-top:16px;">
+          <a href="https://tresorit.com/m/select-product" class="after-cta-primary" style="font-size:13px;">Try Tresorit for free →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://tresorit.com/m/product/engage" class="footer-link">Tresorit Engage</a>
+          <a href="https://tresorit.com/security" class="footer-link">Security</a>
+          <a href="https://tresorit.com/resources/customer-stories" class="footer-link">Customer stories</a>
+        </div>
+        <div class="footer-note">© 2026 Tresorit</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Tresorit earns new G2 badges across encryption, secure collaboration, and data rooms<br><br>Announces Tresorit's achievement. A prospect evaluating tools asks: what do teams like mine say? That question is never answered in the title or opening paragraph.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Real teams say Tresorit onboards fast, runs without friction, and meets compliance without a separate project. G2 just confirmed it — again.<br><br>Leads with what users say, not what Tresorit earned. Every claim in the title comes from the actual review content. "G2 just confirmed it" positions the badges as validation, not announcement.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rebuilt from vendor announcement to verified user claim</div>
+          <div class="upgrade-desc">The original announces what Tresorit won. The rebuild states what customers confirmed — three specific operational claims that come directly from the review content: fast onboarding, no friction, compliance without a separate project. A prospect evaluating secure collaboration tools recognises all three as their own evaluation criteria before they have read a single badge name.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · "Every badge represents a real user experience" moved from closing to opening</div>
+          <div class="upgrade-desc">The original's strongest sentence appears in the final paragraph. The rebuild opens with the same premise — that these recognitions come from verified user reviews, not analyst rankings — because that is what makes the social proof credible. The frame "not analyst rankings, not vendor claims" pre-empts the reader's scepticism about award announcements before it forms.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · "Fastest Implementation" and "Easiest Admin" elevated to stat cards</div>
+          <div class="upgrade-desc">These two badges are the most operationally valuable claims in the entire post for a buyer evaluating switching cost. A team that needs to deploy a new secure collaboration platform wants to know: how long does this take, and how much admin overhead does it create? Those answers are in the badges — but in the original they appear in a body paragraph. The rebuild makes them visual anchors above the fold.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Customer quotes moved before badge descriptions, not after</div>
+          <div class="upgrade-desc">Both quotes in the original appear after sections of badge listing. The rebuild opens the social proof section with the quotes and uses the badge count as confirmation. Demir Z. and Kathrin R. answer the prospect's question — does this actually work for teams like mine? — before Tresorit makes any claims. Human testimony before vendor achievement is the correct sequence for conversion.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Tresorit Engage repositioned as an everyday tool, not a transaction platform</div>
+          <div class="upgrade-desc">The original mentions "Highest User Adoption" in Virtual Data Rooms without explaining why that signal matters. The rebuild explains the operational distinction: most data room tools are built for M&A and IPOs — short-duration, high-stakes. Tresorit Engage is built for ongoing regulated workflows. The adoption badge means teams keep using it after the initial project closes. That distinction is the actual product differentiation.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA redirected from G2 back to Tresorit's own conversion funnel</div>
+          <div class="upgrade-desc">"Explore reviews on G2" sends readers off-site after Tresorit spent 400 words building their interest. The rebuild closes with "Try Tresorit for free" — keeping the reader in Tresorit's funnel while the social proof is still active. G2 is referenced throughout as the source of validation, but the action the reader is asked to take stays on Tresorit's platform.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">User claims before vendor achievements. Social proof that leads with what customers say, not what the company won. Operational badges elevated to visual anchors. Every section answers the prospect's silent question — "does this work for teams like mine?" — before asking them to try. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
