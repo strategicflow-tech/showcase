@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — SEOmonitor Content Writer 2.0 Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --sm-black:#0A0A0A;--sm-teal:#00D4A0;--sm-teal-dark:#00A87D;--sm-light:#E6FAF5;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--sm-black);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:24px;background:#fff;}
+.bef-cat{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+.bef-meta{font-size:11px;color:#999;margin-bottom:14px;}
+.bef-h1{font-size:22px;font-weight:700;color:#0a0a0a;line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:14px;}
+.bef-h2{font-size:15px;font-weight:700;color:#0a0a0a;margin:20px 0 8px;}
+.bef-copy{font-size:13px;color:#444;line-height:1.75;margin-bottom:12px;}
+.bef-copy strong{color:#0a0a0a;}
+.bef-proof-box{background:#f8f8f8;border-radius:8px;padding:16px;margin:16px 0;border-left:3px solid var(--sm-teal);}
+.bef-proof-title{font-size:13px;font-weight:700;color:#0a0a0a;margin-bottom:8px;}
+.bef-proof-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.bef-stat{font-size:13px;color:#444;}
+.bef-stat strong{color:#0a0a0a;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--sm-black);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--sm-black);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--sm-teal);color:var(--sm-black);padding:12px 24px;border-radius:7px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">SEOmonitor Content Writer 2.0 — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> seomonitor.com/product-updates/content-writer-2-0</div>
+        <div class="meta-row"><span>Type:</span> Product Update Announcement</div>
+        <div class="meta-row"><span>Date:</span> February 17, 2026 · By Cosmin Negrescu</div>
+        <div class="post-title">Content Writer 2.0: The Content Agent That Handles Everything</div>
+      </div>
+
+      <div class="bef-header">
+        <img src="http://www.seomonitor.com/wp-content/uploads/2023/09/logo-white-on-black.png" alt="SEOmonitor" style="height:28px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.02em;">SEOmonitor</span>
+        <div class="bef-nav">Product Updates · Feb 2026</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-cat">Product Updates</div>
+        <div class="bef-meta">February 17, 2026 · Cosmin Negrescu</div>
+        <div class="bef-h1">Content Writer 2.0: The Content Agent That Handles Everything</div>
+
+        <div class="bef-lead">If you're managing content for SEO clients or your own brand, the workflow looks something like this: research keywords in one tool, check competitors in another, outline in a doc, write in ChatGPT or with a freelancer, quality and fact-check manually, copy-paste into your CMS, then track performance in yet another dashboard. That's 4-5 platforms, hours of manual work per article, and no connection between what you write and what actually drives organic performance.</div>
+
+        <div class="bef-h2">The Answer: Content Writer 2.0</div>
+        <div class="bef-copy">Content Writer 2.0 is the biggest upgrade we've shipped. It's no longer just a writing tool. It's a strategic, AI content agent built on top of SEOmonitor's data platform that handles the entire content marketing workflow: from topic discovery to publishing, with built-in performance tracking across Google and AI Search.</div>
+        <div class="bef-copy"><strong>€5 per article.</strong> One workflow. One agent.</div>
+
+        <div class="bef-h2">What's New in 2.0</div>
+        <div class="bef-copy"><strong>Brand DNA learning</strong> — reverse-engineers your tone, vocabulary, and sentence structure from your best-performing URL. <strong>Batch generation</strong> — configure your entire editorial plan once and process everything in parallel. <strong>Automatic fact-checking</strong> — every article cross-referenced against live web sources before you publish. <strong>WordPress publishing</strong> — direct CMS integration, no copy-paste.</div>
+
+        <div class="bef-h2">Proof: 657 Articles. 81% Ranking. One Strategist.</div>
+        <div class="bef-proof-box">
+          <div class="bef-proof-title">Real results at scale:</div>
+          <div class="bef-proof-stats">
+            <div class="bef-stat"><strong>657</strong> articles published</div>
+            <div class="bef-stat"><strong>81%</strong> ranking in Google</div>
+            <div class="bef-stat"><strong>52%</strong> cited in AI Overviews</div>
+            <div class="bef-stat"><strong>47%</strong> mentioned in ChatGPT</div>
+          </div>
+          <div style="font-size:12px;color:#666;margin-top:8px;">28 clients. One senior strategist.</div>
+        </div>
+
+        <div class="bef-cta-box">
+          <a href="https://links.seomonitor.com/forecasting-register" class="bef-cta">Free Trial</a>
+        </div>
+        <div class="bef-footer">© 2026 SEOmonitor · seomonitor.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a superlative claim with no proof — "The Content Agent That Handles Everything" is the most generic AI product headline of 2026. It contains no number, no outcome, no specificity. The post contains 657/81%/52%/47% — none of them made it to the title.</div>
+        <div class="issue-item"><span>⚠</span> The proof section is section 6 of 10 — the single most compelling proof point in the entire post (657 articles, 81% ranking, one strategist, 28 clients) appears after five sections of feature description. Most readers never reach it.</div>
+        <div class="issue-item"><span>⚠</span> €5 per article is buried in body copy — this is the most disruptive pricing claim in the post. It appears as a sentence fragment in the second section. It belongs in the title or the first paragraph.</div>
+        <div class="issue-item"><span>⚠</span> "The Problem" section describes a workflow, not a cost — "4-5 platforms, hours of manual work" is accurate but vague. How many hours per article? What does that cost per month across an agency? The consequence is never quantified.</div>
+        <div class="issue-item"><span>⚠</span> Brand DNA, batch generation, and fact-checking presented as equal features — these are not equal. Batch generation (the step toward full autonomy) is the structural shift that changes how agencies operate. It gets the same treatment as a UI improvement.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Free Trial" has no connection to the proof — after reading 657 articles, 81% ranking, one strategist, 28 clients, the natural next action is "see what this looks like for my workflow" — not a generic trial button with no bridge from the evidence.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> seomonitor.com/product-updates — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Product Update — Strategic Flow Rewrite</div>
+        <div class="post-title">One strategist. 657 articles. 81% ranking in Google. 52% cited in AI Overviews. €5 per article. This is what Content Writer 2.0 actually did.</div>
+      </div>
+
+      <div class="after-header">
+        <img src="http://www.seomonitor.com/wp-content/uploads/2023/09/logo-white-on-black.png" alt="SEOmonitor" style="height:26px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none;font-size:16px;font-weight:700;color:#fff;letter-spacing:-.02em;">SEOmonitor</span>
+        <div class="after-tagline-sm">Product Update · February 2026</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Product Update · AI Content · SEO · February 2026</div>
+        <div class="after-h1">One strategist. 657 articles. 81% ranking. <em>€5 per article.</em></div>
+        <div class="after-lead">That is not a benchmark. That is a real SEOmonitor customer who used Content Writer 2.0 across 28 clients. 52% of those articles are now cited in Google AI Overviews. 47% are mentioned in ChatGPT. This is what happens when the entire content workflow — topic discovery, writing, fact-checking, publishing, tracking — runs on real SEO data instead of generic prompts.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">81%</div>
+            <div class="stat-label">of 657 articles ranking in Google — one strategist, 28 clients</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">52%</div>
+            <div class="stat-label">cited in Google AI Overviews</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">47%</div>
+            <div class="stat-label">mentioned in ChatGPT</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">€5</div>
+            <div class="stat-label">per article — vs €200+ per freelance article</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://links.seomonitor.com/forecasting-register" class="after-cta-primary">See Content Writer 2.0 in action →</a>
+          <a href="https://www.seomonitor.com/content-writer/" class="after-cta-ghost">Explore the full workflow</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The actual problem — quantified</div>
+        <div class="after-section-title">4-5 platforms. Hours per article. No connection to what actually ranks.</div>
+        <div class="after-section-body">The average SEO content workflow spans keyword research, competitor analysis, briefing, writing, fact-checking, CMS upload, and performance tracking — each in a separate tool. For an agency producing 20 articles per month, that overhead compounds fast. The deeper cost is the disconnect: none of those tools know what the others did, and none of them know what your campaign data says about what will actually rank. Content Writer 2.0 closes that loop. One workflow. One agent. Every step runs on your live SEO data.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The structural shift — batch generation</div>
+        <div class="after-section-title">Configure once. Approve once. The agent handles the rest.</div>
+        <div class="after-section-body">Most "AI content" tools handle one article at a time. You prompt, they write, you do everything else. Content Writer 2.0's batch generation is the step that changes agency operations: configure your entire editorial plan in one session, set parameters for each article, and generate in parallel. What used to take hours of daily one-by-one setup now takes minutes. This is also the architecture that makes full autonomy possible — once scheduling and approval workflows are added, the content pipeline runs without daily manual input.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Why 81% ranks and generic AI content doesn't</div>
+        <div class="after-section-title">Brand DNA + real SEO data. Not a tone dropdown and a keyword.</div>
+        <div class="after-section-body">Generic AI tools produce text that fails to target strategic keywords, match brand voice, or account for what Google and LLMs actually reward. Content Writer 2.0 learns brand voice by reverse-engineering your best-performing URL — tone, vocabulary, sentence structure. Every article is optimized simultaneously for Google rankings, AI Overview citations, and ChatGPT mentions, using your campaign's live keyword and competitor data. The 52% AI Overview citation rate is not a coincidence. It is what happens when content is built on real signal instead of generic prompts.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Next step</div>
+        <div class="after-section-title">The workflow that produced 657 articles at 81% ranking is available today.</div>
+        <div class="after-section-body">If your current content process involves more than two platforms, takes more than two hours per article, or produces content that does not rank — this is the operational difference. One senior strategist. 28 clients. €5 per article. The gap between that and your current cost per article is the business case.</div>
+        <div style="margin-top:16px;">
+          <a href="https://links.seomonitor.com/forecasting-register" class="after-cta-primary" style="font-size:13px;">See Content Writer 2.0 in action →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.seomonitor.com/content-writer/" class="footer-link">Content Writer</a>
+          <a href="https://www.seomonitor.com/product-updates/" class="footer-link">Product Updates</a>
+          <a href="https://www.seomonitor.com/pricing/" class="footer-link">Pricing</a>
+        </div>
+        <div class="footer-note">© 2026 SEOmonitor</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Content Writer 2.0: The Content Agent That Handles Everything<br><br>The most generic AI product headline of 2026. No number. No outcome. No reason to read. The post contains proof that could anchor the entire piece — it never made it to the title.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> One strategist. 657 articles. 81% ranking in Google. 52% cited in AI Overviews. €5 per article. This is what Content Writer 2.0 actually did.<br><br>Every number comes from the post's own proof section. The reader who manages SEO content for clients knows exactly what these numbers mean before they have read a word of explanation.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Proof moved from section 6 to the title and hook</div>
+          <div class="upgrade-desc">The original buries 657/81%/52%/47% in section 6 of 10 sections. Most readers never reach it. The rebuild opens with every number in the title and expands them in the first paragraph. The strongest argument in a product announcement should be the first thing the reader sees — not a reward for reading to the halfway point.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · €5 per article elevated from body copy to stat card</div>
+          <div class="upgrade-desc">The original mentions €5 per article as a sentence fragment in the second section. For an SEO agency paying €200+ per freelance article, this number is the entire business case in one line. The rebuild makes it the fourth stat card above the fold, directly next to the performance proof. The pricing claim and the performance proof belong together — one makes the other credible.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · "The Problem" rewritten with operational cost, not just workflow description</div>
+          <div class="upgrade-desc">The original describes the problem accurately — 4-5 platforms, hours of manual work — but never quantifies the cost. The rebuild names the compound effect for an agency producing 20 articles per month: overhead that grows with every client, and a fundamental disconnect between what was written and what the campaign data says will rank. The problem is not inconvenient. It is expensive and structurally broken.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Batch generation separated as the structural shift, not a feature in a list</div>
+          <div class="upgrade-desc">The original presents batch generation alongside Brand DNA learning and fact-checking as parallel features. The rebuild gives it a dedicated section titled "The Structural Shift" — because it is. Configure-once, approve-once batch processing is the architecture that makes full content autonomy possible. It changes how agencies operate, not just how fast they write. That distinction deserves its own section, not a bullet point.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · 52% AI Overview citation rate explained as signal, not coincidence</div>
+          <div class="upgrade-desc">The original reports the AI citation numbers without explaining why they are high. The rebuild connects the outcome to the mechanism: content built on live keyword and competitor data, optimized simultaneously for Google and LLMs, trained on brand voice from real top-performing URLs. The 52% is not luck — it is what happens when you build for AI ranking from the architecture up. Explaining the mechanism makes the proof credible rather than impressive-sounding.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the proof, not to a generic trial</div>
+          <div class="upgrade-desc">"Free Trial" in the original has no connection to the proof the reader just encountered. The rebuild closes with "See Content Writer 2.0 in action" — framing the trial as seeing the 657-article workflow in the context of their own client base. The last paragraph makes the business case explicit: the gap between €5 per article and current cost is the ROI calculation the reader should bring to their next team conversation.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Proof before claims. Numbers that quantify the gap, not just describe the feature. The strongest argument leads — not buried in section 6. Every section answers the reader's question — "does this change my economics?" — before asking them to trial. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
