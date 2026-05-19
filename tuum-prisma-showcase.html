@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Tuum Prisma Announcement Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --tuum-header:#6D7580;--tuum-navy:#1a2332;--tuum-teal:#00C896;--tuum-teal-dark:#009B75;--tuum-light:#E6FAF5;--tuum-body:#F7F7F7;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--tuum-header);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{display:flex;align-items:center;gap:10px;}
+.bef-logo img{height:28px;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{background:var(--tuum-navy);padding:0;}
+.bef-hero img{width:100%;display:block;max-height:220px;object-fit:cover;opacity:.9;}
+.bef-body{padding:24px;background:var(--tuum-body);border-bottom:1px solid #eee;}
+.bef-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-h1{font-size:20px;font-weight:700;color:var(--tuum-navy);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-bullets{list-style:none;padding:0;margin-bottom:16px;}
+.bef-bullets li{font-size:13px;color:#444;line-height:1.7;margin-bottom:10px;padding-left:16px;position:relative;}
+.bef-bullets li::before{content:"•";position:absolute;left:0;color:var(--tuum-teal);}
+.bef-bullets li strong{color:var(--tuum-navy);}
+.bef-quote{font-size:13px;color:#444;font-style:italic;line-height:1.7;padding:14px 16px;background:#f5f7fa;border-left:3px solid var(--tuum-teal);border-radius:0 6px 6px 0;margin:16px 0;}
+.bef-quote cite{font-style:normal;font-size:11px;color:#888;display:block;margin-top:6px;font-weight:500;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--tuum-teal);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--tuum-header);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{display:flex;align-items:center;gap:10px;}
+.after-logo img{height:26px;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--tuum-teal);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-quote{font-size:13px;color:var(--text-secondary);font-style:italic;line-height:1.7;padding:14px 16px;background:var(--bg-secondary);border-left:2px solid var(--tuum-teal);border-radius:0 8px 8px 0;margin-top:12px;}
+.after-quote cite{font-style:normal;font-size:11px;color:var(--text-secondary);display:block;margin-top:6px;font-weight:500;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Tuum x Prisma — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> tuum.com/news/prisma-goes-live</div>
+        <div class="meta-row"><span>Type:</span> Customer Announcement</div>
+        <div class="meta-row"><span>Date:</span> 27 April 2026</div>
+        <div class="post-title">Prisma Goes Live on Tuum's Modular Core, Establishing a New Standard for European Payment Institutions</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">
+          <span style="font-family:'Figtree',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.04em;">tuum<span style="color:#3B9EFF;">.</span></span>
+        </div>
+        <div class="bef-nav">Newsroom · April 2026</div>
+      </div>
+
+      <div class="bef-hero">
+        <img src="https://tuum.com/wp-content/uploads/2026/04/Prisma-tuum-1024x576.jpeg" alt="Prisma x Tuum" onerror="this.style.display='none'">
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-meta">Tallinn, Estonia · 27 April 2026</div>
+        <div class="bef-h1">Prisma Goes Live on Tuum's Modular Core, Establishing a New Standard for European Payment Institutions</div>
+        <div class="bef-lead">Prisma (PRISMA PAYMENTS EP, S.A.), a regulated payment institution licensed by the Bank of Spain, has successfully gone live on Tuum's next-generation core banking platform. This strategic implementation represents Prisma's move towards a modern, full SaaS stack, designed to enhance scalability and support its continued global expansion as the business grows.</div>
+        <div class="bef-lead">Prisma specializes in providing robust payment and account services to companies worldwide that rely on complex payment flows and strict regulatory compliance. By migrating to Tuum, Prisma has deployed a comprehensive end-to-end capability specifically tailored for EMIs and PSPs.</div>
+
+        <p style="font-size:13px;font-weight:600;color:var(--tuum-navy);margin-bottom:10px;">The successful go-live delivers several key strategic advantages:</p>
+        <ul class="bef-bullets">
+          <li><strong>Direct Connectivity &amp; Efficiency:</strong> Tuum provides direct integrations with SWIFT, SEPA, and CentroLINK, completely removing the need for third-party middleware.</li>
+          <li><strong>Regulatory Confidence:</strong> Tuum's resilient architecture combined with a pre-built integration to Hawk for AML compliance strengthens Prisma's ability to operate in a heavily regulated EU landscape, supporting readiness for DORA and ISO standards.</li>
+          <li><strong>A Shift to Intentional Expansion:</strong> By offloading the burden of maintaining legacy infrastructure, Prisma has improved its unit economics and can now shift its focus from defensive maintenance to intentional, sustainable expansion.</li>
+        </ul>
+
+        <div class="bef-quote">
+          "To support our global growth ambitions, we identified the need to evolve our core capabilities. Tuum's modular platform represents a natural next step, enhancing our architecture with the agility required to handle complex payment flows and adapt quickly to regulatory change."
+          <cite>Jose Carbajosa, CEO at Prisma</cite>
+        </div>
+
+        <div class="bef-cta-box">
+          <a href="https://tuum.com/get-in-touch/" class="bef-cta">Get in touch</a>
+        </div>
+        <div class="bef-footer">© 2026 Tuum (Modular Technologies OÜ) · tuum.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title announces Tuum's achievement, not Prisma's problem solved — "Establishing a New Standard for European Payment Institutions" is Tuum's claim. The reader's question is: what did Prisma actually escape from, and what does that mean for institutions like mine?</div>
+        <div class="issue-item"><span>⚠</span> The most operationally valuable sentence is the third bullet — "shift from defensive maintenance to intentional, sustainable expansion" is the entire business case for core migration. It appears after two bullets of technical feature listing, not in the hook.</div>
+        <div class="issue-item"><span>⚠</span> No numbers in the hook — SWIFT, SEPA, and CentroLINK direct (zero middleware) is a concrete operational advantage. It appears as a bullet point, not as a headline stat. "Zero middleware" is a number worth surfacing.</div>
+        <div class="issue-item"><span>⚠</span> DORA and ISO compliance mentioned as a parenthetical — for European payment institutions, DORA compliance is a regulatory deadline, not a feature. It appears inside a bullet point as context rather than as urgency.</div>
+        <div class="issue-item"><span>⚠</span> CEO quote buried mid-post — Jose Carbajosa's quote contains the most human signal in the piece ("handle complex payment flows and adapt quickly to regulatory change") but appears after the technical bullets, not before them.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Get in touch" is completely disconnected — there is no bridge between reading about Prisma's migration and being asked to contact Tuum. The CTA does not name what Tuum solves for the EMI or PSP reading this.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> tuum.com/news — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Customer Announcement — Strategic Flow Rewrite</div>
+        <div class="post-title">Prisma stopped maintaining legacy infrastructure and started expanding. Here is what the migration to Tuum actually changed.</div>
+      </div>
+
+      <div class="after-header">
+        <div class="after-logo">
+          <span style="font-family:'Figtree',sans-serif;font-size:22px;font-weight:800;color:#fff;letter-spacing:-.04em;">tuum<span style="color:#3B9EFF;">.</span></span>
+        </div>
+        <div class="after-tagline-sm">Customer Story · April 2026</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Customer Story · Fintech · EU Payments · April 2026</div>
+        <div class="after-h1">Prisma was maintaining legacy infrastructure. Now they're <em>expanding intentionally.</em></div>
+        <div class="after-lead">Prisma is a Bank of Spain-regulated payment institution serving complex global payment flows. After migrating to Tuum's modular core, they eliminated third-party middleware entirely, gained pre-built DORA and AML compliance, and shifted engineering focus from keeping legacy alive to building what's next. This is what that migration delivered — and what it means for European EMIs still on legacy stacks.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">third-party middleware — SWIFT, SEPA, CentroLINK all direct</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Hawk</div>
+            <div class="stat-label">AML compliance pre-built, not bolted on post-migration</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">DORA</div>
+            <div class="stat-label">and ISO readiness built into the architecture from day one</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">failed implementations across all Tuum go-lives to date</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://tuum.com/get-in-touch/" class="after-cta-primary">See how Tuum handles your migration →</a>
+          <a href="https://tuum.com/customers/" class="after-cta-ghost">View all customer stories</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The problem Prisma solved</div>
+        <div class="after-section-title">Defensive maintenance was absorbing the engineering capacity that should be building growth.</div>
+        <div class="after-section-body">Prisma's legacy infrastructure required constant maintenance to stay operational — not to improve. Every engineering hour spent keeping legacy alive was an hour not spent on new payment products, new markets, or new customer value. The migration to Tuum was not a technology upgrade. It was a reallocation of the entire organization's capacity from maintenance to expansion. That shift in unit economics is the real business case — not the feature list.</div>
+        <div class="after-quote">
+          "We're now operating on a core that supports intentional, sustainable expansion."
+          <cite>Jose Carbajosa, CEO at Prisma</cite>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">What the architecture change actually means</div>
+        <div class="after-section-title">Zero middleware. Direct rails. Compliance built in, not integrated after.</div>
+        <div class="after-section-body">The operational difference between third-party middleware and direct SWIFT, SEPA, and CentroLINK connectivity is not marginal — it removes an entire layer of failure surface, latency, and vendor dependency from every payment processed. Hawk AML is pre-built into the Tuum architecture, not a post-migration integration. DORA and ISO readiness are structural, not a compliance layer added on top. For European payment institutions, these are not feature additions — they are the difference between a stack that grows with regulatory change and one that fights it.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">What this means if you're still on legacy</div>
+        <div class="after-section-title">The question is not whether to migrate. It is how much defensive maintenance you can still afford.</div>
+        <div class="after-section-body">Every quarter on a legacy core is another quarter of engineering capacity allocated to maintenance instead of growth. Tuum's progressive modernization model means you do not switch off legacy until the new core is proven — Prisma went live in weeks, not years. If your institution is processing complex payment flows across multiple currencies and jurisdictions, the architecture Prisma now runs on is available today.</div>
+        <div style="margin-top:16px;">
+          <a href="https://tuum.com/get-in-touch/" class="after-cta-primary" style="font-size:13px;">See how Tuum handles your migration →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://tuum.com/customers/" class="footer-link">Customer stories</a>
+          <a href="https://tuum.com/progressive-core-transformation/" class="footer-link">Progressive modernization</a>
+          <a href="https://tuum.com/payments/" class="footer-link">Payments module</a>
+        </div>
+        <div class="footer-note">© 2026 Tuum (Modular Technologies OÜ)</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Prisma Goes Live on Tuum's Modular Core, Establishing a New Standard for European Payment Institutions<br><br>Announces Tuum's milestone. An EMI reading this has one question: what did Prisma actually escape from, and is my situation the same?</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Prisma stopped maintaining legacy infrastructure and started expanding. Here is what the migration to Tuum actually changed.<br><br>Names the before state ("maintaining legacy") and the after state ("expanding") in one sentence. Any EMI on a legacy stack recognises their situation immediately.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rebuilt from vendor achievement to customer transformation</div>
+          <div class="upgrade-desc">The original title announces what Tuum did. The rebuild announces what Prisma changed — and frames it in the language every EMI on a legacy stack uses internally: "we're spending too much time maintaining what we have." The reader recognises their own situation before they have read a single technical detail.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · "Shift from defensive maintenance to intentional expansion" moved from bullet 3 to hook</div>
+          <div class="upgrade-desc">The original buries the business case in the third bullet. The rebuild opens with it. "Defensive maintenance was absorbing the engineering capacity that should be building growth" is the operational consequence that makes the migration decision legible to any CTO or CPO reading this announcement. It belongs in the first paragraph, not the third point in a list.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Zero middleware surfaced as a stat card, not a feature bullet</div>
+          <div class="upgrade-desc">Direct SWIFT, SEPA, and CentroLINK connectivity without third-party middleware is the single most concrete operational advantage in the announcement. In the original it appears as a bullet point. The rebuild makes it the first stat card above the fold — "0 third-party middleware" is a number that immediately communicates the architecture shift without requiring the reader to process a paragraph of explanation.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · DORA compliance reframed from parenthetical to urgency signal</div>
+          <div class="upgrade-desc">The original mentions DORA inside a bullet point as a capability. For European payment institutions, DORA is a regulatory obligation with enforcement consequences — not a feature. The rebuild surfaces it as a dedicated stat card and names it directly: "DORA and ISO readiness built into the architecture from day one." An EMI reading this understands immediately that DORA readiness is structural, not a separate project.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · CEO quote moved to the front of the business case section</div>
+          <div class="upgrade-desc">Jose Carbajosa's quote — "we're now operating on a core that supports intentional, sustainable expansion" — is the most human signal in the announcement. It confirms the transformation in the voice of the person who lived it. In the original it appears at the bottom of the post. The rebuild places it immediately after the explanation of what the migration achieved, where it functions as proof rather than decoration.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA rebuilt around the reader's migration decision</div>
+          <div class="upgrade-desc">"Get in touch" in the original has no logical link to what was just read. The rebuild closes with "See how Tuum handles your migration" — a direct consequence of reading about an institution that successfully migrated off legacy in weeks. The reader who finished this announcement and is still on a legacy core knows exactly what the CTA is offering and why now is the relevant moment to click it.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Customer's transformation before vendor's achievement. The business consequence leads, not the feature list. Compliance deadlines as urgency anchors, not capabilities. Every section answers the reader's silent question — "is my situation the same, and what would change if I made this move?" — before asking them to act. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
