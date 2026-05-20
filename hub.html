@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Tools & Resources Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a0a0a;
+  --bg2:#111111;
+  --bg3:#1a1a18;
+  --green:#4A8FE7;
+  --green-light:#E8F0FC;
+  --green-dark:#1a3a6e;
+  --green-mid:#2D6BE4;
+  --green-pale:#a8c4f5;
+  --text:#ffffff;
+  --text2:#a0a09a;
+  --text3:#6b6b66;
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(29,158,117,0.25);
+}
+html,body{width:100%;background:var(--bg);color:var(--text);font-family:'Figtree',sans-serif;}
+body{padding:0;}
+
+/* NAV */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 48px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:rgba(10,10,10,0.95);
+  backdrop-filter:blur(12px);z-index:100;
+}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:20px;color:#ffffff;letter-spacing:-.01em;font-weight:400;}
+.nav-logo em{color:var(--green);font-style:italic;font-family:'DM Serif Display',serif;}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-link{font-size:13px;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;letter-spacing:.04em;transition:color .2s;}
+.nav-link:hover{color:var(--green);}
+.nav-cta{background:var(--green);color:#fff;padding:9px 20px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;transition:background .2s;}
+.nav-cta:hover{background:var(--green-mid);}
+
+/* HERO */
+.hero{
+  padding:96px 48px 80px;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-200px;right:-200px;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(29,158,117,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--green);
+  border:1px solid var(--border2);padding:6px 14px;border-radius:20px;
+  margin-bottom:32px;
+}
+.hero-tag::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(40px,6vw,72px);
+  line-height:1.1;letter-spacing:-.02em;
+  max-width:800px;margin-bottom:24px;
+}
+.hero h1 em{font-style:italic;color:var(--green);}
+.hero-sub{
+  font-size:18px;color:var(--text2);line-height:1.65;
+  max-width:560px;margin-bottom:48px;
+}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap;}
+.stat{border-left:2px solid var(--green);padding-left:20px;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:36px;color:var(--green);}
+.stat-label{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+
+/* SECTION HEADER */
+.section{padding:72px 48px;}
+.section-label{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--green);margin-bottom:12px;
+}
+.section-title{
+  font-family:'DM Serif Display',serif;font-size:32px;
+  margin-bottom:8px;line-height:1.2;
+}
+.section-sub{font-size:15px;color:var(--text2);margin-bottom:48px;max-width:560px;line-height:1.6;}
+
+/* AUDIT TOOLS GRID */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--border);}
+.tool-card{
+  background:var(--bg);padding:36px;
+  transition:background .2s;
+  position:relative;overflow:hidden;
+}
+.tool-card:hover{background:var(--bg2);}
+.tool-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--green);transform:scaleX(0);transform-origin:left;
+  transition:transform .3s;
+}
+.tool-card:hover::after{transform:scaleX(1);}
+.tool-badge{
+  display:inline-block;font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;
+  background:var(--green-dark);color:var(--green-pale);
+  padding:4px 10px;border-radius:4px;margin-bottom:20px;
+}
+.tool-badge.free{background:rgba(29,158,117,0.15);color:var(--green);}
+.tool-name{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:10px;line-height:1.2;}
+.tool-desc{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:24px;}
+.tool-features{list-style:none;margin-bottom:28px;}
+.tool-features li{
+  font-size:13px;color:var(--text2);padding:6px 0;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.tool-features li::before{content:'→';color:var(--green);font-family:'DM Mono',monospace;font-size:11px;}
+.tool-link{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green);color:#fff;
+  padding:11px 22px;border-radius:6px;
+  font-size:13px;font-weight:600;text-decoration:none;
+  transition:background .2s;
+}
+.tool-link:hover{background:var(--green-mid);}
+.tool-link-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--green);font-size:13px;text-decoration:none;
+  border-bottom:1px solid var(--border2);padding-bottom:2px;
+  font-family:'DM Mono',monospace;letter-spacing:.04em;
+  transition:color .2s;
+}
+.tool-link-ghost:hover{color:var(--green-pale);}
+
+/* SCORE PROOF */
+.proof-section{
+  padding:72px 48px;background:var(--bg2);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;background:var(--border);margin-top:48px;}
+.score-card{
+  background:var(--bg2);padding:28px;text-align:center;
+}
+.score-before{font-family:'DM Mono',monospace;font-size:13px;color:var(--text3);text-decoration:line-through;margin-bottom:4px;}
+.score-after{font-family:'DM Serif Display',serif;font-size:48px;color:var(--green);line-height:1;}
+.score-label{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-top:8px;}
+.score-company{font-size:13px;color:var(--text2);margin-top:6px;font-weight:500;}
+
+/* SHOWCASE SECTION */
+.showcase-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:40px;display:flex;justify-content:space-between;
+  align-items:flex-start;gap:40px;flex-wrap:wrap;
+  margin-bottom:16px;transition:border-color .2s;
+}
+.showcase-card:hover{border-color:var(--border2);}
+.showcase-info{flex:1;min-width:260px;}
+.showcase-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.showcase-title{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:10px;line-height:1.2;}
+.showcase-desc{font-size:14px;color:var(--text2);line-height:1.65;}
+.showcase-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex-shrink:0;}
+.score-pill{
+  font-family:'DM Mono',monospace;font-size:13px;
+  padding:6px 14px;border-radius:6px;
+  background:rgba(29,158,117,0.12);color:var(--green);
+  border:1px solid var(--border2);white-space:nowrap;
+}
+
+/* ROI SECTION */
+.roi-card{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:12px;padding:48px;
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;
+  align-items:center;
+}
+.roi-card h3{font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:16px;line-height:1.2;}
+.roi-card h3 em{color:var(--green);font-style:italic;}
+.roi-card p{font-size:15px;color:var(--text2);line-height:1.65;margin-bottom:28px;}
+.roi-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.roi-metric{background:var(--bg3);border-radius:8px;padding:20px;}
+.roi-metric-num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--green);}
+.roi-metric-label{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+
+/* ENTERPRISE */
+.enterprise-banner{
+  background:linear-gradient(135deg,var(--bg2) 0%,rgba(29,158,117,0.08) 100%);
+  border:1px solid var(--border2);border-radius:12px;
+  padding:48px;text-align:center;
+}
+.enterprise-banner h3{font-family:'DM Serif Display',serif;font-size:36px;margin-bottom:16px;}
+.enterprise-banner h3 em{color:var(--green);font-style:italic;}
+.enterprise-banner p{font-size:16px;color:var(--text2);max-width:520px;margin:0 auto 32px;line-height:1.65;}
+.btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{
+  padding:48px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;
+}
+.footer-logo{font-family:'DM Serif Display',serif;font-size:18px;color:#ffffff;font-weight:400;}
+.footer-logo em{color:var(--green);font-style:italic;font-family:'DM Serif Display',serif;}
+.footer-logo em{color:var(--green);font-style:italic;}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;}
+.footer-link{font-size:12px;color:var(--text3);text-decoration:none;font-family:'DM Mono',monospace;transition:color .2s;}
+.footer-link:hover{color:var(--green);}
+.footer-copy{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;}
+
+@media(max-width:768px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .hero,.section,.proof-section{padding:48px 24px;}
+  .roi-card{grid-template-columns:1fr;}
+  footer{padding:32px 24px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Strategic<em>Flow</em></div>
+  <div class="nav-links">
+    <a href="#audits" class="nav-link">Free Audits</a>
+    <a href="#showcase" class="nav-link">Showcase</a>
+    <a href="#roi" class="nav-link">ROI Calculator</a>
+    <a href="#enterprise" class="nav-link">Enterprise</a>
+    <a href="https://strategicflow.carrd.co" class="nav-cta" target="_blank">Get Started →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Strategic Flow Platform</div>
+  <h1>SaaS email architecture.<br><em>Audited. Rebuilt. Shipped.</em></h1>
+  <p class="hero-sub">Structural audits for product update emails, onboarding sequences, changelog posts, and LinkedIn content. Not copywriting. Architecture.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">45</div>
+      <div class="stat-label">Teardowns live</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3→9</div>
+      <div class="stat-label">Avg score lift</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">60s</div>
+      <div class="stat-label">Free audit time</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$49</div>
+      <div class="stat-label">Single audit</div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE AUDIT TOOLS -->
+<section class="section" id="audits">
+  <div class="section-label">Free Tools</div>
+  <div class="section-title">Run a free audit in 60 seconds.</div>
+  <p class="section-sub">Paste your email or URL. Get a structural score, the bugs, and a rebuilt version. No signup. No pitch.</p>
+
+  <div class="tools-grid">
+    <div class="tool-card">
+      <span class="tool-badge free">Free · Instant</span>
+      <div class="tool-name">Changelog Audit</div>
+      <p class="tool-desc">Audits product update emails and changelog posts for structural bugs. Score, rebuilt HTML, 3 subject line variants.</p>
+      <ul class="tool-features">
+        <li>Score out of 10</li>
+        <li>7 structural bugs diagnosed</li>
+        <li>Rebuilt HTML included</li>
+        <li>3 subject line A/B variants</li>
+      </ul>
+      <a href="https://strategic-flow-audit.replit.app/changelog-audit-page" class="tool-link" target="_blank">Run Changelog Audit →</a>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-badge free">Free · Instant</span>
+      <div class="tool-name">Onboarding Audit</div>
+      <p class="tool-desc">Audits day 1, day 3, and day 7 onboarding emails. Consequence mapping, CTA analysis, activation architecture.</p>
+      <ul class="tool-features">
+        <li>Activation gap diagnosis</li>
+        <li>Step consequence mapping</li>
+        <li>CTA ownership language check</li>
+        <li>Rebuilt sequence included</li>
+      </ul>
+      <a href="https://strategic-flow-audit.replit.app/onboarding-audit-page" class="tool-link" target="_blank">Run Onboarding Audit →</a>
+    </div>
+
+    <div class="tool-card">
+      <span class="tool-badge free">Free · Instant</span>
+      <div class="tool-name">LinkedIn Audit</div>
+      <p class="tool-desc">Audits LinkedIn posts and company announcements for hook strength, specificity, and conversion structure.</p>
+      <ul class="tool-features">
+        <li>Hook consequence score</li>
+        <li>Audience signal check</li>
+        <li>Rebuilt post included</li>
+        <li>3 hook variants generated</li>
+      </ul>
+      <a href="https://strategic-flow-audit.replit.app/linkedin-audit-page" class="tool-link" target="_blank">Run LinkedIn Audit →</a>
+    </div>
+  </div>
+</section>
+
+<!-- SCORE PROOF -->
+<section class="proof-section">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-label">Proof</div>
+    <div class="section-title">Score lifts across 45 teardowns.</div>
+    <p class="section-sub">Every score is structural, not subjective. Before and after, with the reasoning documented.</p>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="score-before">3/10</div>
+        <div class="score-after">9</div>
+        <div class="score-label">/10 after rebuild</div>
+        <div class="score-company">HeyGen</div>
+      </div>
+      <div class="score-card">
+        <div class="score-before">2/10</div>
+        <div class="score-after">9</div>
+        <div class="score-label">/10 after rebuild</div>
+        <div class="score-company">ElevenLabs</div>
+      </div>
+      <div class="score-card">
+        <div class="score-before">4/10</div>
+        <div class="score-after">9</div>
+        <div class="score-label">/10 after rebuild</div>
+        <div class="score-company">Optimizely</div>
+      </div>
+      <div class="score-card">
+        <div class="score-before">3/10</div>
+        <div class="score-after">9</div>
+        <div class="score-label">/10 after rebuild</div>
+        <div class="score-company">Landbot</div>
+      </div>
+      <div class="score-card">
+        <div class="score-before">4/10</div>
+        <div class="score-after">9</div>
+        <div class="score-label">/10 after rebuild</div>
+        <div class="score-company">SplitMetrics</div>
+      </div>
+      <div class="score-card">
+        <div class="score-before">3/10</div>
+        <div class="score-after">9</div>
+        <div class="score-label">/10 after rebuild</div>
+        <div class="score-company">Medallia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="section" id="showcase">
+  <div class="section-label">Portfolio</div>
+  <div class="section-title">45 teardowns. Every one documented.</div>
+  <p class="section-sub">Before, after, and exactly what changed. Structural reasoning included on every rebuild.</p>
+
+  <div class="showcase-card">
+    <div class="showcase-info">
+      <div class="showcase-meta">Full Portfolio · 45 Teardowns · B2B SaaS · Fintech · Enterprise</div>
+      <div class="showcase-title">Teardown Showcase</div>
+      <p class="showcase-desc">Every teardown shows the original email, the Strategic Flow rebuild, the score, and the structural reasoning. Companies include Ahrefs, HeyGen, Revolut, Optimizely, Zoho, Medallia, Cato Networks, and 38 others.</p>
+    </div>
+    <div class="showcase-right">
+      <span class="score-pill">45 teardowns live</span>
+      <a href="https://strategicflow-tech.github.io/showcase/index.html" class="tool-link" target="_blank">View All Teardowns →</a>
+    </div>
+  </div>
+
+  <div class="showcase-card">
+    <div class="showcase-info">
+      <div class="showcase-meta">Scorecard · Methodology · Scoring System</div>
+      <div class="showcase-title">Strategic Flow Scorecard</div>
+      <p class="showcase-desc">The 10-point scoring system behind every audit. Each dimension explained with before/after examples. Understand exactly how emails are scored and what moves the number.</p>
+    </div>
+    <div class="showcase-right">
+      <span class="score-pill">10-point system</span>
+      <a href="https://strategicflow-tech.github.io/showcase/scorecard.html" class="tool-link" target="_blank">View Scorecard →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ROI -->
+<section class="section" id="roi" style="padding-top:0;">
+  <div class="section-label">ROI Calculator</div>
+  <div class="section-title">What does a broken email cost you?</div>
+  <p class="section-sub">Calculate the revenue impact of low open rates, flat CTRs, and missed activation before you pay for another send.</p>
+
+  <div class="roi-card">
+    <div>
+      <h3>From <em>gut feel</em> to verified architecture.</h3>
+      <p>The ROI calculator maps your current email performance against Strategic Flow benchmarks. Average score lift 3 to 9. Average open rate improvement 22% to 38% across 21 rebuilds.</p>
+      <a href="https://strategicflow-tech.github.io/roi/" class="tool-link" target="_blank">Open ROI Calculator →</a>
+    </div>
+    <div class="roi-metrics">
+      <div class="roi-metric">
+        <div class="roi-metric-num">22%</div>
+        <div class="roi-metric-label">Avg open rate before</div>
+      </div>
+      <div class="roi-metric">
+        <div class="roi-metric-num">38%</div>
+        <div class="roi-metric-label">Avg open rate after</div>
+      </div>
+      <div class="roi-metric">
+        <div class="roi-metric-num">9min</div>
+        <div class="roi-metric-label">Avg audit time</div>
+      </div>
+      <div class="roi-metric">
+        <div class="roi-metric-num">3→9</div>
+        <div class="roi-metric-label">Avg score lift</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTERPRISE -->
+<section class="section" id="enterprise" style="padding-top:0;">
+  <div class="enterprise-banner">
+    <div class="section-label" style="justify-content:center;display:flex;">Enterprise</div>
+    <h3>Full architecture audits for <em>enterprise teams.</em></h3>
+    <p>Multi-email sequences, onboarding flows, and content systems rebuilt end to end. Custom deliverables, documented reasoning, quarterly reviews.</p>
+    <div class="btn-row">
+      <a href="https://strategicflow-tech.github.io/showcase/enterprise.html" class="tool-link" target="_blank">View Enterprise Options →</a>
+      <a href="https://strategicflow.carrd.co" class="tool-link-ghost" target="_blank">See all plans</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">Strategic<em>Flow</em></div>
+    <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:6px;">Tenerife, Spain · <a href="mailto:strategicflow@proton.me" style="color:var(--green);text-decoration:none;">strategicflow@proton.me</a></div>
+  </div>
+  <div class="footer-links">
+    <a href="https://strategicflow.carrd.co" class="footer-link" target="_blank">Website</a>
+    <a href="https://strategic-flow-pro.replit.app" class="footer-link" target="_blank">Pro App</a>
+    <a href="https://strategic-flow-audit.replit.app" class="footer-link" target="_blank">Free Audit</a>
+    <a href="https://strategicflow-tech.github.io/showcase/index.html" class="footer-link" target="_blank">Showcase</a>
+    <a href="https://strategicflow-tech.github.io/roi/" class="footer-link" target="_blank">ROI Calculator</a>
+  </div>
+  <div class="footer-copy">Strategic Flow © 2026</div>
+</footer>
+
+</body>
+</html>
