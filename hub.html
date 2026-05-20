@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7TV731EJTB');
-</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Strategic Flow — Tools & Resources Hub</title>
@@ -206,6 +197,20 @@ nav{
 .enterprise-banner p{font-size:16px;color:var(--text2);max-width:520px;margin:0 auto 32px;line-height:1.65;}
 .btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
 
+/* PRICING */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px;background:var(--border);}
+.pricing-card{background:var(--bg);padding:36px;position:relative;transition:background .2s;}
+.pricing-card:hover{background:var(--bg2);}
+.pricing-card.featured{background:var(--bg2);border-top:2px solid var(--green);}
+.pricing-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:16px;}
+.pricing-name{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:8px;}
+.pricing-price{font-family:'DM Serif Display',serif;font-size:40px;color:var(--green);line-height:1;}
+.pricing-period{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:20px;margin-top:4px;}
+.pricing-desc{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.pricing-features{list-style:none;margin-bottom:28px;}
+.pricing-features li{font-size:13px;color:var(--text2);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
+.pricing-features li::before{content:'→';color:var(--green);font-family:'DM Mono',monospace;font-size:11px;flex-shrink:0;margin-top:1px;}
+
 /* FOOTER */
 footer{
   padding:48px;border-top:1px solid var(--border);
@@ -236,6 +241,7 @@ footer{
     <a href="#audits" class="nav-link">Free Audits</a>
     <a href="#showcase" class="nav-link">Showcase</a>
     <a href="#roi" class="nav-link">ROI Calculator</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
     <a href="#enterprise" class="nav-link">Enterprise</a>
     <a href="https://strategicflow.carrd.co" class="nav-cta" target="_blank">Get Started →</a>
   </div>
@@ -423,6 +429,83 @@ footer{
         <div class="roi-metric-label">Avg score lift</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing" style="padding-top:0;">
+  <div class="section-label">Pricing</div>
+  <div class="section-title">Start free. Scale when ready.</div>
+  <p class="section-sub">Every plan includes the Strategic Flow Method. Score, rebuilt HTML, subject line variants, and structural reasoning documented.</p>
+
+  <div class="pricing-grid">
+
+    <div class="pricing-card">
+      <div class="pricing-tag">One-time</div>
+      <div class="pricing-name">Single Audit</div>
+      <div class="pricing-price">$49</div>
+      <div class="pricing-period">one-time payment</div>
+      <p class="pricing-desc">One email or post audited and rebuilt. Full structural diagnosis, score, and rebuilt version delivered.</p>
+      <ul class="pricing-features">
+        <li>1 email or post</li>
+        <li>Strategic Flow score out of 10</li>
+        <li>7 structural bugs diagnosed</li>
+        <li>Rebuilt HTML included</li>
+        <li>3 subject line A/B variants</li>
+      </ul>
+      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link" target="_blank">Get Single Audit →</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-tag">Monthly</div>
+      <div class="pricing-name">Lite</div>
+      <div class="pricing-price">$299</div>
+      <div class="pricing-period">per month</div>
+      <p class="pricing-desc">Ongoing audit coverage for teams sending regular product updates and onboarding sequences.</p>
+      <ul class="pricing-features">
+        <li>Up to 4 audits per month</li>
+        <li>Score, rebuild, and variants</li>
+        <li>HTML delivered ready to send</li>
+        <li>Async delivery, 48hr turnaround</li>
+        <li>Monthly performance review</li>
+      </ul>
+      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link" target="_blank">Get Lite →</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-tag">Monthly · Most Popular</div>
+      <div class="pricing-name">Growth</div>
+      <div class="pricing-price">$499</div>
+      <div class="pricing-period">per month</div>
+      <p class="pricing-desc">Full audit coverage plus LinkedIn content audits. For teams running product emails and content in parallel.</p>
+      <ul class="pricing-features">
+        <li>Up to 8 audits per month</li>
+        <li>Email + LinkedIn content audits</li>
+        <li>Score, rebuild, and variants</li>
+        <li>Priority 24hr turnaround</li>
+        <li>Monthly strategy call</li>
+        <li>Showcase teardown included</li>
+      </ul>
+      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link" target="_blank">Get Growth →</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-tag">Monthly · Full System</div>
+      <div class="pricing-name">High-Impact</div>
+      <div class="pricing-price">$899</div>
+      <div class="pricing-period">per month</div>
+      <p class="pricing-desc">Complete email architecture coverage. Full onboarding sequences, changelog systems, and content rebuilt end to end.</p>
+      <ul class="pricing-features">
+        <li>Unlimited audits</li>
+        <li>Full onboarding sequence rebuild</li>
+        <li>Changelog system architecture</li>
+        <li>LinkedIn content system</li>
+        <li>Weekly strategy call</li>
+        <li>Dedicated Slack channel</li>
+      </ul>
+      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link" target="_blank">Get High-Impact →</a>
+    </div>
+
   </div>
 </section>
 
