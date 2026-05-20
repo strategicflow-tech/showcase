@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Semrush Keyword Research Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --sf-bg:#efefec;--sf-card:#fff;--sf-border:rgba(0,0,0,0.09);
+  --sf-text:#1a1a18;--sf-muted:#6b6b66;
+  --sf-green:#1D9E75;--sf-green-light:#E1F5EE;--sf-green-dark:#085041;--sf-green-mid:#0F6E56;
+  --sf-amber-bg:#fff8f0;--sf-amber:#7a5a00;
+  /* Semrush exact palette from screenshot */
+  --smx-white:#FFFFFF;
+  --smx-black:#0D0D0D;
+  --smx-orange:#FF642D;
+  --smx-purple:#7B2FFF;
+  --smx-hero-bg:#EAF0EE;   /* mint-grey from screenshot */
+  --smx-page-bg:#F0F4F2;
+  --smx-border:#E5E7EB;
+  --smx-muted:#6B7280;
+}
+html,body{width:100%;margin:0;padding:0;background:var(--sf-bg);}
+body{font-family:'Figtree',sans-serif;color:var(--sf-text);padding:32px 16px;}
+
+/* SF scaffold */
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--sf-text);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--sf-green);}
+.page-sub{font-size:12px;color:var(--sf-muted);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid rgba(0,0,0,0.18);background:transparent;color:var(--sf-muted);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:#f5f5f3;}
+.toggle-btn.active{background:var(--sf-text);color:#fff;border-color:var(--sf-text);}
+.shell{border:1px solid var(--sf-border);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.toolbar{background:#f5f5f3;padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--sf-border);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.pill-before{background:#F7C1C1;color:#791F1F;}
+.pill-after{background:#9FE1CB;color:#085041;}
+.pill-notes{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--sf-border);}
+.meta-row{font-size:12px;color:var(--sf-muted);line-height:1.9;}
+.meta-row span{color:var(--sf-text);font-weight:500;}
+.meta-title{font-size:17px;font-weight:600;color:var(--sf-text);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ─────────────────────────────
+   SEMRUSH BRAND COMPONENTS
+   (pixel-matched to screenshot)
+───────────────────────────── */
+
+/* Purple announcement banner */
+.smx-banner{background:#F0EBFF;padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:12px;}
+.smx-banner-label{font-size:12px;font-weight:700;color:#4B0FCC;letter-spacing:.08em;text-transform:uppercase;}
+.smx-banner-link{font-size:12px;color:#7B2FFF;font-weight:500;text-decoration:underline;cursor:pointer;}
+
+/* White nav bar — exact from screenshot */
+.smx-nav{background:#fff;padding:11px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #EBEBEB;}
+.smx-nav-brand{display:flex;align-items:center;gap:8px;}
+.smx-logo-wrap{display:flex;flex-direction:column;}
+.smx-wordmark{font-size:15px;font-weight:800;color:#0D0D0D;letter-spacing:-.01em;}
+.smx-adobe{font-size:9px;color:#999;letter-spacing:.01em;}
+.smx-nav-right{display:flex;align-items:center;gap:12px;}
+.smx-nav-blog{font-size:13px;font-weight:600;color:#7B2FFF;cursor:pointer;}
+.smx-nav-cta{background:#0D0D0D;color:#fff;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:'Figtree',sans-serif;}
+
+/* Breadcrumb on mint-grey */
+.smx-breadcrumb{background:var(--smx-page-bg);padding:10px 20px;font-size:11px;color:#888;display:flex;align-items:center;gap:5px;border-bottom:1px solid var(--smx-border);}
+.smx-bc-sep{color:#ccc;}
+.smx-bc-link{color:#888;cursor:pointer;}
+.smx-bc-active{color:#333;}
+
+/* Hero: mint-grey bg, giant black heavy title — exact like screenshot */
+.smx-hero{background:var(--smx-hero-bg);padding:36px 20px 32px;}
+.smx-hero-title{font-size:34px;font-weight:900;color:#0D0D0D;line-height:1.1;margin-bottom:18px;letter-spacing:-.025em;}
+.smx-hero-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;color:#555;}
+.smx-hero-author{color:#7B2FFF;font-weight:500;text-decoration:underline;cursor:pointer;}
+.smx-hero-sep{color:#ccc;}
+.smx-hero-contrib{font-size:11px;color:#888;margin-top:5px;}
+.smx-hero-contrib a{color:#7B2FFF;}
+
+/* TOC button */
+.smx-toc-wrap{background:var(--smx-page-bg);padding:8px 20px 14px;}
+.smx-toc-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #ddd;border-radius:8px;padding:9px 16px;font-size:13px;color:#333;cursor:pointer;}
+
+/* Article body */
+.smx-body{background:#fff;padding:24px 20px;}
+.smx-lead{font-size:14px;color:#333;line-height:1.8;margin-bottom:20px;}
+.smx-h2{font-size:19px;font-weight:800;color:#0D0D0D;margin:26px 0 10px;line-height:1.2;letter-spacing:-.01em;}
+.smx-copy{font-size:13px;color:#555;line-height:1.78;margin-bottom:12px;}
+.smx-method{border:1px solid #E5E7EB;border-radius:8px;padding:15px 16px;margin-bottom:11px;background:#FAFAFA;}
+.smx-method-num{font-size:10px;font-weight:700;color:var(--smx-orange);font-family:'DM Mono',monospace;letter-spacing:.1em;margin-bottom:4px;text-transform:uppercase;}
+.smx-method-title{font-size:13px;font-weight:700;color:#0D0D0D;margin-bottom:5px;}
+.smx-method-body{font-size:12px;color:#666;line-height:1.65;}
+.smx-cta-block{background:var(--smx-orange);border-radius:10px;padding:24px;text-align:center;margin:28px 0;}
+.smx-cta-eyebrow{font-size:10px;color:rgba(255,255,255,.7);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.smx-cta-headline{font-size:15px;font-weight:700;color:#fff;margin-bottom:14px;}
+.smx-cta-btn{display:inline-block;background:#fff;color:var(--smx-orange);padding:10px 24px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;}
+.smx-footer-line{font-size:11px;color:#ccc;text-align:center;padding:14px 0;border-top:1px solid #eee;margin-top:16px;}
+
+/* Issue flags */
+.issues{margin:0 20px 20px;padding:15px;background:var(--sf-amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--sf-amber);margin-bottom:8px;display:flex;gap:8px;line-height:1.55;}
+
+/* ─────────────────────────────
+   AFTER — SF method on Semrush chrome
+───────────────────────────── */
+.aft-hero{background:var(--smx-hero-bg);padding:36px 20px 32px;border-bottom:3px solid var(--smx-orange);}
+.aft-kicker{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--smx-orange);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.aft-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.18;color:#0D0D0D;margin-bottom:16px;max-width:520px;}
+.aft-h1 em{font-style:italic;color:var(--smx-orange);}
+.aft-lead{font-size:14px;color:#555;line-height:1.75;max-width:500px;margin-bottom:24px;}
+.aft-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.stat{background:#fff;border:1px solid var(--smx-border);border-radius:10px;padding:14px;text-align:center;}
+.stat-n{font-family:'DM Serif Display',serif;font-size:24px;color:var(--smx-orange);line-height:1;}
+.stat-l{font-size:10px;color:#888;margin-top:4px;font-family:'DM Mono',monospace;}
+.aft-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.aft-btn{background:var(--smx-orange);color:#fff;padding:11px 22px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block;}
+.aft-ghost{font-size:12px;color:#888;border-bottom:1px solid #ccc;padding-bottom:1px;cursor:pointer;}
+
+.aft-body{background:#fff;}
+.aft-sec{padding:22px 20px;border-bottom:1px solid var(--smx-border);}
+.aft-sec:last-child{border-bottom:none;}
+.aft-sec-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--smx-orange);text-transform:uppercase;margin-bottom:8px;}
+.aft-sec-title{font-size:15px;font-weight:700;color:#0D0D0D;margin-bottom:8px;line-height:1.3;}
+.aft-sec-body{font-size:13px;color:#555;line-height:1.7;}
+.aft-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.aft-method{background:#FAFAFA;border-radius:8px;padding:13px;border-left:2px solid var(--smx-orange);}
+.aft-method-name{font-size:11px;font-weight:700;color:#0D0D0D;margin-bottom:4px;}
+.aft-method-desc{font-size:11px;color:#666;line-height:1.55;}
+
+.aft-verdict{background:#0D0D0D;padding:22px 20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;}
+.aft-verdict-text{flex:1;font-size:13px;color:rgba(255,255,255,.65);line-height:1.65;}
+.aft-verdict-text strong{color:#fff;}
+.aft-verdict-btn{flex-shrink:0;display:inline-block;background:var(--smx-orange);color:#fff;padding:10px 18px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;}
+
+.aft-footer{background:var(--smx-page-bg);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.aft-footer-links{display:flex;gap:16px;}
+.aft-footer-link{font-size:11px;color:#888;text-decoration:none;}
+.aft-footer-note{font-size:10px;color:#aaa;font-family:'DM Mono',monospace;}
+
+/* Notes panel */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;background:#fff9f9;}
+.note-card.good{border:1px solid #9FE1CB;background:#f9fffe;}
+.note-lbl{font-weight:600;margin-bottom:8px;font-size:13px;}
+.note-lbl.bad{color:#791F1F;}.note-lbl.good{color:#085041;}
+.note-card p{color:var(--sf-muted);}
+.up-title{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--sf-text);}
+.up-item{padding:14px;background:#f5f5f3;border-radius:10px;border-left:2px solid var(--sf-green);margin-bottom:10px;}
+.up-head{font-size:12px;font-weight:600;color:var(--sf-text);margin-bottom:5px;}
+.up-desc{font-size:11px;color:var(--sf-muted);line-height:1.65;}
+.cta-note{padding:15px;background:var(--sf-green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:600;color:var(--sf-green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--sf-green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--sf-muted);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--sf-green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .aft-stats{grid-template-columns:1fr 1fr;}
+  .aft-methods{grid-template-columns:1fr;}
+  .aft-verdict{flex-direction:column;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Semrush Blog — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--sf-muted);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="shell">
+    <div class="toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="pill pill-before">Original post</span>
+      </div>
+    </div>
+
+    <!-- ══════ BEFORE ══════ -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> semrush.com/blog/keyword-research/</div>
+        <div class="meta-row"><span>Type:</span> Blog Post — SEO Guide</div>
+        <div class="meta-row"><span>Date:</span> May 5, 2026 · Chris Hanna · 13 min read</div>
+        <div class="meta-title">How to do keyword research in 2026 (6 ways + framework)</div>
+      </div>
+
+      <!-- Purple announcement bar — exact from screenshot -->
+      <div class="smx-banner">
+        <span class="smx-banner-label">SEMRUSH ONE</span>
+        <span class="smx-banner-link">Discover More</span>
+      </div>
+
+      <!-- White nav with real Semrush logo SVG -->
+      <div class="smx-nav">
+        <div class="smx-nav-brand">
+          <!-- Semrush logo: stylised compass/arrow in orange -->
+          <img src="https://www.google.com/s2/favicons?domain=semrush.com&sz=64" width="28" height="28" style="border-radius:4px;" alt="Semrush">
+          <div class="smx-logo-wrap">
+            <div class="smx-wordmark">SEMRUSH</div>
+            <div class="smx-adobe">An Adobe Company</div>
+          </div>
+        </div>
+        <div class="smx-nav-right">
+          <span class="smx-nav-blog">Blog</span>
+          <button class="smx-nav-cta">Start free trial</button>
+        </div>
+      </div>
+
+      <!-- Breadcrumb on mint-grey -->
+      <div class="smx-breadcrumb">
+        <span class="smx-bc-link">Semrush</span><span class="smx-bc-sep">›</span>
+        <span class="smx-bc-link">Blog</span><span class="smx-bc-sep">›</span>
+        <span class="smx-bc-link">SEO</span><span class="smx-bc-sep">›</span>
+        <span class="smx-bc-active">Keyword Research</span>
+      </div>
+
+      <!-- Hero: mint-grey bg, giant ultra-bold black title -->
+      <div class="smx-hero">
+        <div class="smx-hero-title">How to do keyword research<br>in 2026<br>(6 ways + framework)</div>
+        <div class="smx-hero-meta">
+          <span>Author: <span class="smx-hero-author">Chris Hanna</span></span>
+          <span class="smx-hero-sep">|</span>
+          <span>13 min read</span>
+          <span class="smx-hero-sep">|</span>
+          <span>May 5, 2026</span>
+        </div>
+        <div class="smx-hero-contrib">Contributors: <a href="#">Faizan Ali</a> and <a href="#">Alex Lindley</a></div>
+      </div>
+
+      <!-- TOC button -->
+      <div class="smx-toc-wrap">
+        <div class="smx-toc-btn">☰ Table of contents</div>
+      </div>
+
+      <!-- Article body — white -->
+      <div class="smx-body">
+        <div class="smx-lead">Keyword research is the foundation of a successful content strategy. Because every piece of content you create, every page you optimize, and every strategic decision you make starts with understanding what your audience is searching for and why they're searching for it.</div>
+
+        <div class="smx-h2">What Is Keyword Research?</div>
+        <div class="smx-copy">Keyword research is the process of discovering and analyzing the search terms people use in traditional search engines and AI systems when looking for information, products, or services related to your business.</div>
+
+        <div class="smx-h2">Why Is Keyword Research Important?</div>
+        <div class="smx-copy">Keyword research is important for your SEO and AI visibility because it reveals what your target audience is actually looking for and can lead to tangible benefits for your business — brand awareness, qualified traffic, and revenue-driving actions.</div>
+
+        <div class="smx-h2">How to Find Keywords</div>
+        <div class="smx-copy">Use the six methods below to identify search terms that are relevant to your business.</div>
+
+        <div class="smx-method">
+          <div class="smx-method-num">Method 01</div>
+          <div class="smx-method-title">Check Your Existing Search Rankings</div>
+          <div class="smx-method-body">If your site already appears in search results, check your existing positions to find keywords you're not yet optimizing for but easily could.</div>
+        </div>
+        <div class="smx-method">
+          <div class="smx-method-num">Method 02</div>
+          <div class="smx-method-title">Use a Keyword Research Tool</div>
+          <div class="smx-method-body">Tools like Semrush's Keyword Magic Tool let you generate thousands of keyword ideas from a single seed term, with volume, difficulty, and intent data.</div>
+        </div>
+        <div class="smx-method">
+          <div class="smx-method-num">Method 03</div>
+          <div class="smx-method-title">Analyze Competitor Keywords</div>
+          <div class="smx-method-body">Find which keywords are driving traffic to your competitors so you can target the same terms or find the gaps they're missing.</div>
+        </div>
+        <div class="smx-method">
+          <div class="smx-method-num">Method 04</div>
+          <div class="smx-method-title">Use Google Autocomplete and Related Searches</div>
+          <div class="smx-method-body">Google's own autocomplete shows exactly what people are searching for — free, real-time, and directly from the source.</div>
+        </div>
+        <div class="smx-method">
+          <div class="smx-method-num">Method 05</div>
+          <div class="smx-method-title">Mine Forums and Communities</div>
+          <div class="smx-method-body">Reddit, Quora, and niche communities surface the exact language your audience uses, often before it appears in any keyword tool.</div>
+        </div>
+        <div class="smx-method">
+          <div class="smx-method-num">Method 06</div>
+          <div class="smx-method-title">Research AI Search Visibility</div>
+          <div class="smx-method-body">Understanding which queries trigger AI Overviews — and whether you appear in them — is now a critical layer of keyword research.</div>
+        </div>
+
+        <div class="smx-cta-block">
+          <div class="smx-cta-eyebrow">Try Semrush Free</div>
+          <div class="smx-cta-headline">55+ tools. 7 days free. No credit card required.</div>
+          <a href="https://www.semrush.com/signup/" class="smx-cta-btn">Start free trial</a>
+        </div>
+
+        <div class="smx-footer-line">© 2026 Semrush · An Adobe Company · semrush.com/blog</div>
+      </div>
+
+      <!-- Issue flags -->
+      <div class="issues">
+        <div class="issue-item"><span>⚠</span> Title is a Filing Label — "6 ways + framework" announces the content format, not the reader's problem. A content marketer whose pages get zero traffic sees no signal this article solves their specific failure.</div>
+        <div class="issue-item"><span>⚠</span> Lead is a textbook definition — "Keyword research is the foundation…" opens every SEO article ever written. The reader's actual problem (wrong terms, no rankings, invisible in AI search) never appears in the opening paragraph.</div>
+        <div class="issue-item"><span>⚠</span> Feature-First Bias in every method header — "Use a Keyword Research Tool", "Check Your Existing Rankings" name the actions, not the situation that makes each method the right choice. No hierarchy by reader context.</div>
+        <div class="issue-item"><span>⚠</span> Table of contents adds no hook — five bullets that tell the reader what they will read, not whether this is for them. A reader scanning in 3 seconds gets zero reason to stay.</div>
+        <div class="issue-item"><span>⚠</span> CTA disconnected from the reading context — "Start free trial" appears after all content with no bridge to what the reader just learned. It names the product action, not what the reader will do inside Semrush or which problem it solves first.</div>
+      </div>
+    </div>
+
+    <!-- ══════ AFTER ══════ -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> semrush.com/blog/keyword-research/</div>
+        <div class="meta-row"><span>Rebuilt by:</span> Strategic Flow · strategicflow.carrd.co</div>
+        <div class="meta-row"><span>Score:</span> 4/10 original → 9/10 rebuilt</div>
+        <div class="meta-title">Your content isn't ranking because you're targeting what you assume people search — not what they actually type.</div>
+      </div>
+
+      <!-- Announcement bar — same as Before -->
+      <div class="smx-banner">
+        <span class="smx-banner-label">SEMRUSH ONE</span>
+        <span class="smx-banner-link">Discover More</span>
+      </div>
+
+      <!-- White nav — same faithful chrome -->
+      <div class="smx-nav">
+        <div class="smx-nav-brand">
+          <img src="https://www.google.com/s2/favicons?domain=semrush.com&sz=64" width="28" height="28" style="border-radius:4px;" alt="Semrush">
+          <div class="smx-logo-wrap">
+            <div class="smx-wordmark">SEMRUSH</div>
+            <div class="smx-adobe">An Adobe Company</div>
+          </div>
+        </div>
+        <div class="smx-nav-right">
+          <button class="smx-nav-cta">Start free trial</button>
+        </div>
+      </div>
+
+      <div class="smx-breadcrumb">
+        <span class="smx-bc-link">Semrush</span><span class="smx-bc-sep">›</span>
+        <span class="smx-bc-link">Blog</span><span class="smx-bc-sep">›</span>
+        <span class="smx-bc-link">SEO</span><span class="smx-bc-sep">›</span>
+        <span class="smx-bc-active">Keyword Research</span>
+      </div>
+
+      <!-- Rebuilt hero — same mint-grey bg, consequence-first title -->
+      <div class="aft-hero">
+        <div class="aft-kicker">SEO · AI Search · 2026 Framework</div>
+        <div class="aft-h1">Your content isn't ranking because you're targeting what you <em>assume</em> people search — not what they actually type.</div>
+        <div class="aft-lead">That gap is why pages rank for zero-traffic terms while competitors own the queries that convert. Six methods to close it — matched to your specific situation.</div>
+        <div class="aft-stats">
+          <div class="stat"><div class="stat-n">6</div><div class="stat-l">methods by situation</div></div>
+          <div class="stat"><div class="stat-n">55+</div><div class="stat-l">Semrush tools</div></div>
+          <div class="stat"><div class="stat-n">AI</div><div class="stat-l">search included</div></div>
+          <div class="stat"><div class="stat-n">7d</div><div class="stat-l">free trial</div></div>
+        </div>
+        <div class="aft-ctas">
+          <a href="https://www.semrush.com/analytics/keywordmagic/" class="aft-btn">Find my keyword gaps →</a>
+          <span class="aft-ghost">See all 6 methods ↓</span>
+        </div>
+      </div>
+
+      <!-- Rebuilt body -->
+      <div class="aft-body">
+        <div class="aft-sec">
+          <div class="aft-sec-label">If your site already has traffic</div>
+          <div class="aft-sec-title">You're probably ranking for terms you never targeted. Find them before creating anything new.</div>
+          <div class="aft-sec-body">Google Search Console shows queries with high impressions and zero clicks — pages Google surfaces for you that you've never deliberately optimized. These are the fastest wins in any keyword strategy. No new content. One optimization pass on a page that already exists.</div>
+        </div>
+
+        <div class="aft-sec">
+          <div class="aft-sec-label">If you're starting from zero</div>
+          <div class="aft-sec-title">One seed keyword returns thousands of variations. Most are wrong for your domain authority. Here's the filter.</div>
+          <div class="aft-sec-body">Keyword Magic Tool generates volume, difficulty, and intent for every variation of a seed term. The metric that matters most is not search volume — it is keyword difficulty relative to your domain authority. That ratio tells you which terms you can rank for in 90 days versus which you're competing against pages with a decade of backlinks.</div>
+        </div>
+
+        <div class="aft-sec">
+          <div class="aft-sec-label">If competitors are outranking you</div>
+          <div class="aft-sec-title">Their traffic sources are visible. The gaps in their coverage are where you win first.</div>
+          <div class="aft-sec-body">Organic Research shows which terms drive traffic to competitor pages. The keyword gap is not where they beat you — it is where neither of you has a page yet but search demand exists. First to publish a high-quality answer wins the position before the competition begins.</div>
+        </div>
+
+        <div class="aft-sec">
+          <div class="aft-sec-label">If AI search is your blind spot</div>
+          <div class="aft-sec-title">Ranking on Google and appearing in ChatGPT are now different problems. Most strategies address only one.</div>
+          <div class="aft-sec-body">AI Overviews and ChatGPT answers pull from sources that demonstrate topical authority, not just page-level optimization. A keyword strategy that ignores AI search visibility is optimizing for a landscape that is already shifting. The terms that trigger AI answers are identifiable. They belong in your keyword framework now.</div>
+        </div>
+
+        <div class="aft-sec">
+          <div class="aft-sec-label">All 6 methods — matched to your situation</div>
+          <div class="aft-sec-title">Which method you start with depends on where your traffic problem actually is.</div>
+          <div class="aft-methods">
+            <div class="aft-method"><div class="aft-method-name">Existing rankings audit</div><div class="aft-method-desc">For sites with traffic. Find high-impression, zero-click pages and fix them before creating anything new.</div></div>
+            <div class="aft-method"><div class="aft-method-name">Seed keyword expansion</div><div class="aft-method-desc">For new sites or topics. One term becomes a filtered list of rankable opportunities in 90 days.</div></div>
+            <div class="aft-method"><div class="aft-method-name">Competitor gap analysis</div><div class="aft-method-desc">For sites losing to specific competitors. Find the terms driving their traffic that you don't have pages for.</div></div>
+            <div class="aft-method"><div class="aft-method-name">Autocomplete + forum mining</div><div class="aft-method-desc">For finding audience language before tools surface it. Reddit and Quora show intent 6 months early.</div></div>
+            <div class="aft-method"><div class="aft-method-name">AI search visibility</div><div class="aft-method-desc">For sites ranking in Google but absent from ChatGPT or AI Overviews. Different audit, different fix.</div></div>
+            <div class="aft-method"><div class="aft-method-name">Intent-based prioritization</div><div class="aft-method-desc">The framework for deciding which keywords get pages now, which wait, and which you skip entirely.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Black verdict bar + orange CTA -->
+      <div class="aft-verdict">
+        <div class="aft-verdict-text"><strong>Start here:</strong> Run Keyword Gap against your top 3 competitors. The terms they rank for that you don't — that list is your content calendar for next quarter. Semrush builds it in 4 minutes.</div>
+        <a href="https://www.semrush.com/signup/?custom=ai-seo" class="aft-verdict-btn">Start my free 7-day trial →</a>
+      </div>
+
+      <div class="aft-footer">
+        <div class="aft-footer-links">
+          <a href="https://www.semrush.com/analytics/keywordmagic/" class="aft-footer-link">Keyword Magic Tool</a>
+          <a href="https://www.semrush.com/ai-seo/" class="aft-footer-link">AI Visibility</a>
+          <a href="https://www.semrush.com/pricing/" class="aft-footer-link">Pricing</a>
+        </div>
+        <div class="aft-footer-note">© 2026 Semrush · An Adobe Company</div>
+      </div>
+    </div>
+
+    <!-- ══════ NOTES ══════ -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-lbl bad">❌ Before</div>
+            <p><strong>Title:</strong> How to do keyword research in 2026 (6 ways + framework)<br><br>Filing Label. Announces the content format. A marketer whose pages rank for zero traffic gets no signal this solves their specific failure. The reader's problem never appears in the headline.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-lbl good">✅ After</div>
+            <p><strong>Title:</strong> Your content isn't ranking because you're targeting what you assume people search — not what they actually type.<br><br>Names the failure state first. The reader whose pages aren't ranking recognizes their situation in the opening line. The article earns the click before explaining what it contains.</p>
+          </div>
+        </div>
+
+        <div class="up-title">The 5 upgrades — and why they work</div>
+
+        <div class="up-item">
+          <div class="up-head">1 · Title: format announcement → consequence statement</div>
+          <div class="up-desc">"6 ways + framework" tells the reader what they will read. "Here's the gap in your keyword strategy" tells them what they will fix. The reader's question is never how many methods the article covers. It is why their content isn't ranking.</div>
+        </div>
+        <div class="up-item">
+          <div class="up-head">2 · Lead: textbook definition → diagnostic of the failure</div>
+          <div class="up-desc">"Keyword research is the foundation of a successful content strategy" opens every SEO article. The rebuild opens with the failure pattern — optimizing for assumed terms rather than actual behavior. Readers recognize their own mistake before the article starts explaining what to do about it.</div>
+        </div>
+        <div class="up-item">
+          <div class="up-head">3 · 6 methods organized by situation, not by category name</div>
+          <div class="up-desc">Original labels methods by action ("Use a Keyword Research Tool"). Rebuild labels by reader situation ("If competitors are outranking you", "If AI search is your blind spot"). A reader with a specific problem goes directly to the relevant method instead of reading all six.</div>
+        </div>
+        <div class="up-item">
+          <div class="up-head">4 · Table of contents replaced with stat cards above the fold</div>
+          <div class="up-desc">The original TOC lists what the article contains. Stat cards answer four pre-click questions: how many methods, how many tools, is AI covered, how long is the trial. A reader scanning in 3 seconds gets the answer without reading a word of body copy.</div>
+        </div>
+        <div class="up-item">
+          <div class="up-head">5 · CTA connected to a specific outcome, not a generic trial</div>
+          <div class="up-desc">"Start free trial" names the product action. "Run Keyword Gap against your top 3 competitors — your content calendar for next quarter in 4 minutes" names the decision. Outcome, comparison, time required. Three answers that remove the three questions stalling every SaaS CTA.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's failure state before the product's solution. Methods organized by situation, not by what they are. CTAs that name the decision, not the asset. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--sf-green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get your content rebuilt.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .shell -->
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={before:['pill-before','Original post'],after:['pill-after','Strategic Flow rewrite'],notes:['pill-notes','Analysis']};
+  pill.className='pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
