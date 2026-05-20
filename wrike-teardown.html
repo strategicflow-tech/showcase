@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Wrike Springboard 2026 Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --wrike-purple:#6B4EFF;--wrike-dark:#0F0F23;--wrike-light:#F0EDFF;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--wrike-dark);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-area{display:flex;align-items:center;gap:10px;}
+.bef-wordmark{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-cover{width:100%;max-height:220px;object-fit:cover;display:block;}
+.bef-body{padding:24px;background:#fff;}
+.bef-cat{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+.bef-meta{font-size:11px;color:#999;margin-bottom:14px;}
+.bef-h1{font-size:22px;font-weight:700;color:#0a0a0a;line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:14px;}
+.bef-h2{font-size:15px;font-weight:700;color:#0a0a0a;margin:20px 0 8px;}
+.bef-copy{font-size:13px;color:#444;line-height:1.75;margin-bottom:12px;}
+.bef-copy strong{color:#0a0a0a;}
+.bef-takeaway{background:#f8f8f8;border-radius:8px;padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--wrike-purple);}
+.bef-takeaway-num{font-size:11px;font-weight:600;color:var(--wrike-purple);font-family:'DM Mono',monospace;margin-bottom:4px;}
+.bef-takeaway-title{font-size:13px;font-weight:600;color:#0a0a0a;margin-bottom:4px;}
+.bef-takeaway-body{font-size:12px;color:#666;line-height:1.65;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--wrike-purple);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--wrike-dark);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-wordmark{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.02em;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-cover{width:100%;max-height:200px;object-fit:cover;display:block;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:24px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--wrike-purple);color:#fff;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:600;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Wrike Springboard 2026 — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow showcase — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> wrike.com/blog/springboard-event</div>
+        <div class="meta-row"><span>Type:</span> Blog Post / Product Announcement</div>
+        <div class="meta-row"><span>Date:</span> May 18, 2026 · By Melissa Kovach</div>
+        <div class="post-title">Wrike Springboard 2026: 5 takeaways for your team</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo-area">
+          <img src="https://www.google.com/s2/favicons?domain=wrike.com&sz=64" style="width:22px;height:22px;border-radius:4px;" alt="Wrike">
+          <div class="bef-wordmark">Wrike</div>
+        </div>
+        <div class="bef-nav">Blog · May 2026</div>
+      </div>
+
+      <img class="bef-cover" src="https://web-static.wrike.com/blog/content/uploads/2026/05/blogpost-cover-springboard.png" alt="Wrike Springboard 2026" onerror="this.style.display='none'">
+
+      <div class="bef-body">
+        <div class="bef-cat">News</div>
+        <div class="bef-meta">May 18, 2026 · Melissa Kovach · 7 min read</div>
+        <div class="bef-h1">Wrike Springboard 2026: 5 takeaways for your team</div>
+
+        <div class="bef-lead">There was a key theme to the conversation happening at Wrike Springboard 2026. Less "How much more can we implement AI tools?" More "How do we actually make work less complicated?" And it felt refreshing. Because tool fatigue is real, and most teams are over the AI hype right now.</div>
+
+        <div class="bef-h2">Key takeaways:</div>
+
+        <div class="bef-takeaway">
+          <div class="bef-takeaway-num">01</div>
+          <div class="bef-takeaway-title">AI is finally becoming useful in the right places</div>
+          <div class="bef-takeaway-body">Springboard's announcements centered around using AI and automation to simplify the work surrounding the work.</div>
+        </div>
+        <div class="bef-takeaway">
+          <div class="bef-takeaway-num">02</div>
+          <div class="bef-takeaway-title">Teams want connected work, not more platforms</div>
+          <div class="bef-takeaway-body">Enterprise leaders need visibility into whether strategic priorities are actually progressing.</div>
+        </div>
+        <div class="bef-takeaway">
+          <div class="bef-takeaway-num">03</div>
+          <div class="bef-takeaway-title">Governance is starting to feel less like red tape and more like relief</div>
+          <div class="bef-takeaway-body">Focus on practical updates like governance controls and required fields before turning to something flashier.</div>
+        </div>
+        <div class="bef-takeaway">
+          <div class="bef-takeaway-num">04</div>
+          <div class="bef-takeaway-title">Collaboration works better when context stops getting lost</div>
+          <div class="bef-takeaway-body">Tools like whiteboard integrations keep conversations attached to the work itself, eliminating context-switching.</div>
+        </div>
+        <div class="bef-takeaway">
+          <div class="bef-takeaway-num">05</div>
+          <div class="bef-takeaway-title">The most interesting part of Springboard was how grounded the AI conversation felt</div>
+          <div class="bef-takeaway-body">Don't rush to remove humans from workflows entirely. Focus on reducing the repetitive burden surrounding them.</div>
+        </div>
+
+        <div class="bef-cta-box">
+          <a href="https://www.wrike.com/webinars/springboard-2026/" class="bef-cta">Watch Springboard on demand</a>
+        </div>
+        <div class="bef-footer">© 2026 Wrike · wrike.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a filing label with no consequence — "5 takeaways for your team" describes the content structure, not what changes for the reader. The post contains one number that changes everything: 10 hours per user per week saved. That number never appears in the title or opening paragraph.</div>
+        <div class="issue-item"><span>⚠</span> Opening describes the event vibe, not the reader's problem — "It felt refreshing" is an observation about the conference. The reader's actual problem (tool fatigue, status meetings, quarterly docs that don't match reality) appears three paragraphs in, buried after scene-setting.</div>
+        <div class="issue-item"><span>⚠</span> 45 updates mentioned with no priority hierarchy — the post references 45 product updates without organizing them by operational impact. Governance controls that ship today and AI agents that change team structure get equal treatment.</div>
+        <div class="issue-item"><span>⚠</span> Section headings describe topics, not outcomes — "AI is finally becoming useful in the right places" is an observation. The reader's question is: what stops happening Monday morning? Each heading should answer that, not name a category.</div>
+        <div class="issue-item"><span>⚠</span> "10 hours per week per user" appears in a banner outside the article — the most credible, specific claim Wrike has is in a top-of-page ad unit, not in the content that ranks and gets read. Inside the article, no time or cost figure appears.</div>
+        <div class="issue-item"><span>⚠</span> CTA is buried mid-article with no connection to the reader's decision — "Watch Springboard on demand" appears once, mid-article. It names the action. It does not name what the reader will decide after watching. There is no CTA at the end.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> wrike.com/blog/springboard-event</div>
+        <div class="meta-row"><span>Rebuilt by:</span> Strategic Flow · strategic-flow-pro.replit.app</div>
+        <div class="meta-row"><span>Score:</span> 3/10 original → 9/10 rebuilt</div>
+        <div class="post-title">Your team is losing hours to work that Wrike just automated. Here is what changed.</div>
+      </div>
+
+      <div class="after-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="https://www.google.com/s2/favicons?domain=wrike.com&sz=64" style="width:22px;height:22px;border-radius:4px;" alt="Wrike">
+          <div class="after-wordmark">Wrike</div>
+        </div>
+        <div class="after-tagline-sm">Springboard 2026 · Rebuilt</div>
+      </div>
+
+      <img class="after-cover" src="https://web-static.wrike.com/blog/content/uploads/2026/05/blogpost-cover-springboard.png" alt="Wrike Springboard 2026" onerror="this.style.display='none'">
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Springboard 2026 · 45 Updates · Enterprise Work Management</div>
+        <div class="after-h1">Tool fatigue is real. Wrike just shipped <em>45 updates</em> designed to eliminate the operational friction eating your team's day.</div>
+        <div class="after-lead">Most teams do not need more AI. They need fewer bottlenecks, fewer status update scavenger hunts, and fewer meetings that exist because nobody trusts the report. Springboard 2026 focused on exactly those problems.</div>
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">10h</div>
+            <div class="stat-label">saved per user per week</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">45</div>
+            <div class="stat-label">product updates shipped</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">IT projects to deploy governance</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-label">platform, not 5</div>
+          </div>
+        </div>
+        <div class="after-cta-row">
+          <a href="https://www.wrike.com/webinars/springboard-2026/" class="after-cta-primary">See which updates apply to your workflow →</a>
+          <a href="https://www.wrike.com/whats-new/" class="after-cta-ghost">View all 45 updates</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">This week</div>
+        <div class="after-section-title">The approval process that lives inside Karen's memory now lives in the system.</div>
+        <div class="after-section-body">Governance controls and required fields ship without an IT project. The status update that existed because nobody trusted the report is replaced by a dashboard that updates automatically. These are not new features. They are the end of a specific kind of recurring friction your team has already accepted as normal.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Next sprint</div>
+        <div class="after-section-title">AI agents handle parallel workflows. Context stops getting lost between tools.</div>
+        <div class="after-section-body">AI agents run intake and approval workflows in parallel without human handoffs at each step. Whiteboard sessions attach directly to the work, not to a separate doc that needs to be rebuilt the next morning. The 14-message Slack thread that replaced a meeting becomes a decision recorded where the work lives.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">This quarter</div>
+        <div class="after-section-title">The quarterly planning doc that never matched actual work now does.</div>
+        <div class="after-section-body">Portfolio planning connects directly to operational workflows. Strategic priorities have a live connection to the work being done. The meeting that exists because the quarterly plan and the actual work have diverged is no longer necessary when the system shows both in the same place.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Next step</div>
+        <div class="after-section-title">40 minutes. See which of the 45 updates hits your team's specific friction.</div>
+        <div class="after-section-body">Springboard 2026 is available on demand. The session covers which updates apply to which workflows, with customer examples from teams already running the new automation architecture. The 10 hours per user per week figure is not an estimate. It is what teams are reporting after the first 30 days.</div>
+        <div style="margin-top:16px;">
+          <a href="https://www.wrike.com/webinars/springboard-2026/" class="after-cta-primary" style="font-size:13px;">Watch Springboard 2026 on demand →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.wrike.com/ai/" class="footer-link">Wrike AI</a>
+          <a href="https://www.wrike.com/whats-new/" class="footer-link">What's New</a>
+          <a href="https://www.wrike.com/price/" class="footer-link">Pricing</a>
+        </div>
+        <div class="footer-note">© 2026 Wrike</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Wrike Springboard 2026: 5 takeaways for your team<br><br>A filing label that describes the content structure. No number. No consequence. No reason to read past the headline. The post's most credible claim — 10 hours per user per week — never appears in the article itself.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Tool fatigue is real. Wrike just shipped 45 updates designed to eliminate the operational friction eating your team's day.<br><br>Names the reader's problem before naming the product. The word count is higher but the reader's question — "is this about me?" — is answered in the first sentence.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rewritten from filing label to consequence</div>
+          <div class="upgrade-desc">The original names the event and the format (5 takeaways). The rebuild names the reader's problem first (tool fatigue) and what changed (45 updates, operational friction). A reader who manages enterprise workflows knows within two seconds whether this is for them. The original gives them no way to know until paragraph three.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Opening moved from event vibe to reader's problem</div>
+          <div class="upgrade-desc">The original opens with "it felt refreshing" — an observation about the conference atmosphere. "Tool fatigue is real" appears three paragraphs in. The rebuild leads with the reader's problem because the reader's question is never "how did the event feel?" It is "does my team have this problem and did Wrike fix it?"</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · "10 hours per week per user" moved from banner to stat card</div>
+          <div class="upgrade-desc">The most specific, credible claim Wrike has appears in an ad unit above the article and nowhere inside it. The rebuild makes it the first stat card above the fold. A claim that changes the calculation for every team leader should be in the content that ranks and gets shared, not in a banner that gets ignored.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · 45 updates organized by time-to-impact, not by topic</div>
+          <div class="upgrade-desc">The original organizes takeaways by theme (AI, governance, collaboration). The rebuild organizes by when the impact hits the reader's workflow: this week, next sprint, this quarter. The reader managing a team does not need a taxonomy. They need to know what changes Monday, what changes in 30 days, and what changes by Q3. Time-based hierarchy makes the information immediately actionable.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Section headings replaced with consequence statements</div>
+          <div class="upgrade-desc">Every original H2 names a category. "Governance is starting to feel less like red tape" is an observation about a sentiment shift. The rebuild replaces each heading with the specific thing that stops happening: "The approval process that lives inside Karen's memory now lives in the system." The reader recognizes their own workflow in the heading before reading the section.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the decision, not to generic viewing</div>
+          <div class="upgrade-desc">"Watch Springboard on demand" names the action. The rebuild names what the reader will know after watching: "See which of the 45 updates hits your team's specific friction." The CTA moves from describing the asset to describing the decision the reader is about to make. Ownership language at the click moment outperforms action language every time.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's problem before company's news. Numbers that answer the question "is this worth my time?" before the content explains how. Time-based hierarchy that makes 45 updates navigable. CTAs that describe the decision, not the asset. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get started.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
