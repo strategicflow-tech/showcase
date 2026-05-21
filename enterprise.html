@@ -1225,60 +1225,70 @@
     A single audit finds what's broken today. It doesn't stop what breaks next month. The Architecture retainer exists because <strong>lifecycle communication degrades continuously</strong> — and internal teams stop seeing it.
   </p>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-top:48px;">
+  <!-- WHAT BREAKS -->
+  <div style="margin-top:48px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--noise);margin-bottom:24px;">What breaks after scale</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
 
-    <div style="background:#0f0f0d;padding:32px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--noise);margin-bottom:16px;">What breaks after scale</div>
-      <div style="display:flex;flex-direction:column;gap:16px;">
-        <div style="border-left:2px solid rgba(255,77,46,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Onboarding entropy</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Onboarding sequences written at launch accumulate assumptions about your product that are no longer true. Nobody rewrites them. Activation quietly drops.</div>
-        </div>
-        <div style="border-left:2px solid rgba(255,77,46,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Messaging drift</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Product positioning evolves. Email copy doesn't follow. By month six, your lifecycle emails describe a product that no longer matches what users experience.</div>
-        </div>
-        <div style="border-left:2px solid rgba(255,77,46,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Release inconsistency</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Each sprint ships with its own framing. No consistent voice, no consequence architecture. Changelog emails become noise. Users stop reading them.</div>
-        </div>
-        <div style="border-left:2px solid rgba(255,77,46,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">CTA ownership decay</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">CTAs that once converted get edited by three people across six quarters. Each edit softens the ask. Nobody notices because it happens one word at a time.</div>
-        </div>
-        <div style="border-left:2px solid rgba(255,77,46,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Activation leaks become invisible</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Internal teams normalize friction. What felt like a problem at month one is invisible at month twelve. The only way to see it is from outside.</div>
-        </div>
+      <div style="background:#0f0f0d;border:1px solid rgba(255,77,46,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Onboarding entropy</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Sequences written at launch accumulate assumptions that are no longer true. Nobody rewrites them. Activation quietly drops.</div>
       </div>
-    </div>
 
-    <div style="background:#0f0f0d;padding:32px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--signal);margin-bottom:16px;">What Architecture prevents</div>
-      <div style="display:flex;flex-direction:column;gap:16px;">
-        <div style="border-left:2px solid rgba(74,143,231,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Lifecycle oversight</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Every email reviewed against current product positioning, not the positioning from when the sequence was written. Drift detected before it compounds.</div>
-        </div>
-        <div style="border-left:2px solid rgba(74,143,231,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Release analysis</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Every product update reviewed before it ships. Consequence framing applied. Feature announcements converted into reader problems before they reach the list.</div>
-        </div>
-        <div style="border-left:2px solid rgba(74,143,231,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Behavioral diagnostics</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Monthly diagnostic report showing where in the reader journey attention drops. Not open rates — behavioral friction points that explain why open rates are what they are.</div>
-        </div>
-        <div style="border-left:2px solid rgba(74,143,231,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">External perception</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Your team reads your emails with product context. Your readers don't. Architecture provides the outside read your internal team structurally cannot.</div>
-        </div>
-        <div style="border-left:2px solid rgba(74,143,231,0.4);padding-left:16px;">
-          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px;">Communication risk detection</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.6;">Flags emails before they ship that carry hidden friction: buried CTAs, consequence-free hooks, ownership language that reads as obligation. Fixed before the damage is done.</div>
-        </div>
+      <div style="background:#0f0f0d;border:1px solid rgba(255,77,46,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Messaging drift</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Product positioning evolves. Email copy doesn't follow. By month six, lifecycle emails describe a product users no longer recognize.</div>
       </div>
-    </div>
 
+      <div style="background:#0f0f0d;border:1px solid rgba(255,77,46,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Release inconsistency</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Each sprint ships with its own framing. No consistent consequence architecture. Changelog emails become noise. Readers stop opening.</div>
+      </div>
+
+      <div style="background:#0f0f0d;border:1px solid rgba(255,77,46,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">CTA ownership decay</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">CTAs that once converted get edited across six quarters. Each edit softens the ask. Nobody notices because it happens one word at a time.</div>
+      </div>
+
+      <div style="background:#0f0f0d;border:1px solid rgba(255,77,46,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Activation leaks become invisible</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Internal teams normalize friction. What felt like a problem at month one is invisible at month twelve. The only way to see it is from outside.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WHAT ARCHITECTURE PREVENTS -->
+  <div style="margin-top:32px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--signal);margin-bottom:24px;">What Architecture prevents</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+
+      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Lifecycle oversight</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Every email reviewed against current product positioning, not what was written at launch. Drift detected before it compounds.</div>
+      </div>
+
+      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Release analysis</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Every product update reviewed before it ships. Feature announcements converted into reader problems before they reach the list.</div>
+      </div>
+
+      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Behavioral diagnostics</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Monthly report showing where in the reader journey attention drops. Not open rates — behavioral friction points that explain why.</div>
+      </div>
+
+      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">External perception</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Your team reads emails with product context. Your readers don't. Architecture provides the outside read your internal team structurally cannot.</div>
+      </div>
+
+      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+        <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Communication risk detection</div>
+        <div style="font-size:13px;color:var(--mid);line-height:1.65;">Flags buried CTAs, consequence-free hooks, and obligation language before they ship. Fixed before the damage is done.</div>
+      </div>
+
+    </div>
   </div>
 
   <div style="margin-top:2px;background:#0f0f0d;padding:32px;border-top:2px solid var(--signal);">
