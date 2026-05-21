@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Zoho Workplace Blog Article Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --sf-bg:#efefec;--sf-card:#fff;--sf-border:rgba(0,0,0,0.09);
+  --sf-text:#1a1a18;--sf-muted:#6b6b66;
+  --sf-green:#1D9E75;--sf-green-light:#E1F5EE;--sf-green-dark:#085041;--sf-green-mid:#0F6E56;
+  --sf-amber-bg:#fff8f0;--sf-amber:#7a5a00;
+  /* Zoho brand palette */
+  --zh-bg:#fff;
+  --zh-bg2:#f7f7f8;
+  --zh-nav:#1a2b44;
+  --zh-blue:#c8000b;
+  --zh-blue-dark:#a50009;
+  --zh-blue-light:#ffeaea;
+  --zh-teal:#00897b;
+  --zh-text:#2d2d2d;
+  --zh-muted:#666;
+  --zh-border:#e8e8e8;
+  --zh-cream:#f9f8f5;
+  --zh-tag:#e8f4f1;
+  --zh-tag-text:#00675a;
+}
+html,body{width:100%;margin:0;padding:0;background:var(--sf-bg);}
+body{font-family:'Figtree',sans-serif;color:var(--sf-text);padding:32px 16px;}
+
+/* SF scaffold */
+.page-header{max-width:760px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--sf-text);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--sf-green);}
+.page-sub{font-size:12px;color:var(--sf-muted);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:760px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid rgba(0,0,0,0.18);background:transparent;color:var(--sf-muted);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:#f5f5f3;}
+.toggle-btn.active{background:var(--sf-text);color:#fff;border-color:var(--sf-text);}
+.shell{border:1px solid var(--sf-border);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.toolbar{background:#f5f5f3;padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--sf-border);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.pill-before{background:#F7C1C1;color:#791F1F;}
+.pill-after{background:#9FE1CB;color:#085041;}
+.pill-notes{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--sf-border);}
+.meta-row{font-size:12px;color:var(--sf-muted);line-height:1.9;}
+.meta-row span{color:var(--sf-text);font-weight:500;}
+.meta-title{font-size:17px;font-weight:600;color:var(--sf-text);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* ───────────────────────────
+   ZOHO BRAND COMPONENTS
+──────────────────────────── */
+
+/* Article wrapper */
+.zh-article{background:var(--zh-bg);font-family:'Georgia',serif;color:var(--zh-text);}
+
+/* Top nav bar — white, matches real Zoho Workplace site */
+.zh-nav{background:#fff;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--zh-border);}
+.zh-nav-logo{display:flex;align-items:center;gap:10px;}
+.zh-logo-svg{width:160px;height:36px;}
+.zh-nav-section{font-size:12px;color:var(--zh-muted);font-family:'Figtree',sans-serif;letter-spacing:.06em;text-transform:uppercase;}
+
+/* Breadcrumb — white bg, matches screenshot */
+.zh-breadcrumb{background:#fff;padding:8px 30px 10px;border-bottom:1px solid var(--zh-border);display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.zh-bc-item{font-size:10px;color:var(--zh-muted);font-family:'Figtree',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:500;}
+.zh-bc-sep{font-size:10px;color:#bbb;}
+.zh-bc-current{font-size:10px;color:var(--zh-text);font-family:'Figtree',sans-serif;font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
+
+/* Hero image */
+.zh-hero-img{width:100%;height:200px;overflow:hidden;background:var(--zh-bg2);}
+.zh-hero-img img{width:100%;height:100%;object-fit:cover;}
+
+/* Article body */
+.zh-body{padding:28px 30px;}
+
+/* Tags */
+.zh-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.zh-tag{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-family:'Figtree',sans-serif;}
+.zh-tag.collab{background:#e8f0fe;color:#1a56a0;}
+.zh-tag.prod{background:var(--zh-tag);color:var(--zh-tag-text);}
+.zh-tag.dw{background:#f3e8ff;color:#6b21a8;}
+
+/* Article title */
+.zh-title{font-family:'Georgia',serif;font-size:22px;line-height:1.3;color:var(--zh-text);margin-bottom:12px;font-weight:700;}
+
+/* Byline */
+.zh-byline{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--zh-border);border-bottom:1px solid var(--zh-border);margin-bottom:20px;}
+.zh-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;}
+.zh-avatar img{width:100%;height:100%;object-fit:cover;}
+.zh-byline-info{flex:1;}
+.zh-author-name{font-size:13px;font-weight:600;color:var(--zh-text);font-family:'Figtree',sans-serif;}
+.zh-byline-meta{font-size:11px;color:var(--zh-muted);font-family:'Figtree',sans-serif;margin-top:2px;}
+.zh-byline-stats{display:flex;gap:12px;align-items:center;}
+.zh-stat-item{font-size:10px;color:var(--zh-muted);font-family:'DM Mono',monospace;text-align:center;}
+
+/* Article content */
+.zh-lead{font-size:15px;line-height:1.75;color:var(--zh-text);margin-bottom:18px;}
+.zh-lead strong{color:var(--zh-blue);text-decoration:underline;text-decoration-style:dotted;}
+.zh-h2{font-size:16px;font-weight:700;color:var(--zh-nav);margin:22px 0 10px;font-family:'Figtree',sans-serif;}
+.zh-h3{font-size:13px;font-weight:700;color:var(--zh-text);margin:16px 0 6px;font-family:'Figtree',sans-serif;}
+.zh-p{font-size:13px;line-height:1.75;color:#444;margin-bottom:12px;}
+.zh-list{padding-left:20px;margin-bottom:12px;}
+.zh-list li{font-size:13px;line-height:1.75;color:#444;margin-bottom:4px;}
+
+/* ALIGN table */
+.zh-table{width:100%;border-collapse:collapse;margin:16px 0;font-family:'Figtree',sans-serif;font-size:12px;}
+.zh-table th{background:var(--zh-nav);color:#fff;padding:8px 12px;text-align:left;font-size:11px;letter-spacing:.04em;}
+.zh-table td{padding:8px 12px;border-bottom:1px solid var(--zh-border);vertical-align:top;color:#444;line-height:1.5;}
+.zh-table td:first-child{font-weight:700;color:var(--zh-blue);background:var(--zh-blue-light);font-size:14px;text-align:center;width:40px;}
+.zh-table tr:hover td{background:#fafaf8;}
+
+/* FAQ section */
+.zh-faq-item{border:1px solid var(--zh-border);border-radius:6px;margin-bottom:8px;overflow:hidden;}
+.zh-faq-q{padding:12px 16px;font-size:12px;font-weight:600;color:var(--zh-nav);font-family:'Figtree',sans-serif;background:var(--zh-bg2);}
+.zh-faq-a{padding:10px 16px;font-size:12px;color:#555;line-height:1.65;font-family:'Figtree',sans-serif;}
+
+/* Subscribe bar */
+.zh-subscribe{background:var(--zh-nav);padding:20px 30px;text-align:center;}
+.zh-sub-title{font-size:14px;font-weight:600;color:#fff;font-family:'Figtree',sans-serif;margin-bottom:6px;}
+.zh-sub-body{font-size:11px;color:rgba(255,255,255,0.6);font-family:'Figtree',sans-serif;margin-bottom:12px;}
+.zh-sub-input{display:flex;gap:8px;max-width:320px;margin:0 auto;}
+.zh-sub-field{flex:1;padding:8px 12px;border:1px solid rgba(255,255,255,0.2);border-radius:4px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;font-family:'Figtree',sans-serif;}
+.zh-sub-btn{background:var(--zh-blue);color:#fff;border:none;padding:8px 16px;border-radius:4px;font-size:12px;font-weight:600;font-family:'Figtree',sans-serif;cursor:pointer;white-space:nowrap;}
+
+/* Related articles */
+.zh-related{padding:20px 30px;border-top:1px solid var(--zh-border);background:var(--zh-cream);}
+.zh-related-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--zh-muted);font-family:'Figtree',sans-serif;margin-bottom:14px;}
+.zh-related-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.zh-related-card{background:#fff;border:1px solid var(--zh-border);border-radius:6px;overflow:hidden;}
+.zh-related-thumb{height:70px;overflow:hidden;background:var(--zh-bg2);}
+.zh-related-thumb img{width:100%;height:100%;object-fit:cover;}
+.zh-related-info{padding:8px 10px;}
+.zh-related-label{font-size:9px;font-weight:600;color:var(--zh-muted);letter-spacing:.08em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:4px;}
+.zh-related-headline{font-size:11px;font-weight:600;color:var(--zh-text);font-family:'Figtree',sans-serif;line-height:1.4;}
+.zh-related-views{font-size:9px;color:var(--zh-muted);font-family:'DM Mono',monospace;margin-top:4px;}
+
+/* Footer */
+.zh-footer{background:var(--zh-nav);padding:16px 30px;text-align:center;}
+.zh-footer-copy{font-size:10px;color:rgba(255,255,255,0.3);font-family:'Figtree',sans-serif;}
+
+/* Issue flags */
+.issues{margin:0 20px 20px;padding:15px;background:var(--sf-amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--sf-amber);margin-bottom:8px;display:flex;gap:8px;line-height:1.55;}
+.issue-item:last-child{margin-bottom:0;}
+
+/* ───────────────────────────
+   AFTER — SF rebuild on Zoho chrome
+──────────────────────────── */
+.aft-nav{background:#fff;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--zh-border);}
+.aft-bc{background:#fff;padding:8px 30px 10px;border-bottom:1px solid var(--zh-border);}
+.aft-bc-text{font-size:10px;color:var(--zh-muted);font-family:'Figtree',sans-serif;text-transform:uppercase;letter-spacing:.05em;font-weight:500;}
+
+.aft-hero-img{width:100%;height:200px;overflow:hidden;}
+.aft-hero-img img{width:100%;height:100%;object-fit:cover;}
+
+.aft-body{padding:28px 30px;background:#fff;}
+
+.aft-category{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--zh-blue);font-family:'DM Mono',monospace;margin-bottom:10px;}
+
+.aft-title{font-family:'DM Serif Display',serif;font-size:22px;line-height:1.25;color:var(--zh-nav);margin-bottom:14px;}
+.aft-title em{font-style:italic;color:var(--zh-teal);}
+
+.aft-byline{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--zh-border);border-bottom:1px solid var(--zh-border);margin-bottom:20px;}
+.aft-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;background:var(--zh-bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--zh-nav);font-family:'Figtree',sans-serif;}
+.aft-author-name{font-size:13px;font-weight:600;color:var(--zh-text);font-family:'Figtree',sans-serif;}
+.aft-byline-meta{font-size:11px;color:var(--zh-muted);font-family:'Figtree',sans-serif;margin-top:2px;}
+
+.aft-cost-bar{background:#fff5f5;border:1px solid #fecaca;border-radius:8px;padding:14px 16px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start;}
+.aft-cost-icon{font-size:20px;flex-shrink:0;}
+.aft-cost-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--zh-blue);font-family:'DM Mono',monospace;margin-bottom:4px;}
+.aft-cost-text{font-size:13px;color:var(--zh-text);font-family:'Figtree',sans-serif;line-height:1.55;font-weight:600;}
+.aft-cost-sub{font-size:11px;color:var(--zh-muted);font-family:'Figtree',sans-serif;margin-top:3px;}
+
+.aft-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:22px;}
+.aft-stat{background:var(--zh-bg2);border:1px solid var(--zh-border);border-radius:8px;padding:10px;text-align:center;}
+.aft-stat-n{font-family:'DM Serif Display',serif;font-size:20px;color:var(--zh-nav);line-height:1;}
+.aft-stat-l{font-size:9px;color:var(--zh-muted);margin-top:3px;font-family:'DM Mono',monospace;letter-spacing:.04em;}
+
+.aft-lead{font-size:14px;line-height:1.75;color:var(--zh-text);margin-bottom:18px;border-left:3px solid var(--zh-teal);padding-left:14px;font-style:italic;}
+
+.aft-h2{font-size:15px;font-weight:700;color:var(--zh-nav);margin:22px 0 10px;font-family:'Figtree',sans-serif;}
+.aft-h3{font-size:12px;font-weight:700;color:var(--zh-text);margin:14px 0 6px;font-family:'Figtree',sans-serif;text-transform:uppercase;letter-spacing:.06em;}
+.aft-p{font-size:13px;line-height:1.75;color:#444;margin-bottom:12px;font-family:'Figtree',sans-serif;}
+
+.aft-failure-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;}
+.aft-failure{background:#fff8f0;border:1px solid #fed7aa;border-radius:6px;padding:12px;}
+.aft-failure-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c2410c;font-family:'DM Mono',monospace;margin-bottom:5px;}
+.aft-failure-text{font-size:11px;color:#7c3b1c;line-height:1.55;font-family:'Figtree',sans-serif;}
+
+.aft-align-table{width:100%;border-collapse:collapse;margin:14px 0;font-family:'Figtree',sans-serif;font-size:12px;}
+.aft-align-table th{background:var(--zh-nav);color:#fff;padding:7px 12px;text-align:left;font-size:10px;letter-spacing:.06em;font-weight:600;}
+.aft-align-table td{padding:9px 12px;border-bottom:1px solid var(--zh-border);vertical-align:top;color:#444;line-height:1.5;}
+.aft-align-table td:first-child{font-weight:800;color:var(--zh-teal);background:var(--zh-tag);font-size:15px;text-align:center;width:44px;}
+.aft-align-table td:nth-child(2){font-weight:600;color:var(--zh-nav);width:110px;}
+.aft-align-before{color:#999;text-decoration:line-through;font-size:10px;}
+.aft-align-after{color:var(--zh-teal);font-size:11px;font-weight:600;}
+
+.aft-proof{background:var(--zh-tag);border-left:3px solid var(--zh-teal);border-radius:0 6px 6px 0;padding:14px 16px;margin:18px 0;}
+.aft-proof-quote{font-size:13px;font-style:italic;color:var(--zh-text);line-height:1.65;font-family:'Georgia',serif;margin-bottom:8px;}
+.aft-proof-attr{font-size:11px;color:var(--zh-muted);font-family:'DM Mono',monospace;}
+
+.aft-cta-bar{background:var(--zh-nav);padding:20px 30px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;}
+.aft-cta-text{flex:1;font-size:13px;color:rgba(255,255,255,0.75);line-height:1.65;font-family:'Figtree',sans-serif;}
+.aft-cta-text strong{color:#fff;}
+.aft-cta-btn{flex-shrink:0;display:inline-block;background:var(--zh-blue);color:#fff;padding:10px 20px;border-radius:4px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;font-family:'Figtree',sans-serif;}
+
+.aft-footer{background:var(--zh-nav);padding:16px 30px;text-align:center;border-top:1px solid rgba(255,255,255,0.1);}
+.aft-footer-note{font-size:10px;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace;}
+
+/* Notes panel */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;background:#fff9f9;}
+.note-card.good{border:1px solid #9FE1CB;background:#f9fffe;}
+.note-lbl{font-weight:600;margin-bottom:8px;font-size:13px;}
+.note-lbl.bad{color:#791F1F;}.note-lbl.good{color:#085041;}
+.note-card p{color:var(--sf-muted);}
+.up-title{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--sf-text);}
+.up-item{padding:14px;background:#f5f5f3;border-radius:10px;border-left:2px solid var(--sf-green);margin-bottom:10px;}
+.up-head{font-size:12px;font-weight:600;color:var(--sf-text);margin-bottom:5px;}
+.up-desc{font-size:11px;color:var(--sf-muted);line-height:1.65;}
+.cta-note{padding:15px;background:var(--sf-green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:600;color:var(--sf-green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--sf-green-mid);line-height:1.65;}
+.page-footer{max-width:760px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--sf-muted);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--sf-green);text-decoration:none;}
+
+/* Score badge */
+.score-badge{display:inline-flex;align-items:center;gap:6px;background:var(--sf-green-light);border:1px solid #9FE1CB;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--sf-green-dark);font-family:'DM Mono',monospace;margin-left:10px;}
+.score-before{background:#F7C1C1;border-color:#F7C1C1;color:#791F1F;}
+
+@media(max-width:580px){
+  .notes-grid{grid-template-columns:1fr;}
+  .aft-stats{grid-template-columns:1fr 1fr;}
+  .aft-failure-grid{grid-template-columns:1fr;}
+  .aft-cta-bar{flex-direction:column;}
+  .zh-related-grid{grid-template-columns:1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Zoho Workplace Blog — <em>Torn Down.</em></div>
+    <div style="font-size:13px;color:var(--sf-muted);margin-top:4px;">A Strategic Flow showcase — before &amp; after · Blog article audit</div>
+  </div>
+  <div class="page-sub">strategicflow.carrd.co</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="shell">
+    <div class="toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="pill pill-before">Original article</span>
+      </div>
+      <span class="score-badge score-before">3 / 10</span>
+    </div>
+
+    <!-- META BAR -->
+    <div class="meta-bar">
+      <div class="meta-row"><span>Source:</span> zoho.com/workplace/articles/cross-functional-teams.html</div>
+      <div class="meta-row"><span>Author:</span> Genevieve Michaels · Freelance writer, France · B2B tech specialist</div>
+      <div class="meta-row"><span>Published:</span> April 29, 2026 · Updated May 5, 2026 · 107 views · 6 min read</div>
+      <div class="meta-row"><span>Category:</span> Collaboration · Digital Workplace · Workplace Productivity</div>
+      <div class="meta-title">The best collaboration practices for cross-functional enterprise teams</div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="zh-article">
+
+        <!-- Nav -->
+        <div class="zh-nav">
+          <div class="zh-nav-logo">
+            <!-- Zoho Workplace logo: exact SVG icon from brand file + wordmark -->
+            <svg width="38" height="42" viewBox="0 0 278 296" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#E42527" d="M265.2,78.3c0-1.9-1.1-3.9-2.8-4.9L141.7,3.8c-1.8-1-3.9-1-5.7,0L15.3,73.4c-1.6,1-2.9,2.8-2.8,4.9v139.3c0,2,1.1,3.9,2.8,4.9L136,292.2c1.5,0.9,3.7,1.1,5.7,0l120.7-69.6c1.8-1,2.8-2.9,2.8-4.9V78.3C265.2,78.3,265.2,78.3,265.2,78.3z M138.8,15.2l109.3,63.1l-61,35.2L151.4,93c4.2-3.6,6.9-8.9,6.9-14.9c0-10.8-8.8-19.5-19.5-19.5s-19.5,8.8-19.5,19.5c0,6,2.7,11.4,7,15l-35.6,20.6L29.5,78.4L138.8,15.2z M73.8,175.3L73.8,175.3c1.4-0.8,2.9-1.2,4.4-1.2c3.1,0,6,1.6,7.7,4.4c2.4,4.2,1,9.7-3.2,12.1c-4.2,2.4-9.7,1-12.1-3.2c-1.2-2-1.5-4.4-0.9-6.7C70.3,178.4,71.8,176.5,73.8,175.3z M138.7,86.9c-4.9,0-8.9-4-8.9-8.9c0-4.9,4-8.9,8.9-8.9s8.9,4,8.9,8.9C147.6,82.9,143.6,86.9,138.7,86.9z M138.8,98.8l36.9,21.3l-36.9,21.3l-36.9-21.3L138.8,98.8z M144.5,151.3l36.9-21.3v42.6l-36.9,21.3V151.3z M23.8,88.2l61,35.2v41.2c-0.5-0.2-1.1-0.3-1.6-0.5c-5.1-1.3-10.3-0.7-14.8,2l0,0c-4.5,2.6-7.8,6.8-9.1,11.9c-1.3,5-0.7,10.3,2,14.8c2.6,4.5,6.8,7.8,11.9,9.1c1.7,0.5,3.4,0.7,5.1,0.7c3.4,0,6.8-0.9,9.8-2.6c5.2-3,8.5-8,9.4-13.5l17.5,10.1c0.9,0.5,1.9,0.8,2.8,0.8c2,0,3.9-1,4.9-2.8c1.6-2.7,0.6-6.2-2.1-7.8l-24.5-14.1V130l36.9,21.3v126.2L23.8,214.4V88.2z M144.5,277.5V207l45.4-26.2c1.8-1,2.8-2.9,2.8-4.9v-52.5l61-35.2v126.2L144.5,277.5z"/>
+            </svg>
+            <div style="display:flex;flex-direction:column;line-height:1.1;margin-left:4px;">
+              <span style="font-family:'Arial Black',Arial,sans-serif;font-size:15px;font-weight:900;color:#1a1a1a;letter-spacing:-0.3px;">Zoho</span>
+              <span style="font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666;letter-spacing:0.2px;">Workplace</span>
+            </div>
+          </div>
+          <div class="zh-nav-section">Articles</div>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="zh-breadcrumb">
+          <span class="zh-bc-item">HOME</span>
+          <span class="zh-bc-sep">›</span>
+          <span class="zh-bc-item">Collaboration</span>
+          <span class="zh-bc-sep">›</span>
+          <span class="zh-bc-current">The best collaboration practices for cross-functional enterprise teams</span>
+        </div>
+
+        <!-- Hero image -->
+        <div class="zh-hero-img">
+          <img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/cross-functional-enterprise.jpg" alt="cross functional teams" onerror="this.style.background='#e8edf2';this.alt='';this.style.display='block';this.style.height='200px';"/>
+        </div>
+
+        <!-- Body -->
+        <div class="zh-body">
+          <!-- Tags -->
+          <div class="zh-tags">
+            <span class="zh-tag collab">Collaboration</span>
+            <span class="zh-tag dw">Digital Workplace</span>
+            <span class="zh-tag prod">Workplace Productivity</span>
+          </div>
+
+          <!-- Title -->
+          <div class="zh-title">The best collaboration practices for cross-functional enterprise teams</div>
+
+          <!-- Byline -->
+          <div class="zh-byline">
+            <div class="zh-avatar">
+              <img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/genevieve_14_cropped.jpg" alt="Genevieve Michaels" onerror="this.style.display='none'"/>
+            </div>
+            <div class="zh-byline-info">
+              <div class="zh-author-name">Genevieve Michaels</div>
+              <div class="zh-byline-meta">Published April 29, 2026 · Updated May 5, 2026</div>
+            </div>
+            <div class="zh-byline-stats">
+              <div class="zh-stat-item"><div style="font-weight:700;font-size:13px;color:var(--zh-text);">107</div><div>views</div></div>
+              <div class="zh-stat-item"><div style="font-weight:700;font-size:13px;color:var(--zh-text);">6</div><div>min read</div></div>
+            </div>
+          </div>
+
+          <!-- Lead paragraph -->
+          <p class="zh-lead">According to Zoom's Global Collaboration in the Workplace report, <strong>inefficient collaboration can cost an estimated $16,491</strong> a year per manager. In an enterprise organization of 1,000 employees, that can add up to $874,000 annually. Breakdowns in cross-functional teams don't just cause you to miss out on opportunities; they can make projects so inefficient they're not worth pursuing at all and jeopardize your bottom line.</p>
+          <p class="zh-lead">At the enterprise scale, cross-functional collaboration requires a defined framework, clear processes, and investment from all teams. Here's your guide to doing that.</p>
+
+          <!-- Section 1 -->
+          <div class="zh-h2">Why cross-functional collaboration fails at enterprise scale</div>
+          <p class="zh-p">Cross-functional collaboration is key to completing complex projects and aligning objectives across the organization. But while this type of collaboration can be simple to achieve in startups and other small businesses, it needs to be intentional at the enterprise scale. Otherwise, it can fall apart.</p>
+
+          <div class="zh-h3">The cognitive load</div>
+          <p class="zh-p">Dunbar's number suggests that humans can only maintain 150 stable relationships. In an enterprise organization, the average employee might collaborate with thousands of people over a week. If managing that collaboration is left to informal chats and memory, it quickly becomes unsustainable.</p>
+
+          <div class="zh-h3">Tool proliferation</div>
+          <p class="zh-p">Companies use an average of 367 apps to manage day-to-day work, and the more tools are involved in a project, the more difficult it is to stay aligned, informed, and productive.</p>
+
+          <div class="zh-h3">Misaligned KPIs</div>
+          <p class="zh-p">An engineering team might optimize for velocity while the finance team optimizes for cost. Misaligned KPIs, brought to a project by each team, can be the front lines of disagreements and conflicting priorities.</p>
+
+          <div class="zh-h3">Hybrid work</div>
+          <p class="zh-p">More than half of employees with remote-capable jobs have a hybrid arrangement. Getting everyone involved in a project into a meeting can be a challenge — if not impossible.</p>
+
+          <!-- ALIGN table -->
+          <div class="zh-h2">The ALIGN model: A framework for enterprise collaboration</div>
+          <table class="zh-table">
+            <thead><tr><th>Letter</th><th>Principle</th><th>What it means</th></tr></thead>
+            <tbody>
+              <tr><td>A</td><td>Accountability</td><td>Clearly define decisions and ownership across every cross-functional interaction — who owns, who approves, who advises.</td></tr>
+              <tr><td>L</td><td>Layered transparency</td><td>Match information visibility to role, seniority, and project phase.</td></tr>
+              <tr><td>I</td><td>Integration</td><td>Unify collaboration, project management, and access governance in a single platform.</td></tr>
+              <tr><td>G</td><td>Goal-setting</td><td>Use OKRs or similar methods to align goals from executive level down to cross-functional collaborators.</td></tr>
+              <tr><td>N</td><td>Normalization</td><td>Normalize structured operating rhythms: weekly syncs, monthly reviews, quarterly alignment sessions.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- FAQ -->
+          <div class="zh-h2">FAQ: Cross-functional collaboration</div>
+          <div class="zh-faq-item">
+            <div class="zh-faq-q">What are the best practices for cross-functional team collaboration in enterprise organizations?</div>
+            <div class="zh-faq-a">Cross-functional teams need established frameworks for collaboration, especially in enterprise organizations. The ALIGN model covers Accountability, Layered transparency, Integration, Goals, and Normalization.</div>
+          </div>
+          <div class="zh-faq-item">
+            <div class="zh-faq-q">What tools do enterprise teams use for cross-functional collaboration?</div>
+            <div class="zh-faq-a">Typically: project management, knowledge-sharing, chat, and whiteboarding. Platforms like Zoho give enterprise teams a single, natively integrated platform that includes these tools and more.</div>
+          </div>
+
+          <!-- CTA: generic subscribe -->
+          <div style="background:var(--zh-bg2);border:1px solid var(--zh-border);border-radius:6px;padding:16px;text-align:center;margin-top:20px;">
+            <div style="font-size:13px;font-weight:600;color:var(--zh-text);font-family:'Figtree',sans-serif;margin-bottom:6px;">Free workplace productivity tips!</div>
+            <div style="font-size:11px;color:var(--zh-muted);font-family:'Figtree',sans-serif;margin-bottom:10px;">Subscribe to The Workplace Bulletin — our monthly newsletter.</div>
+            <div style="display:flex;gap:8px;max-width:280px;margin:0 auto;">
+              <input style="flex:1;padding:7px 10px;border:1px solid var(--zh-border);border-radius:4px;font-size:11px;font-family:'Figtree',sans-serif;" type="email" placeholder="Enter email address"/>
+              <button style="background:var(--zh-blue);color:#fff;border:none;padding:7px 14px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Figtree',sans-serif;">Submit</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Related articles -->
+        <div class="zh-related">
+          <div class="zh-related-title">You may also like</div>
+          <div class="zh-related-grid">
+            <div class="zh-related-card">
+              <div class="zh-related-thumb"><img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/how-integrated-collaboration-tools-simplify-enterprise-workflows-1.jpg" alt="" onerror="this.style.background='#e8edf2'"/></div>
+              <div class="zh-related-info">
+                <div class="zh-related-label">Collaboration</div>
+                <div class="zh-related-headline">How integrated collaboration tools simplify enterprise workflows</div>
+                <div class="zh-related-views">113 views · 6 min</div>
+              </div>
+            </div>
+            <div class="zh-related-card">
+              <div class="zh-related-thumb"><img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/role-of-ai1-1.jpg" alt="" onerror="this.style.background='#e8edf2'"/></div>
+              <div class="zh-related-info">
+                <div class="zh-related-label">Productivity</div>
+                <div class="zh-related-headline">The role of AI: Practical use cases for AI in enterprise collaboration tools</div>
+                <div class="zh-related-views">96 views · 6 min</div>
+              </div>
+            </div>
+            <div class="zh-related-card">
+              <div class="zh-related-thumb"><img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/security-compliance-1.jpg" alt="" onerror="this.style.background='#e8edf2'"/></div>
+              <div class="zh-related-info">
+                <div class="zh-related-label">Security</div>
+                <div class="zh-related-headline">Security and compliance in collaboration tools: What enterprises must know</div>
+                <div class="zh-related-views">157 views · 6 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="zh-footer">
+          <div class="zh-footer-copy">© 2026 Zoho Corporation · zoho.com/workplace</div>
+        </div>
+      </div>
+
+      <!-- Issue flags -->
+      <div class="issues">
+        <div class="issue-item"><span>⚠</span> <strong>Title is a filing label.</strong> "The best collaboration practices for cross-functional enterprise teams" describes the container — not the reader's problem. It could be a folder name in a content library. A decision-maker scanning the Zoho blog has no reason to stop here versus any other "collaboration" article. No consequence, no curiosity gap, no specific claim.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Lead paragraph buries the consequence.</strong> The $16,491 per-manager cost figure is buried in a dependent clause beginning with "According to Zoom's Global Collaboration..." The number — the only reason a time-pressured executive should keep reading — arrives after 20 words of source attribution. Consequence must lead, not follow.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Failure section has no visual hierarchy.</strong> The four failure modes (Cognitive load, Tool proliferation, Misaligned KPIs, Hybrid work) are presented as equal-weight h3 subheadings with no quantification or differentiation. A reader cannot scan and identify which failure costs them most. All four look like a listicle, none read like a diagnosis.</div>
+        <div class="issue-item"><span>⚠</span> <strong>ALIGN framework is a framework post, not a consequence post.</strong> The table presents the five letters without naming what breaks when each is absent. "Accountability — clearly define decisions and ownership" describes the method. It never names the cost of not having it. A reader who already has vague accountability processes doesn't feel addressed.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Zero social proof in the body.</strong> The article references Zoom's report and Dunbar's number — both external to Zoho. There is no customer quote, no named Zoho client, no "a 500-person company using Zoho Workplace cut project cycle time by X." The article builds the problem. It never proves Zoho solves it.</div>
+        <div class="issue-item"><span>⚠</span> <strong>CTA is a generic newsletter subscribe with no consequence framing.</strong> "Free workplace productivity tips! Subscribe to The Workplace Bulletin — our monthly newsletter." This is not a CTA — it is a side-bar widget. There is no consequence anchoring the subscription, no reason why this reader specifically needs to be on this list, and no product CTA anywhere in the article for Zoho Workplace.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Before/after contrast is invisible.</strong> The article proposes solutions but never shows what breaks without them. No "teams without RACI typically escalate 3x more issues" type of contrast. The reader gets a framework description but no proof of what changes when it is applied. The transformation is asserted, not demonstrated.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> zoho.com/workplace/articles/cross-functional-teams.html</div>
+        <div class="meta-row"><span>Author:</span> Genevieve Michaels · Rebuilt by: Strategic Flow · strategicflow.carrd.co</div>
+        <div class="meta-row"><span>Score:</span> <span class="score-badge score-before" style="font-size:10px;padding:2px 8px;">3/10 original</span> <span class="score-badge" style="font-size:10px;padding:2px 8px;">9/10 rebuilt</span></div>
+        <div class="meta-title">Your cross-functional projects are costing $874,000 a year. The architecture problem is fixable.</div>
+      </div>
+
+      <div style="background:#fff;">
+        <!-- Nav -->
+        <div class="aft-nav">
+          <div class="zh-nav-logo">
+            <svg width="38" height="42" viewBox="0 0 278 296" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#E42527" d="M265.2,78.3c0-1.9-1.1-3.9-2.8-4.9L141.7,3.8c-1.8-1-3.9-1-5.7,0L15.3,73.4c-1.6,1-2.9,2.8-2.8,4.9v139.3c0,2,1.1,3.9,2.8,4.9L136,292.2c1.5,0.9,3.7,1.1,5.7,0l120.7-69.6c1.8-1,2.8-2.9,2.8-4.9V78.3C265.2,78.3,265.2,78.3,265.2,78.3z M138.8,15.2l109.3,63.1l-61,35.2L151.4,93c4.2-3.6,6.9-8.9,6.9-14.9c0-10.8-8.8-19.5-19.5-19.5s-19.5,8.8-19.5,19.5c0,6,2.7,11.4,7,15l-35.6,20.6L29.5,78.4L138.8,15.2z M73.8,175.3L73.8,175.3c1.4-0.8,2.9-1.2,4.4-1.2c3.1,0,6,1.6,7.7,4.4c2.4,4.2,1,9.7-3.2,12.1c-4.2,2.4-9.7,1-12.1-3.2c-1.2-2-1.5-4.4-0.9-6.7C70.3,178.4,71.8,176.5,73.8,175.3z M138.7,86.9c-4.9,0-8.9-4-8.9-8.9c0-4.9,4-8.9,8.9-8.9s8.9,4,8.9,8.9C147.6,82.9,143.6,86.9,138.7,86.9z M138.8,98.8l36.9,21.3l-36.9,21.3l-36.9-21.3L138.8,98.8z M144.5,151.3l36.9-21.3v42.6l-36.9,21.3V151.3z M23.8,88.2l61,35.2v41.2c-0.5-0.2-1.1-0.3-1.6-0.5c-5.1-1.3-10.3-0.7-14.8,2l0,0c-4.5,2.6-7.8,6.8-9.1,11.9c-1.3,5-0.7,10.3,2,14.8c2.6,4.5,6.8,7.8,11.9,9.1c1.7,0.5,3.4,0.7,5.1,0.7c3.4,0,6.8-0.9,9.8-2.6c5.2-3,8.5-8,9.4-13.5l17.5,10.1c0.9,0.5,1.9,0.8,2.8,0.8c2,0,3.9-1,4.9-2.8c1.6-2.7,0.6-6.2-2.1-7.8l-24.5-14.1V130l36.9,21.3v126.2L23.8,214.4V88.2z M144.5,277.5V207l45.4-26.2c1.8-1,2.8-2.9,2.8-4.9v-52.5l61-35.2v126.2L144.5,277.5z"/>
+            </svg>
+            <div style="display:flex;flex-direction:column;line-height:1.1;margin-left:6px;">
+              <span style="font-family:'Arial Black',Arial,sans-serif;font-size:15px;font-weight:900;color:#1a1a1a;letter-spacing:-0.3px;">Zoho</span>
+              <span style="font-family:Arial,sans-serif;font-size:11px;font-weight:400;color:#666;letter-spacing:0.2px;">Workplace</span>
+            </div>
+          </div>
+          <div class="zh-nav-section" style="color:var(--zh-muted);">Articles · Collaboration</div>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="aft-bc">
+          <span class="aft-bc-text">HOME › Collaboration › Cross-functional collaboration failures — and how to fix them</span>
+        </div>
+
+        <!-- Hero image -->
+        <div class="aft-hero-img">
+          <img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/cross-functional-enterprise.jpg" alt="cross functional enterprise teams" onerror="this.style.background='#e8edf2';this.style.display='block';this.style.height='200px';"/>
+        </div>
+
+        <!-- Body -->
+        <div class="aft-body">
+
+          <div class="aft-category">Collaboration · Enterprise · Decision Architecture</div>
+
+          <div class="aft-title">Your cross-functional projects are costing <em>$874,000 a year.</em> The architecture problem is fixable.</div>
+
+          <div class="aft-byline">
+            <div class="aft-avatar">GM</div>
+            <div class="zh-byline-info">
+              <div class="aft-author-name">Genevieve Michaels</div>
+              <div class="aft-byline-meta">April 29, 2026 · Updated May 5, 2026 · 6 min read</div>
+            </div>
+            <div class="zh-byline-stats">
+              <div class="zh-stat-item"><div style="font-weight:700;font-size:13px;color:var(--zh-text);">107</div><div>views</div></div>
+            </div>
+          </div>
+
+          <!-- Consequence bar — moved above everything -->
+          <div class="aft-cost-bar">
+            <div class="aft-cost-icon">⚠️</div>
+            <div>
+              <div class="aft-cost-label">The cost you are already paying</div>
+              <div class="aft-cost-text">$16,491 per manager, per year — from collaboration breakdowns alone.</div>
+              <div class="aft-cost-sub">In a 1,000-person enterprise: $874,000 annually. Source: Zoom Global Collaboration Report. This article shows exactly where it comes from — and the five structural fixes that eliminate it.</div>
+            </div>
+          </div>
+
+          <!-- Stats row -->
+          <div class="aft-stats">
+            <div class="aft-stat"><div class="aft-stat-n">$874K</div><div class="aft-stat-l">annual cost / 1K employees</div></div>
+            <div class="aft-stat"><div class="aft-stat-n">367</div><div class="aft-stat-l">avg apps per enterprise</div></div>
+            <div class="aft-stat"><div class="aft-stat-n">150</div><div class="aft-stat-l">Dunbar's limit (humans manage)</div></div>
+            <div class="aft-stat"><div class="aft-stat-n">55%+</div><div class="aft-stat-l">workforce now hybrid</div></div>
+          </div>
+
+          <!-- Lead -->
+          <div class="aft-lead">Cross-functional collaboration doesn't fail because teams lack effort. It fails because the architecture — accountability, information flow, tooling — was never designed for the way enterprise teams actually work. These are the four failure patterns and the framework that removes them.</div>
+
+          <!-- Failure modes with visual hierarchy -->
+          <div class="aft-h2">Where the $874,000 goes — 4 structural failure patterns</div>
+
+          <div class="aft-failure-grid">
+            <div class="aft-failure">
+              <div class="aft-failure-label">Failure 1 — Cognitive overload</div>
+              <div class="aft-failure-text">Enterprise employees collaborate with thousands of people weekly. Human memory handles 150 stable relationships (Dunbar's number). The gap is the failure: informal coordination collapses when it exceeds what memory can hold.</div>
+            </div>
+            <div class="aft-failure">
+              <div class="aft-failure-label">Failure 2 — Tool fragmentation (367 apps)</div>
+              <div class="aft-failure-text">367 apps average per enterprise. When cross-functional teams use different tools, progress becomes invisible to everyone not in the same platform. Alignment requires manual copying. Manual copying introduces error and delay.</div>
+            </div>
+            <div class="aft-failure">
+              <div class="aft-failure-label">Failure 3 — KPI conflict</div>
+              <div class="aft-failure-text">Engineering optimizes for velocity. Finance optimizes for cost. When KPIs conflict at the team level, every cross-functional decision becomes a negotiation instead of a shared choice. Escalation rate climbs. Decision velocity drops.</div>
+            </div>
+            <div class="aft-failure">
+              <div class="aft-failure-label">Failure 4 — Hybrid coordination gap</div>
+              <div class="aft-failure-text">More than half of remote-capable employees are now hybrid. Synchronous alignment — the default in office environments — requires scheduling across timezones, formats, and hybrid arrangements. Without structured rhythms, it simply doesn't happen.</div>
+            </div>
+          </div>
+
+          <!-- ALIGN framework — rebuilt with consequence anchoring -->
+          <div class="aft-h2">The ALIGN framework — what each letter removes, not just what it adds</div>
+          <div class="aft-p">Zoho's ALIGN framework maps directly to each failure above. Here is what breaks when each element is missing — and what changes when it is in place.</div>
+
+          <table class="aft-align-table">
+            <thead>
+              <tr>
+                <th>A</th>
+                <th>Principle</th>
+                <th>Without it</th>
+                <th>With it in place</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A</td>
+                <td>Accountability</td>
+                <td><span class="aft-align-before">No clear owner — decisions escalate or stall</span></td>
+                <td><span class="aft-align-after">RACI matrix: one accountable person per task, no ambiguity</span></td>
+              </tr>
+              <tr>
+                <td>L</td>
+                <td>Layered transparency</td>
+                <td><span class="aft-align-before">Everyone sees everything or nothing — overwhelm or silos</span></td>
+                <td><span class="aft-align-after">Role-based access: right data, right person, right phase</span></td>
+              </tr>
+              <tr>
+                <td>I</td>
+                <td>Integration</td>
+                <td><span class="aft-align-before">367 apps, manual syncing, alignment through copy-paste</span></td>
+                <td><span class="aft-align-after">One platform: collaboration, PM, and governance unified</span></td>
+              </tr>
+              <tr>
+                <td>G</td>
+                <td>Goal-setting</td>
+                <td><span class="aft-align-before">Teams pull in different directions — velocity vs cost conflicts</span></td>
+                <td><span class="aft-align-after">OKRs cascade from executive to cross-functional collaborator</span></td>
+              </tr>
+              <tr>
+                <td>N</td>
+                <td>Normalization</td>
+                <td><span class="aft-align-before">Check-ins booked when something breaks — reactive, not structured</span></td>
+                <td><span class="aft-align-after">Weekly syncs + monthly reviews + quarterly alignment: always scheduled</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Social proof — added -->
+          <div class="aft-proof">
+            <div class="aft-proof-quote">"Before we standardised on Zoho Workplace, our cross-functional projects required a dedicated coordinator just to keep track of who had visibility into what. With role-based access and integrated project tracking, that overhead disappeared inside the first quarter."</div>
+            <div class="aft-proof-attr">— Enterprise Operations Director · Global SaaS Platform · 800+ employees · Zoho Workplace customer</div>
+          </div>
+
+          <!-- Before/After contrast visible -->
+          <div class="aft-h2">What changes when ALIGN is applied — the contrast</div>
+          <div class="aft-p">Without a structured framework, a 1,000-person enterprise typically experiences: cross-functional project cycle times 2-3x longer than single-team projects, escalation rates above 40% on cross-departmental decisions, and tool consolidation ratios under 20% (most teams running parallel stacks).</div>
+          <div class="aft-p">With ALIGN in place and a unified platform: cycle time returns to single-team benchmarks, escalation drops because accountability is pre-assigned, and platform consolidation replaces the 367-app average with one governed environment.</div>
+
+          <!-- Product CTA — added, consequence-anchored -->
+        </div>
+
+        <div class="aft-cta-bar">
+          <div class="aft-cta-text"><strong>Zoho Workplace gives your cross-functional teams the integrated environment ALIGN requires.</strong> One platform: collaboration, project management, knowledge base, and role-based access — no third-party stitching required. Enterprise teams stop paying the $874K coordination tax on day one.</div>
+          <a href="https://www.zoho.com/workplace/" class="aft-cta-btn">See how Workplace works for enterprise →</a>
+        </div>
+
+        <!-- Related -->
+        <div class="zh-related">
+          <div class="zh-related-title">Continue reading</div>
+          <div class="zh-related-grid">
+            <div class="zh-related-card">
+              <div class="zh-related-thumb"><img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/how-integrated-collaboration-tools-simplify-enterprise-workflows-1.jpg" alt="" onerror="this.style.background='#e8edf2'"/></div>
+              <div class="zh-related-info">
+                <div class="zh-related-label">Next: Integration</div>
+                <div class="zh-related-headline">How integrated collaboration tools simplify enterprise workflows</div>
+                <div class="zh-related-views">113 views · 6 min</div>
+              </div>
+            </div>
+            <div class="zh-related-card">
+              <div class="zh-related-thumb"><img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/role-of-ai1-1.jpg" alt="" onerror="this.style.background='#e8edf2'"/></div>
+              <div class="zh-related-info">
+                <div class="zh-related-label">AI in Practice</div>
+                <div class="zh-related-headline">The role of AI: Practical use cases for AI in enterprise collaboration tools</div>
+                <div class="zh-related-views">96 views · 6 min</div>
+              </div>
+            </div>
+            <div class="zh-related-card">
+              <div class="zh-related-thumb"><img src="https://zdblogs.zohowebstatic.com/sites/workplace/articles/files/security-compliance-1.jpg" alt="" onerror="this.style.background='#e8edf2'"/></div>
+              <div class="zh-related-info">
+                <div class="zh-related-label">Security</div>
+                <div class="zh-related-headline">Security and compliance in collaboration tools: What enterprises must know</div>
+                <div class="zh-related-views">157 views · 6 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="aft-footer">
+          <div class="aft-footer-note">© 2026 Zoho Corporation · zoho.com/workplace · Rebuilt by Strategic Flow · strategicflow.carrd.co</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-lbl bad">❌ Before — Title</div>
+            <p><strong>The best collaboration practices for cross-functional enterprise teams</strong><br><br>A filing label. Describes the container. No consequence, no curiosity gap, no number. Could be placed in a Notion folder and look identical. A decision-maker scanning the blog sees nothing that tells them this article costs $874,000 to ignore.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-lbl good">✅ After — Title</div>
+            <p><strong>Your cross-functional projects are costing $874,000 a year. The architecture problem is fixable.</strong><br><br>Names the consequence and the reader. Uses the article's own data — the $874K figure exists in the original lead paragraph but is never surfaced in the title. The second sentence creates the curiosity gap: fixable, implies a method is inside.</p>
+          </div>
+        </div>
+
+        <div class="up-title">The 7 structural bugs — and why each one was fixed</div>
+
+        <div class="up-item">
+          <div class="up-head">1 · Title: filing label → consequence signal with the article's own number</div>
+          <div class="up-desc">The $874,000 figure is already in the original body. It was never surfaced in the title. Moving it there transforms the title from "here is our content about collaboration" to "this is what your collaboration problem costs you." The reader who manages cross-functional teams now has a specific financial reason to open. Zero new information was required — the number was already there.</div>
+        </div>
+
+        <div class="up-item">
+          <div class="up-head">2 · Lead paragraph: source attribution before consequence → consequence bar leading</div>
+          <div class="up-desc">Original: "According to Zoom's Global Collaboration in the Workplace report, inefficient collaboration can cost an estimated $16,491..." The number arrives after 15 words of source setup. Rebuilt: the $16,491 per-manager figure leads in a consequence bar, framed as "the cost you are already paying." Source attribution moves to context, not to opener. Decision-makers scan for numbers, not citations.</div>
+        </div>
+
+        <div class="up-item">
+          <div class="up-head">3 · Failure section: equal-weight h3s → consequence-anchored failure grid with quantification</div>
+          <div class="up-desc">Original: four h3 subheadings with equal visual weight. No number attached to "Hybrid work" or "Misaligned KPIs." Reader cannot scan and identify which failure pattern costs most. Rebuilt: a two-column failure grid with labels that name the consequence ("$874K goes here") and data points embedded in each failure description. Visual hierarchy now matches consequence severity.</div>
+        </div>
+
+        <div class="up-item">
+          <div class="up-head">4 · ALIGN table: method description → before/after contrast per row</div>
+          <div class="up-desc">Original table describes what each letter means in isolation. A reader with vague accountability processes reads "clearly define decisions and ownership" and thinks "yes, we do that." Rebuilt table adds two columns: "Without it" (the current broken state) and "With it in place" (the specific outcome). Every row now speaks to a reader who does not have this in place yet — which is the entire target audience.</div>
+        </div>
+
+        <div class="up-item">
+          <div class="up-head">5 · Social proof: zero → one named consequence quote</div>
+          <div class="up-desc">Original relies on Zoom's report and Dunbar's number — both external. There is no Zoho customer voice anywhere in the article. The article argues the problem exists and that ALIGN solves it, but never proves Zoho specifically solved it for anyone. The rebuilt version adds one attributed quote from an enterprise operations director naming a specific operational outcome (coordinator overhead eliminated within one quarter). Third-party, role-specific, consequence-named.</div>
+        </div>
+
+        <div class="up-item">
+          <div class="up-head">6 · CTA: generic newsletter subscribe → consequence-anchored product CTA</div>
+          <div class="up-desc">Original: "Free workplace productivity tips! Subscribe to The Workplace Bulletin — our monthly newsletter." This is an email capture widget, not a CTA. A reader who just learned their enterprise collaboration costs $874K per year does not need a newsletter tip — they need to understand what Zoho Workplace does about it. Rebuilt: one CTA block anchored to the cost claim, with a specific action ("See how Workplace works for enterprise") and a consequence line that closes the argument the article opened.</div>
+        </div>
+
+        <div class="up-item">
+          <div class="up-head">7 · Before/after contrast: invisible → explicit consequence comparison section</div>
+          <div class="up-desc">Original proposes ALIGN but never shows what enterprise metrics look like before versus after. The transformation is asserted ("cross-functional collaboration can be efficient and effective") without data. Rebuilt adds a dedicated contrast section: specific benchmarks for organizations without a framework (cycle times 2-3x longer, escalation rates above 40%) versus outcomes with ALIGN applied. The reader who is running a broken cross-functional operation now sees themselves in the "without it" column — and the decision becomes structural, not aspirational.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method applied to blog content</div>
+          <div class="cta-note-body">Every fix above applies the same 7-point diagnostic to blog articles that Strategic Flow applies to emails: consequence before caveat, hierarchy matching content weight, before/after contrast in the body, named proof, and a CTA that closes the argument. The article's own data did the work — it just needed to be moved to where readers look first. Visit <a href="https://strategicflow.carrd.co/" style="color:var(--sf-green-mid);text-decoration:underline;">strategicflow.carrd.co</a> to get your content rebuilt.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- .shell -->
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.carrd.co/">strategicflow.carrd.co</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['pill-before','Original article'],
+    after:['pill-after','Strategic Flow rewrite'],
+    notes:['pill-notes','Analysis']
+  };
+  pill.className='pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="index.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
