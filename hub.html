@@ -277,6 +277,8 @@ footer{
   .hero,.section,.proof-section{padding:48px 24px;}
   .roi-card{grid-template-columns:1fr;}
   footer{padding:32px 24px;}
+  .checks-grid{grid-template-columns:1fr !important;}
+  .checks-grid > div[style*="grid-column"]{grid-column:1 !important;}
 }
 </style>
 </head>
@@ -443,7 +445,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
   <div class="section-label">Decision Friction Model</div>
   <div class="section-title">7 behavioral checks. Every email.</div>
   <p class="section-sub">Each check maps to a specific reader behavior that determines whether your email gets opened, read, or acted on. Not style. Not tone. Decision friction.</p>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);">
+  <div class="checks-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);">
     <div style="background:var(--bg);padding:24px 28px;">
       <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">01</div>
       <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Subject line</div>
