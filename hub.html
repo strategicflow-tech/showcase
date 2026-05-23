@@ -279,6 +279,9 @@ footer{
   footer{padding:32px 24px;}
   .checks-grid{grid-template-columns:1fr !important;}
   .checks-grid > div[style*="grid-column"]{grid-column:1 !important;}
+  .prediction-grid{grid-template-columns:1fr !important;background:transparent !important;}
+  .prediction-grid > div{border-left:none !important;border-top:1px solid var(--border) !important;}
+  .prediction-grid > div:first-child{border-top:none !important;}
 }
 </style>
 </head>
@@ -638,6 +641,61 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
   </div>
 </section>
 
+<!-- OPEN RATE PREDICTION -->
+<section class="section" id="prediction" style="padding-top:0;">
+  <div class="section-label">Open Rate Prediction</div>
+  <div class="section-title">Know the lift before you send.</div>
+  <p class="section-sub">Every subject line rebuild now comes with a predicted open rate range. Based on 49 teardowns across 8 verticals — not a guess, a benchmark-grounded estimate.</p>
+
+  <div class="roi-card">
+    <div>
+      <h3>From <em>gut feel</em> to predicted lift.</h3>
+      <p>After every subject line rebuild, Strategic Flow calculates the predicted open rate range for each variant using industry benchmarks and subject line score delta. You know the expected lift before the email ships.</p>
+      <p style="margin-top:16px;font-size:14px;color:var(--text2);">Available in Growth and High-Impact plans. High-Impact adds actual vs predicted tracking — so you build a compounding data set over time.</p>
+      <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="tool-link" style="margin-top:24px;display:inline-block;" target="_blank">Get Growth →</a>
+    </div>
+    <div class="roi-metrics">
+      <div class="roi-metric">
+        <div class="roi-metric-num">3/10</div>
+        <div class="roi-metric-label">Avg original subject score</div>
+      </div>
+      <div class="roi-metric">
+        <div class="roi-metric-num">8/10</div>
+        <div class="roi-metric-label">Avg rebuilt subject score</div>
+      </div>
+      <div class="roi-metric">
+        <div class="roi-metric-num">+30%</div>
+        <div class="roi-metric-label">Avg predicted open rate lift</div>
+      </div>
+      <div class="roi-metric">
+        <div class="roi-metric-num">3</div>
+        <div class="roi-metric-label">A/B variants per rebuild</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prediction-grid" style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;background:var(--border);border-radius:12px;overflow:hidden;">
+    <div style="background:var(--bg2);padding:24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">❌ Original</div>
+      <div style="font-size:14px;color:#ffffff;font-weight:600;margin-bottom:4px;">"New Feature: Advanced Reporting"</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">Score: 3/10</div>
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--text3);margin-top:8px;">~22% opens</div>
+    </div>
+    <div style="background:var(--bg2);padding:24px;border-left:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">✅ Rebuilt</div>
+      <div style="font-size:14px;color:#ffffff;font-weight:600;margin-bottom:4px;">"Your reporting just got 40% faster"</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">Score: 8/10</div>
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);margin-top:8px;">28–35% opens predicted</div>
+    </div>
+    <div style="background:var(--bg2);padding:24px;border-left:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">📈 Lift</div>
+      <div style="font-size:28px;color:var(--green);font-family:'DM Serif Display',serif;font-weight:400;margin-bottom:4px;">+6–13pp</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">At 2,000 subscribers</div>
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);margin-top:8px;">+120–260 opens/send</div>
+    </div>
+  </div>
+</section>
+
 <!-- PRICING -->
 <section class="section" id="pricing" style="padding-top:0;">
   <div class="section-label">Pricing</div>
@@ -675,6 +733,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>Priority 24hr turnaround</li>
         <li>Monthly strategy call</li>
         <li>Showcase teardown included</li>
+        <li style="color:var(--green);">✨ Open rate prediction per rebuild</li>
       </ul>
       <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="tool-link" target="_blank">Get Growth →</a>
     </div>
@@ -692,6 +751,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>LinkedIn content system</li>
         <li>Weekly strategy call</li>
         <li>Dedicated Slack channel</li>
+        <li style="color:var(--green);">✨ Open rate prediction + ROI tracking</li>
       </ul>
       <a href="https://buy.stripe.com/6oU14n2bCgjT1SZ5h97wA03" class="tool-link" target="_blank">Get High-Impact →</a>
     </div>
