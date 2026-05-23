@@ -1,0 +1,519 @@
+{
+  "meta": {
+    "total": 51,
+    "last_updated": "2026-05-23",
+    "version": "1.1.0"
+  },
+  "teardowns": [
+    {
+      "id": 1,
+      "company": "HeyGen",
+      "vertical": "AI / Agents",
+      "type": "Product Update",
+      "score_original": 4,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/heygen-showcase.html",
+      "patterns": ["Feature-First Bias", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 2,
+      "company": "Figma",
+      "vertical": "B2B SaaS",
+      "type": "Welcome Email",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/figma-showcase.html",
+      "patterns": ["Three Identical CTAs", "Feature-First Bias", "Guest Language CTA"]
+    },
+    {
+      "id": 3,
+      "company": "dbt Labs",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/dbt_labs_showcase.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA", "Zero Social Proof"]
+    },
+    {
+      "id": 4,
+      "company": "ElevenLabs",
+      "vertical": "AI / Agents",
+      "type": "Product Update",
+      "score_original": 2,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/elevenlabs-showcase.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Audience Mismatch", "Guest Language CTA"]
+    },
+    {
+      "id": 5,
+      "company": "Lodgify",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/lodgify-showcase.html",
+      "patterns": ["Achievement Framing", "Guest Language CTA", "Zero Social Proof"]
+    },
+    {
+      "id": 6,
+      "company": "Revolut",
+      "vertical": "Fintech",
+      "type": "Product Update",
+      "score_original": 4,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/revolut_newsletter_showcase.html",
+      "patterns": ["Consequence-After-Caveat", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 7,
+      "company": "Revolut",
+      "vertical": "Fintech",
+      "type": "Full Funnel",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/revolut_email_analysis.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA", "Consequence-After-Caveat"]
+    },
+    {
+      "id": 8,
+      "company": "Qonto",
+      "vertical": "Fintech",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/qonto_showcase.html",
+      "patterns": ["Feature-First Bias", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 9,
+      "company": "Cato Networks",
+      "vertical": "Cybersecurity",
+      "type": "Thought Leadership",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/cato_networks_showcase.html",
+      "patterns": ["Consequence-After-Caveat", "Zero Social Proof", "Guest Language CTA", "Filing Label Subject"]
+    },
+    {
+      "id": 10,
+      "company": "Atlassian Confluence Rovo",
+      "vertical": "Enterprise B2B",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/atlassian_confluence_rovo_showcase.html",
+      "patterns": ["Feature-First Bias", "Audience Mismatch", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 11,
+      "company": "Lokalise",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/lokalise_newsletter_teardown.html",
+      "patterns": ["Audience Mismatch", "Feature-First Bias", "Guest Language CTA"]
+    },
+    {
+      "id": 12,
+      "company": "Zoho Analytics",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/zoho-analytics-q1-2026-showcase.html",
+      "patterns": ["Missing Visual Hierarchy", "Feature-First Bias", "Guest Language CTA", "Zero Social Proof"]
+    },
+    {
+      "id": 13,
+      "company": "Notion",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/notion-34-part2-showcase.html",
+      "patterns": ["Filing Label Subject", "Urgency Without Architecture", "Guest Language CTA"]
+    },
+    {
+      "id": 14,
+      "company": "Landbot",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 4,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/landbot-ai-agent-showcase.html",
+      "patterns": ["Missing Visual Hierarchy", "Feature-First Bias", "Guest Language CTA"]
+    },
+    {
+      "id": 15,
+      "company": "Optimizely",
+      "vertical": "Enterprise B2B",
+      "type": "Thought Leadership",
+      "score_original": 4,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/optimizely-ai-agents-showcase.html",
+      "patterns": ["Consequence-After-Caveat", "Feature-First Bias", "Guest Language CTA"]
+    },
+    {
+      "id": 16,
+      "company": "Seamless.AI",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/seamless-mcp-teardown.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Zero Social Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 17,
+      "company": "The Decision Lab",
+      "vertical": "Enterprise B2B",
+      "type": "Newsletter",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/decision-lab-teardown.html",
+      "patterns": ["Filing Label Subject", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 18,
+      "company": "Medallia",
+      "vertical": "Enterprise B2B",
+      "type": "Thought Leadership",
+      "score_original": 4,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/medallia-cx-stats-showcase.html",
+      "patterns": ["Audience Mismatch", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 19,
+      "company": "Gamma",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/gamma-newsletter-showcase.html",
+      "patterns": ["Feature-First Bias", "Zero Social Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 20,
+      "company": "Memrise",
+      "vertical": "EdTech",
+      "type": "Promotional",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/memrise_newsletter_showcase.html",
+      "patterns": ["Urgency Without Architecture", "Guest Language CTA", "Filing Label Subject"]
+    },
+    {
+      "id": 21,
+      "company": "Tech Talent Decoded",
+      "vertical": "B2B SaaS",
+      "type": "Newsletter",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/tech_talent_decoded_showcase.html",
+      "patterns": ["Filing Label Subject", "Zero Social Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 22,
+      "company": "Uber",
+      "vertical": "Travel / Marketplace",
+      "type": "Promotional",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/uber_newsletter_showcase.html",
+      "patterns": ["Missing Visual Hierarchy", "Three Identical CTAs", "Guest Language CTA"]
+    },
+    {
+      "id": 23,
+      "company": "Wizz Air",
+      "vertical": "Travel / Marketplace",
+      "type": "Promotional",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/wizzair_easter_showcase.html",
+      "patterns": ["Urgency Without Architecture", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 24,
+      "company": "Booking.com",
+      "vertical": "Travel / Marketplace",
+      "type": "Promotional",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/booking_com_showcase.html",
+      "patterns": ["Feature-First Bias", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 25,
+      "company": "ReversingLabs",
+      "vertical": "Cybersecurity",
+      "type": "Thought Leadership",
+      "score_original": 2,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/reversinglabs-vibeware-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Zero Social Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 26,
+      "company": "Finite State",
+      "vertical": "Cybersecurity",
+      "type": "Product Update",
+      "score_original": 2,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/finitestate-ai-unpacking-showcase.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Zero Social Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 27,
+      "company": "Wiz",
+      "vertical": "Cybersecurity",
+      "type": "Product Update",
+      "score_original": 2,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/wiz-ai-app-showcase.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 28,
+      "company": "Sequel.io",
+      "vertical": "B2B SaaS",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/sequel-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 29,
+      "company": "Alt21",
+      "vertical": "Fintech",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/alt21-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 30,
+      "company": "Nilus",
+      "vertical": "Fintech",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/nilus-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Achievement Framing", "Guest Language CTA"]
+    },
+    {
+      "id": 31,
+      "company": "QuickSpark",
+      "vertical": "Fintech",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/quickspark-showcase.html",
+      "patterns": ["Filing Label Subject", "Audience Mismatch", "Guest Language CTA"]
+    },
+    {
+      "id": 32,
+      "company": "Confluence Technologies",
+      "vertical": "Fintech",
+      "type": "Homepage",
+      "score_original": 2,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/confluence-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 33,
+      "company": "TimePayment",
+      "vertical": "Fintech",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/timepayment-showcase.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA"]
+    },
+    {
+      "id": 34,
+      "company": "Cloud Campaign",
+      "vertical": "B2B SaaS",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/cloudcampaign-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 35,
+      "company": "TripleDart",
+      "vertical": "B2B SaaS",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/tripledart-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 36,
+      "company": "Userpilot",
+      "vertical": "B2B SaaS",
+      "type": "Homepage",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/userpilot-showcase.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA"]
+    },
+    {
+      "id": 37,
+      "company": "SplitMetrics",
+      "vertical": "B2B SaaS",
+      "type": "Welcome Email",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/splitmetrics-showcase.html",
+      "patterns": ["Three Identical CTAs", "Filing Label Subject", "Guest Language CTA"]
+    },
+    {
+      "id": 38,
+      "company": "Tilled",
+      "vertical": "Fintech",
+      "type": "Blog Post",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/tilled-showcase.html",
+      "patterns": ["Buried Proof", "Filing Label Subject", "Guest Language CTA"]
+    },
+    {
+      "id": 39,
+      "company": "Ahrefs",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/ahrefs-changelog-showcase.html",
+      "patterns": ["Missing Visual Hierarchy", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 40,
+      "company": "Spreedly",
+      "vertical": "Fintech",
+      "type": "Long-form Guide",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/spreedly-latam-showcase.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 41,
+      "company": "EasyLlama",
+      "vertical": "B2B SaaS",
+      "type": "Blog Post",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/easyllama-ai-governance-showcase.html",
+      "patterns": ["Title Reframing Gap", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 42,
+      "company": "Tuum",
+      "vertical": "Fintech",
+      "type": "Customer Story",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/tuum-prisma-showcase.html",
+      "patterns": ["Achievement Framing", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 43,
+      "company": "Dot Compliance",
+      "vertical": "B2B SaaS",
+      "type": "Blog Post",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/dotcompliance-ai-showcase.html",
+      "patterns": ["Title Reframing Gap", "Filing Label Subject", "Guest Language CTA"]
+    },
+    {
+      "id": 44,
+      "company": "Tresorit",
+      "vertical": "B2B SaaS",
+      "type": "Company Announcement",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/tresorit-g2-showcase.html",
+      "patterns": ["Achievement Framing", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 45,
+      "company": "SEOmonitor",
+      "vertical": "B2B SaaS",
+      "type": "Product Update",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/seomonitor-content-writer-showcase.html",
+      "patterns": ["Buried Proof", "Filing Label Subject", "Guest Language CTA"]
+    },
+    {
+      "id": 46,
+      "company": "Wrike",
+      "vertical": "Enterprise B2B",
+      "type": "Blog Announcement",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/wrike-teardown.html",
+      "patterns": ["Title Reframing Gap", "Buried Proof", "Missing Visual Hierarchy", "Guest Language CTA"]
+    },
+    {
+      "id": 47,
+      "company": "Semrush",
+      "vertical": "B2B SaaS",
+      "type": "Blog Post",
+      "score_original": 4,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/semrush-teardown.html",
+      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA"]
+    },
+    {
+      "id": 48,
+      "company": "Cato Networks",
+      "vertical": "Cybersecurity",
+      "type": "Blog Announcement",
+      "score_original": 4,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/cato-networks-teardown.html",
+      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+    },
+    {
+      "id": 49,
+      "company": "Perplexity",
+      "vertical": "AI / Agents",
+      "type": "Upgrade Email",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/perplexity-teardown.html",
+      "patterns": ["Three Identical CTAs", "Filing Label Subject", "Guest Language CTA"]
+    },
+    {
+      "id": 50,
+      "company": "Zoho Workplace",
+      "vertical": "Enterprise B2B",
+      "type": "Blog Article",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/zoho-workplace-teardown.html",
+      "patterns": ["Buried Proof", "Zero Social Proof", "Guest Language CTA", "Filing Label Subject"]
+    },
+    {
+      "id": 51,
+      "company": "Limelight",
+      "vertical": "B2B SaaS",
+      "type": "Blog Post",
+      "score_original": 3,
+      "score_rebuilt": 9,
+      "url": "https://strategicflow-tech.github.io/showcase/limelight-teardown.html",
+      "patterns": ["Filing Label Subject", "Consequence-After-Caveat", "Guest Language CTA", "Title Reframing Gap"]
+    }
+  ]
+}
