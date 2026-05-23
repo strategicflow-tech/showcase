@@ -100,7 +100,8 @@ nav{
 .section-sub{font-size:15px;color:var(--text2);margin-bottom:48px;max-width:560px;line-height:1.6;}
 
 /* AUDIT TOOLS GRID */
-.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--border);}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+@media(max-width:768px){.tools-grid{grid-template-columns:1fr;}}
 .tool-card{
   background:var(--bg);padding:36px;
   transition:background .2s;
@@ -442,7 +443,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
   <div class="section-label">Decision Friction Model</div>
   <div class="section-title">7 behavioral checks. Every email.</div>
   <p class="section-sub">Each check maps to a specific reader behavior that determines whether your email gets opened, read, or acted on. Not style. Not tone. Decision friction.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;background:var(--border);">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);">
     <div style="background:var(--bg);padding:24px 28px;">
       <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">01</div>
       <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Subject line</div>
@@ -473,7 +474,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
       <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Activation friction</div>
       <div style="font-size:13px;color:var(--text2);line-height:1.6;">Onboarding steps that describe actions without naming consequences create drop-off. Each step should name what it unlocks, not just what to do.</div>
     </div>
-    <div style="background:var(--bg);padding:24px 28px;">
+    <div style="background:var(--bg);padding:24px 28px;grid-column:1/-1;">
       <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">07</div>
       <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Audience signal</div>
       <div style="font-size:13px;color:var(--text2);line-height:1.6;">Line 1 speaks to everyone. That is why it reaches no one. The email that names a specific reader role in the hook converts at a different rate than the one that doesn't.</div>
@@ -656,7 +657,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>Async delivery, 48hr turnaround</li>
         <li>Monthly performance review</li>
       </ul>
-      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link" target="_blank">Get Lite →</a>
+      <a href="https://buy.stripe.com/28EeVdg2s8Rrapv24X7wA01" class="tool-link" target="_blank">Get Lite →</a>
     </div>
 
     <div class="pricing-card featured">
@@ -673,7 +674,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>Monthly strategy call</li>
         <li>Showcase teardown included</li>
       </ul>
-      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link" target="_blank">Get Growth →</a>
+      <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="tool-link" target="_blank">Get Growth →</a>
     </div>
 
     <div class="pricing-card">
@@ -690,7 +691,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>Weekly strategy call</li>
         <li>Dedicated Slack channel</li>
       </ul>
-      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link" target="_blank">Get High-Impact →</a>
+      <a href="https://buy.stripe.com/6oU14n2bCgjT1SZ5h97wA03" class="tool-link" target="_blank">Get High-Impact →</a>
     </div>
 
   </div>
@@ -704,7 +705,7 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
     <p>Multi-email sequences, onboarding flows, and content systems rebuilt end to end. Custom deliverables, documented reasoning, quarterly reviews.</p>
     <div class="btn-row">
       <a href="https://strategicflow-tech.github.io/showcase/enterprise.html" class="tool-link" target="_blank">View Enterprise Options →</a>
-      <a href="https://strategicflow.carrd.co/#pricing" class="tool-link-ghost" target="_blank">See all plans</a>
+      <a href="https://strategic-flow-pro.replit.app/packages" class="tool-link-ghost" target="_blank">See all plans</a>
     </div>
   </div>
 </section>
