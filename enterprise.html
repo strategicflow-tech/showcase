@@ -309,29 +309,33 @@
 
   .section-body {
     font-size: 17px;
-    color: var(--mid);
+    color: #c8cdd8;
     max-width: 560px;
     line-height: 1.8;
   }
 
-  .section-body strong { color: var(--white); font-weight: 500; }
+  .section-body strong { color: #ffffff; font-weight: 600; }
 
   /* PROBLEM SECTION */
   .problem-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
+    gap: 24px;
+    background: transparent;
     margin-top: 64px;
-    border: 1px solid var(--border);
   }
 
   .problem-cell {
     background: var(--black);
     padding: 48px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
   }
 
-  .problem-cell.highlight { background: rgba(74,143,231,0.06); }
+  .problem-cell.highlight {
+    background: rgba(74,143,231,0.05);
+    border-color: rgba(74,143,231,0.3);
+  }
 
   .cell-tag {
     font-family: 'DM Mono', monospace;
@@ -357,14 +361,14 @@
 
   .cell-content {
     font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    line-height: 1.8;
-    color: var(--mid);
+    font-size: 15px;
+    line-height: 1.9;
+    color: #c8cdd8;
   }
 
-  .cell-content strong { color: var(--white); font-weight: 500; }
-  .cell-content .highlight-text { color: var(--signal); }
-  .cell-content .noise-text { color: var(--noise); }
+  .cell-content strong { color: #ffffff; font-weight: 600; }
+  .cell-content .highlight-text { color: var(--signal); font-weight: 600; }
+  .cell-content .noise-text { color: #e05c5c; font-weight: 600; }
 
   /* ENGINE SECTION */
   .engine-section {
@@ -405,12 +409,12 @@
   }
 
   .engine-body {
-    font-size: 14px;
-    color: var(--mid);
+    font-size: 15px;
+    color: #c8cdd8;
     line-height: 1.8;
   }
 
-  .engine-body strong { color: var(--white); font-weight: 500; }
+  .engine-body strong { color: #ffffff; font-weight: 600; }
 
   /* ASSESSMENT FLOW */
   .flow-section { padding: 100px 48px; }
@@ -626,12 +630,12 @@
 
   .pricing-desc {
     font-size: 16px;
-    color: var(--mid);
+    color: #c8cdd8;
     line-height: 1.8;
     margin-bottom: 48px;
   }
 
-  .pricing-desc strong { color: var(--white); font-weight: 500; }
+  .pricing-desc strong { color: #ffffff; font-weight: 600; }
 
   .pricing-cta {
     display: inline-block;
@@ -674,9 +678,9 @@
     border: 1px solid var(--border);
     padding: 20px;
     background: var(--card);
-    font-size: 13px;
-    color: var(--mid);
-    line-height: 1.6;
+    font-size: 14px;
+    color: #c8cdd8;
+    line-height: 1.65;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -688,9 +692,9 @@
   .includes-item::before { display: none; }
 
   .includes-item strong {
-    color: var(--white);
-    font-weight: 600;
-    font-size: 13px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
     display: block;
     margin-bottom: 2px;
   }
