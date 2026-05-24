@@ -225,6 +225,19 @@ nav{
 .pricing-features{list-style:none;margin-bottom:28px;}
 .pricing-features li{font-size:13px;color:var(--text2);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px;line-height:1.5;}
 .pricing-features li::before{content:'→';color:var(--green);font-family:'DM Mono',monospace;font-size:11px;flex-shrink:0;margin-top:1px;}
+.pricing-annual-note{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:8px;letter-spacing:.03em;}
+
+/* BILLING TOGGLE */
+.billing-toggle-wrap{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:40px;}
+.billing-label{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);transition:color .2s;}
+.billing-label.active{color:var(--green);}
+.toggle-switch{position:relative;width:52px;height:28px;cursor:pointer;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--bg3);border:1px solid var(--border);border-radius:28px;transition:.3s;}
+.toggle-slider::before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#ffffff;border-radius:50%;transition:.3s;}
+.toggle-switch input:checked + .toggle-slider{background:var(--green);border-color:var(--green);}
+.toggle-switch input:checked + .toggle-slider::before{transform:translateX(24px);}
+.annual-badge{display:inline-block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:rgba(74,143,231,0.15);color:var(--green);border:1px solid var(--border2);padding:3px 8px;border-radius:4px;margin-left:6px;}
 
 /* FOOTER */
 footer{
@@ -704,13 +717,24 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
   <div class="section-title">Start free. Scale when ready.</div>
   <p class="section-sub">Every plan includes the Strategic Flow Method. Score, rebuilt HTML, subject line variants, and structural reasoning documented.</p>
 
+  <!-- BILLING TOGGLE -->
+  <div class="billing-toggle-wrap">
+    <span class="billing-label active" id="label-monthly">Monthly</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="billingToggle">
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="billing-label" id="label-annual">Annual <span class="annual-badge">2 months free</span></span>
+  </div>
+
   <div class="pricing-grid">
 
+    <!-- LITE -->
     <div class="pricing-card">
-      <div class="pricing-tag">Monthly</div>
+      <div class="pricing-tag" id="tag-lite">Monthly</div>
       <div class="pricing-name">Lite</div>
-      <div class="pricing-price">$299</div>
-      <div class="pricing-period">per month</div>
+      <div class="pricing-price" id="price-lite">$299</div>
+      <div class="pricing-period" id="period-lite">per month</div>
       <p class="pricing-desc">Ongoing audit coverage for teams sending regular product updates and onboarding sequences.</p>
       <ul class="pricing-features">
         <li>Up to 4 audits per month</li>
@@ -719,14 +743,16 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>Async delivery, 48hr turnaround</li>
         <li>Monthly performance review</li>
       </ul>
-      <a href="https://buy.stripe.com/28EeVdg2s8Rrapv24X7wA01" class="tool-link" target="_blank">Get Lite →</a>
+      <a href="https://buy.stripe.com/28EeVdg2s8Rrapv24X7wA01" class="tool-link" id="btn-lite" target="_blank">Get Lite →</a>
+      <div class="pricing-annual-note" id="note-lite" style="display:none;">Billed annually · Lock in your rate for 12 months</div>
     </div>
 
+    <!-- GROWTH -->
     <div class="pricing-card featured">
-      <div class="pricing-tag">Monthly · Most Popular</div>
+      <div class="pricing-tag" id="tag-growth">Monthly · Most Popular</div>
       <div class="pricing-name">Growth</div>
-      <div class="pricing-price">$499</div>
-      <div class="pricing-period">per month</div>
+      <div class="pricing-price" id="price-growth">$499</div>
+      <div class="pricing-period" id="period-growth">per month</div>
       <p class="pricing-desc">Full audit coverage plus LinkedIn content audits. For teams running product emails and content in parallel.</p>
       <ul class="pricing-features">
         <li>Up to 8 audits per month</li>
@@ -737,14 +763,16 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>Showcase teardown included</li>
         <li style="color:var(--green);">✨ Open rate prediction per rebuild</li>
       </ul>
-      <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="tool-link" target="_blank">Get Growth →</a>
+      <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="tool-link" id="btn-growth" target="_blank">Get Growth →</a>
+      <div class="pricing-annual-note" id="note-growth" style="display:none;">Billed annually · Lock in your rate for 12 months</div>
     </div>
 
+    <!-- HIGH-IMPACT -->
     <div class="pricing-card">
-      <div class="pricing-tag">Monthly · Full System</div>
+      <div class="pricing-tag" id="tag-highimpact">Monthly · Full System</div>
       <div class="pricing-name">High-Impact</div>
-      <div class="pricing-price">$899</div>
-      <div class="pricing-period">per month</div>
+      <div class="pricing-price" id="price-highimpact">$899</div>
+      <div class="pricing-period" id="period-highimpact">per month</div>
       <p class="pricing-desc">Complete email architecture coverage. Full onboarding sequences, changelog systems, and content rebuilt end to end.</p>
       <ul class="pricing-features">
         <li>Unlimited audits</li>
@@ -755,11 +783,50 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
         <li>Dedicated Slack channel</li>
         <li style="color:var(--green);">✨ Open rate prediction + ROI tracking</li>
       </ul>
-      <a href="https://buy.stripe.com/6oU14n2bCgjT1SZ5h97wA03" class="tool-link" target="_blank">Get High-Impact →</a>
+      <a href="https://buy.stripe.com/6oU14n2bCgjT1SZ5h97wA03" class="tool-link" id="btn-highimpact" target="_blank">Get High-Impact →</a>
+      <div class="pricing-annual-note" id="note-highimpact" style="display:none;">Billed annually · Lock in your rate for 12 months</div>
     </div>
 
   </div>
 </section>
+
+<script>
+const toggle = document.getElementById('billingToggle');
+const labelMonthly = document.getElementById('label-monthly');
+const labelAnnual = document.getElementById('label-annual');
+
+const plans = {
+  lite: {
+    monthly: { price: '$299', period: 'per month', tag: 'Monthly', btn: 'Get Lite →', url: 'https://buy.stripe.com/28EeVdg2s8Rrapv24X7wA01' },
+    annual:  { price: '$2,990', period: 'per year · save $598', tag: 'Annual', btn: 'Get Lite Annual →', url: 'https://buy.stripe.com/28EeVdg2s8Rrapv24X7wA01?price=price_1TagpeDpTwoDeZJnoC52F00K' }
+  },
+  growth: {
+    monthly: { price: '$499', period: 'per month', tag: 'Monthly · Most Popular', btn: 'Get Growth →', url: 'https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02' },
+    annual:  { price: '$4,990', period: 'per year · save $998', tag: 'Annual · Most Popular', btn: 'Get Growth Annual →', url: 'https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02?price=price_1TagrvDpTwoDeZJnB6oDCYfV' }
+  },
+  highimpact: {
+    monthly: { price: '$899', period: 'per month', tag: 'Monthly · Full System', btn: 'Get High-Impact →', url: 'https://buy.stripe.com/6oU14n2bCgjT1SZ5h97wA03' },
+    annual:  { price: '$8,990', period: 'per year · save $1,798', tag: 'Annual · Full System', btn: 'Get High-Impact Annual →', url: 'https://buy.stripe.com/6oU14n2bCgjT1SZ5h97wA03?price=price_1TagtHDpTwoDeZJntXm9F16z' }
+  }
+};
+
+toggle.addEventListener('change', function() {
+  const isAnnual = this.checked;
+  labelMonthly.classList.toggle('active', !isAnnual);
+  labelAnnual.classList.toggle('active', isAnnual);
+  const mode = isAnnual ? 'annual' : 'monthly';
+  ['lite','growth','highimpact'].forEach(plan => {
+    const data = plans[plan][mode];
+    document.getElementById('price-' + plan).textContent = data.price;
+    document.getElementById('period-' + plan).textContent = data.period;
+    document.getElementById('tag-' + plan).textContent = data.tag;
+    const btn = document.getElementById('btn-' + plan);
+    btn.textContent = data.btn;
+    btn.href = data.url;
+    document.getElementById('note-' + plan).style.display = isAnnual ? 'block' : 'none';
+  });
+});
+</script>
 
 <!-- ENTERPRISE -->
 <section class="section" id="enterprise" style="padding-top:0;">
