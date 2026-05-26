@@ -147,7 +147,7 @@ Any architectural element in an email that interrupts, delays, or eliminates the
 - Delivery within 24 hours
 
 ### High-Impact — $899/month
-- Unlimited rebuilds (up to 15 per month)
+- Unlimited rebuilds
 - 3 A/B subject line variants per rebuild
 - Preview text fix per rebuild
 - Full onboarding sequence audit (first month)
@@ -159,16 +159,19 @@ Any architectural element in an email that interrupts, delays, or eliminates the
 - Delivery within 4–8 hours
 
 ### Architecture — $2,500/month
-- Unlimited rebuilds
-- 3 A/B subject line variants per rebuild
-- Full onboarding sequence audit (first month)
-- Monthly content calendar
-- ROI tracking per rebuild
-- Monthly 45-minute strategic call
-- Quarterly full stack audit
-- Direct Slack access (4–8 hour response)
-- Delivery within 4–8 hours
-- Peer-to-peer engagement, not vendor-to-client
+- LinkedIn Post Audit — SaaS posts scored and rebuilt against 7 structural bugs
+- Unlimited rebuilds — every email your team ships, rebuilt HTML ready to send. No quota, no queue
+- Full communication audit — every email from the past 90 days scored. Delivered as an executive report with prioritised fixes
+- 3 subject line variants per email with predicted open rate delta
+- Batch assessment — diagnose up to 10 emails at once, ranked by impact
+- Content calendar — every rebuild generates a 4-week arc and 3 follow-up sequences
+- Competitor benchmark — score your emails against up to 3 competitors
+- A/B test tracker — log every test, record real open rates, see winning patterns
+- Monthly performance report — open rate delta: predicted vs actual, per rebuild, every month. Know which subject line patterns consistently win for your audience.
+- Onboarding sequence audit — every email scored, diagnosed, and rebuilt
+- Release note system — paste the Jira ticket, receive rebuilt HTML
+- Monthly diagnostic call — 45 minutes with Alex Iliescu. Strategic, not operational
+- Direct Slack access — one channel, same-day responses. No tickets, no account managers
 
 ---
 
