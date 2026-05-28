@@ -382,6 +382,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 48px;
     margin-top: 64px;
+    align-items: stretch;
   }
 
   .engine-card {
@@ -389,6 +390,8 @@
     border: 1px solid var(--border);
     position: relative;
     transition: border-color 0.3s;
+    display: flex;
+    flex-direction: column;
   }
 
   .engine-card:hover { border-color: rgba(74,143,231,0.4); }
@@ -879,6 +882,11 @@
       margin-bottom: 4px;
     }
   }
+
+@media(max-width:680px){
+  .how-grid{grid-template-columns:1fr !important;padding-left:0 !important;}
+  .how-phase-header{padding-left:0 !important;}
+}
 </style>
 </head>
 <body>
@@ -1301,14 +1309,14 @@
 
     <!-- PHASE 1 -->
     <div style="margin-bottom:48px;">
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
         <div style="width:40px;height:40px;border:1px solid var(--signal);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--signal);flex-shrink:0;">W1</div>
         <div>
           <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal);margin-bottom:4px;">Week 1 — Diagnosis</div>
           <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);">Find what is broken before you rewrite anything.</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
+      <div class="how-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
         <div style="border:1px solid var(--border);padding:20px;border-left:2px solid var(--signal);">
           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Tool 01</div>
           <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;">Email Assessment</div>
@@ -1329,14 +1337,14 @@
 
     <!-- PHASE 2 -->
     <div style="margin-bottom:48px;">
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
         <div style="width:40px;height:40px;border:1px solid var(--signal);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--signal);flex-shrink:0;">W2</div>
         <div>
           <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal);margin-bottom:4px;">Week 2 — Rebuild</div>
           <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);">Fix the critical gaps. Ship rebuilt HTML.</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
+      <div class="how-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
         <div style="border:1px solid var(--border);padding:20px;border-left:2px solid rgba(255,255,255,0.15);">
           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Tool 02</div>
           <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;">Email Rebuild</div>
@@ -1357,14 +1365,14 @@
 
     <!-- PHASE 3 -->
     <div style="margin-bottom:48px;">
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
         <div style="width:40px;height:40px;border:1px solid var(--signal);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--signal);flex-shrink:0;">W3</div>
         <div>
           <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal);margin-bottom:4px;">Week 3 — Intelligence</div>
           <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);">Surface patterns invisible in per-email metrics.</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
+      <div class="how-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
         <div style="border:1px solid var(--border);padding:20px;border-left:2px solid rgba(255,255,255,0.15);">
           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Tool 11</div>
           <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;">Pattern Intelligence</div>
@@ -1385,14 +1393,14 @@
 
     <!-- PHASE 4 -->
     <div>
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
         <div style="width:40px;height:40px;border:1px solid var(--signal);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--signal);flex-shrink:0;">W4</div>
         <div>
           <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal);margin-bottom:4px;">Week 4 — Report</div>
           <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);">Track what moved. Document what ships next.</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
+      <div class="how-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding-left:56px;">
         <div style="border:1px solid var(--border);padding:20px;border-left:2px solid rgba(255,255,255,0.15);">
           <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);margin-bottom:8px;">Tool 10</div>
           <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;">Open Rate Predictor</div>
