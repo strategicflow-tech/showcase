@@ -148,15 +148,45 @@ footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;align-i
 .footer-links a:hover{color:var(--white);}
 
 @media(max-width:768px){
-  nav{padding:16px 20px;}.nav-links{display:none;}
-  section{padding:72px 24px;}
-  .problem-grid,.deliverables-grid,.pricing-grid{grid-template-columns:1fr;}
+  nav{padding:14px 20px;}
+  .nav-links{display:none;}
+  .nav-logo{font-size:11px;}
+  .nav-cta{padding:8px 14px;font-size:11px;}
+
+  .hero{padding:100px 20px 56px;min-height:auto;}
+  .hero-title{font-size:clamp(34px,9vw,52px);}
+  .hero-sub{font-size:15px;}
+  .hero-actions{flex-direction:column;align-items:flex-start;gap:16px;}
+  .btn-primary{width:100%;text-align:center;padding:14px 20px;}
+
   .stat-bar{grid-template-columns:1fr 1fr;}
-  .stat-item{padding:24px;}
-  .roi-box{padding:32px 24px;}
-  footer{padding:24px;}
-  .compare-table{font-size:13px;}
-  .compare-table th,.compare-table td{padding:12px 14px;}
+  .stat-item{padding:20px 16px;}
+  .stat-num{font-size:32px;}
+  .stat-desc{font-size:12px;}
+
+  section{padding:56px 20px;}
+  .section-title{font-size:clamp(28px,7vw,40px);}
+  .section-body{font-size:15px;}
+
+  .problem-grid,.deliverables-grid,.pricing-grid{grid-template-columns:1fr;}
+  .problem-cell{padding:28px 20px;}
+  .deliverable-card{padding:24px 20px;}
+
+  .timeline::before{left:20px;}
+  .timeline-dot{width:40px;height:40px;}
+  .timeline-item{gap:20px;}
+
+  .roi-box{padding:28px 20px;}
+  .roi-conclusion{font-size:20px;}
+
+  .compare-table{font-size:12px;display:block;overflow-x:auto;}
+  .compare-table th,.compare-table td{padding:10px 12px;}
+
+  .price-card{padding:28px 20px;}
+  .price-amount{font-size:44px;}
+
+  footer{padding:20px;}
+  .footer-links{gap:16px;}
 }
 </style>
 </head>
