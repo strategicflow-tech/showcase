@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The 7-Point Email Audit Checklist — Strategic Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @media print {
+    body { background: #fff !important; }
+    .no-print { display: none !important; }
+    .page { box-shadow: none !important; margin: 0 !important; }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0ede6;
+    font-family: 'Instrument Sans', sans-serif;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .no-print button {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: #0a0a08;
+    color: #f4f2ed;
+    border: none;
+    padding: 12px 28px;
+    cursor: pointer;
+    margin: 0 6px;
+  }
+
+  .no-print button:hover { background: #4A8FE7; }
+
+  /* PAGE */
+  .page {
+    width: 794px;
+    min-height: 1123px;
+    background: #0a0a08;
+    margin: 0 auto;
+    padding: 64px 56px 56px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* BG GRID */
+  .page::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(244,242,237,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(244,242,237,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* ACCENT LINE TOP */
+  .accent-line {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4A8FE7, #1D9E75, transparent);
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #4A8FE7;
+  }
+
+  .brand span { color: rgba(255,255,255,0.4); }
+
+  .score-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(74,143,231,0.1);
+    border: 1px solid rgba(74,143,231,0.3);
+    color: #4A8FE7;
+    padding: 5px 12px;
+  }
+
+  .title-block {
+    margin-bottom: 36px;
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #f4f2ed;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: #4A8FE7;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    max-width: 480px;
+  }
+
+  /* SCORING RULE */
+  .scoring-rule {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .scoring-rule .rule-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    flex-shrink: 0;
+  }
+
+  .scoring-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .chip.green { background: rgba(29,158,117,0.15); color: #1D9E75; border: 1px solid rgba(29,158,117,0.3); }
+  .chip.amber { background: rgba(255,196,0,0.1); color: #ffc400; border: 1px solid rgba(255,196,0,0.3); }
+  .chip.red { background: rgba(255,77,46,0.1); color: #ff4d2e; border: 1px solid rgba(255,77,46,0.3); }
+
+  /* CHECKLIST */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 32px;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 14px;
+    align-items: start;
+    padding: 16px 18px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.02);
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .item:hover { border-color: rgba(74,143,231,0.3); }
+
+  .item-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4A8FE7;
+    line-height: 1.4;
+    padding-top: 1px;
+  }
+
+  .item-content {}
+
+  .item-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: #f4f2ed;
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+
+  .item-question {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.55;
+    margin-bottom: 6px;
+  }
+
+  .item-failure {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: #ff4d2e;
+    opacity: 0.75;
+  }
+
+  .item-failure::before { content: 'FAIL → '; }
+
+  .checkbox-area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    padding-top: 2px;
+  }
+
+  .checkbox {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .checkbox.checked {
+    background: #1D9E75;
+    border-color: #1D9E75;
+  }
+
+  .checkbox.checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .checkbox-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+
+  /* SCORE ROW */
+  .score-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(74,143,231,0.06);
+    border: 1px solid rgba(74,143,231,0.2);
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .score-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .score-boxes {
+    display: flex;
+    gap: 4px;
+  }
+
+  .score-box {
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .score-box.active {
+    background: #4A8FE7;
+    border-color: #4A8FE7;
+    color: #fff;
+  }
+
+  .score-verdict {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.35);
+    min-width: 120px;
+    text-align: right;
+  }
+
+  /* FOOTER */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.3);
+    line-height: 1.7;
+  }
+
+  .footer-left strong {
+    color: #4A8FE7;
+    font-weight: 500;
+  }
+
+  .footer-right {
+    text-align: right;
+  }
+
+  .footer-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .footer-cta {
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: #4A8FE7;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* VERDICT LABELS */
+  .verdict-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .verdict-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.4);
+  }
+  .verdict-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">⬇ Save as PDF</button>
+  <button onclick="window.print()">🖨 Print</button>
+</div>
+
+<div class="page">
+  <div class="accent-line"></div>
+
+  <div class="header">
+    <div class="brand">Strategic<span>Flow</span> · Email Audit Checklist</div>
+    <div class="score-badge">Run before every send</div>
+  </div>
+
+  <div class="title-block">
+    <h1>The 7-Point<br><em>Email Audit.</em></h1>
+    <p class="subtitle">Score 1 point per check. 7/7 = conversion-ready. Below 5 = rebuild before sending. Use on any email — product update, newsletter, lifecycle, outreach.</p>
+  </div>
+
+  <div class="scoring-rule">
+    <span class="rule-label">Verdict</span>
+    <div class="scoring-chips">
+      <span class="chip green">7/7 — Ship it</span>
+      <span class="chip green">6/7 — Fix one thing</span>
+      <span class="chip amber">5/7 — Needs work</span>
+      <span class="chip red">Below 5 — Rebuild</span>
+    </div>
+  </div>
+
+  <div class="checklist" id="checklist">
+
+    <div class="item">
+      <div class="item-num">01</div>
+      <div class="item-content">
+        <div class="item-title">Subject Line</div>
+        <div class="item-question">Does it create a curiosity gap or name a specific consequence? Or does it announce the topic like a folder label?</div>
+        <div class="item-failure">Filing Label Subject</div>
+      </div>
+      <div class="checkbox-area">
+        <div class="checkbox" onclick="toggle(this)"></div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">02</div>
+      <div class="item-content">
+        <div class="item-title">Lead Construction</div>
+        <div class="item-question">Does the first sentence name a consequence, outcome, or reader problem? Or does it open with context, a caveat, or "we are excited to announce"?</div>
+        <div class="item-failure">Consequence-After-Caveat</div>
+      </div>
+      <div class="checkbox-area">
+        <div class="checkbox" onclick="toggle(this)"></div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">03</div>
+      <div class="item-content">
+        <div class="item-title">Feature-to-Outcome Translation</div>
+        <div class="item-question">Does the body name what changes for the reader? Or does it describe what the product does without saying what the reader gains?</div>
+        <div class="item-failure">Feature-First Bias</div>
+      </div>
+      <div class="checkbox-area">
+        <div class="checkbox" onclick="toggle(this)"></div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">04</div>
+      <div class="item-content">
+        <div class="item-title">Visual Hierarchy</div>
+        <div class="item-question">Does the most important claim appear above the fold? Or does everything look equally important with no clear priority?</div>
+        <div class="item-failure">Missing Hierarchy</div>
+      </div>
+      <div class="checkbox-area">
+        <div class="checkbox" onclick="toggle(this)"></div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">05</div>
+      <div class="item-content">
+        <div class="item-title">Before / After Contrast</div>
+        <div class="item-question">Is the transformation explicit? Does the email name what the reader's life looked like before and what changes after?</div>
+        <div class="item-failure">No Transformation Named</div>
+      </div>
+      <div class="checkbox-area">
+        <div class="checkbox" onclick="toggle(this)"></div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">06</div>
+      <div class="item-content">
+        <div class="item-title">Social Proof</div>
+        <div class="item-question">Is there a third-party voice — a named customer, a specific result, a number — or is every claim made by the brand about itself?</div>
+        <div class="item-failure">Zero Social Proof</div>
+      </div>
+      <div class="checkbox-area">
+        <div class="checkbox" onclick="toggle(this)"></div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-num">07</div>
+      <div class="item-content">
+        <div class="item-title">CTA Language</div>
+        <div class="item-question">Does the CTA name what the reader owns or accomplishes? Or does it use guest language — "Learn more", "Click here", "Explore"?</div>
+        <div class="item-failure">Generic Urgency Theatre</div>
+      </div>
+      <div class="checkbox-area">
+        <div class="checkbox" onclick="toggle(this)"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="score-row">
+    <span class="score-label">Your score</span>
+    <div class="score-display">
+      <div class="score-boxes" id="score-boxes">
+        <div class="score-box">1</div>
+        <div class="score-box">2</div>
+        <div class="score-box">3</div>
+        <div class="score-box">4</div>
+        <div class="score-box">5</div>
+        <div class="score-box">6</div>
+        <div class="score-box">7</div>
+      </div>
+    </div>
+    <div class="score-verdict" id="verdict">— / 7</div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <strong>Strategic Flow</strong> · Email Architecture Method<br>
+      Run this checklist before every send.<br>
+      Below 5? Rebuild before it ships.
+    </div>
+    <div class="footer-right">
+      <div class="footer-url">strategicflow-tech.github.io/showcase</div>
+      <span class="footer-cta">Full audit → strategic-flow-audit.replit.app</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(box) {
+  box.classList.toggle('checked');
+  updateScore();
+}
+
+function updateScore() {
+  const checked = document.querySelectorAll('.checkbox.checked').length;
+  const boxes = document.querySelectorAll('.score-box');
+  boxes.forEach((b, i) => {
+    b.classList.toggle('active', i < checked);
+  });
+  const verdicts = {
+    0: '0/7 — Rebuild', 1: '1/7 — Rebuild', 2: '2/7 — Rebuild',
+    3: '3/7 — Rebuild', 4: '4/7 — Rebuild',
+    5: '5/7 — Needs work', 6: '6/7 — Fix one thing', 7: '7/7 — Ship it'
+  };
+  document.getElementById('verdict').textContent = verdicts[checked];
+  const v = document.getElementById('verdict');
+  v.style.color = checked >= 7 ? '#1D9E75' : checked >= 6 ? '#1D9E75' : checked >= 5 ? '#ffc400' : '#ff4d2e';
+}
+</script>
+
+</body>
+</html>
