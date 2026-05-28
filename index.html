@@ -232,13 +232,13 @@ footer a:hover{color:var(--teal)}
 
 <div class="filters-wrap">
   <div class="filters" role="group" aria-label="Filter by category">
-    <button class="filter-btn active" onclick="filter('all',this)">All (51)</button>
-    <button class="filter-btn" onclick="filter('saas',this)">B2B SaaS</button>
-    <button class="filter-btn" onclick="filter('fintech',this)">Fintech</button>
-    <button class="filter-btn" onclick="filter('ai',this)">AI / Agents</button>
-    <button class="filter-btn" onclick="filter('promo',this)">Promo</button>
-    <button class="filter-btn" onclick="filter('enterprise',this)">Enterprise</button>
-  </div>
+    <button class="filter-btn active" data-filter-cat="all" onclick="filter('all',this)">All <span class="filter-count"></span></button>
+    <button class="filter-btn" data-filter-cat="saas" onclick="filter('saas',this)">B2B SaaS <span class="filter-count"></span></button>
+    <button class="filter-btn" data-filter-cat="fintech" onclick="filter('fintech',this)">Fintech <span class="filter-count"></span></button>
+    <button class="filter-btn" data-filter-cat="ai" onclick="filter('ai',this)">AI / Agents <span class="filter-count"></span></button>
+    <button class="filter-btn" data-filter-cat="promo" onclick="filter('promo',this)">Promo <span class="filter-count"></span></button>
+    <button class="filter-btn" data-filter-cat="enterprise" onclick="filter('enterprise',this)">Enterprise <span class="filter-count"></span></button>
+</div>
 </div>
 
 <main id="teardowns" class="grid-wrap">
@@ -670,6 +670,9 @@ footer a:hover{color:var(--teal)}
     </a>
 
   </div>
+  <div style="text-align:center;padding:32px 16px 8px;">
+    <button id="load-more-btn" onclick="loadMore()" style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:12px 32px;border-radius:6px;border:1px solid rgba(0,0,0,0.18);background:#fff;color:#1a1a18;cursor:pointer;transition:all .2s;letter-spacing:.01em;">Load more</button>
+  </div>
 </main>
 
 <section id="methodology" class="method" aria-labelledby="method-title">
@@ -715,14 +718,53 @@ footer a:hover{color:var(--teal)}
 </footer>
 
 <script>
-function filter(cat, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
-  btn.classList.add('active')
-  document.querySelectorAll('.card').forEach(card => {
-    if (cat === 'all') { card.classList.remove('hidden') }
-    else { card.classList.toggle('hidden', !(card.dataset.cat||'').includes(cat)) }
-  })
+const PAGE_SIZE = 12;
+let currentCat = 'all';
+let visibleCount = PAGE_SIZE;
+
+function getFilteredCards() {
+  return Array.from(document.querySelectorAll('.card')).filter(card => {
+    if (currentCat === 'all') return true;
+    return (card.dataset.cat || '').includes(currentCat);
+  });
 }
+
+function renderCards() {
+  const all = Array.from(document.querySelectorAll('.card'));
+  const filtered = getFilteredCards();
+  all.forEach(card => card.classList.add('hidden'));
+  filtered.slice(0, visibleCount).forEach(card => card.classList.remove('hidden'));
+  const btn = document.getElementById('load-more-btn');
+  if (filtered.length <= visibleCount) {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = 'inline-block';
+    btn.textContent = 'Load more (' + (filtered.length - visibleCount) + ' remaining)';
+  }
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    const cat = b.dataset.filterCat;
+    if (!cat) return;
+    const count = cat === 'all'
+      ? all.length
+      : all.filter(c => (c.dataset.cat||'').includes(cat)).length;
+    b.querySelector('.filter-count').textContent = count;
+  });
+}
+
+function filter(cat, btn) {
+  currentCat = cat;
+  visibleCount = PAGE_SIZE;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+function loadMore() {
+  visibleCount += PAGE_SIZE;
+  renderCards();
+}
+
+document.addEventListener('DOMContentLoaded', renderCards);
 </script>
 </body>
 </html>
