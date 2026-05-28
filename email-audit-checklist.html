@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7TV731EJTB');
-</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The 7-Point Email Audit Checklist — Strategic Flow</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  @media(max-width: 480px) {
+    .page { padding: 32px 20px; }
+    .header { flex-direction: column; gap: 10px; }
+    .score-badge { display: none; }
+    .scoring-chips { gap: 6px; }
+    .chip { font-size: 9px; padding: 3px 8px; }
+    .score-boxes { gap: 3px; }
+    .score-box { width: 20px; height: 20px; font-size: 10px; }
+    .footer { flex-direction: column; }
+    .footer-right { text-align: left; }
+    .item-title { font-size: 14px; }
+    .item-question { font-size: 11px; }
+  }
+
   @media print {
     body { background: #fff !important; }
     .no-print { display: none !important; }
@@ -26,7 +31,7 @@
   body {
     background: #f0ede6;
     font-family: 'Instrument Sans', sans-serif;
-    padding: 40px 20px;
+    padding: 24px 16px;
     min-height: 100vh;
   }
 
@@ -52,14 +57,15 @@
 
   /* PAGE */
   .page {
-    width: 794px;
-    min-height: 1123px;
+    width: 100%;
+    max-width: 760px;
     background: #0a0a08;
     margin: 0 auto;
-    padding: 64px 56px 56px;
+    padding: 48px 40px 48px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.25);
     position: relative;
     overflow: hidden;
+    border-radius: 4px;
   }
 
   /* BG GRID */
@@ -120,7 +126,7 @@
 
   h1 {
     font-family: 'DM Serif Display', serif;
-    font-size: 38px;
+    font-size: clamp(28px, 5vw, 38px);
     line-height: 1.1;
     letter-spacing: -0.02em;
     color: #f4f2ed;
@@ -142,14 +148,15 @@
   /* SCORING RULE */
   .scoring-rule {
     display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 14px 20px;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.08);
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     position: relative;
     z-index: 2;
+    flex-wrap: wrap;
   }
 
   .scoring-rule .rule-label {
@@ -191,10 +198,10 @@
 
   .item {
     display: grid;
-    grid-template-columns: 28px 1fr auto;
-    gap: 14px;
+    grid-template-columns: 24px 1fr 28px;
+    gap: 10px;
     align-items: start;
-    padding: 16px 18px;
+    padding: 14px 14px;
     border: 1px solid rgba(255,255,255,0.07);
     background: rgba(255,255,255,0.02);
     position: relative;
@@ -289,12 +296,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 14px 20px;
+    padding: 12px 14px;
     background: rgba(74,143,231,0.06);
     border: 1px solid rgba(74,143,231,0.2);
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     position: relative;
     z-index: 2;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .score-label {
@@ -317,8 +326,8 @@
   }
 
   .score-box {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border: 1px solid rgba(255,255,255,0.15);
     display: flex;
     align-items: center;
@@ -348,12 +357,14 @@
   /* FOOTER */
   .footer {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     padding-top: 20px;
     border-top: 1px solid rgba(255,255,255,0.08);
     position: relative;
     z-index: 2;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
   .footer-left {
