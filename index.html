@@ -54,7 +54,7 @@
     {"@type":"Article","name":"Perplexity Pro Upgrade Email Teardown — Before/After Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/perplexity-teardown.html"},
     {"@type":"Article","name":"Zoho Workplace Blog Article Teardown — Before/After Content Conversion Analysis","url":"https://strategicflow-tech.github.io/showcase/zoho-workplace-teardown.html"},
     {"@type":"Article","name":"SplitMetrics May 2026 Product Newsletter Teardown — Before/After Analysis","url":"https://strategicflow-tech.github.io/showcase/splitmetrics-teardown-v3.html"}
-  ,{"@type":"Article","name":"Zapier Teardown — Strategic Flow","url":"https://strategicflow-tech.github.io/showcase/zapier-teardown.html"},{"@type":"Article","name":"Zapier Teardown — Strategic Flow","url":"https://strategicflow-tech.github.io/showcase/zapier-teardown.html"},{"@type":"Article","name":"Zapier MCP Teardown — Strategic Flow","url":"https://strategicflow-tech.github.io/showcase/zapier-mcp-teardown.html"}]
+  ]
 }
 </script>
 
@@ -181,7 +181,7 @@ h1 em{font-style:italic;color:var(--teal)}
 .cta-inner p{color:var(--muted);font-size:16px;margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto}
 .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .btn{display:inline-block;padding:13px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;transition:all .15s}
-.btn-primary{background:(--teal);color:#04080f}
+.btn-primary{background:var(--teal);color:#04080f}
 .btn-primary:hover{background:#2D6BE4;transform:translateY(-1px)}
 .btn-ghost{border:1px solid var(--border);color:var(--white)}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.05)}
@@ -238,7 +238,7 @@ footer a:hover{color:var(--teal)}
     <button class="filter-btn" data-filter-cat="ai" onclick="filter('ai',this)">AI / Agents <span class="filter-count"></span></button>
     <button class="filter-btn" data-filter-cat="promo" onclick="filter('promo',this)">Promo <span class="filter-count"></span></button>
     <button class="filter-btn" data-filter-cat="enterprise" onclick="filter('enterprise',this)">Enterprise <span class="filter-count"></span></button>
-</div>
+  </div>
 </div>
 
 <main id="teardowns" class="grid-wrap">
@@ -670,13 +670,15 @@ footer a:hover{color:var(--teal)}
     </a>
 
   </div>
-  
-<a href="zapier-mcp-teardown.html" class="card" data-cat="saas">
-  <div class="card-arrow">↗</div>
-  <div class="card-brand">Zapier</div>
-  <div class="card-desc">Feature guide rebuilt — Filing Label Title and Feature-First Bias removed.</div>
-  <div class="card-tags"><span class="tag teal">saas</span></div>
-</a>
+
+  <div style="text-align:center;padding:32px 16px 8px;">
+    <button id="load-more-btn" onclick="loadMore()" style="
+      font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+      padding:12px 32px;border-radius:6px;border:1px solid rgba(0,0,0,0.18);
+      background:#fff;color:#1a1a18;cursor:pointer;
+      transition:all .2s;letter-spacing:.01em;
+    ">Load more</button>
+  </div>
 </main>
 
 <section id="methodology" class="method" aria-labelledby="method-title">
@@ -745,6 +747,7 @@ function renderCards() {
     btn.style.display = 'inline-block';
     btn.textContent = 'Load more (' + (filtered.length - visibleCount) + ' remaining)';
   }
+  // update filter counts
   document.querySelectorAll('.filter-btn').forEach(b => {
     const cat = b.dataset.filterCat;
     if (!cat) return;
