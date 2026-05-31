@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — Founder Launch Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1D9E75;
+    --green-light: #22c78f;
+    --green-dim: rgba(29,158,117,0.15);
+    --bg: #0a0f0d;
+    --bg-card: #0f1a15;
+    --bg-card2: #111d17;
+    --border: rgba(29,158,117,0.2);
+    --border-bright: rgba(29,158,117,0.5);
+    --text: #e8f0ec;
+    --text-dim: #7a9e8a;
+    --text-muted: #4a6a56;
+    --red: #ff4444;
+    --gold: #f5c842;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Figtree', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    padding: 60px 0 20px;
+  }
+
+  .brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 6vw, 52px);
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .header p {
+    font-size: 16px;
+    color: var(--text-dim);
+    max-width: 500px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  /* URGENCY BANNER */
+  .urgency {
+    background: linear-gradient(135deg, rgba(245,200,66,0.1), rgba(245,200,66,0.05));
+    border: 1px solid rgba(245,200,66,0.3);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin: 0 auto 48px;
+    max-width: 560px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .urgency-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .urgency-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .urgency-text strong {
+    font-weight: 500;
+  }
+
+  /* SLOTS COUNTER */
+  .slots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+
+  .slot {
+    width: 36px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--green);
+  }
+
+  .slot.taken {
+    background: var(--text-muted);
+    opacity: 0.3;
+  }
+
+  /* CARDS */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--border-bright);
+  }
+
+  .card.featured {
+    background: var(--bg-card2);
+    border-color: var(--border-bright);
+  }
+
+  /* Badge */
+  .badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: #000;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .badge.gold {
+    background: var(--gold);
+  }
+
+  /* Card header */
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  .card-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  /* Pricing */
+  .pricing {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .price-original {
+    font-size: 18px;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .price-promo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: var(--green);
+    line-height: 1;
+  }
+
+  .price-promo span {
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  .discount-pill {
+    background: rgba(255,68,68,0.15);
+    border: 1px solid rgba(255,68,68,0.3);
+    color: #ff8888;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 4px;
+  }
+
+  .price-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  /* Description */
+  .card-desc {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  /* Features */
+  .features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .features li {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .features li strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* New tag */
+  .new-tag {
+    background: var(--green-dim);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+  }
+
+  .new-tag-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .new-tag-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* CTA */
+  .cta {
+    display: block;
+    width: 100%;
+    padding: 15px 24px;
+    background: var(--green);
+    color: #000;
+    font-family: 'Figtree', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+
+  .cta:hover {
+    background: var(--green-light);
+    transform: translateY(-1px);
+  }
+
+  .cta.outline {
+    background: transparent;
+    color: var(--green);
+    border: 1px solid var(--border-bright);
+  }
+
+  .cta.outline:hover {
+    background: var(--green-dim);
+  }
+
+  /* Slots remaining */
+  .slots-remaining {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .slots-remaining strong {
+    color: var(--gold);
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .footer a {
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  /* Guarantee */
+  .guarantee {
+    background: var(--green-dim);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 32px 0 0;
+    text-align: center;
+  }
+
+  .guarantee p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .guarantee strong {
+    color: var(--text);
+  }
+
+  @media (max-width: 600px) {
+    .card { padding: 24px 20px; }
+    .price-promo { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="brand">Strategic Flow · Founder Launch Pricing</div>
+    <h1>Fix the architecture.<br><em>Not just the copy.</em></h1>
+    <p>50% off the first month — for the first 5 clients only. No code. No trial. Rebuilt emails from day one.</p>
+  </div>
+
+  <div class="urgency">
+    <div class="urgency-dot"></div>
+    <div class="urgency-text">
+      <strong>FOUNDER PRICING ACTIVE</strong> — 5 spots at 50% off. Price returns to full after slot 5 is filled.
+    </div>
+  </div>
+
+  <div class="slots">
+    <div class="slot"></div>
+    <div class="slot"></div>
+    <div class="slot"></div>
+    <div class="slot"></div>
+    <div class="slot"></div>
+  </div>
+
+  <div class="cards">
+
+    <!-- GROWTH -->
+    <div class="card featured">
+      <div class="badge">⚡ Most Popular</div>
+      <div class="card-label">Growth</div>
+      <div class="card-name">Email Architecture — Growth</div>
+
+      <div class="pricing">
+        <div class="price-original">$499</div>
+        <div class="price-promo">$249<span>/mo</span></div>
+        <div class="discount-pill">50% OFF FIRST MONTH</div>
+      </div>
+      <div class="price-note">8 newsletters/month · Up to 3 users · Then $499/mo</div>
+
+      <div class="divider"></div>
+
+      <p class="card-desc">Full suite including roadmap sections and audience segmentation intelligence. Every rebuild consequence-first, HTML ready to paste into any ESP.</p>
+
+      <div class="new-tag">
+        <div class="new-tag-label">✦ New</div>
+        <div class="new-tag-text"><strong>Open Rate Prediction</strong> — Predicted lift range for each subject line variant before you send.</div>
+      </div>
+
+      <ul class="features">
+        <li><div>8 newsletter rebuilds per month — consequence-first architecture</div></li>
+        <li><div>Brand voice + tone preserved on every rebuild</div></li>
+        <li><div>Audience segmentation intelligence included</div></li>
+        <li><div>A/B subject line variants with predicted open rate delta</div></li>
+        <li><div>Roadmap section structuring</div></li>
+        <li><div>Human review access</div></li>
+      </ul>
+
+      <a href="mailto:alex@strategicflow.tech?subject=Growth Plan - Founder Pricing" class="cta">Get started at $249 — first month →</a>
+      <div class="slots-remaining"><strong>5 spots</strong> available at this price</div>
+    </div>
+
+    <!-- HIGH-IMPACT -->
+    <div class="card">
+      <div class="badge gold">👑 Most Powerful</div>
+      <div class="card-label">High-Impact</div>
+      <div class="card-name">Email Architecture — High-Impact</div>
+
+      <div class="pricing">
+        <div class="price-original">$899</div>
+        <div class="price-promo">$449<span>/mo</span></div>
+        <div class="discount-pill">50% OFF FIRST MONTH</div>
+      </div>
+      <div class="price-note">Unlimited newsletters · Up to 5 users · Then $899/mo</div>
+
+      <div class="divider"></div>
+
+      <p class="card-desc">Everything, unlimited. Full cohesion checks, monthly audits, VIP priority support. Open Rate Prediction + ROI Tracking included.</p>
+
+      <div class="new-tag">
+        <div class="new-tag-label">✦ New</div>
+        <div class="new-tag-text"><strong>Open Rate Prediction + ROI Tracking</strong> — Predicted lift per rebuild AND actual open rate logged after send. Compounding data over time.</div>
+      </div>
+
+      <ul class="features">
+        <li><div><strong>Unlimited</strong> newsletter rebuilds — no quota, no queue</div></li>
+        <li><div>Full cohesion checks across your entire send history</div></li>
+        <li><div>Monthly architecture audits</div></li>
+        <li><div>VIP priority support — direct line, not tickets</div></li>
+        <li><div>Open Rate Prediction + ROI Tracking</div></li>
+        <li><div>Everything in Growth, plus full sequence visibility</div></li>
+      </ul>
+
+      <a href="mailto:alex@strategicflow.tech?subject=High-Impact Plan - Founder Pricing" class="cta outline">Get started at $449 — first month →</a>
+      <div class="slots-remaining"><strong>5 spots</strong> available at this price</div>
+    </div>
+
+    <!-- ARCHITECTURE -->
+    <div class="card">
+      <div class="badge">🏗 Full System</div>
+      <div class="card-label">Architecture</div>
+      <div class="card-name">Full Email System Retainer</div>
+
+      <div class="pricing">
+        <div class="price-original">$2,500</div>
+        <div class="price-promo">$1,250<span>/mo</span></div>
+        <div class="discount-pill">50% OFF FIRST MONTH</div>
+      </div>
+      <div class="price-note">Full retainer · Unlimited users · 3-day free trial included · Then $2,500/mo</div>
+
+      <div class="divider"></div>
+
+      <p class="card-desc">Every email your company sends, rebuilt before it ships. Not a tool. A system that runs parallel to your team.</p>
+
+      <ul class="features">
+        <li><div><strong>Unlimited rebuilds</strong> — every email your team ships, rebuilt as HTML ready to send</div></li>
+        <li><div>Dead Email Resurrector — paste any underperforming email, get rebuilt version in 90 seconds</div></li>
+        <li><div>Open Rate Predictor — scored against subject line, send time, and audience signal</div></li>
+        <li><div>3 subject line variants per email with predicted open rate delta</div></li>
+        <li><div>Email Fatigue Detector — find exactly where you lose the reader</div></li>
+        <li><div>Audience Mirror — extract exact words that belong in your subject, lead, CTA</div></li>
+        <li><div>Best Send Window — optimal send time per email type and industry</div></li>
+        <li><div>Sequence Gap Finder — find the missing emails stalling activation</div></li>
+        <li><div>All High-Impact features included</div></li>
+      </ul>
+
+      <a href="mailto:alex@strategicflow.tech?subject=Architecture Retainer - Founder Pricing" class="cta outline">Start free trial at $1,250 — first month →</a>
+      <div class="slots-remaining"><strong>5 spots</strong> available at this price</div>
+    </div>
+
+    <!-- ACTIVATION INTELLIGENCE -->
+    <div class="card">
+      <div class="badge gold">⚡ Early Access</div>
+      <div class="card-label">Activation Intelligence</div>
+      <div class="card-name">Onboarding Sequence Rebuild</div>
+
+      <div class="pricing">
+        <div class="price-original">$1,500</div>
+        <div class="price-promo">$750<span>/mo</span></div>
+        <div class="discount-pill">50% OFF FIRST MONTH</div>
+      </div>
+      <div class="price-note">Or $1,750 one-time (was $3,500) · 3-day free trial · Then $1,500/mo</div>
+
+      <div class="divider"></div>
+
+      <p class="card-desc">Your onboarding sequence is losing users before they ever see the value. Full diagnosis, 8 deliverables, rebuilt emails you own permanently.</p>
+
+      <ul class="features">
+        <li><div><strong>Activation Gap Report</strong> — full diagnostic of your first 7–14 days, every gap named and severity rated</div></li>
+        <li><div><strong>Email Sequence Rebuild</strong> — every onboarding email rewritten consequence-first, HTML ready to paste into any ESP</div></li>
+        <li><div><strong>In-App Message Audit</strong> — tooltips, empty states, and modals audited against the 7 failure criteria</div></li>
+        <li><div><strong>Day 1 / Day 3 / Day 7 Rebuild</strong> — the three highest-leverage activation moments rebuilt from scratch</div></li>
+        <li><div>8 total deliverables — own them permanently</div></li>
+      </ul>
+
+      <a href="mailto:alex@strategicflow.tech?subject=Activation Intelligence - Founder Pricing" class="cta outline">Get started at $750 — first month →</a>
+      <div class="slots-remaining"><strong>5 spots</strong> available at this price</div>
+    </div>
+
+  </div>
+
+  <div class="guarantee">
+    <p><strong>How it works:</strong> Email alex@strategicflow.tech with the plan you want. You get onboarded same day. First rebuilt email delivered within 24 hours. If it doesn't improve your architecture score, you don't pay for month two.</p>
+  </div>
+
+  <div class="footer">
+    <p>Strategic Flow · alex@strategicflow.tech</p>
+    <p><a href="https://strategicflow.tech">strategicflow.tech</a> · <a href="https://strategicflow-tech.github.io/showcase/">Teardown archive →</a></p>
+  </div>
+
+</div>
+</body>
+</html>
