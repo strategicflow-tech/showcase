@@ -160,6 +160,16 @@ nav{
 @media(max-width:768px){
   .why-grid{grid-template-columns:1fr !important;}
   .process-grid{grid-template-columns:1fr !important;}
+  .method-grid{grid-template-columns:1fr !important;}
+  .ba-hero-grid{grid-template-columns:1fr !important;}
+  .ba-hero-grid>[style*="display:flex"]{display:none !important;}
+  .founder-grid{grid-template-columns:1fr !important;}
+  .bea-why-grid{grid-template-columns:1fr !important;}
+  .calc-range-grid{grid-template-columns:1fr !important;}
+  .bench-stat-grid{grid-template-columns:1fr !important;}
+  .why-not-grid{grid-template-columns:1fr !important;}
+  .upsell-grid{grid-template-columns:1fr !important;}
+  .method-grid>[style*="grid-column:span 2"]{grid-column:span 1 !important;}
   .calc-grid{grid-template-columns:1fr !important;}
   .why-grid>div{border-left:none !important;border-right:none !important;border-bottom:1px solid var(--border);}
 .tools-grid{grid-template-columns:1fr;}}
@@ -347,6 +357,11 @@ footer{
 @media(max-width:768px){
   .why-grid{grid-template-columns:1fr !important;}
   .process-grid{grid-template-columns:1fr !important;}
+  .method-grid{grid-template-columns:1fr !important;}
+  .ba-hero-grid{grid-template-columns:1fr !important;}
+  .ba-hero-grid>[style*="display:flex"]{display:none !important;}
+  .founder-grid{grid-template-columns:1fr !important;}
+  .method-grid>[style*="grid-column:span 2"]{grid-column:span 1 !important;}
   .calc-grid{grid-template-columns:1fr !important;}
   .why-grid>div{border-left:none !important;border-right:none !important;border-bottom:1px solid var(--border);}
 
@@ -430,16 +445,15 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-tag">Behavioral Architecture · SaaS Email Teardown Platform</div>
-  <h1>Your onboarding email is losing users<br><em>before activation starts.</em></h1>
+  <div class="hero-tag"><a href="https://strategicflow.tech/email-architecture-audit.html" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(74,143,231,0.4);" target="_blank">Behavioral Email Architecture</a> · Diagnostic software for SaaS email conversion</div>
+  <h1>Your onboarding email is probably<br><em>losing users before they experience value.</em></h1>
   <p class="hero-sub">Structural teardowns for onboarding sequences, product update emails, changelog posts, and lifecycle content. Built for B2B SaaS founders, marketing managers, and onboarding teams. Not persuasion. Decision architecture.</p>
   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px;">
-    <a href="https://strategic-flow-audit.replit.app" class="nav-cta" target="_blank" style="font-size:15px;padding:13px 28px;border-radius:8px;">Run behavioral audit →</a>
-    <a href="https://strategicflow.tech/teardowns.html" target="_blank" style="display:inline-flex;align-items:center;font-size:14px;color:var(--green);border:1px solid var(--border2);padding:13px 24px;border-radius:8px;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(74,143,231,0.08)'" onmouseout="this.style.background='transparent'">See a sample teardown →</a>
+    <a href="https://strategic-flow-audit.replit.app" class="nav-cta" target="_blank" style="font-size:15px;padding:13px 28px;border-radius:8px;">Run the free audit →</a>
+    <a href="https://strategicflow.tech/teardowns.html" target="_blank" style="display:inline-flex;align-items:center;font-size:14px;color:var(--green);border:1px solid var(--border2);padding:13px 24px;border-radius:8px;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='rgba(74,143,231,0.08)'" onmouseout="this.style.background='transparent'">See 52 teardowns →</a>
   </div>
-  <div style="margin-top:-28px;margin-bottom:40px;">
-    <a href="https://strategic-flow-audit.replit.app/subscribe" target="_blank" style="display:inline-flex;align-items:center;font-size:13px;color:var(--text2);text-decoration:none;padding:10px 0;font-family:'DM Mono',monospace;letter-spacing:.04em;border-bottom:1px solid var(--border2);">Get the 7-point audit checklist — free →</a>
-  </div>
+
+
   <div class="hero-stats">
     <div class="stat">
       <div class="stat-num">52</div>
@@ -455,14 +469,31 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
     </div>
     <div class="stat">
       <div class="stat-num">7</div>
-      <div class="stat-label">Behavioral checks</div>
+      <div class="stat-label">Checks · Score /10</div>
     </div>
   </div>
 </section>
 
+
+<!-- QUICK PRICING STRIP -->
+<div style="border-bottom:1px solid var(--border);background:var(--bg2);padding:14px 48px;display:flex;gap:32px;flex-wrap:wrap;align-items:center;justify-content:center;">
+  <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;">Plans:</div>
+  <a href="#pricing" style="font-size:13px;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text2)'">Single <span style="color:var(--green);">$49</span></a>
+  <span style="color:var(--border2);">·</span>
+  <a href="#pricing" style="font-size:13px;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text2)'">Lite <span style="color:var(--green);">$299/mo</span></a>
+  <span style="color:var(--border2);">·</span>
+  <a href="#pricing" style="font-size:13px;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text2)'">Growth <span style="color:var(--green);">$499/mo</span></a>
+  <span style="color:var(--border2);">·</span>
+  <a href="#pricing" style="font-size:13px;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text2)'">High-Impact <span style="color:var(--green);">$899/mo</span></a>
+  <span style="color:var(--border2);">·</span>
+  <a href="https://strategicflow.tech/architecture.html" target="_blank" style="font-size:13px;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text2)'">Architecture <span style="color:var(--green);">$2,500/mo</span></a>
+  <span style="color:var(--border2);">·</span>
+  <a href="https://strategicflow.tech/activation-intelligence.html" target="_blank" style="font-size:13px;color:var(--text2);text-decoration:none;font-family:'DM Mono',monospace;transition:color .2s;" onmouseover="this.style.color='var(--green)'" onmouseout="this.style.color='var(--text2)'">Activation Audit <span style="color:var(--green);">$3,500</span></a>
+</div>
+
 <!-- TRUST BAR -->
 <div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 48px;display:flex;gap:32px;flex-wrap:wrap;align-items:center;justify-content:center;">
-  <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;">Teardowns published for:</div>
+  <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;">52 teardowns published for:</div>
   <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;">
     <span style="font-size:13px;color:var(--text2);font-weight:600;">Semrush</span>
     <span style="color:var(--text3);">·</span>
@@ -478,14 +509,109 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
     <span style="color:var(--text3);">·</span>
     <span style="font-size:13px;color:var(--text2);font-weight:600;">Zoho</span>
     <span style="color:var(--text3);">·</span>
-    <span style="font-size:13px;color:var(--text2);font-weight:600;">+40 others</span>
+    <a href="https://strategicflow.tech/teardowns.html" target="_blank" style="font-size:13px;color:var(--green);font-weight:600;text-decoration:none;">+40 others →</a>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--border);padding-top:12px;margin-top:4px;width:100%;justify-content:center;">
+    <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;">Categories:</span>
+    <span style="font-size:12px;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 10px;border-radius:20px;">B2B SaaS · Marketing Analytics</span>
+    <span style="font-size:12px;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 10px;border-radius:20px;">PLG SaaS · Productivity</span>
+    <span style="font-size:12px;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 10px;border-radius:20px;">B2B SaaS · DevTools</span>
+    <span style="font-size:12px;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 10px;border-radius:20px;">AI SaaS · Content Intelligence</span>
+    <span style="font-size:12px;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 10px;border-radius:20px;">Enterprise SaaS · CX</span>
+    <span style="font-size:12px;color:var(--text3);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:3px 10px;border-radius:20px;">Fintech · B2C</span>
   </div>
 </div>
 
 
+
+
+
+<!-- FOUNDER STRIP -->
+<div style="border-bottom:1px solid var(--border);background:var(--bg2);padding:16px 48px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;justify-content:center;">
+  <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:.06em;">Built by</div>
+  <div style="font-size:14px;color:#fff;font-weight:600;">Alex Iliescu</div>
+  <div style="color:var(--border2);">·</div>
+  <div style="font-size:13px;color:var(--text2);">52 SaaS teardowns published</div>
+  <div style="color:var(--border2);">·</div>
+  <div style="font-size:13px;color:var(--text2);">Creator of Behavioral Email Architecture</div>
+  <div style="color:var(--border2);">·</div>
+  <a href="https://www.linkedin.com/in/strategic-flow-tech" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);text-decoration:none;letter-spacing:.04em;">LinkedIn →</a>
+</div>
+
+<!-- BENCHMARK WIDGET -->
+<div style="border-bottom:1px solid var(--border);background:rgba(74,143,231,0.04);padding:20px 48px;display:flex;gap:48px;flex-wrap:wrap;align-items:center;justify-content:center;">
+  <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;flex-shrink:0;">Industry benchmark — 52 SaaS emails audited</div>
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:center;">
+    <div style="text-align:center;">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#ff6b4a;line-height:1;">3.4</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.06em;">/10 avg original score</div>
+    </div>
+    <div style="font-size:20px;color:var(--text3);">→</div>
+    <div style="text-align:center;">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;">8.8</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.06em;">/10 avg rebuilt score</div>
+    </div>
+    <div style="width:1px;height:40px;background:var(--border);flex-shrink:0;"></div>
+    <div style="text-align:center;">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#ff6b4a;line-height:1;">81%</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.06em;">fail subject line</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#ff6b4a;line-height:1;">73%</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.06em;">fail CTA language</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#ff6b4a;line-height:1;">68%</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.06em;">no consequence in hook</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- WHY BEA EXISTS -->
+<div style="border-bottom:1px solid var(--border);background:rgba(74,143,231,0.03);padding:40px 48px;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:20px;">Why Behavioral Email Architecture exists as a category</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;" class="bea-why-grid">
+      <div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.9;margin-bottom:8px;">Marketing teams optimize <span style="color:var(--text2);">open rates.</span></div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.9;margin-bottom:8px;">Copywriters optimize <span style="color:var(--text2);">words.</span></div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.9;margin-bottom:8px;">Designers optimize <span style="color:var(--text2);">layouts.</span></div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.9;">Lifecycle teams optimize <span style="color:var(--text2);">send schedules.</span></div>
+      </div>
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#fff;line-height:1.4;margin-bottom:16px;font-style:italic;">Nobody owns message architecture.</div>
+        <div style="font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:20px;">Most conversion problems happen before copy quality matters. The subject announces the product. The hook leads with the feature. The CTA describes the offer. That is a structural failure — not a creative one.</div>
+        <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);line-height:1.6;">Strategic Flow exists to audit and fix that layer. We call it Behavioral Email Architecture.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE AFTER HERO EXAMPLE -->
+<div style="border-bottom:1px solid var(--border);padding:28px 48px;background:var(--bg2);">
+  <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);text-align:center;margin-bottom:20px;">What architecture looks like — real example</div>
+  <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:0;max-width:900px;margin:0 auto;align-items:stretch;" class="ba-hero-grid">
+    <div style="background:rgba(255,77,46,0.05);border:1px solid rgba(255,77,46,0.2);padding:20px 24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#ff6b4a;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Before · Score: 3/10</div>
+      <div style="font-size:15px;color:rgba(255,255,255,0.55);font-style:italic;line-height:1.5;">"New Dashboard Features Available"</div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;padding:0 20px;flex-shrink:0;">
+      <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--green);">→</div>
+    </div>
+    <div style="background:rgba(74,143,231,0.05);border:1px solid rgba(74,143,231,0.2);padding:20px 24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">After · Score: 9/10</div>
+      <div style="font-size:15px;color:#fff;font-weight:500;line-height:1.5;">"Your reporting is 3 clicks faster"</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:14px;">
+    <a href="https://strategicflow.tech/teardowns.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);text-decoration:none;letter-spacing:.04em;">See 52 full teardowns →</a>
+  </div>
+</div>
+
 <!-- FAILURE PATTERN LIBRARY -->
 <section class="section" style="padding-top:32px;padding-bottom:32px;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="section-label">Failure Pattern Library</div>
+  <div class="section-label">Behavioral Email Architecture · Failure Patterns</div>
   <div class="section-title" style="font-size:clamp(22px,3vw,32px);margin-bottom:8px;">The 6 structural failures. Named and documented.</div>
   <p class="section-sub" style="margin-bottom:28px;">Found across 52 SaaS emails audited. Every pattern has a name, a frequency, and a fix.</p>
   <div style="overflow-x:auto;">
@@ -533,6 +659,120 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
   </div>
   <div style="margin-top:16px;text-align:right;">
     <a href="https://strategicflow.tech/glossary.html" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);text-decoration:none;letter-spacing:.04em;" target="_blank">Full definitions in glossary →</a>
+  </div>
+</section>
+
+<!-- ACTIVATION CALCULATOR -->
+<section class="section" style="padding-top:0;">
+  <div class="section-label">Benchmark Data</div>
+  <div class="section-title">What the 52 audits show.</div>
+  <p class="section-sub">Across 52 SaaS sequences audited, these are the numbers. Not projections — observations.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin-top:32px;" class="bench-stat-grid">
+    <div style="background:var(--bg2);padding:28px 24px;text-align:center;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Avg score before rebuild</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:40px;color:#ff6b4a;line-height:1;margin-bottom:6px;">3.4</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">/ 10 · across 52 audits</div>
+    </div>
+    <div style="background:var(--bg2);padding:28px 24px;text-align:center;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Avg score after rebuild</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:40px;color:var(--green);line-height:1;margin-bottom:6px;">8.8</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">/ 10 · same product, new architecture</div>
+    </div>
+    <div style="background:var(--bg2);padding:28px 24px;text-align:center;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Sequences with critical gap</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:40px;color:#ff6b4a;line-height:1;margin-bottom:6px;">49/52</div>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);">contained at least one CRITICAL failure</div>
+    </div>
+  </div>
+  <div style="margin-top:2px;background:rgba(74,143,231,0.04);border:1px solid rgba(74,143,231,0.15);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div style="font-size:14px;color:var(--text2);line-height:1.6;">Every number above comes from the 52 teardowns published at strategicflow.tech/teardowns.html — not projections.</div>
+    <a href="https://strategicflow.tech/teardowns.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);text-decoration:none;white-space:nowrap;letter-spacing:.04em;">Browse all 52 teardowns →</a>
+  </div>
+</section>
+
+
+<!-- FOUNDER STORY -->
+<section class="section" style="padding-top:0;">
+  <div class="section-label">Why This Exists</div>
+  <div class="section-title">Built by someone who ran 52 audits and found the same 6 bugs every time.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:32px;align-items:start;" class="founder-grid">
+    <div>
+      <p style="font-size:16px;color:#c8cdd8;line-height:1.8;margin-bottom:20px;">I rebuilt SaaS emails as a side project. The first five had the same problems. So did the next twenty.</p>
+      <p style="font-size:16px;color:#c8cdd8;line-height:1.8;margin-bottom:20px;">Not bad copywriting. Bad architecture. The subject announced the product. The hook described the feature. The CTA invited the reader to "learn more." The strongest result was in paragraph four.</p>
+      <p style="font-size:16px;color:#c8cdd8;line-height:1.8;margin-bottom:20px;">After 52 rebuilds, the pattern was undeniable. These weren't creative failures. They were structural failures — and they had names.</p>
+      <p style="font-size:16px;color:#c8cdd8;line-height:1.8;">I built Strategic Flow to diagnose those structures before anyone touches the copy. Not persuasion. Behavioral architecture.</p>
+    </div>
+    <div style="border:1px solid var(--border);background:var(--bg2);padding:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:20px;">52 audits. 6 patterns. One method.</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:14px;color:var(--text2);padding-bottom:12px;border-bottom:1px solid var(--border);">Marketing teams own campaigns. Product teams own features. Copywriters own wording. <strong style="color:#fff;">Nobody owns message architecture.</strong></div>
+        <div style="font-size:14px;color:var(--text2);padding-bottom:12px;border-bottom:1px solid var(--border);">Conversion problems are usually structural, not creative. Strategic Flow audits the layer nobody else touches.</div>
+        <div style="font-size:14px;color:var(--text2);">That is why Behavioral Email Architecture exists as a category — and why Strategic Flow is the first platform built specifically for it.</div>
+      </div>
+      <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:12px;color:var(--text3);">Alex Iliescu · Founder · Strategic Flow · Tenerife, Spain</div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGIC FLOW METHOD -->
+<section class="section" style="padding-top:0;">
+  <div class="section-label"><a href="https://strategicflow.tech/email-architecture-audit.html" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(74,143,231,0.4);">Behavioral Email Architecture</a> · The Method</div>
+  <div class="section-title">The Strategic Flow Method™</div>
+  <p class="section-sub">A 7-check behavioral diagnostic framework. Each check maps to a specific reader decision that determines whether the email gets opened, read, or acted on. Not persuasion theory. Not best practices. Observable, repeatable, scored.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-top:32px;" class="method-grid">
+    <div style="background:var(--bg2);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;">
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);flex-shrink:0;width:24px;">01</div>
+      <div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:4px;">Consequence Mapping</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">Does the subject line and hook name what changes for the reader — or what the product does?</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;border-left:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);flex-shrink:0;width:24px;">02</div>
+      <div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:4px;">Feature Translation</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">Is every feature claim translated to a reader outcome? "We added X" vs "You now do Y 40% faster."</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);flex-shrink:0;width:24px;">03</div>
+      <div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:4px;">Ownership CTA</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">Does the CTA describe what the reader does or what the brand offers? "Fix my reporting" vs "Learn more."</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);border-left:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);flex-shrink:0;width:24px;">04</div>
+      <div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:4px;">Hierarchy Design</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">Does the most important claim get the most visual weight? Or does everything look equally irrelevant?</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);flex-shrink:0;width:24px;">05</div>
+      <div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:4px;">Audience Signal</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">Does line 1 signal who this email is for? Does the reader recognise themselves in the first sentence?</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);border-left:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);flex-shrink:0;width:24px;">06</div>
+      <div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:4px;">Proof Layer</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">Is there a third-party voice, a named result, or a specific number above the fold? Or only brand claims?</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);padding:24px 28px;display:flex;gap:16px;align-items:flex-start;border-top:1px solid var(--border);grid-column:span 2;">
+      <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--green);flex-shrink:0;width:24px;">07</div>
+      <div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:4px;">Activation Path</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.6;">Does the email have a clear next step that connects to the reader's first value moment — or does it describe features without a path to action?</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div style="font-size:13px;color:var(--text2);">Each check scores 0–2 points. Total: 0–10. The method is the same across every audit, every rebuild, every teardown in the portfolio.</div>
+    <a href="https://strategicflow.tech/scorecard.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);text-decoration:none;letter-spacing:.04em;">View the full scorecard →</a>
   </div>
 </section>
 
@@ -585,49 +825,6 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
 </section>
 
 <!-- WHAT GETS ANALYZED -->
-<section class="section" style="padding-top:0;">
-  <div class="section-label">Decision Friction Model</div>
-  <div class="section-title">7 behavioral checks. Every email.</div>
-  <p class="section-sub">Each check maps to a specific reader behavior that determines whether your email gets opened, read, or acted on. Not style. Not tone. Decision friction.</p>
-  <div class="checks-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);">
-    <div style="background:var(--bg);padding:24px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">01</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Subject line</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;">Filing label or consequence? The subject line that announces the product gets ignored. The one that names the reader's problem gets opened.</div>
-    </div>
-    <div style="background:var(--bg);padding:24px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">02</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Hook strength</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;">First line names the reader's consequence, not the company's news. Most SaaS emails open with "We're excited to announce." That is where they lose the reader.</div>
-    </div>
-    <div style="background:var(--bg);padding:24px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">03</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Visual hierarchy</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;">Does the most important update get the most visual weight? Flat hierarchy forces the reader to decide what matters. Most readers don't.</div>
-    </div>
-    <div style="background:var(--bg);padding:24px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">04</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Numbers above the fold</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;">Specific numbers answer silent objections. "40% faster" answers "is this worth switching?" before the reader has to ask it.</div>
-    </div>
-    <div style="background:var(--bg);padding:24px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">05</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">CTA ownership language</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;">"Learn more" describes what you're offering. "Fix my reporting" describes what the reader is doing. One gets clicked. The other gets ignored.</div>
-    </div>
-    <div style="background:var(--bg);padding:24px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">06</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Activation friction</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;">Onboarding steps that describe actions without naming consequences create drop-off. Each step should name what it unlocks, not just what to do.</div>
-    </div>
-    <div style="background:var(--bg);padding:24px 28px;grid-column:1/-1;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">07</div>
-      <div style="font-size:15px;font-weight:600;margin-bottom:6px;">Audience signal</div>
-      <div style="font-size:13px;color:var(--text2);line-height:1.6;">Line 1 speaks to everyone. That is why it reaches no one. The email that names a specific reader role in the hook converts at a different rate than the one that doesn't.</div>
-    </div>
-  </div>
-</section>
-
 <!-- WHO ITS FOR -->
 <section class="section" style="padding-top:0;">
   <div class="section-label">Built for</div>
@@ -739,8 +936,8 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
   <div class="showcase-card">
     <div class="showcase-info">
       <div class="showcase-meta">Scorecard · Methodology · Scoring System</div>
-      <div class="showcase-title">Strategic Flow Score™ — The Scoring System</div>
-      <p class="showcase-desc">The 10-point scoring system behind every audit. Each dimension explained with before/after examples. Understand exactly how emails are scored and what moves the number.</p>
+      <div class="showcase-title">Strategic Flow Score™ — 10-Point Scoring System</div>
+      <p class="showcase-desc">The 10-point scoring system behind every audit. 7 behavioral checks, each weighted 0–2 points. Score named, failure pattern named, fix documented. Every rebuild includes before and after score.</p>
     </div>
     <div class="showcase-right">
       <span class="score-pill">10-point system</span>
@@ -843,6 +1040,52 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
 
 
 
+
+<!-- COMPARISON TABLE -->
+<section class="section" style="padding-top:0;">
+  <div class="section-label">Behavioral Email Architecture · vs Traditional Approaches</div>
+  <div class="section-title">What makes this different.</div>
+  <p class="section-sub">Most email review processes focus on the surface. Behavioral Email Architecture audits the decisions underneath.</p>
+  <div style="overflow-x:auto;margin-top:32px;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;max-width:760px;">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border);">
+          <th style="text-align:left;padding:14px 20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-weight:400;width:40%;">Approach</th>
+          <th style="text-align:left;padding:14px 20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);font-weight:400;">Traditional Review</th>
+          <th style="text-align:left;padding:14px 20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);font-weight:400;">Strategic Flow</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:14px 20px;color:var(--text3);font-size:13px;">What it audits</td>
+          <td style="padding:14px 20px;color:var(--text2);">Copy quality and tone</td>
+          <td style="padding:14px 20px;color:#fff;font-weight:500;">Message architecture</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:14px 20px;color:var(--text3);font-size:13px;">Framework</td>
+          <td style="padding:14px 20px;color:var(--text2);">Best practices and style guides</td>
+          <td style="padding:14px 20px;color:#fff;font-weight:500;">Named failure patterns, scored 0–10</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:14px 20px;color:var(--text3);font-size:13px;">Focus</td>
+          <td style="padding:14px 20px;color:var(--text2);">Deliverability and CTR tweaks</td>
+          <td style="padding:14px 20px;color:#fff;font-weight:500;">Behavioral friction and activation outcomes</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:14px 20px;color:var(--text3);font-size:13px;">Output</td>
+          <td style="padding:14px 20px;color:var(--text2);">Suggestions and recommendations</td>
+          <td style="padding:14px 20px;color:#fff;font-weight:500;">Rebuilt HTML ready to deploy same day</td>
+        </tr>
+        <tr>
+          <td style="padding:14px 20px;color:var(--text3);font-size:13px;">Category</td>
+          <td style="padding:14px 20px;color:var(--text2);">Email marketing / copywriting</td>
+          <td style="padding:14px 20px;color:var(--green);font-weight:500;">Behavioral Email Architecture</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 <!-- WHAT HAPPENS AFTER -->
 <section class="section" style="padding-top:0;">
   <div class="section-label">The Process</div>
@@ -896,13 +1139,13 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
       </div>
       <div style="display:flex;gap:16px;flex-wrap:wrap;">
         <div style="text-align:center;">
-          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#ff6b4a;line-height:1;">2.4</div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);">/ 7 original</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:#ff6b4a;line-height:1;">3.4</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);">/ 10 original</div>
         </div>
         <div style="font-size:20px;color:var(--text3);align-self:center;">→</div>
         <div style="text-align:center;">
-          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;">6.8</div>
-          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);">/ 7 rebuilt</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1;">9.2</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);">/ 10 rebuilt</div>
         </div>
       </div>
     </div>
@@ -941,79 +1184,75 @@ mobileMenu.querySelectorAll('.mobile-menu-item, .mobile-menu-cta').forEach(link 
   </div>
 </section>
 
-<!-- WHY EXISTING TEAMS MISS GAPS -->
+<!-- WHY STRATEGIC FLOW EXISTS -->
 <section class="section" style="padding-top:0;">
-  <div class="section-label">The Gap Nobody Owns</div>
-  <div class="section-title">Why good lifecycle teams still have broken activation emails.</div>
-  <p class="section-sub">The problem isn't skill. It's ownership. Email architecture falls between three teams that each own part of it.</p>
+  <div class="section-label">Behavioral Email Architecture · Why This Exists</div>
+  <div class="section-title">Why good teams still ship broken activation emails.</div>
+  <p class="section-sub">The problem is not skill. It is ownership. Email architecture falls in the gap between three functions that each own a piece of it — and none of them own the whole.</p>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;margin-top:32px;background:var(--border);" class="why-grid">
     <div style="background:var(--bg2);padding:32px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:16px;">Product thinks</div>
-      <div style="font-size:16px;color:#fff;font-weight:600;margin-bottom:10px;">Feature</div>
-      <div style="font-size:14px;color:var(--text2);line-height:1.7;">What the product does. What shipped this sprint. What capability is new.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:16px;">Product optimizes</div>
+      <div style="font-size:16px;color:#fff;font-weight:600;margin-bottom:10px;">Features</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;">What shipped. What is new. What capability exists. Emails announce the product.</div>
     </div>
     <div style="background:var(--bg2);padding:32px 28px;border-left:1px solid var(--border);border-right:1px solid var(--border);">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:16px;">Marketing thinks</div>
-      <div style="font-size:16px;color:#fff;font-weight:600;margin-bottom:10px;">Campaign</div>
-      <div style="font-size:14px;color:var(--text2);line-height:1.7;">Send schedule. Subject line A/B. Template design. Open rate benchmarks.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:16px;">Marketing optimizes</div>
+      <div style="font-size:16px;color:#fff;font-weight:600;margin-bottom:10px;">Campaigns</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;">Send schedule. Subject line A/B. Template. Open rate benchmarks. Deliverability.</div>
     </div>
     <div style="background:var(--bg2);padding:32px 28px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:16px;">Lifecycle thinks</div>
-      <div style="font-size:16px;color:#fff;font-weight:600;margin-bottom:10px;">Send schedule</div>
-      <div style="font-size:14px;color:var(--text2);line-height:1.7;">Day 1, Day 3, Day 7. Trigger logic. Segment conditions. Delivery time.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:16px;">Copywriters optimize</div>
+      <div style="font-size:16px;color:#fff;font-weight:600;margin-bottom:10px;">Wording</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;">Tone. Clarity. Sentence length. They improve what is written. Not what is structured.</div>
     </div>
   </div>
-  <div style="margin-top:2px;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-    <div>
-      <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#fff;margin-bottom:8px;font-style:italic;">Nobody owns the architecture layer.</div>
-      <div style="font-size:14px;color:var(--text2);line-height:1.6;">The order of information. What leads. What gets buried. What the CTA says vs what the hook promised. That gap is where activation fails.</div>
+  <div style="margin-top:2px;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);padding:28px 32px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;color:#fff;margin-bottom:12px;font-style:italic;">Nobody audits the decisions that happen before the copy exists.</div>
+    <div style="font-size:15px;color:var(--text2);line-height:1.7;max-width:640px;margin-bottom:20px;">The order of information. What leads. What gets buried. What the CTA describes vs what the hook promised. That is the architecture layer. Strategic Flow is the only platform that audits it.</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="https://strategic-flow-audit.replit.app" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#fff;background:var(--green);padding:11px 22px;text-decoration:none;border-radius:6px;">Run a free audit →</a>
+      <a href="https://strategicflow.tech/email-architecture-audit.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--green);border:1px solid rgba(74,143,231,0.3);padding:11px 22px;text-decoration:none;border-radius:6px;">What is email architecture? →</a>
     </div>
-    <a href="https://strategicflow.tech/activation-intelligence.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#fff;background:var(--green);padding:12px 24px;text-decoration:none;white-space:nowrap;border-radius:6px;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">See the Activation Audit →</a>
   </div>
 </section>
 
 
-<!-- ACTIVATION CALCULATOR -->
+
+
+<!-- WHY STRATEGIC FLOW INSTEAD OF -->
 <section class="section" style="padding-top:0;">
-  <div class="section-label">Quick Calculator</div>
-  <div class="section-title">What does one activation gap fix cost you each month?</div>
-  <p class="section-sub">Enter your numbers. See the revenue impact before you commit.</p>
-  <div style="border:1px solid var(--border);background:var(--bg2);padding:32px;margin-top:32px;max-width:640px;" id="calc-box">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;" class="calc-grid">
-      <div>
-        <label style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:8px;">Monthly trials</label>
-        <input id="calc-trials" type="number" value="500" min="1" style="width:100%;background:var(--bg);border:1px solid var(--border2);color:#fff;padding:10px 14px;font-size:16px;font-family:'DM Mono',monospace;border-radius:4px;outline:none;" oninput="calcROI()">
-      </div>
-      <div>
-        <label style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:8px;">Trial → Paid %</label>
-        <input id="calc-rate" type="number" value="18" min="1" max="100" style="width:100%;background:var(--bg);border:1px solid var(--border2);color:#fff;padding:10px 14px;font-size:16px;font-family:'DM Mono',monospace;border-radius:4px;outline:none;" oninput="calcROI()">
-      </div>
+  <div class="section-label">Behavioral Email Architecture · Competitor Framing</div>
+  <div class="section-title">Why not a copywriter, agency, or consultant?</div>
+  <p class="section-sub">Four categories exist for email problems. None diagnose message architecture. Here is why each one misses the layer Strategic Flow audits.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-top:32px;" class="why-not-grid">
+    <div style="background:var(--bg2);padding:28px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:10px;">Email Copywriting</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:10px;">Improves tone, clarity, wording. Does not diagnose whether the hook leads with a feature or a consequence. Does not name the structural failure.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);">Strategic Flow: architecture before copy.</div>
     </div>
-    <div style="background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);padding:20px 24px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;">At a 2-point activation improvement</div>
-      <div id="calc-result" style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);line-height:1.2;margin-bottom:6px;">+90 additional customers/mo</div>
-      <div id="calc-sub" style="font-size:13px;color:var(--text2);">That is approximately +$8,910 MRR at $99 ACV</div>
+    <div style="background:var(--bg2);padding:28px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:10px;">Lifecycle Marketing</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:10px;">Optimizes send timing, segmentation, triggers. Does not audit whether Day 1 email names a consequence or just announces a product.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);">Strategic Flow: behavioral structure, not send logic.</div>
+    </div>
+    <div style="background:var(--bg2);padding:28px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:10px;">Deliverability Tools</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:10px;">Optimize inbox placement, spam score, domain reputation. Do not audit what happens after the email reaches the inbox.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);">Strategic Flow: what happens inside the inbox.</div>
+    </div>
+    <div style="background:var(--bg2);padding:28px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#ff6b4a;margin-bottom:10px;">CRO / A/B Testing</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:10px;">Tests variants against each other. Does not diagnose why both variants have the same structural failure. Tests speed. Does not find the root cause.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green);">Strategic Flow: root cause, not variant testing.</div>
     </div>
   </div>
-  <script>
-  function calcROI(){
-    var trials = parseInt(document.getElementById('calc-trials').value)||0;
-    var rate = parseFloat(document.getElementById('calc-rate').value)||0;
-    var current = Math.round(trials * rate / 100);
-    var improved = Math.round(trials * (rate + 2) / 100);
-    var delta = improved - current;
-    var mrr = delta * 99;
-    document.getElementById('calc-result').textContent = '+' + delta + ' additional customers/mo';
-    document.getElementById('calc-sub').textContent = 'That is approximately +$' + mrr.toLocaleString() + ' MRR at $99 ACV';
-  }
-  </script>
 </section>
 
 <!-- PRICING -->
 <section class="section" id="pricing" style="padding-top:0;">
-  <div class="section-label">Pricing</div>
-  <div class="section-title">Start free. Scale when ready.</div>
-  <p class="section-sub">Every plan includes the Strategic Flow Method. Score, rebuilt HTML, subject line variants, and structural reasoning documented.</p>
+  <div class="section-label">Plans</div>
+  <div class="section-title">The platform. Free to start.</div>
+  <p class="section-sub">Strategic Flow is diagnostic software. Run your first audit free — no account, no signup. Upgrade when you want rebuilt HTML, subject line variants, and ongoing coverage.</p>
 
   <!-- BILLING TOGGLE -->
   <div class="billing-toggle-wrap">
@@ -1140,6 +1379,28 @@ toggle.addEventListener('change', function() {
     <div class="btn-row">
       <a href="https://strategicflow.tech/architecture.html" class="tool-link" target="_blank">View Enterprise Options →</a>
       <a href="https://strategic-flow-pro.replit.app/packages" class="tool-link-ghost" target="_blank">See all plans</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- SERVICES UPSELL -->
+<section class="section" style="padding-top:0;">
+  <div class="section-label">Beyond the software</div>
+  <div class="section-title">Done-for-you options.</div>
+  <p class="section-sub">For teams who want Strategic Flow to run the audit, deliver the rebuild, and own the architecture layer. Software is the entry point. These are the options when you want the work done for you.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-top:32px;" class="upsell-grid">
+    <div style="background:var(--bg2);padding:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">One-time · $3,500</div>
+      <div style="font-size:20px;color:#fff;font-weight:600;margin-bottom:10px;">Activation Audit</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px;">Full diagnostic of your onboarding sequence. Activation Gap Report™, rebuilt HTML, User Psychology Map, Competitor Benchmark, Subject Line Lab. Delivered in 5 days.</div>
+      <a href="https://strategicflow.tech/activation-intelligence.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#fff;background:var(--green);padding:11px 22px;text-decoration:none;border-radius:6px;display:inline-block;">View Activation Audit →</a>
+    </div>
+    <div style="background:var(--bg2);padding:32px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">Monthly retainer · $2,500/mo</div>
+      <div style="font-size:20px;color:#fff;font-weight:600;margin-bottom:10px;">Architecture</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px;">Every email rebuilt before it ships. Unlimited rebuilds, open rate tracking, Slack access, monthly strategic call. 3-day free trial included.</div>
+      <a href="https://strategicflow.tech/architecture.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;color:#fff;background:var(--green);padding:11px 22px;text-decoration:none;border-radius:6px;display:inline-block;">View Architecture →</a>
     </div>
   </div>
 </section>
