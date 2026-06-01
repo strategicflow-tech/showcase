@@ -4,907 +4,875 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>The 7-Point Email Audit Checklist — Strategic Flow</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#0a0a08;--white:#f4f2ed;--signal:#4A8FE7;
-  --green:#1D9E75;--red:#ff4d2e;--amber:#ffc400;
-  --mid:#a8a39b;--border:rgba(244,242,237,0.1);
+  --bg:#080b09;--white:#f0ede8;--signal:#4A8FE7;
+  --signal-dim:rgba(74,143,231,0.12);--signal-border:rgba(74,143,231,0.3);
+  --red:#e05a3a;--amber:#ffc400;--blue:#4A8FE7;
+  --mid:#8a9e90;--border:rgba(240,237,232,0.08);
+  --card:rgba(255,255,255,0.02);
 }
 html,body{height:100%;}
-body{
-  background:var(--bg);
-  color:var(--white);
-  font-family:'Instrument Sans',sans-serif;
-  font-size:15px;
-  line-height:1.6;
-}
+body{background:var(--bg);color:var(--white);font-family:'Figtree',sans-serif;font-size:15px;line-height:1.6;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,237,232,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,232,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+.wrapper{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 24px 80px;position:relative;z-index:1;}
+.layout{display:grid;grid-template-columns:1fr 360px;gap:28px;max-width:1200px;width:100%;}
 
-/* PRINT */
-@media print{
-  .no-print{display:none!important;}
-  body{background:#fff!important;color:#000!important;}
-  .page{max-width:100%!important;padding:32px!important;}
-  .item{border-color:#ddd!important;}
-}
+/* HERO */
+.hero{padding:56px 48px 48px;border:1px solid var(--border);background:var(--card);position:relative;overflow:hidden;margin-bottom:20px;}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--signal),transparent);}
+.hero::after{content:'';position:absolute;bottom:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(74,143,231,0.06) 0%,transparent 70%);pointer-events:none;}
+.brand{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.2em;text-transform:uppercase;color:var(--signal);margin-bottom:20px;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(36px,5vw,54px);line-height:1.05;letter-spacing:-0.02em;color:var(--white);margin-bottom:12px;}
+.hero h1 em{font-style:italic;color:var(--signal);}
+.hero-sub{font-size:16px;color:var(--mid);line-height:1.7;max-width:520px;margin-bottom:28px;}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--border);}
+.hstat-num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--signal);line-height:1;margin-bottom:2px;}
+.hstat-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);}
 
-/* DESKTOP LAYOUT */
-.wrapper{
-  min-height:100vh;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  padding:48px 24px 64px;
-  background:var(--bg);
-  position:relative;
-}
-.wrapper::before{
-  content:'';position:fixed;inset:0;
-  background-image:
-    linear-gradient(rgba(244,242,237,0.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(244,242,237,0.025) 1px,transparent 1px);
-  background-size:48px 48px;
-  pointer-events:none;z-index:0;
-}
+/* BENCHMARK */
+.benchmark{border:1px solid var(--signal-border);padding:36px 40px;margin-bottom:20px;background:var(--signal-dim);position:relative;overflow:hidden;}
+.benchmark::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--signal),transparent);}
+.section-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.16em;text-transform:uppercase;color:var(--signal);margin-bottom:20px;}
+.bench-top{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;}
+.bench-left{}
+.bench-score{display:flex;align-items:flex-end;gap:8px;margin-bottom:8px;}
+.bench-num{font-family:'DM Serif Display',serif;font-size:56px;color:var(--white);line-height:1;}
+.bench-denom{font-family:'DM Mono',monospace;font-size:14px;color:var(--mid);margin-bottom:10px;}
+.bench-label{font-size:15px;color:var(--mid);line-height:1.6;}
+.bench-categories{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.bench-tag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.06em;color:var(--mid);border:1px solid var(--border);padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.bench-right{}
+.dist-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:12px;}
+.dist-grid{display:flex;flex-direction:column;gap:6px;}
+.dist-row{display:flex;align-items:center;gap:8px;}
+.dist-score{font-family:'DM Mono',monospace;font-size:14px;color:var(--mid);width:32px;flex-shrink:0;}
+.dist-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.dist-bar-fill{height:100%;border-radius:2px;background:var(--red);opacity:0.7;}
+.dist-bar-fill.hi{background:var(--signal);opacity:0.8;}
+.dist-pct{font-family:'DM Mono',monospace;font-size:14px;color:var(--mid);width:28px;text-align:right;flex-shrink:0;}
+.bench-divider{height:1px;background:rgba(74,143,231,0.2);margin-bottom:20px;}
+.bench-bars{display:flex;flex-direction:column;gap:12px;}
+.bench-row{display:flex;align-items:center;gap:12px;}
+.bench-bar-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.06em;color:var(--mid);width:200px;flex-shrink:0;}
+.bench-bar-bg{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.bench-bar-fill-r{height:100%;border-radius:3px;background:var(--red);}
+.bench-pct{font-family:'DM Mono',monospace;font-size:15px;color:var(--red);width:36px;text-align:right;flex-shrink:0;}
 
-.layout{
-  display:grid;
-  grid-template-columns:1fr 340px;
-  gap:32px;
-  max-width:1100px;
-  width:100%;
-  position:relative;z-index:1;
-}
+/* WHY THIS EXISTS */
+.why-section{border:1px solid var(--border);padding:36px 40px;margin-bottom:20px;background:var(--card);position:relative;overflow:hidden;}
+.why-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--signal),transparent);}
+.why-text{font-size:16px;color:var(--white);line-height:1.8;max-width:560px;}
+.why-text p{margin-bottom:10px;}
+.why-text p:last-child{margin-bottom:0;}
+.why-sig{font-family:'DM Mono',monospace;font-size:15px;color:var(--mid);letter-spacing:0.06em;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
 
-/* MAIN CHECKLIST */
-.page{
-  background:rgba(255,255,255,0.02);
-  border:1px solid var(--border);
-  position:relative;
-  overflow:hidden;
-}
-.page::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:2px;
-  background:linear-gradient(90deg,var(--signal),var(--green),transparent);
-}
+/* AHA MOMENT */
+.aha-section{border:1px solid var(--border);padding:36px 40px;margin-bottom:20px;background:var(--card);position:relative;overflow:hidden;}
+.aha-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--red),transparent);}
+.aha-intro{font-size:14px;color:var(--mid);margin-bottom:20px;line-height:1.6;}
+.aha-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.aha-col{padding:20px;border:1px solid var(--border);}
+.aha-col.bad{border-color:rgba(255,77,46,0.3);background:rgba(255,77,46,0.04);}
+.aha-col.good{border-color:var(--signal-border);background:var(--signal-dim);}
+.aha-col-label{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;}
+.aha-col.bad .aha-col-label{color:var(--red);}
+.aha-col.good .aha-col-label{color:var(--signal);}
+.aha-col-text{font-size:15px;color:var(--white);font-style:italic;line-height:1.4;}
+.aha-statement{font-family:'DM Serif Display',serif;font-size:20px;color:var(--white);line-height:1.5;}
+.aha-statement em{font-style:italic;color:var(--signal);}
 
-.page-inner{padding:40px 36px 36px;}
+/* CASE STUDIES */
+.cases-section{border:1px solid var(--border);padding:36px 40px;margin-bottom:20px;background:var(--card);position:relative;overflow:hidden;}
+.cases-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--amber),transparent);}
+.cases-intro{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:20px;}
+.case-cards{display:flex;flex-direction:column;gap:16px;margin-bottom:20px;}
+.case-card{border:1px solid var(--border);padding:24px;background:rgba(255,255,255,0.01);transition:border-color .2s;}
+.case-card:hover{border-color:rgba(255,196,0,0.3);}
+.case-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.case-company{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);}
+.case-scores{display:flex;align-items:center;gap:10px;}
+.case-score-before{font-family:'DM Serif Display',serif;font-size:32px;color:var(--red);line-height:1;}
+.case-arrow{font-size:22px;font-weight:700;color:#ffc400;}
+.case-score-after{font-family:'DM Serif Display',serif;font-size:32px;color:var(--signal);line-height:1;}
+.case-score-unit{font-family:'DM Mono',monospace;font-size:14px;color:var(--mid);align-self:flex-end;margin-bottom:4px;}
+.case-problems-label{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.12em;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+.case-problem-list{display:flex;flex-direction:column;gap:5px;}
+.case-problem{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--mid);}
+.case-problem::before{content:'→';color:var(--red);flex-shrink:0;}
+.cases-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.cases-note{font-size:14px;color:var(--mid);}
+.cases-note strong{color:var(--white);}
+.cases-link{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:var(--signal);text-decoration:none;border:1px solid var(--signal-border);padding:8px 16px;transition:all .2s;}
+.cases-link:hover{background:var(--signal-dim);}
 
-.no-print{
-  display:flex;gap:10px;margin-bottom:32px;
-}
-.no-print button{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:0.08em;text-transform:uppercase;
-  background:rgba(255,255,255,0.06);
-  color:var(--mid);border:1px solid var(--border);
-  padding:10px 20px;cursor:pointer;transition:all .2s;
-}
-.no-print button:hover{background:var(--signal);color:#fff;border-color:var(--signal);}
+/* WHO THIS IS FOR */
+.for-section{border:1px solid var(--border);padding:36px 40px;margin-bottom:20px;background:var(--card);}
+.for-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;}
+.for-col-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;}
+.for-col-label.yes{color:var(--signal);}
+.for-col-label.no{color:var(--red);}
+.for-list{display:flex;flex-direction:column;gap:8px;}
+.for-item{display:flex;align-items:flex-start;gap:8px;font-size:15px;}
+.for-item-text{color:var(--white);}
+.for-item.no .for-item-text{color:var(--mid);}
 
-.brand{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:0.16em;text-transform:uppercase;
-  color:var(--signal);margin-bottom:20px;
-}
+/* METHOD */
+.method-section{border:1px solid var(--border);padding:36px 40px;margin-bottom:20px;background:var(--card);position:relative;overflow:hidden;}
+.method-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--blue),transparent);}
+.method-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;}
+.method-grid-2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.method-item{padding:12px 14px;border:1px solid var(--border);background:rgba(255,255,255,0.01);}
+.method-num{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.1em;color:var(--blue);margin-bottom:4px;}
+.method-name{font-size:14px;color:var(--white);font-weight:600;line-height:1.3;}
 
-h1{
-  font-family:'DM Serif Display',serif;
-  font-size:clamp(32px,4vw,48px);
-  line-height:1.05;letter-spacing:-0.02em;
-  color:var(--white);margin-bottom:10px;
-}
-h1 em{font-style:italic;color:var(--signal);}
+/* COPY VS ARCH */
+.cva-section{border:1px solid var(--border);padding:36px 40px;margin-bottom:20px;background:var(--card);}
+.cva-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+.cva-table th{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.cva-table th.copy-h{color:var(--mid);}
+.cva-table th.arch-h{color:var(--signal);}
+.cva-table td{font-size:15px;padding:10px 14px;border-bottom:1px solid var(--border);color:var(--mid);}
+.cva-table td.arch-col{color:var(--white);}
+.cva-statement{font-family:'DM Serif Display',serif;font-size:20px;color:var(--white);line-height:1.4;padding:20px;border:1px solid var(--signal-border);background:var(--signal-dim);}
+.cva-statement em{font-style:italic;color:var(--signal);}
 
-.subtitle{
-  font-size:14px;color:var(--mid);
-  line-height:1.7;max-width:520px;
-  margin-bottom:28px;
-}
-
-/* VERDICT ROW */
-.verdict-row{
-  display:flex;align-items:center;gap:8px;
-  flex-wrap:wrap;margin-bottom:28px;
-  padding:14px 16px;
-  background:rgba(255,255,255,0.02);
-  border:1px solid var(--border);
-}
-.verdict-label{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--mid);margin-right:4px;flex-shrink:0;
-}
-.chip{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:0.06em;padding:4px 10px;white-space:nowrap;
-}
-.chip.g{background:rgba(29,158,117,0.12);color:var(--green);border:1px solid rgba(29,158,117,0.25);}
-.chip.a{background:rgba(255,196,0,0.1);color:var(--amber);border:1px solid rgba(255,196,0,0.25);}
-.chip.r{background:rgba(255,77,46,0.1);color:var(--red);border:1px solid rgba(255,77,46,0.25);}
+/* PROGRESS */
+.progress-wrap{margin-bottom:20px;border:1px solid var(--border);padding:20px 24px;background:var(--card);}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.progress-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);}
+.progress-score{font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);transition:color 0.3s;}
+.progress-bar-bg{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-bottom:12px;}
+.progress-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--signal),#6ab4ff);border-radius:3px;transition:width 0.4s cubic-bezier(.4,0,.2,1);}
+.progress-verdict{font-size:14px;font-weight:600;min-height:20px;transition:all 0.3s;color:var(--mid);}
 
 /* CHECKLIST */
-.checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;}
-
-.item{
-  display:flex;align-items:flex-start;gap:14px;
-  padding:16px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.015);
-  cursor:pointer;transition:border-color .15s;
-  user-select:none;
-}
-.item:hover,.item.checked{border-color:rgba(74,143,231,0.35);}
-.item.checked{background:rgba(29,158,117,0.04);border-color:rgba(29,158,117,0.3);}
-
-.item-num{
-  font-family:'DM Mono',monospace;font-size:12px;
-  font-weight:500;color:var(--signal);
-  flex-shrink:0;width:22px;padding-top:2px;
-}
-.item.checked .item-num{color:var(--green);}
-
+.page{background:var(--card);border:1px solid var(--border);margin-bottom:20px;}
+.page-inner{padding:32px 36px 36px;}
+.checklist{display:flex;flex-direction:column;gap:8px;}
+.item{border:1px solid var(--border);background:rgba(255,255,255,0.01);cursor:pointer;transition:all .2s;overflow:hidden;}
+.item:hover{border-color:rgba(74,143,231,0.25);}
+.item.checked{background:rgba(74,143,231,0.03);border-color:var(--signal-border);}
+.item-header{display:flex;align-items:flex-start;gap:14px;padding:18px 18px 14px;}
+.item-num{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--signal);flex-shrink:0;width:22px;padding-top:2px;}
 .item-body{flex:1;min-width:0;}
-.item-title{
-  font-family:'DM Serif Display',serif;font-size:15px;
-  color:var(--white);margin-bottom:3px;line-height:1.3;
-}
-.item-q{
-  font-size:12px;color:var(--mid);
-  line-height:1.6;margin-bottom:5px;
-}
-.item-fail{
-  font-family:'DM Mono',monospace;font-size:10px;
-  color:var(--red);opacity:0.7;letter-spacing:0.04em;
-}
-.item-fail::before{content:'FAIL → ';}
-.item.checked .item-fail{color:var(--green);opacity:0.8;}
-.item.checked .item-fail::before{content:'PASS → ';}
+.item-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--white);margin-bottom:4px;line-height:1.3;}
+.item-q{font-size:14px;color:var(--mid);line-height:1.6;margin-bottom:6px;}
+.item-fail{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.06em;}
+.item-fail-bad{color:var(--red);opacity:0.8;}
+.item-fail-bad::before{content:'FAIL PATTERN → ';}
+.item.checked .item-fail-bad{display:none;}
+.item-fail-good{color:var(--signal);opacity:0.9;display:none;}
+.item-fail-good::before{content:'PASS ✓ ';}
+.item.checked .item-fail-good{display:block;}
+.checkbox{width:24px;height:24px;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.15);background:transparent;position:relative;transition:all .2s;margin-top:1px;border-radius:2px;}
+.item.checked .checkbox{background:var(--signal);border-color:var(--signal);}
+.item.checked .checkbox::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:15px;font-weight:700;}
+.item-reveal{max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(.4,0,.2,1);}
+.item.open .item-reveal{max-height:300px;border-top:1px solid var(--border);}
+.reveal-inner{padding:16px 18px 18px 54px;background:rgba(74,143,231,0.03);}
+.reveal-before-after{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.reveal-col{padding:12px 14px;border:1px solid var(--border);}
+.reveal-col.bad{border-color:rgba(255,77,46,0.2);background:rgba(255,77,46,0.03);}
+.reveal-col.good{border-color:var(--signal-border);background:var(--signal-dim);}
+.reveal-col-label{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;}
+.reveal-col.bad .reveal-col-label{color:var(--red);}
+.reveal-col.good .reveal-col-label{color:var(--signal);}
+.reveal-col-text{font-size:14px;color:var(--white);line-height:1.5;font-style:italic;}
+.reveal-note{font-size:14px;color:var(--mid);line-height:1.6;}
 
-.checkbox{
-  width:22px;height:22px;flex-shrink:0;
-  border:1.5px solid rgba(255,255,255,0.18);
-  background:transparent;position:relative;
-  transition:all .15s;margin-top:1px;
-}
-.item.checked .checkbox{
-  background:var(--green);border-color:var(--green);
-}
-.item.checked .checkbox::after{
-  content:'✓';
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  color:#fff;font-size:13px;font-weight:700;
-}
+/* VERDICT */
+.verdict-card{border:1px solid var(--border);padding:24px;margin-bottom:20px;background:var(--card);display:none;animation:fadeIn 0.4s ease;}
+.verdict-card.visible{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.verdict-card.v-green{border-color:var(--signal-border);background:var(--signal-dim);}
+.verdict-card.v-amber{border-color:rgba(255,196,0,0.3);background:rgba(255,196,0,0.05);}
+.verdict-card.v-red{border-color:rgba(255,77,46,0.4);background:rgba(255,77,46,0.05);padding:32px;}
+.verdict-title{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:8px;}
+.verdict-card.v-green .verdict-title{color:var(--signal);}
+.verdict-card.v-amber .verdict-title{color:var(--amber);}
+.verdict-card.v-red .verdict-title{color:var(--red);}
+.verdict-body{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:8px;}
+.verdict-lift{font-family:'DM Serif Display',serif;font-size:18px;color:var(--white);margin-bottom:24px;}
+.verdict-lift span{color:var(--signal);}
+.verdict-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:0;}
+.verdict-cta{display:inline-block;font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.08em;text-transform:uppercase;padding:11px 20px;text-decoration:none;transition:all .2s;}
+.verdict-cta.primary-green{background:var(--signal);color:#000;}
+.verdict-cta.primary-amber{background:var(--amber);color:#000;}
+.verdict-cta.outline-signal{border:1px solid var(--signal-border);color:var(--signal);}
 
-/* SCORE BAR */
-.score-section{
-  padding:16px;
-  background:rgba(74,143,231,0.05);
-  border:1px solid rgba(74,143,231,0.2);
-  display:flex;align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;gap:12px;
-  margin-bottom:28px;
-}
-.score-left{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--mid);
-}
-.score-boxes{display:flex;gap:4px;}
-.score-box{
-  width:26px;height:26px;
-  border:1px solid rgba(255,255,255,0.12);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'DM Mono',monospace;font-size:11px;
-  color:transparent;transition:all .15s;
-}
-.score-box.lit{background:var(--signal);border-color:var(--signal);color:#fff;}
-.score-verdict{
-  font-family:'DM Mono',monospace;font-size:12px;
-  color:var(--mid);letter-spacing:0.06em;
-}
+/* INTEGRATED REBUILD FORM */
+.rebuild-divider{height:1px;background:rgba(255,77,46,0.2);margin:28px 0;}
+.rebuild-form-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.rebuild-form-title em{font-style:italic;color:var(--red);}
+.rebuild-form-sub{font-size:14px;color:var(--mid);margin-bottom:20px;line-height:1.6;}
+.rebuild-form{display:flex;flex-direction:column;gap:12px;}
+.rebuild-input{width:100%;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,77,46,0.2);color:var(--white);font-family:'Figtree',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.rebuild-input:focus{border-color:rgba(255,77,46,0.5);}
+.rebuild-input::placeholder{color:var(--mid);}
+.rebuild-textarea{resize:vertical;min-height:100px;font-family:'Figtree',sans-serif;}
+.rebuild-submit{width:100%;padding:16px;background:var(--red);color:#fff;font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;font-weight:700;}
+.rebuild-submit:hover{background:#e03a1c;}
+.rebuild-submit:disabled{background:var(--mid);cursor:not-allowed;}
+.rebuild-note{font-size:15px;color:var(--mid);text-align:center;margin-top:6px;font-family:'DM Mono',monospace;}
+.rebuild-success{display:none;padding:20px;background:var(--signal-dim);border:1px solid var(--signal-border);text-align:center;}
+.rebuild-success p{font-family:'DM Serif Display',serif;font-size:18px;color:var(--signal);margin-bottom:6px;}
+.rebuild-success small{font-size:14px;color:var(--mid);font-family:'DM Mono',monospace;}
+
+/* SCORE GUIDE */
+.score-guide{border:1px solid var(--border);padding:24px;margin-bottom:20px;background:var(--card);}
+.guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.guide-item{padding:14px;border:1px solid var(--border);}
+.guide-item.g{border-color:rgba(74,143,231,0.2);background:rgba(74,143,231,0.04);}
+.guide-item.a{border-color:rgba(255,196,0,0.2);background:rgba(255,196,0,0.03);}
+.guide-item.r{border-color:rgba(255,77,46,0.2);background:rgba(255,77,46,0.03);}
+.guide-item.b{border-color:rgba(74,143,231,0.2);background:rgba(74,143,231,0.03);}
+.guide-score{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.08em;margin-bottom:6px;}
+.guide-item.g .guide-score{color:var(--signal);}
+.guide-item.a .guide-score{color:var(--amber);}
+.guide-item.r .guide-score{color:var(--red);}
+.guide-item.b .guide-score{color:var(--blue);}
+.guide-text{font-size:14px;color:var(--white);line-height:1.6;}
+
+/* AUDIT CTA */
+.audit-cta-section{border:1px solid var(--signal-border);padding:32px;margin-bottom:20px;background:var(--signal-dim);text-align:center;}
+.audit-cta-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.audit-cta-title em{font-style:italic;color:var(--signal);}
+.audit-cta-sub{font-size:14px;color:var(--mid);margin-bottom:20px;line-height:1.6;}
+.audit-cta-btn{display:inline-block;font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;background:var(--signal);color:#000;padding:14px 32px;text-decoration:none;transition:background .2s;font-weight:700;}
+.audit-cta-btn:hover{background:#5aa8f0;}
+.audit-cta-note{font-size:14px;color:var(--mid);margin-top:12px;font-family:'DM Mono',monospace;}
 
 /* FOOTER */
-.page-footer{
-  padding-top:20px;
-  border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;
-  align-items:flex-end;flex-wrap:wrap;gap:12px;
-}
-.footer-left{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:0.06em;color:rgba(255,255,255,0.75);
-  line-height:1.8;
-}
+.page-footer{padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;background:var(--card);border:1px solid var(--border);}
+.footer-left{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.06em;color:rgba(255,255,255,0.5);line-height:1.8;}
 .footer-left strong{color:var(--signal);font-weight:500;}
-.footer-right{text-align:right;}
-.footer-url{
-  font-family:'DM Mono',monospace;font-size:11px;
-  color:rgba(255,255,255,0.6);letter-spacing:0.06em;
-}
-.footer-cta{
-  font-family:'DM Serif Display',serif;
-  font-size:14px;font-style:italic;
-  color:var(--signal);display:block;margin-top:4px;
-}
-.footer-links{
-  display:flex;gap:16px;margin-top:6px;flex-wrap:wrap;
-}
-.footer-link{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:0.08em;text-transform:uppercase;
-  color:rgba(255,255,255,0.4);text-decoration:none;
-  transition:color .2s;
-}
+.footer-links{display:flex;gap:16px;margin-top:6px;flex-wrap:wrap;}
+.footer-link{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;transition:color .2s;}
 .footer-link:hover{color:var(--signal);}
+.footer-cta{font-family:'DM Serif Display',serif;font-size:14px;font-style:italic;color:var(--signal);}
 
 /* SIDEBAR */
-.sidebar{
-  display:flex;flex-direction:column;gap:16px;
-  position:sticky;top:48px;
-}
-
-.sidebar-card{
-  border:1px solid var(--border);
-  padding:24px;
-  position:relative;
-}
-.sidebar-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:1px;background:var(--signal);
-}
-
-.sidebar-label{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:0.14em;text-transform:uppercase;
-  color:var(--signal);margin-bottom:12px;
-}
-.sidebar-title{
-  font-family:'DM Serif Display',serif;font-size:20px;
-  color:var(--white);margin-bottom:8px;line-height:1.2;
-}
+.sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:48px;}
+.sidebar-card{border:1px solid var(--border);padding:24px;background:var(--card);position:relative;}
+.sidebar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--signal);}
+.sidebar-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--signal);margin-bottom:12px;}
+.sidebar-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--white);margin-bottom:8px;line-height:1.2;}
 .sidebar-title em{font-style:italic;color:var(--signal);}
-.sidebar-body{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:16px;}
-
-.pattern-list{display:flex;flex-direction:column;gap:8px;margin-bottom:0;}
-.pattern-item{
-  display:flex;align-items:flex-start;gap:8px;
-  font-size:12px;
-}
-.pattern-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--red);flex-shrink:0;margin-top:5px;
-}
-.pattern-name{color:var(--white);font-weight:500;margin-bottom:1px;}
-.pattern-desc{color:var(--mid);font-size:11px;}
-
-.sidebar-cta{
-  display:block;text-align:center;
-  font-family:'DM Mono',monospace;font-size:12px;
-  letter-spacing:0.08em;text-transform:uppercase;
-  background:var(--signal);color:#fff;
-  padding:13px;text-decoration:none;
-  transition:background .2s;margin-top:16px;
-}
-.sidebar-cta:hover{background:#2D6BE4;}
-
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sidebar-body{font-size:15px;color:var(--mid);line-height:1.7;margin-bottom:16px;}
+.sidebar-cta{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.08em;text-transform:uppercase;background:var(--signal);color:#000;padding:13px;text-decoration:none;transition:background .2s;font-weight:600;}
+.sidebar-cta:hover{background:#5aa8f0;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .stat-item{padding:12px;border:1px solid var(--border);text-align:center;}
-.stat-num{
-  font-family:'DM Serif Display',serif;font-size:28px;
-  color:var(--signal);line-height:1;margin-bottom:3px;
-}
-.stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--signal);line-height:1;margin-bottom:3px;}
+.stat-label{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);}
+.pattern-list{display:flex;flex-direction:column;gap:10px;}
+.pattern-item{display:flex;align-items:flex-start;gap:8px;}
+.pattern-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:5px;}
+.pattern-name{color:var(--white);font-weight:600;font-size:14px;margin-bottom:1px;}
+.pattern-desc{color:var(--mid);font-size:15px;}
+.mcf-card{border:1px solid rgba(255,77,46,0.3)!important;background:rgba(255,77,46,0.04);}
+.mcf-card::before{display:none!important;}
+.mcf-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:12px;}
+.mcf-stat{font-family:'DM Serif Display',serif;font-size:32px;color:var(--white);line-height:1;margin-bottom:4px;}
+.mcf-sub{font-size:14px;color:var(--mid);margin-bottom:16px;}
+.mcf-name{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.08em;color:var(--red);margin-bottom:12px;}
+.mcf-example{display:flex;flex-direction:column;gap:8px;}
+.mcf-row{display:flex;align-items:flex-start;gap:8px;font-size:14px;padding:10px 12px;border:1px solid var(--border);}
+.mcf-row.bad{border-color:rgba(255,77,46,0.2);background:rgba(255,77,46,0.03);}
+.mcf-row.good{border-color:var(--signal-border);background:var(--signal-dim);}
+.mcf-icon{flex-shrink:0;font-size:15px;}
+.mcf-text{color:var(--white);line-height:1.4;}
 
-/* ── HOW THE AUDIT WORKS ───────────────────────── */
-.audit-walkthrough{
-  margin-bottom:28px;
-  border:1px solid var(--border);
-  padding:24px;
-  background:rgba(255,255,255,0.01);
-  position:relative;
-  overflow:hidden;
-}
-.audit-walkthrough::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:1px;background:linear-gradient(90deg,var(--green),transparent);
-}
-.section-label{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:0.16em;text-transform:uppercase;
-  color:var(--green);margin-bottom:18px;
-}
-.walkthrough-intro{
-  font-size:14px;color:var(--mid);line-height:1.7;
-  max-width:560px;margin-bottom:20px;
-}
-.walkthrough-steps{
-  display:grid;grid-template-columns:1fr 1fr;gap:8px;
-}
-.wstep{
-  display:flex;gap:12px;align-items:flex-start;
-  padding:14px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.01);
-  transition:border-color .2s;
-}
-.wstep:hover{border-color:rgba(74,143,231,0.25);}
-.wstep-num{
-  font-family:'DM Serif Display',serif;font-style:italic;
-  font-size:22px;color:rgba(74,143,231,0.25);
-  flex-shrink:0;line-height:1;margin-top:2px;
-}
-.wstep-body{}
-.wstep-title{
-  font-size:12px;font-weight:600;color:var(--white);
-  margin-bottom:3px;line-height:1.3;
-}
-.wstep-desc{font-size:11px;color:var(--mid);line-height:1.6;}
-.wstep-tag{
-  display:inline-block;margin-top:5px;
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:0.06em;padding:2px 7px;
-  background:rgba(74,143,231,0.08);
-  color:var(--signal);border:1px solid rgba(74,143,231,0.2);
-}
-.audit-cta-row{
-  display:flex;align-items:center;gap:12px;
-  margin-top:16px;padding-top:16px;
-  border-top:1px solid var(--border);
-  flex-wrap:wrap;
-}
-.audit-cta-row a{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:0.08em;text-transform:uppercase;
-  background:var(--signal);color:#fff;
-  padding:11px 20px;text-decoration:none;
-  transition:background .2s;
-}
-.audit-cta-row a:hover{background:#2D6BE4;}
-.audit-cta-note{font-size:12px;color:var(--mid);}
-.audit-cta-note strong{color:var(--white);}
-
-/* ── TEARDOWN GALLERY ──────────────────────────── */
-.teardown-gallery{
-  margin-bottom:28px;
-  border:1px solid var(--border);
-  padding:24px;
-  background:rgba(255,255,255,0.01);
-  position:relative;
-  overflow:hidden;
-}
-.teardown-gallery::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:1px;background:linear-gradient(90deg,var(--amber),transparent);
-}
-.teardown-cards{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
-  margin-top:4px;margin-bottom:16px;
-}
-.tcard{
-  border:1px solid var(--border);
-  padding:16px 14px;
-  background:rgba(255,255,255,0.01);
-  position:relative;transition:border-color .2s;
-}
-.tcard:hover{border-color:rgba(255,196,0,0.3);}
-.tcard-company{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:0.14em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:10px;
-}
-.tcard-scores{
-  display:flex;align-items:center;gap:8px;margin-bottom:10px;
-}
-.score-before{
-  font-family:'DM Serif Display',serif;font-size:26px;
-  color:var(--red);line-height:1;
-}
-.score-arrow{
-  font-size:16px;color:rgba(255,255,255,0.2);
-}
-.score-after{
-  font-family:'DM Serif Display',serif;font-size:26px;
-  color:var(--green);line-height:1;
-}
-.score-unit{
-  font-family:'DM Mono',monospace;font-size:9px;
-  color:var(--mid);align-self:flex-end;margin-bottom:2px;
-}
-.tcard-finding{
-  font-size:11px;color:var(--mid);line-height:1.6;
-  margin-bottom:8px;
-}
-.tcard-bug{
-  font-family:'DM Mono',monospace;font-size:9px;
-  letter-spacing:0.04em;color:var(--red);opacity:0.7;
-}
-.tcard-bug::before{content:'BUG: ';}
-.teardown-footer-row{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:8px;
-}
-.teardown-note{font-size:12px;color:var(--mid);}
-.teardown-note strong{color:var(--white);}
-.teardown-link{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--signal);text-decoration:none;
-  border:1px solid rgba(74,143,231,0.3);
-  padding:8px 16px;transition:all .2s;
-}
-.teardown-link:hover{background:rgba(74,143,231,0.1);}
-
-/* ── GLOSSARY PREVIEW ──────────────────────────── */
-.glossary-section{
-  margin-bottom:28px;
-  border:1px solid var(--border);
-  padding:24px;
-  background:rgba(255,255,255,0.01);
-  position:relative;
-  overflow:hidden;
-}
-.glossary-section::before{
-  content:'';position:absolute;top:0;left:0;right:0;
-  height:1px;background:linear-gradient(90deg,var(--signal),transparent);
-}
-.glossary-intro{
-  font-size:14px;color:var(--mid);line-height:1.7;
-  max-width:560px;margin-bottom:18px;
-}
-.glossary-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:8px;
-  margin-bottom:16px;
-}
-.gterm{
-  padding:14px;border:1px solid var(--border);
-  background:rgba(255,255,255,0.01);
-  transition:border-color .2s;
-}
-.gterm:hover{border-color:rgba(74,143,231,0.25);}
-.gterm-name{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:0.08em;color:var(--signal);
-  margin-bottom:5px;
-}
-.gterm-def{font-size:12px;color:var(--white);line-height:1.6;margin-bottom:4px;}
-.gterm-note{font-size:11px;color:var(--mid);font-style:italic;line-height:1.5;}
-.glossary-link{
-  font-family:'DM Mono',monospace;font-size:11px;
-  letter-spacing:0.08em;text-transform:uppercase;
-  color:var(--signal);text-decoration:none;
-  border:1px solid rgba(74,143,231,0.3);
-  padding:8px 16px;display:inline-block;
-  transition:all .2s;
-}
-.glossary-link:hover{background:rgba(74,143,231,0.1);}
-
-/* MOBILE */
 @media(max-width:768px){
   .wrapper{padding:0;}
   .layout{grid-template-columns:1fr;gap:0;}
   .sidebar{display:none;}
-  .page{border:none;border-radius:0;}
-  .page::before{position:fixed;}
-  .page-inner{padding:24px 20px 40px;}
-  h1{font-size:30px;}
-  .no-print{position:fixed;bottom:0;left:0;right:0;
-    background:var(--bg);border-top:1px solid var(--border);
-    padding:12px 16px;margin:0;z-index:100;justify-content:center;
-  }
-  .no-print button{flex:1;max-width:160px;}
-  .page-inner{padding-bottom:80px;}
-  .verdict-row{gap:6px;}
-  .chip{font-size:9px;padding:3px 8px;}
-  .score-box{width:22px;height:22px;font-size:10px;}
-  .item{padding:14px 12px;gap:10px;}
-  .item-title{font-size:14px;}
-  .walkthrough-steps{grid-template-columns:1fr;}
-  .teardown-cards{grid-template-columns:1fr;}
-  .glossary-grid{grid-template-columns:1fr;}
+  .brand{white-space:normal;font-size:10px;letter-spacing:0.1em;}
+  .item-fail{white-space:normal;font-size:10px;}
+  .hero{border:none;padding:32px 20px 28px;}
+  .page-inner{padding:24px 20px 32px;}
+  .reveal-before-after,.aha-compare,.for-grid,.guide-grid,.bench-top{grid-template-columns:1fr;}
+  .method-grid{grid-template-columns:repeat(2,1fr);}
+  .method-grid-2{grid-template-columns:repeat(2,1fr);}
+  .hero-stats{gap:20px;}
+  .benchmark,.why-section,.aha-section,.for-section,.method-section,.cva-section,.cases-section{padding:24px 20px;}
+  .real-example-section{padding:24px 20px;}
+  .real-example-grid{grid-template-columns:1fr;}
+  .real-score-pill{font-size:18px;}
+  .verdict-card.v-red{padding:24px 20px;}
+  .verdict-card.v-red{padding:24px 20px;}
+  .bench-bar-label{width:140px;font-size:15px;}
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
 <div class="layout">
+<div>
 
-<!-- MAIN -->
+<!-- HERO -->
+<div class="hero">
+  <div class="brand">Strategic Flow · Email Architecture Method &nbsp;·&nbsp; Audit Engine: strategic-flow-audit.replit.app</div>
+  <h1>81% of SaaS emails<br>fail Check #1.<br><em>Here's the full framework.</em></h1>
+  <p class="hero-sub">7 structural checks. Not design. Not deliverability. The decision architecture behind your email — subject line, lead, consequence framing, hierarchy, proof, CTA.</p>
+  <div class="hero-stats">
+    <div><div class="hstat-num">52</div><div class="hstat-label">SaaS emails rebuilt</div></div>
+    <div><div class="hstat-num">3→9</div><div class="hstat-label">Avg score lift</div></div>
+    <div><div class="hstat-num">6</div><div class="hstat-label">Failure patterns</div></div>
+    <div><div class="hstat-num">90s</div><div class="hstat-label">Full audit time</div></div>
+  </div>
+</div>
+
+<!-- BENCHMARK -->
+<div class="benchmark">
+  <div class="section-label">Average SaaS email score</div>
+  <div class="bench-top">
+    <div class="bench-left">
+      <div class="bench-score">
+        <div class="bench-num">3.4</div>
+        <div class="bench-denom">/ 7</div>
+      </div>
+      <p class="bench-label">Across 52 SaaS emails audited. Most teams are unaware they have a structural problem — they think the issue is the copy.</p>
+      <div class="bench-categories">
+        <span class="bench-tag">Product updates</span>
+        <span class="bench-tag">Onboarding</span>
+        <span class="bench-tag">Lifecycle</span>
+        <span class="bench-tag">Trial expiry</span>
+        <span class="bench-tag">Newsletters</span>
+        <span class="bench-tag">Re-engagement</span>
+      </div>
+    </div>
+    <div class="bench-right">
+      <div class="dist-label">Score distribution</div>
+      <div class="dist-grid">
+        <div class="dist-row"><span class="dist-score">2/7</span><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:18%"></div></div><span class="dist-pct">18%</span></div>
+        <div class="dist-row"><span class="dist-score">3/7</span><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:31%"></div></div><span class="dist-pct">31%</span></div>
+        <div class="dist-row"><span class="dist-score">4/7</span><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:24%"></div></div><span class="dist-pct">24%</span></div>
+        <div class="dist-row"><span class="dist-score">5/7</span><div class="dist-bar-bg"><div class="dist-bar-fill" style="width:17%"></div></div><span class="dist-pct">17%</span></div>
+        <div class="dist-row"><span class="dist-score">6/7</span><div class="dist-bar-bg"><div class="dist-bar-fill hi" style="width:8%"></div></div><span class="dist-pct" style="color:var(--signal)">8%</span></div>
+        <div class="dist-row"><span class="dist-score">7/7</span><div class="dist-bar-bg"><div class="dist-bar-fill hi" style="width:2%"></div></div><span class="dist-pct" style="color:var(--signal)">2%</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bench-divider"></div>
+  <div class="bench-bars">
+    <div class="bench-row">
+      <div class="bench-bar-label">Fail subject line</div>
+      <div class="bench-bar-bg"><div class="bench-bar-fill-r" style="width:81%"></div></div>
+      <div class="bench-pct">81%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-bar-label">Fail CTA language</div>
+      <div class="bench-bar-bg"><div class="bench-bar-fill-r" style="width:73%"></div></div>
+      <div class="bench-pct">73%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-bar-label">Fail consequence placement</div>
+      <div class="bench-bar-bg"><div class="bench-bar-fill-r" style="width:68%"></div></div>
+      <div class="bench-pct">68%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-bar-label">Fail social proof</div>
+      <div class="bench-bar-bg"><div class="bench-bar-fill-r" style="width:61%"></div></div>
+      <div class="bench-pct">61%</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span class="progress-label">Your score</span>
+    <span class="progress-score" id="progress-score">0 / 7</span>
+  </div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+  <div class="progress-verdict" id="progress-verdict">Check each item that applies to your email.</div>
+</div>
+
+<!-- CHECKLIST -->
 <div class="page">
 <div class="page-inner">
+<div class="checklist">
 
-<div class="no-print">
-  <button onclick="window.print()">⬇ Save as PDF</button>
-  <button onclick="window.print()">🖨 Print</button>
-</div>
-
-<div class="brand">Strategic Flow · Email Audit Checklist</div>
-<h1>The 7-Point<br><em>Email Audit.</em></h1>
-<p class="subtitle">Score 1 point per check. 7/7 = conversion-ready. Below 5 = rebuild before sending. Use on any email — product update, newsletter, lifecycle, outreach.</p>
-
-<div class="verdict-row">
-  <span class="verdict-label">Verdict</span>
-  <span class="chip g">7/7 — Ship it</span>
-  <span class="chip g">6/7 — Fix one thing</span>
-  <span class="chip a">5/7 — Needs work</span>
-  <span class="chip r">Below 5 — Rebuild</span>
-</div>
-
-<div class="checklist" id="checklist">
   <div class="item" onclick="toggle(this)">
-    <div class="item-num">01</div>
-    <div class="item-body">
-      <div class="item-title">Subject Line</div>
-      <div class="item-q">Does it create a curiosity gap or name a specific consequence? Or does it announce the topic like a folder label?</div>
-      <div class="item-fail">Filing Label Subject</div>
+    <div class="item-header">
+      <div class="item-num">01</div>
+      <div class="item-body">
+        <div class="item-title">Subject Line</div>
+        <div class="item-q">Does it create a curiosity gap or name a specific consequence? Or does it announce the topic like a folder label?</div>
+        <div class="item-fail item-fail-bad">Filing Label Subject</div>
+        <div class="item-fail item-fail-good">Consequence signal present</div>
+      </div>
+      <div class="checkbox"></div>
     </div>
-    <div class="checkbox"></div>
+    <div class="item-reveal"><div class="reveal-inner">
+      <div class="reveal-before-after">
+        <div class="reveal-col bad"><div class="reveal-col-label">Filing Label</div><div class="reveal-col-text">"New Feature: Dashboard Update"</div></div>
+        <div class="reveal-col good"><div class="reveal-col-label">Consequence Signal</div><div class="reveal-col-text">"Your reports now load 4x faster"</div></div>
+      </div>
+      <div class="reveal-note">Same email. Different architecture. The second one names what changes for the reader — not what the product did.</div>
+    </div></div>
   </div>
+
   <div class="item" onclick="toggle(this)">
-    <div class="item-num">02</div>
-    <div class="item-body">
-      <div class="item-title">Lead Construction</div>
-      <div class="item-q">Does the first sentence name a consequence, outcome, or reader problem? Or does it open with context, a caveat, or "we are excited to announce"?</div>
-      <div class="item-fail">Consequence-After-Caveat</div>
+    <div class="item-header">
+      <div class="item-num">02</div>
+      <div class="item-body">
+        <div class="item-title">Lead Construction</div>
+        <div class="item-q">Does the first sentence name a consequence, outcome, or reader problem? Or does it open with context, a caveat, or "we are excited to announce"?</div>
+        <div class="item-fail item-fail-bad">Consequence-After-Caveat</div>
+        <div class="item-fail item-fail-good">Lead names reader outcome</div>
+      </div>
+      <div class="checkbox"></div>
     </div>
-    <div class="checkbox"></div>
+    <div class="item-reveal"><div class="reveal-inner">
+      <div class="reveal-before-after">
+        <div class="reveal-col bad"><div class="reveal-col-label">Caveat First</div><div class="reveal-col-text">"We are excited to announce our most powerful update yet..."</div></div>
+        <div class="reveal-col good"><div class="reveal-col-label">Consequence First</div><div class="reveal-col-text">"If you have ever refreshed a dashboard three times waiting for data — that problem is gone."</div></div>
+      </div>
+      <div class="reveal-note">The reader's brain filters for relevance in the first 3 words. Lead with what changes — not who built it.</div>
+    </div></div>
   </div>
+
   <div class="item" onclick="toggle(this)">
-    <div class="item-num">03</div>
-    <div class="item-body">
-      <div class="item-title">Feature-to-Outcome Translation</div>
-      <div class="item-q">Does the body name what changes for the reader? Or does it describe what the product does without saying what the reader gains?</div>
-      <div class="item-fail">Feature-First Bias</div>
+    <div class="item-header">
+      <div class="item-num">03</div>
+      <div class="item-body">
+        <div class="item-title">Feature-to-Outcome Translation</div>
+        <div class="item-q">Does the body name what changes for the reader? Or does it describe what the product does without saying what the reader gains?</div>
+        <div class="item-fail item-fail-bad">Feature-First Bias</div>
+        <div class="item-fail item-fail-good">Reader outcome named</div>
+      </div>
+      <div class="checkbox"></div>
     </div>
-    <div class="checkbox"></div>
+    <div class="item-reveal"><div class="reveal-inner">
+      <div class="reveal-before-after">
+        <div class="reveal-col bad"><div class="reveal-col-label">Feature-First</div><div class="reveal-col-text">"Advanced reporting module now supports real-time data sync."</div></div>
+        <div class="reveal-col good"><div class="reveal-col-label">Outcome-First</div><div class="reveal-col-text">"Stop refreshing. Your dashboard updates automatically — no manual sync, no stale numbers."</div></div>
+      </div>
+      <div class="reveal-note">Features describe what the product does. Outcomes describe what the reader gets. Only one drives clicks.</div>
+    </div></div>
   </div>
+
   <div class="item" onclick="toggle(this)">
-    <div class="item-num">04</div>
-    <div class="item-body">
-      <div class="item-title">Visual Hierarchy</div>
-      <div class="item-q">Does the most important claim appear above the fold? Or does everything look equally important with no clear priority?</div>
-      <div class="item-fail">Missing Hierarchy</div>
+    <div class="item-header">
+      <div class="item-num">04</div>
+      <div class="item-body">
+        <div class="item-title">Visual Hierarchy</div>
+        <div class="item-q">Does the most important claim appear above the fold? Or does everything look equally important with no clear priority?</div>
+        <div class="item-fail item-fail-bad">Missing Hierarchy</div>
+        <div class="item-fail item-fail-good">Clear visual priority set</div>
+      </div>
+      <div class="checkbox"></div>
     </div>
-    <div class="checkbox"></div>
+    <div class="item-reveal"><div class="reveal-inner">
+      <div class="reveal-before-after">
+        <div class="reveal-col bad"><div class="reveal-col-label">Missing Hierarchy</div><div class="reveal-col-text">12 features listed at equal size. Reader doesn't know where to look.</div></div>
+        <div class="reveal-col good"><div class="reveal-col-label">Clear Hierarchy</div><div class="reveal-col-text">One dominant claim above fold. Supporting details below. The eye has a path.</div></div>
+      </div>
+      <div class="reveal-note">When everything is equally important, nothing is. Give the reader's eye a direction.</div>
+    </div></div>
   </div>
+
   <div class="item" onclick="toggle(this)">
-    <div class="item-num">05</div>
-    <div class="item-body">
-      <div class="item-title">Before / After Contrast</div>
-      <div class="item-q">Is the transformation explicit? Does the email name what the reader's situation looked like before and what changes after?</div>
-      <div class="item-fail">No Transformation Named</div>
+    <div class="item-header">
+      <div class="item-num">05</div>
+      <div class="item-body">
+        <div class="item-title">Before / After Contrast</div>
+        <div class="item-q">Is the transformation explicit? Does the email name what the reader's situation looked like before and what changes after?</div>
+        <div class="item-fail item-fail-bad">No Transformation Named</div>
+        <div class="item-fail item-fail-good">Transformation made explicit</div>
+      </div>
+      <div class="checkbox"></div>
     </div>
-    <div class="checkbox"></div>
+    <div class="item-reveal"><div class="reveal-inner">
+      <div class="reveal-before-after">
+        <div class="reveal-col bad"><div class="reveal-col-label">No Contrast</div><div class="reveal-col-text">"Our new reporting feature is now live. Check it out."</div></div>
+        <div class="reveal-col good"><div class="reveal-col-label">Transformation Named</div><div class="reveal-col-text">"Before: manual refresh every 10 minutes. After: live data, always current. Nothing to configure."</div></div>
+      </div>
+      <div class="reveal-note">Invisible transformation creates no urgency. Name where the reader is now and where they land after clicking.</div>
+    </div></div>
   </div>
+
   <div class="item" onclick="toggle(this)">
-    <div class="item-num">06</div>
-    <div class="item-body">
-      <div class="item-title">Social Proof</div>
-      <div class="item-q">Is there a third-party voice — a named customer, a specific result, a number — or is every claim made by the brand about itself?</div>
-      <div class="item-fail">Zero Social Proof</div>
+    <div class="item-header">
+      <div class="item-num">06</div>
+      <div class="item-body">
+        <div class="item-title">Social Proof</div>
+        <div class="item-q">Is there a third-party voice — a named customer, a specific result, a number — or is every claim made by the brand about itself?</div>
+        <div class="item-fail item-fail-bad">Zero Social Proof</div>
+        <div class="item-fail item-fail-good">Third-party voice present</div>
+      </div>
+      <div class="checkbox"></div>
     </div>
-    <div class="checkbox"></div>
+    <div class="item-reveal"><div class="reveal-inner">
+      <div class="reveal-before-after">
+        <div class="reveal-col bad"><div class="reveal-col-label">Self-Validated</div><div class="reveal-col-text">"Our most powerful feature yet. Trusted by thousands of teams."</div></div>
+        <div class="reveal-col good"><div class="reveal-col-label">Third-Party Voice</div><div class="reveal-col-text">"Cut reporting time from 40 minutes to under 5. — Sarah K., Head of Analytics at Growthco"</div></div>
+      </div>
+      <div class="reveal-note">Brands that validate themselves are dismissed. One specific customer result outperforms any self-reported claim.</div>
+    </div></div>
   </div>
+
   <div class="item" onclick="toggle(this)">
-    <div class="item-num">07</div>
-    <div class="item-body">
-      <div class="item-title">CTA Language</div>
-      <div class="item-q">Does the CTA name what the reader owns or accomplishes? Or does it use guest language — "Learn more", "Click here", "Explore"?</div>
-      <div class="item-fail">Generic Urgency Theatre</div>
+    <div class="item-header">
+      <div class="item-num">07</div>
+      <div class="item-body">
+        <div class="item-title">CTA Language</div>
+        <div class="item-q">Does the CTA name what the reader owns or accomplishes? Or does it use guest language — "Learn more", "Click here", "Explore"?</div>
+        <div class="item-fail item-fail-bad">Generic Urgency Theatre</div>
+        <div class="item-fail item-fail-good">Ownership language used</div>
+      </div>
+      <div class="checkbox"></div>
     </div>
-    <div class="checkbox"></div>
+    <div class="item-reveal"><div class="reveal-inner">
+      <div class="reveal-before-after">
+        <div class="reveal-col bad"><div class="reveal-col-label">Guest Language</div><div class="reveal-col-text">"Learn more" / "Explore features" / "Click here"</div></div>
+        <div class="reveal-col good"><div class="reveal-col-label">Ownership Language</div><div class="reveal-col-text">"See my live dashboard" / "Fix my reporting" / "Get live data now"</div></div>
+      </div>
+      <div class="reveal-note">"Learn more" describes what the brand offers. Ownership language describes what the reader gains. Only one drives action.</div>
+    </div></div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- GREEN VERDICT -->
+<div class="verdict-card v-green" id="verdict-green">
+  <div class="verdict-title">Architecture solid. Ship it.</div>
+  <div class="verdict-body">Your email passes the structural checks. Open rate and click rate are now a function of your audience and timing — not your architecture.</div>
+  <div class="verdict-ctas">
+    <a href="https://strategicflow.tech/teardowns.html" class="verdict-cta primary-green" target="_blank">See how competitors fail →</a>
+    <a href="https://strategic-flow-audit.replit.app" class="verdict-cta outline-signal" target="_blank">Run the full audit →</a>
   </div>
 </div>
 
-<div class="score-section">
-  <span class="score-left">Your score</span>
-  <div class="score-boxes" id="score-boxes">
-    <div class="score-box">1</div>
-    <div class="score-box">2</div>
-    <div class="score-box">3</div>
-    <div class="score-box">4</div>
-    <div class="score-box">5</div>
-    <div class="score-box">6</div>
-    <div class="score-box">7</div>
-  </div>
-  <div class="score-verdict" id="verdict">— / 7</div>
-</div>
-
-
-<div style="margin-bottom:24px;border:1px solid var(--border);padding:20px 20px;background:rgba(255,255,255,0.015);">
-  <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--signal);margin-bottom:16px;">What to do with your score</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-    <div style="padding:14px;border:1px solid rgba(29,158,117,0.25);background:rgba(29,158,117,0.05);">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#1D9E75;letter-spacing:0.08em;margin-bottom:6px;">7/7 or 6/7</div>
-      <div style="font-size:12px;color:var(--white);line-height:1.6;">Architecture is solid. Ship it. Track open rate and click rate as baseline for next send.</div>
-    </div>
-    <div style="padding:14px;border:1px solid rgba(255,196,0,0.2);background:rgba(255,196,0,0.04);">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#ffc400;letter-spacing:0.08em;margin-bottom:6px;">5/7</div>
-      <div style="font-size:12px;color:var(--white);line-height:1.6;">Find the lowest-scoring check. Fix that one element before sending. One fix compounds.</div>
-    </div>
-    <div style="padding:14px;border:1px solid rgba(255,77,46,0.2);background:rgba(255,77,46,0.04);">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#ff4d2e;letter-spacing:0.08em;margin-bottom:6px;">4/7 or below</div>
-      <div style="font-size:12px;color:var(--white);line-height:1.6;">Structural rebuild needed. Rewriting copy without fixing architecture will not move the metrics.</div>
-    </div>
-    <div style="padding:14px;border:1px solid rgba(74,143,231,0.2);background:rgba(74,143,231,0.04);">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--signal);letter-spacing:0.08em;margin-bottom:6px;">Any score</div>
-      <div style="font-size:12px;color:var(--white);line-height:1.6;">Paste the email at <a href="https://strategic-flow-audit.replit.app" target="_blank" style="color:var(--signal);text-decoration:none;">strategic-flow-audit.replit.app</a> for a full 7-point diagnosis in 90 seconds.</div>
-    </div>
+<!-- AMBER VERDICT -->
+<div class="verdict-card v-amber" id="verdict-amber">
+  <div class="verdict-title">One fix away from ship-ready.</div>
+  <div class="verdict-body">Find the lowest-scoring check. Fix that one element before sending. One architectural fix compounds across every email after it.</div>
+  <div class="verdict-ctas">
+    <a href="https://strategic-flow-audit.replit.app" class="verdict-cta primary-amber" target="_blank">Run the full audit →</a>
   </div>
 </div>
 
-<!-- HOW THE AUDIT WORKS -->
-<div class="audit-walkthrough">
-  <div class="section-label">How the Strategic Flow Audit works</div>
-  <p class="walkthrough-intro">The audit is a behavioral diagnostic, not a style review. It checks whether the architecture of your email removes decision friction at each stage — before the reader reaches the CTA.</p>
-  <div class="walkthrough-steps">
-    <div class="wstep">
-      <div class="wstep-num">01</div>
-      <div class="wstep-body">
-        <div class="wstep-title">Subject line scored first</div>
-        <div class="wstep-desc">Does it create a consequence signal or file the email as "another update"? The subject determines if the email gets opened at all.</div>
-        <span class="wstep-tag">Filing Label vs Consequence Signal</span>
+<!-- RED VERDICT + INTEGRATED REAL FORM -->
+<div class="verdict-card v-red" id="verdict-red">
+  <div class="verdict-title">Your architecture is costing clicks.</div>
+  <div class="verdict-body">Rewriting the copy will not move the metrics. Most SaaS emails we rebuild start at this score.</div>
+  <div class="verdict-lift">Average rebuilt score: <span>3 → 9</span></div>
+  <div class="verdict-ctas">
+    <a href="https://strategicflow.tech/teardowns.html" class="verdict-cta" style="background:var(--red);color:#fff;" target="_blank">See 52 SaaS emails rebuilt →</a>
+  </div>
+
+  <div class="rebuild-divider"></div>
+
+  <div class="rebuild-form-title">Paste the email.<br><em>I'll rebuild it.</em></div>
+  <p class="rebuild-form-sub">Send it over and I'll review it personally, identify the main architectural failures, and send back my diagnosis.</p>
+
+  <div class="rebuild-success" id="rebuild-success">
+    <p>Received. I'll be in touch.</p>
+    <small>alex@strategicflow.tech · Strategic Flow</small>
+  </div>
+
+  <form class="rebuild-form" id="rebuild-form" onsubmit="submitRebuild(event)">
+    <input type="email" id="rb-email" class="rebuild-input" placeholder="Work email" required/>
+    <input type="text" id="rb-company" class="rebuild-input" placeholder="Company name"/>
+    <textarea id="rb-content" class="rebuild-input rebuild-textarea" placeholder="Paste your email here — subject line, body, CTA. Everything." required></textarea>
+    <button type="submit" class="rebuild-submit" id="rebuild-btn">Send me the email →</button>
+  </form>
+  <div class="rebuild-note">Or email directly: alex@strategicflow.tech</div>
+</div>
+
+<!-- AHA MOMENT -->
+<div class="aha-section">
+  <div class="section-label">Most SaaS emails fail here first</div>
+  <div class="aha-intro">Check #1. Subject line. Before you even open the email.</div>
+  <div class="aha-compare">
+    <div class="aha-col bad">
+      <div class="aha-col-label">❌ What most teams write</div>
+      <div class="aha-col-text">"New Feature: Dashboard Update"</div>
+    </div>
+    <div class="aha-col good">
+      <div class="aha-col-label">✅ What converts</div>
+      <div class="aha-col-text">"Your reports now load 4x faster"</div>
+    </div>
+  </div>
+  <div class="aha-statement">Same feature. Same email.<br><em>Different architecture.</em></div>
+</div>
+
+<!-- CASE STUDIES -->
+<div class="cases-section">
+  <div class="section-label">3 SaaS emails rebuilt</div>
+  <p class="cases-intro">No CTR numbers. No invented metrics. The before score, the failure patterns, and the after score.</p>
+  <div class="case-cards">
+    <div class="case-card">
+      <div class="case-top">
+        <div class="case-company">SaaS Product Update</div>
+        <div class="case-scores"><span class="case-score-before">2</span><span class="case-arrow">→</span><span class="case-score-after">9</span><span class="case-score-unit">/ 10</span></div>
+      </div>
+      <div class="case-problems-label">Problems found</div>
+      <div class="case-problem-list">
+        <div class="case-problem">Filing Label Subject — announced release date, not reader consequence</div>
+        <div class="case-problem">Feature-First Bias — lead opened with team context, not reader problem</div>
+        <div class="case-problem">Generic Urgency Theatre — CTA said "See what's new"</div>
+        <div class="case-problem">Zero Social Proof — every claim self-reported by the brand</div>
       </div>
     </div>
-    <div class="wstep">
-      <div class="wstep-num">02</div>
-      <div class="wstep-body">
-        <div class="wstep-title">Lead construction checked</div>
-        <div class="wstep-desc">First sentence diagnostic. Does it name a reader outcome or start with context, company news, or "we are excited to announce"?</div>
-        <span class="wstep-tag">Consequence-After-Caveat</span>
+    <div class="case-card">
+      <div class="case-top">
+        <div class="case-company">Onboarding Sequence (Day 1–7)</div>
+        <div class="case-scores"><span class="case-score-before">3</span><span class="case-arrow">→</span><span class="case-score-after">8</span><span class="case-score-unit">/ 10</span></div>
+      </div>
+      <div class="case-problems-label">Problems found</div>
+      <div class="case-problem-list">
+        <div class="case-problem">Consequence-After-Caveat — every email explained steps without naming what they unlock</div>
+        <div class="case-problem">Zero Social Proof — no third-party voice in first 3 emails</div>
+        <div class="case-problem">Missing Hierarchy — no activation gap named between Day 0 and Day 1</div>
       </div>
     </div>
-    <div class="wstep">
-      <div class="wstep-num">03</div>
-      <div class="wstep-body">
-        <div class="wstep-title">Feature-to-outcome translation</div>
-        <div class="wstep-desc">Does the body name what changes for the reader, or only what the product does? Features without outcomes are invisible to readers.</div>
-        <span class="wstep-tag">Feature-First Bias</span>
+    <div class="case-card">
+      <div class="case-top">
+        <div class="case-company">SaaS Newsletter</div>
+        <div class="case-scores"><span class="case-score-before">3</span><span class="case-arrow">→</span><span class="case-score-after">9</span><span class="case-score-unit">/ 10</span></div>
       </div>
-    </div>
-    <div class="wstep">
-      <div class="wstep-num">04</div>
-      <div class="wstep-body">
-        <div class="wstep-title">Visual hierarchy mapped</div>
-        <div class="wstep-desc">Does the most important claim appear above the fold with clear visual weight? When everything is equally important, nothing is.</div>
-        <span class="wstep-tag">Missing Hierarchy</span>
-      </div>
-    </div>
-    <div class="wstep">
-      <div class="wstep-num">05</div>
-      <div class="wstep-body">
-        <div class="wstep-title">Transformation named explicitly</div>
-        <div class="wstep-desc">Before and after. Does the email show the reader's situation before and what changes after acting? Invisible transformation = no urgency.</div>
-        <span class="wstep-tag">No Transformation Named</span>
-      </div>
-    </div>
-    <div class="wstep">
-      <div class="wstep-num">06</div>
-      <div class="wstep-body">
-        <div class="wstep-title">Third-party proof verified</div>
-        <div class="wstep-desc">Is there a named customer, a specific result, or a number that isn't self-reported? Brands that validate themselves are dismissed.</div>
-        <span class="wstep-tag">Zero Social Proof</span>
-      </div>
-    </div>
-    <div class="wstep">
-      <div class="wstep-num">07</div>
-      <div class="wstep-body">
-        <div class="wstep-title">CTA ownership language</div>
-        <div class="wstep-desc">Does the CTA name what the reader owns or accomplishes after clicking? "Learn more" describes the brand's action, not the reader's gain.</div>
-        <span class="wstep-tag">Generic Urgency Theatre</span>
-      </div>
-    </div>
-    <div class="wstep">
-      <div class="wstep-num">+</div>
-      <div class="wstep-body">
-        <div class="wstep-title">Full diagnosis in 90 seconds</div>
-        <div class="wstep-desc">Paste your email URL or text into the audit engine. Get a structured score, every failure pattern named, and a rebuilt version ready to ship.</div>
-        <span class="wstep-tag">strategic-flow-audit.replit.app</span>
+      <div class="case-problems-label">Problems found</div>
+      <div class="case-problem-list">
+        <div class="case-problem">Missing Hierarchy — every section identical visual weight</div>
+        <div class="case-problem">Filing Label Subject — topic announced, no curiosity gap created</div>
+        <div class="case-problem">Generic Urgency Theatre — "Explore our latest resources" used across 4 consecutive sends</div>
       </div>
     </div>
   </div>
-  <div class="audit-cta-row">
-    <a href="https://strategic-flow-audit.replit.app" target="_blank">Run the full audit →</a>
-    <span class="audit-cta-note">Free. No sign-up. <strong>Score appears in under 90 seconds.</strong></span>
+  <div class="cases-footer">
+    <span class="cases-note">Avg score lift: <strong>3 → 9</strong>. Architecture fix, not copy edit.</span>
+    <a href="https://strategicflow.tech/teardowns.html" class="cases-link" target="_blank">See all 52 emails rebuilt →</a>
   </div>
 </div>
 
-<!-- TEARDOWN GALLERY -->
-<div class="teardown-gallery">
-  <div class="section-label">From the teardown archive</div>
-  <p class="walkthrough-intro">Every teardown applies the 7-point framework to a real SaaS email. Before score. After score. What changed and why. 51+ teardowns published.</p>
-  <div class="teardown-cards">
-    <div class="tcard">
-      <div class="tcard-company">SaaS Product Update</div>
-      <div class="tcard-scores">
-        <span class="score-before">2</span>
-        <span class="score-arrow">→</span>
-        <span class="score-after">9</span>
-        <span class="score-unit">/ 10</span>
-      </div>
-      <div class="tcard-finding">Subject line announced the release date instead of the reader's consequence. Lead opened with team context before naming the problem. CTA said "See what's new."</div>
-      <div class="tcard-bug">Filing Label Subject + Feature-First Bias</div>
-    </div>
-    <div class="tcard">
-      <div class="tcard-company">Onboarding Email</div>
-      <div class="tcard-scores">
-        <span class="score-before">3</span>
-        <span class="score-arrow">→</span>
-        <span class="score-after">8</span>
-        <span class="score-unit">/ 10</span>
-      </div>
-      <div class="tcard-finding">Every step explained what to do but not what it unlocks. No social proof in the first 3 emails. Activation gap between Day 0 and Day 1 — no consequence named for inaction.</div>
-      <div class="tcard-bug">Consequence-After-Caveat + Zero Social Proof</div>
-    </div>
-    <div class="tcard">
-      <div class="tcard-company">Newsletter Edition</div>
-      <div class="tcard-scores">
-        <span class="score-before">3</span>
-        <span class="score-arrow">→</span>
-        <span class="score-after">9</span>
-        <span class="score-unit">/ 10</span>
-      </div>
-      <div class="tcard-finding">Visual hierarchy flattened — every section identical weight. Subject line was a filing label. CTA used "Explore our latest resources" across 4 consecutive sends.</div>
-      <div class="tcard-bug">Missing Hierarchy + Generic Urgency Theatre</div>
-    </div>
+<!-- WHY THIS EXISTS -->
+<div class="why-section">
+  <div class="section-label">Why this exists</div>
+  <div class="why-text">
+    <p>I rebuilt 52 SaaS emails. Across onboarding, product updates, newsletters and lifecycle sequences.</p>
+    <p>Most failed the same structural checks — not because the copy was bad, but because the architecture was wrong. The order of information. What led. What got buried.</p>
+    <p>This checklist is the framework I run before touching a single line of copy.</p>
   </div>
-  <div class="teardown-footer-row">
-    <span class="teardown-note">Avg score lift across 51 teardowns: <strong>3 → 9</strong>. Architecture fix, not copy edit.</span>
-    <a href="https://strategicflow-tech.github.io/showcase/" class="teardown-link" target="_blank">Full archive →</a>
+  <div class="why-sig">Alex Iliescu · Strategic Flow · strategicflow.tech</div>
+</div>
+
+<!-- WHO THIS IS FOR -->
+<div class="for-section">
+  <div class="section-label">This audit is for</div>
+  <div class="for-grid">
+    <div>
+      <div class="for-col-label yes">✓ Use this for</div>
+      <div class="for-list">
+        <div class="for-item"><span>✅</span><div class="for-item-text">Product update emails</div></div>
+        <div class="for-item"><span>✅</span><div class="for-item-text">Lifecycle emails</div></div>
+        <div class="for-item"><span>✅</span><div class="for-item-text">Trial expiry emails</div></div>
+        <div class="for-item"><span>✅</span><div class="for-item-text">SaaS newsletters</div></div>
+        <div class="for-item"><span>✅</span><div class="for-item-text">Onboarding sequences</div></div>
+        <div class="for-item"><span>✅</span><div class="for-item-text">Re-engagement emails</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="for-col-label no">✗ Not for</div>
+      <div class="for-list">
+        <div class="for-item no"><span>❌</span><div class="for-item-text">Ecommerce promotions</div></div>
+        <div class="for-item no"><span>❌</span><div class="for-item-text">Black Friday campaigns</div></div>
+        <div class="for-item no"><span>❌</span><div class="for-item-text">Affiliate offers</div></div>
+        <div class="for-item no"><span>❌</span><div class="for-item-text">Cold outbound sequences</div></div>
+        <div class="for-item no"><span>❌</span><div class="for-item-text">Transactional receipts</div></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- GLOSSARY PREVIEW -->
-<div class="glossary-section">
-  <div class="section-label">Strategic Flow — key terms</div>
-  <p class="glossary-intro">The audit uses specific vocabulary to name failure patterns precisely. These terms appear in every diagnostic report. Knowing them makes the fix obvious.</p>
-  <div class="glossary-grid">
-    <div class="gterm">
-      <div class="gterm-name">Decision Friction</div>
-      <div class="gterm-def">Any architectural element that interrupts, delays, or eliminates the reader's decision to act.</div>
-      <div class="gterm-note">Not a tone problem. A structural problem. The 7-point audit maps where friction appears.</div>
-    </div>
-    <div class="gterm">
-      <div class="gterm-name">Filing Label Subject</div>
-      <div class="gterm-def">A subject line that announces the email topic like a folder tab instead of naming a consequence.</div>
-      <div class="gterm-note">"New Feature: Dashboard Update" is a label. "Your reports now load 4x faster" is a signal.</div>
-    </div>
-    <div class="gterm">
-      <div class="gterm-name">Feature-First Bias</div>
-      <div class="gterm-def">Email leads with what the product does instead of what the reader gains.</div>
-      <div class="gterm-note">The reader's brain filters for relevance to their situation, not product capability.</div>
-    </div>
-    <div class="gterm">
-      <div class="gterm-name">Consequence Signal</div>
-      <div class="gterm-def">A subject line or hook that names a specific outcome or cost the reader recognizes as their own.</div>
-      <div class="gterm-note">Creates open rate lift without urgency tricks or manufactured scarcity.</div>
-    </div>
-    <div class="gterm">
-      <div class="gterm-name">Architecture vs Copy</div>
-      <div class="gterm-def">Copy is word choice and tone. Architecture is the structural sequence of information and decisions.</div>
-      <div class="gterm-note">Rewriting copy without fixing architecture produces the same result with different words.</div>
-    </div>
-    <div class="gterm">
-      <div class="gterm-name">Activation Gap</div>
-      <div class="gterm-def">The missing consequence between a completed step and the next action in an onboarding sequence.</div>
-      <div class="gterm-note">Most onboarding emails tell users what to do but not what they lose by waiting.</div>
-    </div>
+<!-- METHOD -->
+<div class="method-section">
+  <div class="section-label">The Strategic Flow Method — 7 checkpoints</div>
+  <p style="font-size:14px;color:var(--mid);margin-bottom:16px;line-height:1.6;"><strong style="color:var(--white)">Strategic Flow Method</strong> is the diagnostic framework — 7 structural checks, named failure patterns, pass/fail. <strong style="color:var(--white)">Strategic Flow Audit Engine</strong> applies the method in 90 seconds and delivers rebuilt HTML. Both on this page.</p>
+  <div class="method-grid">
+    <div class="method-item"><div class="method-num">01</div><div class="method-name">Subject Line</div></div>
+    <div class="method-item"><div class="method-num">02</div><div class="method-name">Lead Construction</div></div>
+    <div class="method-item"><div class="method-num">03</div><div class="method-name">Feature → Outcome</div></div>
+    <div class="method-item"><div class="method-num">04</div><div class="method-name">Visual Hierarchy</div></div>
   </div>
-  <a href="https://strategicflow-tech.github.io/showcase/glossary.html" class="glossary-link" target="_blank">Full glossary →</a>
+  <div class="method-grid-2">
+    <div class="method-item"><div class="method-num">05</div><div class="method-name">Before / After</div></div>
+    <div class="method-item"><div class="method-num">06</div><div class="method-name">Social Proof</div></div>
+    <div class="method-item"><div class="method-num">07</div><div class="method-name">CTA Language</div></div>
+  </div>
 </div>
 
+<!-- COPY VS ARCH -->
+<div class="cva-section">
+  <div class="section-label">Copy vs Architecture</div>
+  <table class="cva-table">
+    <thead>
+      <tr>
+        <th class="copy-h">Copy (what most teams fix)</th>
+        <th class="arch-h">Architecture (what Strategic Flow fixes)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Words and headlines</td><td class="arch-col">Order of decisions</td></tr>
+      <tr><td>Tone and voice</td><td class="arch-col">Consequence placement</td></tr>
+      <tr><td>CTA text</td><td class="arch-col">CTA ownership language</td></tr>
+      <tr><td>Length and format</td><td class="arch-col">Information hierarchy</td></tr>
+    </tbody>
+  </table>
+  <div class="cva-statement">Most teams rewrite the words.<br><em>Strategic Flow rewrites the structure.</em></div>
+</div>
+
+<!-- SCORE GUIDE -->
+<div class="score-guide">
+  <div class="section-label">What to do with your score</div>
+  <div class="guide-grid">
+    <div class="guide-item g"><div class="guide-score">7/7 or 6/7</div><div class="guide-text">Architecture solid. Ship it. Track open rate and click rate as baseline.</div></div>
+    <div class="guide-item a"><div class="guide-score">5/7</div><div class="guide-text">Fix the lowest-scoring check before sending. One fix compounds.</div></div>
+    <div class="guide-item r"><div class="guide-score">4/7 or below</div><div class="guide-text">Structural rebuild needed. Copy edits will not move the metrics.</div></div>
+    <div class="guide-item b"><div class="guide-score">Any score</div><div class="guide-text">Paste at <a href="https://strategic-flow-audit.replit.app" target="_blank" style="color:var(--blue);text-decoration:none;">strategic-flow-audit.replit.app</a> for a full diagnosis in 90 seconds.</div></div>
+  </div>
+</div>
+
+<!-- AUDIT CTA -->
+<div class="audit-cta-section">
+  <div class="audit-cta-title">Paste your email.<br><em>Get a score. Get the rebuild.</em></div>
+  <p class="audit-cta-sub">The Strategic Flow engine diagnoses all 7 points, names every failure pattern, and delivers a rebuilt version ready to paste into any ESP.</p>
+  <a href="https://strategic-flow-audit.replit.app" class="audit-cta-btn" target="_blank">Run the full audit →</a>
+  <div class="audit-cta-note">Free. No sign-up. Score appears in under 90 seconds.</div>
+</div>
+
+<!-- FOOTER -->
 <div class="page-footer">
   <div class="footer-left">
     <strong>Strategic Flow</strong> · Email Architecture Method<br>
     Run this checklist before every send.<br>
     Below 5 — rebuild the architecture, not just the copy.
     <div class="footer-links">
-      <a href="https://strategicflow-tech.github.io/showcase/glossary.html" class="footer-link" target="_blank">Glossary →</a>
-      <a href="https://strategicflow-tech.github.io/showcase/" class="footer-link" target="_blank">Teardowns →</a>
+      <a href="https://strategicflow.tech/teardowns.html" class="footer-link" target="_blank">52 emails rebuilt →</a>
       <a href="https://strategicflow.tech" class="footer-link" target="_blank">strategicflow.tech →</a>
     </div>
   </div>
-  <div class="footer-right">
-    <span class="footer-cta">Full audit → strategic-flow-audit.replit.app</span>
-  </div>
+  <div><span class="footer-cta">Full audit → strategic-flow-audit.replit.app</span></div>
 </div>
 
-</div><!-- page-inner -->
-</div><!-- page -->
+</div>
+
+
+
+</div>
+
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-
   <div class="sidebar-card">
-    <div class="sidebar-label">What this checklist diagnoses</div>
+    <div class="sidebar-label">What this diagnoses</div>
     <div class="stat-grid">
-      <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">Check points</div></div>
+      <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">Checkpoints</div></div>
       <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Failure patterns</div></div>
-      <div class="stat-item"><div class="stat-num">51+</div><div class="stat-label">Emails audited</div></div>
-      <div class="stat-item"><div class="stat-num">90s</div><div class="stat-label">To complete</div></div>
+      <div class="stat-item"><div class="stat-num">52</div><div class="stat-label">Emails rebuilt</div></div>
+      <div class="stat-item"><div class="stat-num">90s</div><div class="stat-label">Full audit</div></div>
+    </div>
+  </div>
+
+  <div class="sidebar-card mcf-card">
+    <div class="mcf-label">Most common failure</div>
+    <div class="mcf-stat">81%</div>
+    <div class="mcf-sub">of audited emails fail Check #1</div>
+    <div class="mcf-name">Filing Label Subject</div>
+    <div class="mcf-example">
+      <div class="mcf-row bad"><div class="mcf-icon">❌</div><div class="mcf-text">New Feature: Dashboard Update</div></div>
+      <div class="mcf-row good"><div class="mcf-icon">✅</div><div class="mcf-text">Your reports now load 4x faster</div></div>
     </div>
   </div>
 
   <div class="sidebar-card">
     <div class="sidebar-label">The 6 failure patterns</div>
     <div class="pattern-list">
-      <div class="pattern-item">
-        <div class="pattern-dot"></div>
-        <div>
-          <div class="pattern-name">Filing Label Subject</div>
-          <div class="pattern-desc">Announces the topic. Gives no reason to open.</div>
-        </div>
-      </div>
-      <div class="pattern-item">
-        <div class="pattern-dot"></div>
-        <div>
-          <div class="pattern-name">Feature-First Bias</div>
-          <div class="pattern-desc">Leads with the product. Skips the reader's gain.</div>
-        </div>
-      </div>
-      <div class="pattern-item">
-        <div class="pattern-dot"></div>
-        <div>
-          <div class="pattern-name">Consequence-After-Caveat</div>
-          <div class="pattern-desc">Buries the outcome behind three lines of context.</div>
-        </div>
-      </div>
-      <div class="pattern-item">
-        <div class="pattern-dot"></div>
-        <div>
-          <div class="pattern-name">Missing Hierarchy</div>
-          <div class="pattern-desc">Everything is equally important. Nothing is.</div>
-        </div>
-      </div>
-      <div class="pattern-item">
-        <div class="pattern-dot"></div>
-        <div>
-          <div class="pattern-name">Zero Social Proof</div>
-          <div class="pattern-desc">All claims come from the brand. None from customers.</div>
-        </div>
-      </div>
-      <div class="pattern-item">
-        <div class="pattern-dot"></div>
-        <div>
-          <div class="pattern-name">Generic Urgency Theatre</div>
-          <div class="pattern-desc">Fake deadlines. No real consequence for waiting.</div>
-        </div>
-      </div>
+      <div class="pattern-item"><div class="pattern-dot"></div><div><div class="pattern-name">Filing Label Subject</div><div class="pattern-desc">Announces the topic. Gives no reason to open.</div></div></div>
+      <div class="pattern-item"><div class="pattern-dot"></div><div><div class="pattern-name">Feature-First Bias</div><div class="pattern-desc">Leads with the product. Skips the reader's gain.</div></div></div>
+      <div class="pattern-item"><div class="pattern-dot"></div><div><div class="pattern-name">Consequence-After-Caveat</div><div class="pattern-desc">Buries the outcome behind three lines of context.</div></div></div>
+      <div class="pattern-item"><div class="pattern-dot"></div><div><div class="pattern-name">Missing Hierarchy</div><div class="pattern-desc">Everything is equally important. Nothing is.</div></div></div>
+      <div class="pattern-item"><div class="pattern-dot"></div><div><div class="pattern-name">Zero Social Proof</div><div class="pattern-desc">All claims come from the brand. None from customers.</div></div></div>
+      <div class="pattern-item"><div class="pattern-dot"></div><div><div class="pattern-name">Generic Urgency Theatre</div><div class="pattern-desc">Fake deadlines. No real consequence for waiting.</div></div></div>
     </div>
   </div>
 
   <div class="sidebar-card">
-    <div class="sidebar-label">Want a full email rebuild?</div>
-    <div class="sidebar-title">Paste your email.<br><em>Get it rebuilt.</em></div>
-    <div class="sidebar-body">The Strategic Flow engine diagnoses all 7 points, names every failure pattern, and delivers a rebuilt version ready to ship — in 90 seconds.</div>
-    <a href="https://strategic-flow-audit.replit.app" class="sidebar-cta" target="_blank">Run the full audit →</a>
+    <div class="sidebar-label">See a full rebuild</div>
+    <div class="sidebar-title">Why this scored 2/10<br><em>(and how it became 9/10)</em></div>
+    <div class="sidebar-body">Same product. Same send list. Different architecture. See exactly what changed and why across 52 real SaaS emails.</div>
+    <a href="https://strategicflow.tech/teardowns.html" class="sidebar-cta" target="_blank">See 52 rebuilt emails →</a>
   </div>
-
 </aside>
 
-</div><!-- layout -->
-</div><!-- wrapper -->
+</div>
+</div>
 
 <script>
 function toggle(item){
   item.classList.toggle('checked');
+  item.classList.toggle('open');
   updateScore();
 }
+
 function updateScore(){
-  const n = document.querySelectorAll('.item.checked').length;
-  document.querySelectorAll('.score-box').forEach((b,i)=>{
-    b.classList.toggle('lit', i < n);
-  });
-  const v = document.getElementById('verdict');
-  const map = {0:'0/7 — Rebuild',1:'1/7 — Rebuild',2:'2/7 — Rebuild',
-    3:'3/7 — Rebuild',4:'4/7 — Rebuild',5:'5/7 — Needs work',
-    6:'6/7 — Fix one thing',7:'7/7 — Ship it'};
-  v.textContent = map[n];
-  v.style.color = n>=6?'#1D9E75':n>=5?'#ffc400':'#ff4d2e';
+  const n=document.querySelectorAll('.item.checked').length;
+  const pct=(n/7)*100;
+  const bar=document.getElementById('progress-bar');
+  bar.style.width=pct+'%';
+  if(n>=6) bar.style.background='linear-gradient(90deg,#1D9E75,#6ab4ff)';
+  else if(n>=5) bar.style.background='linear-gradient(90deg,#ffc400,#ffe066)';
+  else if(n>0) bar.style.background='linear-gradient(90deg,#ff4d2e,#ff8060)';
+  const scoreEl=document.getElementById('progress-score');
+  scoreEl.textContent=n+' / 7';
+  const v=document.getElementById('progress-verdict');
+  if(n===0){v.textContent='Check each item that applies to your email.';v.style.color='var(--mid)';scoreEl.style.color='var(--white)';}
+  else if(n>=6){v.textContent='Architecture solid. Ship it.';v.style.color='#1D9E75';scoreEl.style.color='#1D9E75';}
+  else if(n>=5){v.textContent='One fix away. Find the lowest check.';v.style.color='#ffc400';scoreEl.style.color='#ffc400';}
+  else{v.textContent='Your architecture is costing clicks.';v.style.color='#ff4d2e';scoreEl.style.color='#ff4d2e';}
+  document.getElementById('verdict-green').classList.remove('visible');
+  document.getElementById('verdict-amber').classList.remove('visible');
+  document.getElementById('verdict-red').classList.remove('visible');
+  if(n>=6) document.getElementById('verdict-green').classList.add('visible');
+  else if(n===5) document.getElementById('verdict-amber').classList.add('visible');
+  else if(n>0&&n<=4) document.getElementById('verdict-red').classList.add('visible');
+}
+
+async function submitRebuild(e){
+  e.preventDefault();
+  const btn=document.getElementById('rebuild-btn');
+  const email=document.getElementById('rb-email').value;
+  const company=document.getElementById('rb-company').value;
+  const content=document.getElementById('rb-content').value;
+  btn.disabled=true;
+  btn.textContent='Sending...';
+  try{
+    const res=await fetch('https://strategic-flow-audit.replit.app/submit-rebuild',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,company,content})
+    });
+    if(res.ok){
+      document.getElementById('rebuild-form').style.display='none';
+      document.getElementById('rebuild-success').style.display='block';
+    } else {
+      btn.disabled=false;
+      btn.textContent='Send me the email →';
+      window.location.href='mailto:alex@strategicflow.tech?subject=Rebuild Request&body='+encodeURIComponent('Email: '+email+'\nCompany: '+company+'\n\n'+content);
+    }
+  } catch(err){
+    btn.disabled=false;
+    btn.textContent='Send me the email →';
+    window.location.href='mailto:alex@strategicflow.tech?subject=Rebuild Request&body='+encodeURIComponent('Email: '+email+'\nCompany: '+company+'\n\n'+content);
+  }
 }
 </script>
 </body>
