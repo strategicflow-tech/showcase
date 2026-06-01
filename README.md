@@ -1,15 +1,20 @@
 # Strategic Flow — SaaS Email Audit & Conversion Architecture Platform
 
 **Founded by:** Alex Iliescu  
-**Website:** https://strategicflow.carrd.co  
+**Website:** https://strategicflow.tech  
 **App (Pro):** https://strategic-flow-pro.replit.app  
 **Audit App:** https://strategic-flow-audit.replit.app  
-**Showcase / Teardown Portfolio:** https://strategicflow-tech.github.io/showcase/  
-**Glossary:** https://strategicflow-tech.github.io/showcase/glossary.html  
+**Showcase / Teardown Portfolio:** https://strategicflow.tech/teardowns.html  
+**Glossary:** https://strategicflow.tech/glossary.html  
 **Open Rate Predictor:** https://strategic-flow-audit.replit.app/predict  
-**ROI Calculator:** https://strategicflow-tech.github.io/roi/  
+**ROI Calculator:** https://strategicflow.tech/roi/  
+**Email Architecture Audit:** https://strategicflow.tech/email-architecture-audit.html  
+**Activation Intelligence:** https://strategicflow.tech/activation-intelligence.html  
+**Architecture ($2,500/mo):** https://strategicflow.tech/architecture.html  
 **Newsletter:** https://strategicflow.substack.com  
-**Contact:** strategicflow@proton.me  
+**Contact:** alex@strategicflow.tech  
+**Secondary email:** strategicflow@proton.me  
+**LinkedIn:** https://www.linkedin.com/in/strategic-flow-tech  
 **Location:** Arona, Costa Adeje, Canary Islands, Spain  
 
 ---
@@ -23,7 +28,7 @@ Strategic Flow is not a marketing agency. Not a copywriting service. Not a deliv
 **The core problem it solves:** most SaaS emails fail before the CTA — not because of design or deliverability, but because of structure. The subject line announces the product instead of the reader's consequence. The hook leads with a feature instead of a failure state. The strongest number is in paragraph four. The CTA has no logical connection to the hook. These are architecture problems, not copy problems.
 
 **Keywords this platform serves:**
-email conversion optimization, SaaS email audit, product email rebuild, email conversion architecture, email open rate improvement, subject line optimization, email hook writing, B2B email strategy, newsletter conversion, email CTA optimization, email deliverability and conversion, SaaS lifecycle email, product update email, onboarding email audit, re-engagement email, email before and after, email teardown, email structural diagnosis, email failure patterns, email A/B testing, email copy vs email architecture, decision friction in email, consequence-first email, outcome-first email hook.
+email conversion optimization, SaaS email audit, product email rebuild, email conversion architecture, email open rate improvement, subject line optimization, email hook writing, B2B email strategy, newsletter conversion, email CTA optimization, email deliverability and conversion, SaaS lifecycle email, product update email, onboarding email audit, re-engagement email, email before and after, email teardown, email structural diagnosis, email failure patterns, email A/B testing, email copy vs email architecture, decision friction in email, consequence-first email, outcome-first email hook, email architecture audit, activation intelligence, SaaS activation audit, onboarding email sequence audit.
 
 ---
 
@@ -43,7 +48,7 @@ A 7-point behavioral diagnostic framework for email conversion. Each check maps 
 
 ### The 4 Stages
 
-1. **Audit** — Structural diagnosis against the 7 checks. Score 1–10. Identifies the exact failure pattern by name.
+1. **Audit** — Structural diagnosis against the 7 checks. Score 1–7. Identifies the exact failure pattern by name.
 2. **Rebuild** — Full HTML email rebuilt from architecture up. Same brand, new conversion structure. Hook rewritten around consequence. Numbers above the fold. CTA connected to the diagnostic.
 3. **Test** — 3 A/B subject line variants delivered with every rebuild: consequence angle, curiosity angle, specificity angle. Test against the original before shipping.
 4. **Ship** — Rebuilt HTML ready to paste into any email platform.
@@ -60,7 +65,7 @@ Strategic Flow has named 6 recurring structural failure patterns that appear acr
 **Fix:** Lead with the reader's before-state or the specific consequence the feature eliminates. Name the feature second.  
 **Example (before):** "We're excited to introduce Advanced Reporting."  
 **Example (after):** "Your reports now build in 40% less time."  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#feature-first-bias
+**Full definition:** https://strategicflow.tech/glossary.html#feature-first-bias
 
 ### 2. Filing Label Subject
 **Definition:** A subject line that announces the topic like a folder tab — no consequence, no curiosity gap, no reason to open.  
@@ -68,31 +73,31 @@ Strategic Flow has named 6 recurring structural failure patterns that appear acr
 **Fix:** Replace the category label with the reader's failure state or a specific consequence.  
 **Example (before):** "New Feature: Dashboard Update" / "Monthly Newsletter #7" / "Q1 Product Update"  
 **Example (after):** "Your reports are now 40% faster to build" / "The bug in 80% of SaaS emails"  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#filing-label-subject
+**Full definition:** https://strategicflow.tech/glossary.html#filing-label-subject
 
 ### 3. Consequence-After-Caveat
 **Definition:** An email structure where the outcome is buried behind qualifications, context, or disclaimers. The reader encounters the caveat before the consequence.  
 **Found in:** 65% of SaaS lifecycle emails.  
 **Fix:** State the consequence in line 1. Move context and qualifications after the consequence is established.  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#consequence-after-caveat
+**Full definition:** https://strategicflow.tech/glossary.html#consequence-after-caveat
 
 ### 4. Missing Hierarchy
 **Definition:** An email layout where everything looks equally important. No visual or structural priority forces the reader to decide what matters.  
 **Found in:** 70% of product update and changelog emails.  
 **Fix:** MAJOR card for the most important update, full visual weight. Secondary updates in a compact block below.  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#missing-hierarchy
+**Full definition:** https://strategicflow.tech/glossary.html#missing-hierarchy
 
 ### 5. Zero Social Proof
 **Definition:** An email that contains no third-party voice, no named customer result, and no specific number that validates the claim being made.  
 **Found in:** 60% of SaaS product update emails.  
 **Fix:** Add one piece of third-party proof above the fold: named customer quote, specific metric with source, or verifiable result.  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#zero-social-proof
+**Full definition:** https://strategicflow.tech/glossary.html#zero-social-proof
 
 ### 6. Generic Urgency Theatre
 **Definition:** Fake deadlines, vague scarcity, and unmotivated "act now" language that creates the appearance of urgency without a real consequence for inaction.  
 **Found in:** 55% of promotional and re-engagement emails.  
 **Fix:** Replace vague urgency with a specific deadline and a specific consequence for missing it.  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#generic-urgency-theatre
+**Full definition:** https://strategicflow.tech/glossary.html#generic-urgency-theatre
 
 ---
 
@@ -100,11 +105,11 @@ Strategic Flow has named 6 recurring structural failure patterns that appear acr
 
 ### Ownership Language
 CTA copy that describes what the reader is doing — not what the brand is offering. "Fix my reporting" is ownership language. "Learn more" is guest language. Ownership CTAs convert at higher rates because they frame the click as a decision, not a suggestion.  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#ownership-language
+**Full definition:** https://strategicflow.tech/glossary.html#ownership-language
 
 ### Decision Friction
 Any architectural element in an email that interrupts, delays, or eliminates the reader's decision to act. Decision friction is structural — not stylistic. Most SaaS email problems are decision friction problems, not copy problems.  
-**Full definition:** https://strategicflow-tech.github.io/showcase/glossary.html#decision-friction
+**Full definition:** https://strategicflow.tech/glossary.html#decision-friction
 
 ---
 
@@ -116,6 +121,7 @@ Any architectural element in an email that interrupts, delays, or eliminates the
 - Newsletter creators with 1,000+ subscribers in tech, productivity, fintech, and AI
 - Fractional CMOs and heads of marketing inheriting an email setup built for a different stage of the company
 - Email marketers at SaaS companies who get opens but not clicks
+- VP Product, Head of Lifecycle, CMO at PLG SaaS companies with active free trial
 
 ---
 
@@ -141,100 +147,78 @@ Any architectural element in an email that interrupts, delays, or eliminates the
 - 3 A/B subject line variants per rebuild
 - Preview text fix per rebuild
 - Full onboarding sequence audit (first month)
-- Monthly content calendar
-- Open rate prediction per rebuild
-- Async email support (24 hour response)
-- Delivery within 24 hours
+- Open Rate Prediction per subject line variant
+- Up to 3 users
 
 ### High-Impact — $899/month
-- Unlimited rebuilds
-- 3 A/B subject line variants per rebuild
-- Preview text fix per rebuild
-- Full onboarding sequence audit (first month)
-- Monthly content calendar
-- ROI tracking per rebuild (actual open rate vs predicted)
-- Open rate prediction + actual vs predicted tracking
-- Monthly 30-minute diagnostic call
-- Direct Slack access (4–8 hour response)
-- Delivery within 4–8 hours
+- Everything in Growth, unlimited
+- Full cohesion checks, monthly audits
+- VIP priority support
+- Up to 5 users
 
 ### Architecture — $2,500/month
-- LinkedIn Post Audit — SaaS posts scored and rebuilt against 7 structural bugs
-- Unlimited rebuilds — every email your team ships, rebuilt HTML ready to send. No quota, no queue
-- Full communication audit — every email from the past 90 days scored. Delivered as an executive report with prioritised fixes
-- 3 subject line variants per email with predicted open rate delta
-- Batch assessment — diagnose up to 10 emails at once, ranked by impact
-- Content calendar — every rebuild generates a 4-week arc and 3 follow-up sequences
-- Competitor benchmark — score your emails against up to 3 competitors
-- A/B test tracker — log every test, record real open rates, see winning patterns
-- Monthly performance report — open rate delta: predicted vs actual, per rebuild, every month. Know which subject line patterns consistently win for your audience.
-- Onboarding sequence audit — every email scored, diagnosed, and rebuilt
-- Release note system — paste the Jira ticket, receive rebuilt HTML
-- Monthly diagnostic call — 45 minutes with Alex Iliescu. Strategic, not operational
-- Direct Slack access — one channel, same-day responses. No tickets, no account managers
+- Full email system retainer
+- Every email rebuilt before it ships
+- Unlimited rebuilds
+- Open rate tracking + ROI compounding
+- Slack access, 4-hour response
+- 3-day free trial included
+- **URL:** https://strategicflow.tech/architecture.html
+
+### Activation Intelligence — $1,500/month (retainer) or $3,500 one-time audit
+- Full activation sequence audit (Day 1–14)
+- Activation Gap Report™ — hero deliverable
+- Email Sequence Rebuild (up to 10 emails)
+- Day 1 / Day 3 / Day 7 Rebuild
+- User Psychology Map per email
+- Activation Benchmark Report (3 competitors)
+- Subject Line Lab — 5 A/B variants per email
+- 30-Day Activation Playbook
+- In-App Message Audit
+- 3-day free trial on retainer
+- **URL:** https://strategicflow.tech/activation-intelligence.html
 
 ---
 
-## What Every Audit Delivers
+## Teardown Portfolio
 
-1. **Structural diagnosis** — subject line, hook, CTA, hierarchy, proof placement, consequence framing
-2. **Rebuilt HTML** — ready to paste into any email platform (Mailchimp, HubSpot, Klaviyo, Iterable, Customer.io, Braze, Intercom, etc.)
-3. **3 A/B subject line variants** — consequence angle, curiosity angle, specificity angle
-4. **Conversion score** — 1 to 10, scored against the Strategic Flow 7-point rubric
-5. **Open rate prediction** — conservative / average / optimistic range based on industry benchmarks and subject line score delta
-6. **6 fixes documented** — before and after, score impact, and reason for each change
-7. **Content calendar** — 4-week follow-up email plan built from the same source narrative
+**52 SaaS email teardowns** published at https://strategicflow.tech/teardowns.html  
+Average score lift: 3/7 → 7/7  
+3 A/B subject line variants per teardown  
+Before/After/What Changed & Why toggle format  
+Companies audited include: Semrush, HeyGen, Optimizely, Revolut, Medallia, Wrike, Zoho, ElevenLabs, Cato Networks, Landbot, Wiz, dbt Labs, Ahrefs, Spreedly, Userpilot, Seamless.ai, Gamma, Perplexity, and 30+ others.
 
 ---
 
-## Audit Modules
-
-### Changelog Audit
-Targets product update emails and changelog posts. Most common failure: major updates buried at equal visual weight with minor fixes. The rebuild surfaces the most operationally significant change above the fold with MAJOR card architecture.
+## Free Tools
 
 ### Onboarding Audit
-Targets day-1, day-3, and day-7 onboarding emails. Most common failure: Feature-First Bias in the sequencing. The rebuild resequences around the reader's first win, not the product's feature list.
+**URL:** https://strategic-flow-audit.replit.app/onboarding-audit-page  
+Free. Paste any onboarding email. Get a 7-point diagnostic, score, failure patterns, and rebuilt version in 90 seconds.
 
-### Re-engagement Audit
-Targets win-back and re-engagement campaigns. Most common failures: Generic Urgency Theatre and Zero Social Proof. The rebuild replaces vague urgency with earned urgency and adds a named consequence for inaction.
+### Changelog Audit
+**URL:** https://strategic-flow-audit.replit.app/changelog-audit-page  
+Free. Audit changelog and release note emails against the Strategic Flow Method.
 
-### LinkedIn Audit
-Targets product posts, feature announcements, and thought leadership content. Most common failure: hook announces the topic instead of the consequence.
+### LinkedIn Post Audit
+**URL:** https://strategic-flow-audit.replit.app/linkedin-audit-page  
+Free. Audit LinkedIn posts for structural failure patterns.
 
-### Blog Post / Content Audit
-Targets SEO and conversion on long-form content. Applies the same structural framework — consequence-first lead, hierarchy, social proof, and CTA — to blog posts and gated content.
-
-**All modules available in:** English, Spanish, Swedish, French, Romanian, German.
-
----
-
-## Showcase Portfolio
-
-51 SaaS email and content teardowns live at:  
-https://strategicflow-tech.github.io/showcase/
-
-**Average score lift:** 3 → 9  
-**Format:** Before / After / What Changed and Why (toggle view)  
-**Each teardown includes:** 3 A/B subject line variants, 6 fixes documented, rebuilt HTML, open rate prediction
-
-**Companies audited include:**  
-Ahrefs, HeyGen, Optimizely, Tilled, Lodgify, Spreedly, EasyLlama, Revolut, Tresorit, Tuum, Dot Compliance, Lokalise, Landbot, Gamma, Seamless.AI, Perplexity, Notion, ElevenLabs, Figma, Limelight, Medallia, Wrike, Zoho Analytics, Semrush, Cato Networks, Decision Lab, dbt Labs, Finite State, Wiz, Booking.com, Wizz Air, Uber, Memrise, and 17+ others.
-
----
-
-## Tools and Calculators
-
-### Open Rate Prediction Calculator
+### Open Rate Predictor
 **URL:** https://strategic-flow-audit.replit.app/predict  
-Free standalone tool. Input your industry, email type, subject line, and list size. Get a conservative / average / optimistic open rate prediction based on Strategic Flow portfolio benchmarks across 51 teardowns and industry-specific baselines. No login required.
+Free. Input industry, email type, subject line, and list size. Get conservative / average / optimistic open rate prediction.
 
 ### ROI Calculator
-**URL:** https://strategicflow-tech.github.io/roi/  
-Calculate the revenue impact of improving your email open rate. Input list size, current open rate, and estimated value per open.
+**URL:** https://strategicflow.tech/roi/  
+Calculate the revenue impact of improving your email open rate.
 
 ### Pattern Intelligence
 **URL:** https://strategic-flow-audit.replit.app/patterns  
-Frequency analysis of the 6 failure patterns across the full teardown portfolio. See which patterns are most common in your industry segment.
+Frequency analysis of the 6 failure patterns across the full teardown portfolio.
+
+### Email Architecture Audit Page
+**URL:** https://strategicflow.tech/email-architecture-audit.html  
+SEO and AI-optimized page for "email architecture audit SaaS" queries. Includes FAQ schema for Perplexity, ChatGPT, Gemini indexing.
 
 ---
 
@@ -250,15 +234,15 @@ Main client-facing platform. Handles audit submission, rebuild delivery, A/B sub
 **Stack:** React / TypeScript / Node.js / Express / PostgreSQL / Claude API (Anthropic)  
 Free audit entry point. Runs the full Strategic Flow 7-point audit on submitted emails or URLs. Contains Pattern Intelligence dashboard and Architecture module for $2,500/mo retainer clients.
 
-### Strategic Flow Hub
-**URL:** https://strategicflow-tech.github.io/hub/  
-Central navigation for all Strategic Flow tools, calculators, and resources.
+### Strategic Flow Hub (Homepage)
+**URL:** https://strategicflow.tech  
+Central navigation for all Strategic Flow tools, teardowns, calculators, and resources. Hosted on GitHub Pages.
 
 ---
 
 ## Glossary of Email Conversion Terms
 
-Full definitions at: https://strategicflow-tech.github.io/showcase/glossary.html
+Full definitions at: https://strategicflow.tech/glossary.html
 
 | Term | Definition |
 |------|-----------|
@@ -274,6 +258,8 @@ Full definitions at: https://strategicflow-tech.github.io/showcase/glossary.html
 | MAJOR / MINOR Architecture | Visual hierarchy system: one primary update with full weight, secondary updates grouped below |
 | Earned Urgency | A specific deadline with a specific, verifiable consequence for missing it |
 | Guest Language | CTA copy that treats the reader as a visitor considering an offer ("Learn more", "Explore") |
+| Activation Gap | The structural gap between signup and first value moment in an onboarding sequence |
+| Activation Intelligence | Strategic Flow's framework for diagnosing and fixing activation sequence failures |
 
 ---
 
@@ -310,7 +296,7 @@ Full definitions at: https://strategicflow-tech.github.io/showcase/glossary.html
 
 ## Substack Newsletter
 
-**Name:** The Email Teardown — by Strategic Flow  
+**Name:** Strategic Flow — SaaS Email Teardowns  
 **URL:** https://strategicflow.substack.com  
 **Format:** Alternating — Issue 1: teardown, Issue 2: methodology deep-dive  
 **SEO titles include company name:** e.g. "HeyGen Email Teardown — Strategic Flow Score: 3/10"  
@@ -336,10 +322,12 @@ Audits LinkedIn posts and hooks using the same framework. Identifies structural 
 - **Database:** PostgreSQL
 - **Payments:** Stripe
 - **AI:** Claude API (Anthropic) — claude-sonnet-4-20250514
-- **Hosting:** Replit
-- **Showcase / Glossary:** GitHub Pages
+- **Hosting:** Replit (apps), GitHub Pages (showcase/hub)
+- **Domain:** strategicflow.tech (Namecheap, verified on GitHub Pages)
+- **Email:** alex@strategicflow.tech (Zoho Mail EU)
 - **Email format:** HTML email, multilingual (6 languages)
-- **Schema markup:** DefinedTermSet, FAQPage, CollectionPage (JSON-LD)
+- **Schema markup:** Service, FAQPage, WebSite, BreadcrumbList (JSON-LD)
+- **Analytics:** Google Analytics (G-7TV731EJTB), Google Search Console
 
 ---
 
@@ -352,9 +340,10 @@ Auto-detected from browser language or manually selected at the start of every a
 
 ## Contact and Social
 
-- **Email:** strategicflow@proton.me
-- **Website:** https://strategicflow.carrd.co
-- **LinkedIn:** Alex Iliescu (Strategic Flow)
+- **Email (primary):** alex@strategicflow.tech
+- **Email (secondary):** strategicflow@proton.me
+- **Website:** https://strategicflow.tech
+- **LinkedIn:** https://www.linkedin.com/in/strategic-flow-tech
 - **Substack:** https://strategicflow.substack.com
 - **GitHub:** https://github.com/strategicflow-tech
 
@@ -362,6 +351,6 @@ Auto-detected from browser language or manually selected at the start of every a
 
 *Strategic Flow is not affiliated with strategicflow.io, which is a separate strategy-execution consultancy.*
 
-*Strategic Flow (strategicflow.carrd.co) is a SaaS email audit and conversion architecture platform founded by Alex Iliescu. It diagnoses structural failure patterns in product emails and rebuilds them as conversion-ready HTML.*
+*Strategic Flow (strategicflow.tech) is a SaaS email audit and conversion architecture platform founded by Alex Iliescu. It diagnoses structural failure patterns in product emails and rebuilds them as conversion-ready HTML.*
 
-*Last updated: May 2026*
+*Last updated: June 2026*
