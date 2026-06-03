@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Booking.com ChatGPT Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --bcom-blue:#003580;--bcom-blue-light:#E8F0FB;--bcom-yellow:#FFBA00;--bcom-body:#F2F2F2;--bcom-teal:#009FE3;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--bcom-blue);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo span{display:inline-block;background:var(--bcom-yellow);color:var(--bcom-blue);border-radius:4px;padding:0 5px;margin-right:2px;font-size:18px;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{background:var(--bcom-blue);padding:0;}
+.bef-hero img{width:100%;display:block;max-height:220px;object-fit:cover;opacity:.9;}
+.bef-body{padding:24px;background:var(--bcom-body);border-bottom:1px solid #eee;}
+.bef-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-h1{font-size:20px;font-weight:700;color:var(--bcom-blue);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-section-title{font-size:15px;font-weight:700;color:var(--bcom-blue);margin:20px 0 10px;}
+.bef-bullets{list-style:none;padding:0;margin-bottom:16px;}
+.bef-bullets li{font-size:13px;color:#444;line-height:1.7;margin-bottom:10px;padding-left:16px;position:relative;}
+.bef-bullets li::before{content:"•";position:absolute;left:0;color:var(--bcom-teal);}
+.bef-bullets li strong{color:var(--bcom-blue);}
+.bef-quote{font-size:13px;color:#444;font-style:italic;line-height:1.7;padding:14px 16px;background:#f5f7fa;border-left:3px solid var(--bcom-teal);border-radius:0 6px 6px 0;margin:16px 0;}
+.bef-quote cite{font-style:normal;font-size:11px;color:#888;display:block;margin-top:6px;font-weight:500;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--bcom-blue);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--bcom-blue);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.after-logo-text span{display:inline-block;background:var(--bcom-yellow);color:var(--bcom-blue);border-radius:4px;padding:0 5px;margin-right:2px;font-size:18px;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--bcom-teal);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--bcom-blue);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--bcom-blue);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-quote{font-size:13px;color:var(--text-secondary);font-style:italic;line-height:1.7;padding:14px 16px;background:var(--bg-secondary);border-left:2px solid var(--bcom-teal);border-radius:0 8px 8px 0;margin-top:12px;}
+.after-quote cite{font-style:normal;font-size:11px;color:var(--text-secondary);display:block;margin-top:6px;font-weight:500;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Booking.com x ChatGPT — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow blog post teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> news.booking.com</div>
+        <div class="meta-row"><span>Type:</span> Product Announcement / Blog Post</div>
+        <div class="meta-row"><span>Date:</span> 20 May 2026</div>
+        <div class="post-title">Booking.com Is Making Car Rentals Easier with App in ChatGPT</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo"><span>B.</span>Booking.com</div>
+        <div class="bef-nav">Newsroom · May 2026</div>
+      </div>
+
+      <div class="bef-hero" style="background:var(--bcom-blue);min-height:80px;display:flex;align-items:center;justify-content:center;">
+        <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-.02em;padding:24px;text-align:center;">Car Rental Arrives in ChatGPT</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-meta">Amsterdam · 20 May 2026</div>
+        <div class="bef-h1">Booking.com Is Making Car Rentals Easier with App in ChatGPT</div>
+        <div class="bef-lead">Today, Booking.com has unveiled a range of new AI-driven innovations bringing customers a faster, more seamless car rental experience - just in time for the peak travel and road trip season.</div>
+        <div class="bef-lead">Rental cars will soon hit the open road en masse, with 1 in 4 (26%) planning to take a road trip, drawn to the spontaneity and flexibility (79%), and better cost (39%).</div>
+        <div class="bef-lead">But the journey does not always run smoothly: confusing terms and conditions, unclear pick-up requirements and unwanted surprises have made car rentals a common source of friction for travelers.</div>
+
+        <div class="bef-section-title">Car Rentals with Booking.com app in ChatGPT</div>
+        <div class="bef-lead">The Booking.com app in ChatGPT now lets travelers browse and find the perfect rental car. The app lets ChatGPT users, globally, describe what they're looking for (e.g. "an automatic SUV in Mallorca"), and receive relevant options to browse. When they've made their choice, they are seamlessly redirected to Booking.com to complete their reservation.</div>
+
+        <div class="bef-section-title">AI Car Rental Helper</div>
+        <div class="bef-lead">Beyond search, Booking.com's latest innovations are designed to simplify every stage of the car rental experience from booking to trip management. Booking.com's AI Car Rental Helper helps instantly answer common questions about their rental booking. Payment methods, pick up checklists, insurance information and more, the tool provides key information, 24/7, for a smooth and simple pick up and drop off. Early testing led to fewer customer support calls, reservation changes and disrupted pickups.</div>
+
+        <div class="bef-section-title">AI Car Rental Review Summaries</div>
+        <div class="bef-lead">AI-generated review summaries on Booking.com make it easier for travelers to understand what to expect from a rental supplier. Drawing on recent reviews from travelers, they highlight relevant themes (e.g. service, cleanliness, location, parking and amenities) without the need to endlessly browse through hundreds of individual entries.</div>
+
+        <div class="bef-section-title">Smart Search</div>
+        <div class="bef-lead">Smart Search introduces more specific filter options to car rental search. Travelers can now filter by preferences such as number of seats, automatic transmission and unlimited mileage, reducing the time spent browsing through less relevant options.</div>
+
+        <div class="bef-quote">
+          "Car rentals remain an important part of many travel journeys. With these latest AI-powered features, we aim to make it even easier for customers to both search and book car rentals and ensure they have a seamless experience when they pick up their car - so they can hit the road faster this peak season."
+          <cite>Eve Henrikson, SVP of Trips at Booking.com</cite>
+        </div>
+
+        <div class="bef-cta-box">
+          <a href="https://news.booking.com/bookingcom-is-making-car-rentals-easier-with-app-in-chatgpt/" class="bef-cta">Read the press release</a>
+        </div>
+        <div class="bef-footer">© 1996–2026 Booking.com B.V. · news.booking.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a filing label — "Booking.com Is Making Car Rentals Easier" describes the company's action, not the reader's problem. The traveler's question is: what does this change about the part I already hate?</div>
+        <div class="issue-item"><span>⚠</span> Company-First Bias in the opening line — "Today, Booking.com has unveiled..." is press release language. The reader doesn't arrive caring about Booking.com's unveiling. They arrive with a car rental pain point.</div>
+        <div class="issue-item"><span>⚠</span> The most credible stat (26% planning road trips) appears in paragraph 2 as context, not in the hook as a consequence signal. "1 in 4 travelers this season" is the reader's moment — it belongs in line one.</div>
+        <div class="issue-item"><span>⚠</span> The friction problem is named in paragraph 3 — "confusing terms, unclear pick-up requirements, unwanted surprises" — but only after two paragraphs of company announcement. This is the hook. It is buried.</div>
+        <div class="issue-item"><span>⚠</span> SVP quote placed at the end as decoration — Eve Henrikson names the actual reader outcome ("hit the road faster") but appears after four feature sections. The outcome language belongs in the opening paragraph, not the closing quote.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Read the press release" sends the reader away from the content to a document they just finished reading. No ownership language, no next action connected to the reader's situation.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text"><span>B.</span>Booking.com</div>
+          <div class="after-tagline-sm">Travel · May 2026</div>
+        </div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Road trip season · AI update</div>
+        <div class="after-h1">You described the car you needed.<br><em>ChatGPT found it.</em><br>Booking.com booked it.</div>
+        <div class="after-lead">Confusing pick-up requirements. Surprise charges at the counter. Unclear insurance terms. Car rentals are the part of travel most likely to go wrong before the trip starts. Four new AI tools change that — from the search that finds your car to the helper that answers your questions at 2am before pickup.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">1 in 4</div>
+            <div class="stat-label">travelers planning a road trip this year</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">24/7</div>
+            <div class="stat-label">AI Car Rental Helper — no hold music</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">tools covering search, booking, pickup, and reviews</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://www.booking.com/cars/" class="after-cta-primary">Search cars in ChatGPT →</a>
+          <a class="after-cta-ghost">See how the AI Helper works</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The search problem</div>
+        <div class="after-section-title">Tell ChatGPT what you need. Skip the filter maze.</div>
+        <div class="after-section-body">The Booking.com app in ChatGPT lets you describe what you want in plain language — "an automatic SUV in Mallorca for five days" — and receive relevant options immediately. No filter stacking. No switching tabs. When you've decided, ChatGPT hands you directly to Booking.com to complete the reservation. Available globally.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The pickup problem</div>
+        <div class="after-section-title">The questions you have at 11pm before pickup — answered before you ask them.</div>
+        <div class="after-section-body">The AI Car Rental Helper covers payment methods, pickup checklists, insurance terms, and reservation details — 24 hours a day. Early testing showed fewer support calls, fewer reservation changes, and fewer disrupted pickups. Currently available in English, French, Spanish, German, Dutch, and Italian.</div>
+        <div class="after-quote">
+          "We aim to make it even easier for customers to search and book car rentals and ensure they have a seamless experience when they pick up their car — so they can hit the road faster."
+          <cite>Eve Henrikson, SVP of Trips · Booking.com</cite>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The decision problem</div>
+        <div class="after-section-title">What 200 reviews actually say — in three sentences.</div>
+        <div class="after-section-body">AI-generated review summaries pull the themes that matter (service, cleanliness, pickup location, parking) from recent traveler reviews without making you read all of them. Currently available in English in the UK, US, Australia, New Zealand, and Singapore.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">The filter problem</div>
+        <div class="after-section-title">Automatic transmission. 5 seats. Unlimited mileage. Done.</div>
+        <div class="after-section-body">Smart Search adds the filters that should have existed already. Number of seats, transmission type, mileage limits — the details that eliminate 80% of irrelevant results before you scroll. Available in English globally now.</div>
+        <div style="margin-top:16px;">
+          <a href="https://www.booking.com/cars/" class="after-cta-primary" style="font-size:13px;">Find your car for this summer →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.booking.com/cars/" class="footer-link">Car rentals</a>
+          <a href="https://news.booking.com/" class="footer-link">Newsroom</a>
+          <a href="https://www.booking.com/genius.html" class="footer-link">Genius program</a>
+        </div>
+        <div class="footer-note">© 1996–2026 Booking.com B.V.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Booking.com Is Making Car Rentals Easier with App in ChatGPT<br><br>Company action as headline. The reader's pain — confusing terms, surprise charges, unclear pickup — does not appear until paragraph 3. By then most have already left.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> You described the car you needed. ChatGPT found it. Booking.com booked it.<br><br>Reader is the subject. The sequence of the new experience is the headline. Anyone who has rented a car knows immediately this is about them.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rebuilt from company action to reader experience</div>
+          <div class="upgrade-desc">The original announces what Booking.com did. The rebuild puts the reader in the action: "You described... ChatGPT found... Booking.com booked." Three steps. Three lines. Any traveler who has used car rental search recognises the experience before reading the body.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · The friction paragraph moved from paragraph 3 to the lead</div>
+          <div class="upgrade-desc">The original names the real reader problem — "confusing terms and conditions, unclear pick-up requirements and unwanted surprises" — after two paragraphs of company announcement. The rebuild opens with it. The pain is the hook. The features are the resolution. Reversing that order loses most readers before they reach the product.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · "1 in 4 planning a road trip" surfaced as a stat card</div>
+          <div class="upgrade-desc">The original uses this stat as context in paragraph 2. The rebuild makes it a visual anchor above the fold. Numbers in stat cards register faster than numbers in prose. A reader scanning the page sees "1 in 4" and self-selects before reading a word of copy.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Four features restructured around four problems</div>
+          <div class="upgrade-desc">The original lists features by product name: ChatGPT app, AI Helper, Review Summaries, Smart Search. The rebuild organises them by the problem each solves: the search problem, the pickup problem, the decision problem, the filter problem. The reader navigates to the section that matches their situation rather than reading a product catalogue.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · SVP quote placed as proof, not decoration</div>
+          <div class="upgrade-desc">Eve Henrikson's quote — "hit the road faster" — contains the outcome language the whole post is building toward. In the original it appears last, after the product sections, as a closing statement. The rebuild places it inside the section about the AI Helper, immediately after the evidence of what it does. The quote confirms the benefit at the moment the reader is most ready to believe it.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA rebuilt with ownership language and seasonal urgency</div>
+          <div class="upgrade-desc">"Read the press release" sends the reader to a document they just read. "Find your car for this summer" connects directly to the 1-in-4 stat and the peak season context named in the opening. The reader who has been reading about car rental friction understands immediately what the button does and why now is the relevant moment to use it.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's problem before company's announcement. Friction named in line one. Features organised by problem, not by product name. Quote as proof, not decoration. CTA connected to the seasonal moment the entire post is about. Score: 3/10 → 9/10. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last announcement.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
