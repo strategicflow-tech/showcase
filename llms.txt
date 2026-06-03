@@ -1,0 +1,9 @@
+# Strategic Flow
+> Email audit and conversion architecture platform for B2B SaaS
+
+## Pages
+- https://strategicflow.tech/
+- https://strategicflow.tech/teardowns.html
+- https://strategicflow.tech/scorecard.html
+- https://strategicflow.tech/architecture.html
+- https://strategicflow.tech/email-architecture-audit.html
