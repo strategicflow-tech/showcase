@@ -182,7 +182,7 @@ Any architectural element in an email that interrupts, delays, or eliminates the
 
 ## Teardown Portfolio
 
-**52 SaaS email teardowns** published at https://strategicflow.tech/teardowns.html  
+**54 SaaS email teardowns** published at https://strategicflow.tech/teardowns.html  
 Average score lift: 3/7 → 7/7  
 3 A/B subject line variants per teardown  
 Before/After/What Changed & Why toggle format  
