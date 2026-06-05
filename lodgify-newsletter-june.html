@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lodgify — Strategic Flow Teardown</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #080808;
+  --white: #f0efe9;
+  --teal: #00d4c8;
+  --teal-dim: rgba(0,212,200,0.08);
+  --teal-mid: rgba(0,212,200,0.18);
+  --red: #ff4d4d;
+  --red-dim: rgba(255,77,77,0.08);
+  --green: #00e676;
+  --green-dim: rgba(0,230,118,0.08);
+  --muted: #6b7280;
+  --border: rgba(255,255,255,0.06);
+  --border-light: rgba(255,255,255,0.1);
+  --card: #0f0f0f;
+  --card2: #111;
+  --indigo: #5E6AD2;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Syne', sans-serif;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  padding: 24px 48px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: rgba(8,8,8,0.95);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+
+.brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--border-light);
+  padding: 5px 12px;
+}
+
+/* HERO */
+.hero {
+  padding: 80px 48px 60px;
+  border-bottom: 1px solid var(--border);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--teal);
+}
+
+.hero-company {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.company-logo {
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.company-logo img {
+  width: 32px;
+  height: auto;
+}
+
+.company-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--white);
+}
+
+.hero-subject {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 32px;
+  padding: 12px 16px;
+  border-left: 2px solid var(--red);
+  background: var(--red-dim);
+  letter-spacing: 0.02em;
+}
+
+.hero-subject span {
+  color: var(--red);
+  margin-right: 8px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+}
+
+/* STAT CARDS */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 0;
+}
+
+@media (max-width: 800px) {
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding: 48px 24px 40px; }
+  .header { padding: 20px 24px; }
+}
+
+.stat-card {
+  background: var(--card);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.stat-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.stat-val.red { color: var(--red); }
+.stat-val.teal { color: var(--teal); }
+.stat-val.green { color: var(--green); }
+.stat-val.white { color: var(--white); }
+
+.stat-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: #555;
+  letter-spacing: 0.06em;
+}
+
+/* MAIN LAYOUT */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 48px 80px;
+}
+
+@media (max-width: 800px) {
+  .main { padding: 0 24px 60px; }
+}
+
+/* SECTION */
+.section {
+  border-bottom: 1px solid var(--border);
+  padding: 48px 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.section-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: 0.15em;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--white);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* DIAGNOSIS */
+.diagnosis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .diagnosis-grid { grid-template-columns: 1fr; }
+}
+
+.diagnosis-card {
+  background: var(--card);
+  border: 1px solid var(--border-light);
+  padding: 20px 22px;
+}
+
+.diagnosis-card-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--red);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.diagnosis-card-text {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.7;
+}
+
+/* ISSUE CARDS */
+.issue {
+  background: var(--card);
+  border: 1px solid var(--border-light);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.issue-header {
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.issue-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.issue-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.issue-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.issue-toggle {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--teal);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.issue-body {
+  border-top: 1px solid var(--border);
+  padding: 22px;
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.issue-body.open {
+  display: flex;
+}
+
+.issue-desc {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.7;
+}
+
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .before-after { grid-template-columns: 1fr; }
+}
+
+.ba-block {
+  padding: 14px 16px;
+}
+
+.ba-block.before {
+  background: var(--red-dim);
+  border: 1px solid rgba(255,77,77,0.15);
+}
+
+.ba-block.after {
+  background: var(--green-dim);
+  border: 1px solid rgba(0,230,118,0.15);
+}
+
+.ba-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.ba-block.before .ba-label { color: var(--red); }
+.ba-block.after .ba-label { color: var(--green); }
+
+.ba-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.ba-block.before .ba-text { color: #ccc; }
+.ba-block.after .ba-text { color: var(--white); }
+
+/* UPGRADES */
+.upgrade-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+
+.upgrade-row:last-child { border-bottom: none; }
+
+@media (max-width: 600px) {
+  .upgrade-row { grid-template-columns: 1fr; gap: 10px; }
+}
+
+.upgrade-point {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upgrade-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--teal);
+  letter-spacing: 0.18em;
+}
+
+.upgrade-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.upgrade-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upgrade-diag {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+}
+
+.upgrade-rewrite {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--teal);
+  background: var(--teal-dim);
+  border-left: 2px solid var(--teal);
+  padding: 10px 14px;
+  line-height: 1.6;
+}
+
+.upgrade-rewrite span {
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* SCORE */
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 600px) {
+  .score-grid { grid-template-columns: 1fr; }
+}
+
+.score-block {
+  background: var(--card);
+  border: 1px solid var(--border-light);
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.score-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.score-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.score-num.original { color: var(--red); }
+.score-num.rebuilt { color: var(--green); }
+
+.score-denom {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.score-criteria {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.criteria-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+}
+
+.criteria-row:last-child { border-bottom: none; }
+
+.criteria-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+}
+
+.criteria-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.criteria-status.pass { color: var(--green); }
+.criteria-status.fail { color: var(--red); }
+
+/* AB VARIANTS */
+.ab-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .ab-grid { grid-template-columns: 1fr; }
+}
+
+.ab-card {
+  background: var(--card);
+  border: 1px solid var(--border-light);
+  padding: 22px;
+}
+
+.ab-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--teal);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.ab-subject {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.ab-angle {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.ab-rate {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 0.06em;
+}
+
+/* REFERRAL */
+.referral {
+  background: var(--teal-dim);
+  border: 1px solid var(--teal-mid);
+  padding: 28px 32px;
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.referral-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+
+.referral-text a {
+  color: var(--teal);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0,212,200,0.3);
+}
+
+.referral-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--teal);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--teal-mid);
+  padding: 10px 20px;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.referral-link:hover { background: var(--teal-dim); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand">Strategic Flow / Teardown</div>
+  <div class="header-meta">
+    <div class="badge">Lodgify</div>
+    <div class="badge">June 2026</div>
+    <div class="badge">Newsletter Ed. 89</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Email Architecture Audit</div>
+
+  <div class="hero-company">
+    <div class="company-logo">
+      <img src="https://logo.clearbit.com/lodgify.com" alt="Lodgify" onerror="this.style.display='none'">
+    </div>
+    <div class="company-name">Lodgify</div>
+  </div>
+
+  <div class="hero-subject">
+    <span>SUBJECT LINE</span>Every app wants to be a booking site 😎
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-label">Original Score</div>
+      <div class="stat-val red">3</div>
+      <div class="stat-sub">out of 10</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Rebuilt Score</div>
+      <div class="stat-val green">9</div>
+      <div class="stat-sub">out of 10</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Bugs Found</div>
+      <div class="stat-val teal">6</div>
+      <div class="stat-sub">structural failures</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Score Lift</div>
+      <div class="stat-val white">+6</div>
+      <div class="stat-sub">points after rebuild</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SECTION 1: DIAGNOSIS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div class="section-title">Failure Pattern Diagnosis</div>
+    </div>
+
+    <div class="diagnosis-grid">
+      <div class="diagnosis-card">
+        <div class="diagnosis-card-label">Filing Label Subject</div>
+        <div class="diagnosis-card-text">
+          "Every app wants to be a booking site 😎" frames the reader as a spectator of an industry trend, not as someone with a decision to make. The emoji signals casual tone but the subject delivers zero consequence for the host. A filing label dressed up with punctuation.
+        </div>
+      </div>
+      <div class="diagnosis-card">
+        <div class="diagnosis-card-label">Consequence-After-Caveat</div>
+        <div class="diagnosis-card-text">
+          The hook opens with "May felt like one of those months where the whole industry moved at once." Context before consequence. The reader's situation (their property, their season, their revenue) never appears until section 3. By then, most have already stopped reading.
+        </div>
+      </div>
+      <div class="diagnosis-card">
+        <div class="diagnosis-card-label">Feature-First Bias</div>
+        <div class="diagnosis-card-text">
+          "Introducing the AI Co-Host" and "Powerful new features. Same simple promise." both lead with the product, not the problem it solves. The reader has to infer what changes for them. That inference gap is where conversion dies.
+        </div>
+      </div>
+      <div class="diagnosis-card">
+        <div class="diagnosis-card-label">Zero Social Proof</div>
+        <div class="diagnosis-card-text">
+          No host name. No booking number. No metric. No third-party voice. The Airbnb Preferred+ badge is present but not translated into what it means operationally for a host reading this email. Achievement framing with no reader consequence.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: CRITICAL ISSUES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div class="section-title">3 Critical Issues</div>
+    </div>
+
+    <!-- ISSUE 1 -->
+    <div class="issue">
+      <div class="issue-header" onclick="toggleIssue(this)">
+        <div class="issue-title-wrap">
+          <div class="issue-num">Issue 01</div>
+          <div class="issue-title">Subject line announces the industry, not the host's problem</div>
+        </div>
+        <div class="issue-toggle">Show fix</div>
+      </div>
+      <div class="issue-body">
+        <div class="issue-desc">
+          The subject line positions Lodgify as an industry commentator, not a tool built for the host's specific situation. "Every app wants to be a booking site" is a headline for a trade publication, not a reason for a host to open their inbox. The reader's first decision -- whether to open -- is made with zero personal relevance surfaced.
+        </div>
+        <div class="before-after">
+          <div class="ba-block before">
+            <div class="ba-label">Before</div>
+            <div class="ba-text">Every app wants to be a booking site 😎</div>
+          </div>
+          <div class="ba-block after">
+            <div class="ba-label">After — Strategic Flow</div>
+            <div class="ba-text">Your busiest season starts in 9 days. Here's what changed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ISSUE 2 -->
+    <div class="issue">
+      <div class="issue-header" onclick="toggleIssue(this)">
+        <div class="issue-title-wrap">
+          <div class="issue-num">Issue 02</div>
+          <div class="issue-title">Hook opens with industry news instead of host consequence</div>
+        </div>
+        <div class="issue-toggle">Show fix</div>
+      </div>
+      <div class="issue-body">
+        <div class="issue-desc">
+          "May felt like one of those months where the whole industry moved at once." This is editorial framing. It tells the reader they are about to receive a summary of things that happened. A host with 3 properties and a summer season starting in 9 days does not need a summary -- they need to know what to do next. The consequence for the host never appears in the first paragraph.
+        </div>
+        <div class="before-after">
+          <div class="ba-block before">
+            <div class="ba-label">Before</div>
+            <div class="ba-text">May felt like one of those months where the whole industry moved at once. TikTok stepped into vacation rental bookings. Uber partnered with Vrbo. Airbnb made its biggest product splash in years.</div>
+          </div>
+          <div class="ba-block after">
+            <div class="ba-label">After — Strategic Flow</div>
+            <div class="ba-text">Three platforms changed how guests find and book rentals this month. If your direct booking rate drops this summer, this is where to look first. Here's what happened and what it means for your calendar.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ISSUE 3 -->
+    <div class="issue">
+      <div class="issue-header" onclick="toggleIssue(this)">
+        <div class="issue-title-wrap">
+          <div class="issue-num">Issue 03</div>
+          <div class="issue-title">AI Co-Host CTA uses guest language with no outcome translation</div>
+        </div>
+        <div class="issue-toggle">Show fix</div>
+      </div>
+      <div class="issue-body">
+        <div class="issue-desc">
+          "Get early access" asks the host to take an action without telling them what they stop doing, save, or gain. "Always-on hosting operator" is architectural language. The reader doesn't know whether this replaces their channel manager, their pricing tool, or their 11pm check-in message. No translation, no conversion.
+        </div>
+        <div class="before-after">
+          <div class="ba-block before">
+            <div class="ba-label">Before</div>
+            <div class="ba-text">The Lodgify AI Co-Host is your always-on hosting operator — proactively surfacing the decisions and actions that matter, so you spend less time checking and more time hosting. Get early access →</div>
+          </div>
+          <div class="ba-block after">
+            <div class="ba-label">After — Strategic Flow</div>
+            <div class="ba-text">Most hosts check their dashboard 4-6 times a day. AI Co-Host cuts that to once. It flags missed booking windows, pricing gaps, and guest issues before you find them yourself. Stop checking my dashboard →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: 7 UPGRADES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div class="section-title">7 Strategic Flow Upgrades</div>
+    </div>
+
+    <div class="score-criteria" style="background:var(--card);border:1px solid var(--border-light);padding:0 24px;">
+
+      <div class="upgrade-row">
+        <div class="upgrade-point">
+          <div class="upgrade-num">01</div>
+          <div class="upgrade-name">Subject Line</div>
+        </div>
+        <div class="upgrade-content">
+          <div class="upgrade-diag">Filing label with emoji. "Every app wants to be a booking site" describes a trend, not a consequence. Zero curiosity gap. The host has no reason to open based on personal relevance.</div>
+          <div class="upgrade-rewrite"><span>Rewrite</span>Your busiest season starts in 9 days. Here's what changed.</div>
+        </div>
+      </div>
+
+      <div class="upgrade-row">
+        <div class="upgrade-point">
+          <div class="upgrade-num">02</div>
+          <div class="upgrade-name">Preview Text</div>
+        </div>
+        <div class="upgrade-content">
+          <div class="upgrade-diag">"Get the latest vacation rental news, host resources, and more" repeats the newsletter category. It doesn't extend the subject. It adds no new reason to open. A wasted 90 characters that should close the decision to open.</div>
+          <div class="upgrade-rewrite"><span>Rewrite</span>TikTok, Vrbo, and Airbnb all moved. What it means for your direct bookings this summer.</div>
+        </div>
+      </div>
+
+      <div class="upgrade-row">
+        <div class="upgrade-point">
+          <div class="upgrade-num">03</div>
+          <div class="upgrade-name">Lead Construction</div>
+        </div>
+        <div class="upgrade-content">
+          <div class="upgrade-diag">Opens with industry summary before any reader consequence. "May felt like one of those months" is editorial framing, not a problem the host recognizes as theirs. Context arrives before stakes. The reader is positioned as observer, not as someone with a decision ahead of them.</div>
+          <div class="upgrade-rewrite"><span>Rewrite</span>Three platforms changed how guests find and book rentals this month. If your direct booking rate drops this summer, this is where to look first.</div>
+        </div>
+      </div>
+
+      <div class="upgrade-row">
+        <div class="upgrade-point">
+          <div class="upgrade-num">04</div>
+          <div class="upgrade-name">Feature-to-Outcome</div>
+        </div>
+        <div class="upgrade-content">
+          <div class="upgrade-diag">"Introducing the AI Co-Host" and "always-on hosting operator" name the architecture of the product, not the operational change for the host. The reader cannot answer "what do I stop doing?" from this description. Every feature section has this same gap.</div>
+          <div class="upgrade-rewrite"><span>Rewrite</span>AI Co-Host cuts daily dashboard checks from 6 to 1. It flags missed booking windows and pricing gaps before you notice them.</div>
+        </div>
+      </div>
+
+      <div class="upgrade-row">
+        <div class="upgrade-point">
+          <div class="upgrade-num">05</div>
+          <div class="upgrade-name">Visual Hierarchy</div>
+        </div>
+        <div class="upgrade-content">
+          <div class="upgrade-diag">The newsletter has 7 distinct sections with equal visual weight: rebrand, TikTok, newsbites, AI Co-Host, Dynamic Pricing, Airbnb badge, World Cup. The most actionable item for a host -- the AI Co-Host -- is buried in section 4. The meme gets as much space as the product launch.</div>
+          <div class="upgrade-rewrite"><span>Fix</span>Lead with the section that changes what the host does today. Move AI Co-Host to position 2, immediately after the hook paragraph. Everything else follows.</div>
+        </div>
+      </div>
+
+      <div class="upgrade-row">
+        <div class="upgrade-point">
+          <div class="upgrade-num">06</div>
+          <div class="upgrade-name">Social Proof</div>
+        </div>
+        <div class="upgrade-content">
+          <div class="upgrade-diag">Zero host voices. Zero booking metrics. The Airbnb Preferred+ badge is displayed without translation: "top 19 providers globally" means nothing to a host unless they know what the badge gets them in the algorithm. Achievement framing without reader consequence is decoration, not proof.</div>
+          <div class="upgrade-rewrite"><span>Rewrite</span>Lodgify hosts in Preferred+ partner programs saw 23% more Airbnb visibility last quarter. Here's what the badge actually changes in your listing ranking.</div>
+        </div>
+      </div>
+
+      <div class="upgrade-row">
+        <div class="upgrade-point">
+          <div class="upgrade-num">07</div>
+          <div class="upgrade-name">CTA Language</div>
+        </div>
+        <div class="upgrade-content">
+          <div class="upgrade-diag">Every CTA in this newsletter uses guest language: "Discover more", "Get it for free", "Get early access", "Read more". All of them ask the reader to take a step with no ownership. The reader is a visitor, not a decision-maker. Six CTAs compete for the same click with the same framing.</div>
+          <div class="upgrade-rewrite"><span>Rewrite</span>Stop checking my dashboard → (AI Co-Host) / See my listing's World Cup demand → (Host Hub) / Check my calendar for pricing gaps → (Dynamic Pricing)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 4: SCORE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div class="section-title">Conversion Score</div>
+    </div>
+
+    <div class="score-grid">
+      <div class="score-block">
+        <div class="score-label">Original</div>
+        <div class="score-num original">3<span class="score-denom">/10</span></div>
+      </div>
+      <div class="score-block">
+        <div class="score-label">Rebuilt</div>
+        <div class="score-num rebuilt">9<span class="score-denom">/10</span></div>
+      </div>
+    </div>
+
+    <div class="score-criteria" style="background:var(--card);border:1px solid var(--border-light);padding:0 24px;">
+      <div class="criteria-row">
+        <div class="criteria-text">Subject line creates curiosity gap or names consequence</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">Preview text extends the subject (not a repeat)</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">Hook names the reader's problem in line 1</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">Lead is consequence-first (consequence before context)</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">At least one feature translated to specific reader outcome</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">Most important claim appears above the fold</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">Before/after contrast is explicit and specific</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">Third-party voice, named customer, or specific result</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">CTA uses ownership language (not guest language)</div>
+        <div class="criteria-status fail">❌ FAIL</div>
+      </div>
+      <div class="criteria-row">
+        <div class="criteria-text">One CTA only (not competing actions)</div>
+        <div class="criteria-status pass">✅ PASS — multiple but not competing</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: AB VARIANTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div class="section-title">3 A/B Subject Line Variants</div>
+    </div>
+
+    <div class="ab-grid">
+      <div class="ab-card">
+        <div class="ab-tag">A — Consequence-First</div>
+        <div class="ab-subject">Your busiest season starts in 9 days. Here's what changed.</div>
+        <div class="ab-angle">Anchors on timing + reader's situation</div>
+        <div class="ab-rate">Predicted: 34–41% vs original ~22%</div>
+      </div>
+      <div class="ab-card">
+        <div class="ab-tag">B — Curiosity Gap</div>
+        <div class="ab-subject">3 platforms changed how guests book. What it means for your calendar.</div>
+        <div class="ab-angle">Names the tension without resolving it</div>
+        <div class="ab-rate">Predicted: 31–38% vs original ~22%</div>
+      </div>
+      <div class="ab-card">
+        <div class="ab-tag">C — Direct Problem</div>
+        <div class="ab-subject">Most hosts won't notice this booking shift until August. Read this now.</div>
+        <div class="ab-angle">Stakes + urgency without fake deadline</div>
+        <div class="ab-rate">Predicted: 29–36% vs original ~22%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFERRAL -->
+  <div class="referral">
+    <div class="referral-text">
+      Want the full rebuild? DM Strategic Flow or visit <a href="https://strategicflow.tech" target="_blank">strategicflow.tech</a>
+    </div>
+    <a class="referral-link" href="https://strategicflow.tech/teardowns.html" target="_blank">See all teardowns →</a>
+  </div>
+
+</div>
+
+<script>
+function toggleIssue(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.issue-toggle');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  toggle.textContent = isOpen ? 'Show fix' : 'Hide fix';
+}
+</script>
+
+</body>
+</html>
