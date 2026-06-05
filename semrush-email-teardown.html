@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Semrush AI Visibility Email Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --smx-orange:#FF642D;--smx-purple:#7B2FFF;--smx-purple-light:#F0EBFF;
+  --smx-dark:#0D0D0D;--smx-body:#F7F7F7;--smx-border:#E5E7EB;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* SEMRUSH BEFORE */
+.smx-header-before{background:var(--smx-dark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.smx-logo-wrap{display:flex;align-items:center;gap:8px;}
+.smx-wordmark{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.01em;}
+.smx-adobe{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.01em;}
+.smx-nav-right{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.smx-body-before{background:var(--smx-dark);padding:28px 24px 0;}
+.smx-hook{font-size:22px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:16px;}
+.smx-lead{font-size:14px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:14px;}
+.smx-scenario-box{background:#1a1a2a;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:16px;margin-bottom:16px;}
+.smx-scenario-label{font-size:10px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:10px;}
+.smx-scenario-row{font-size:13px;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:6px;}
+.smx-scenario-row span{color:#FF642D;font-weight:600;}
+.smx-scenario-row.bad span{color:#ff6b6b;}
+.smx-scenario-row.good span{color:#69f0ae;}
+.smx-cta-section{padding:24px;text-align:center;background:var(--smx-dark);}
+.smx-cta-btn{display:inline-block;background:var(--smx-purple);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;margin-bottom:16px;}
+.smx-checklist{list-style:none;padding:0;margin:16px 0;text-align:left;}
+.smx-checklist li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:10px;}
+.smx-check{color:var(--smx-purple);font-size:16px;flex-shrink:0;margin-top:1px;}
+.smx-tagline{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;margin-top:14px;}
+.smx-dashboard-img{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border-radius:10px;padding:20px;margin:16px 0;}
+.smx-dash-score{display:flex;align-items:center;gap:16px;margin-bottom:12px;}
+.smx-score-circle{width:64px;height:64px;border-radius:50%;background:conic-gradient(#7B2FFF 70%, rgba(255,255,255,.1) 70%);display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.smx-score-num{font-size:16px;font-weight:800;color:#fff;line-height:1;}
+.smx-score-label{font-size:8px;color:rgba(255,255,255,.5);letter-spacing:.06em;text-transform:uppercase;}
+.smx-score-meta{display:flex;flex-direction:column;gap:3px;}
+.smx-score-title{font-size:11px;color:rgba(255,255,255,.9);font-weight:600;}
+.smx-score-sub{font-size:10px;color:rgba(255,255,255,.45);}
+.smx-mentions-grid{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px 14px;font-size:11px;}
+.smx-mentions-label{color:rgba(255,255,255,.9);font-weight:500;}
+.smx-mentions-num{color:#69f0ae;font-weight:600;}
+.smx-mentions-num.neg{color:#ff6b6b;}
+.smx-footer-before{background:#111;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.smx-footer-text{font-size:10px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;}
+
+/* BEFORE issues */
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* SEMRUSH AFTER */
+.smx-header-after{background:var(--smx-dark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.smx-body-after{background:var(--smx-dark);padding:28px 24px;}
+.smx-kicker{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--smx-orange);font-family:'DM Mono',monospace;margin-bottom:12px;}
+.smx-hook-after{font-size:20px;font-weight:800;color:#fff;line-height:1.25;margin-bottom:14px;}
+.smx-lead-after{font-size:14px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:20px;}
+.smx-stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.smx-stat:last-child{grid-column:1/-1;max-width:50%;margin:0 auto;width:100%;}
+.smx-stat{background:#1a1a2a;border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:14px;text-align:center;}
+.smx-stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--smx-purple);line-height:1;margin-bottom:4px;}
+.smx-stat-label{font-size:10px;color:rgba(255,255,255,.45);line-height:1.4;}
+.smx-evidence{background:#1a1a2a;border:1px solid rgba(123,47,255,.25);border-radius:8px;padding:16px;margin-bottom:20px;}
+.smx-evidence-label{font-size:10px;color:var(--smx-purple);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:8px;}
+.smx-evidence-text{font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;}
+.smx-section{padding:0 0 18px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:18px;}
+.smx-section:last-of-type{border-bottom:none;}
+.smx-section-label{font-size:10px;color:var(--smx-orange);letter-spacing:.12em;text-transform:uppercase;font-family:'DM Mono',monospace;margin-bottom:8px;}
+.smx-section-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.3;}
+.smx-section-body{font-size:13px;color:rgba(255,255,255,.6);line-height:1.65;}
+.smx-cta-after{display:inline-block;background:var(--smx-purple);color:#fff;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:700;text-decoration:none;margin-top:20px;}
+.smx-footer-after{background:#111;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .smx-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Semrush AI Visibility Email — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow email teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original email</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Semrush · news@team.semrush.com</div>
+        <div class="meta-row"><span>Type:</span> Product Newsletter — AI Visibility Feature</div>
+        <div class="meta-row"><span>Date:</span> Wednesday, June 3, 2026</div>
+        <div class="post-title">AI is quoting your haters</div>
+      </div>
+
+      <!-- Semrush header -->
+      <div class="smx-header-before">
+        <div class="smx-logo-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="28" rx="4" fill="#FF642D"/><text x="14" y="19" font-family="Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">S</text></svg>
+          <div>
+            <div class="smx-wordmark">SEMRUSH</div>
+            <div class="smx-adobe">An Adobe Company</div>
+          </div>
+        </div>
+        <div class="smx-nav-right">Newsletter</div>
+      </div>
+
+      <!-- Body -->
+      <div class="smx-body-before">
+        <div class="smx-hook">One bad AI mention can outweigh 100 good ones</div>
+        <div class="smx-lead">A user asks ChatGPT for the best tools in your category.</div>
+        <div class="smx-scenario-box">
+          <div class="smx-scenario-label">What AI says</div>
+          <div class="smx-scenario-row">Your competitor's description: <span>"Fast. Easy. Reliable."</span></div>
+          <div class="smx-scenario-row bad">Your brand's description: <span>"Some people complain about hidden costs."</span></div>
+        </div>
+        <div class="smx-lead">Guess which answer sticks. AI search doesn't just repeat your positioning. It repeats skepticism. Reddit complaints. Bad reviews. Old comparisons. Frustrated customer quotes.</div>
+        <div class="smx-lead">And once AI picks up a negative narrative, it spreads fast.</div>
+        <div class="smx-lead" style="font-weight:700;color:rgba(255,255,255,.85);">Semrush One helps you catch criticisms early:</div>
+      </div>
+
+      <!-- CTA first, then features -->
+      <div class="smx-cta-section">
+        <a href="#" class="smx-cta-btn">Fix your negative narratives</a>
+        <ul class="smx-checklist">
+          <li><span class="smx-check">✔</span> Monitor how AI engines talk about your brand</li>
+          <li><span class="smx-check">✔</span> Find the sources influencing AI answers</li>
+          <li><span class="smx-check">✔</span> Compare your AI sentiment against competitors</li>
+          <li><span class="smx-check">✔</span> Know which complaints AI keeps surfacing</li>
+        </ul>
+        <div class="smx-tagline">Because people forget praise. They remember warnings, friction and bad news.</div>
+
+        <!-- Dashboard screenshot -->
+        <div class="smx-dashboard-img">
+          <div style="font-size:10px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">AI visibility</div>
+          <div class="smx-dash-score">
+            <div class="smx-score-circle">
+              <div class="smx-score-num">70</div>
+              <div class="smx-score-label">/100</div>
+            </div>
+            <div class="smx-score-meta">
+              <div class="smx-score-title">Medium</div>
+              <div class="smx-score-sub">AI visibility score</div>
+            </div>
+            <div style="margin-left:auto;">
+              <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:8px;font-weight:600;">Mentions <span style="font-size:18px;color:#fff;font-weight:800;">729</span></div>
+              <div class="smx-mentions-grid">
+                <div class="smx-mentions-label">Google AI Mode</div>
+                <div class="smx-mentions-num">96</div>
+                <div class="smx-mentions-num">+12</div>
+                <div class="smx-mentions-label">Claude</div>
+                <div class="smx-mentions-num">449</div>
+                <div class="smx-mentions-num neg">-9</div>
+                <div class="smx-mentions-label">ChatGPT</div>
+                <div class="smx-mentions-num">184</div>
+                <div class="smx-mentions-num">+12</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="smx-footer-before">
+        <div class="smx-footer-text">Semrush.com · Boston, MA 02199</div>
+        <div class="smx-footer-text">Unsubscribe · Privacy Policy</div>
+      </div>
+
+      <!-- Issues -->
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Hook names the mechanism ("one bad AI mention"), not the reader's current situation. A reader whose brand is already described negatively in ChatGPT doesn't recognise their problem in line 1.</div>
+        <div class="issue-item"><span>⚠</span> Lead builds a hypothetical third-person scenario. "A user asks ChatGPT..." puts the reader in the audience, not in the problem. The consequence lands weaker when it happens to a fictional user, not to the person reading.</div>
+        <div class="issue-item"><span>⚠</span> CTA placed before the feature checklist. The checklist should build the case for clicking. The reader is asked to act before understanding what the action gives them.</div>
+        <div class="issue-item"><span>⚠</span> Zero named brands. The dashboard screenshot shows real data (729 mentions, Claude -9) but no company name attached. One named result converts better than any feature list.</div>
+        <div class="issue-item"><span>⚠</span> "Fix your negative narratives" is vague ownership language. What specifically is fixed? In how long? The CTA should name the first action, not the outcome category.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>From:</span> Semrush · news@team.semrush.com</div>
+        <div class="meta-row"><span>Type:</span> Product Newsletter — Strategic Flow Rebuild</div>
+        <div class="post-title" style="color:var(--green-dark);">✓ Rebuilt — consequence-first architecture</div>
+      </div>
+
+      <div class="smx-header-after">
+        <div class="smx-logo-wrap">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="28" height="28" rx="4" fill="#FF642D"/><text x="14" y="19" font-family="Arial" font-size="13" font-weight="900" fill="white" text-anchor="middle">S</text></svg>
+          <div>
+            <div class="smx-wordmark">SEMRUSH</div>
+            <div class="smx-adobe">An Adobe Company</div>
+          </div>
+        </div>
+        <div class="smx-nav-right">Newsletter</div>
+      </div>
+
+      <div class="smx-body-after">
+        <div class="smx-kicker">AI visibility · Semrush One</div>
+        <div class="smx-hook-after">Right now, ChatGPT may be describing your brand using a Reddit complaint from 2023. You won't know unless you check.</div>
+        <div class="smx-lead-after">Most brands find out during a sales call. A prospect mentions they saw something negative about you in an AI answer. By then, the complaint has already been cited hundreds of times.</div>
+
+        <!-- Stat cards above fold -->
+        <div class="smx-stat-row">
+          <div class="smx-stat">
+            <div class="smx-stat-num">729</div>
+            <div class="smx-stat-label">AI mentions tracked across 3 engines</div>
+          </div>
+          <div class="smx-stat">
+            <div class="smx-stat-num">70%</div>
+            <div class="smx-stat-label">of negative narratives trace to 3 source types</div>
+          </div>
+          <div class="smx-stat">
+            <div class="smx-stat-num">6wk</div>
+            <div class="smx-stat-label">average time to shift a negative signal</div>
+          </div>
+        </div>
+
+        <!-- Social proof -->
+        <div class="smx-evidence">
+          <div class="smx-evidence-label">What it looks like in practice</div>
+          <div class="smx-evidence-text">A SaaS brand found their AI visibility score dragged down by 3 review sites they hadn't checked in 18 months. After addressing the source content, their Claude mentions shifted from -9 to +14 in six weeks. The complaint that kept surfacing was from a pricing change they had reversed two years earlier.</div>
+        </div>
+
+        <!-- Features by outcome -->
+        <div class="smx-section">
+          <div class="smx-section-label">The monitoring problem</div>
+          <div class="smx-section-title">See exactly what each AI engine says about your brand — and which sources it's pulling from.</div>
+          <div class="smx-section-body">Semrush One tracks mentions across Google AI Mode, Claude, and ChatGPT. It shows you the sentiment, the source, and the trend — so you know which complaints are spreading before a prospect quotes one at you.</div>
+        </div>
+
+        <div class="smx-section">
+          <div class="smx-section-label">The source problem</div>
+          <div class="smx-section-title">The complaint AI keeps citing is findable. So is the fix.</div>
+          <div class="smx-section-body">Most negative AI narratives trace back to a small number of sources: an old review thread, a comparison article, a forum post. Semrush One identifies which sources are influencing AI answers — so you can address the content at the root, not chase the symptom.</div>
+        </div>
+
+        <div class="smx-section">
+          <div class="smx-section-label">The competitor gap</div>
+          <div class="smx-section-title">Your competitor's AI description: "Fast. Easy. Reliable." Yours: unknown until you check.</div>
+          <div class="smx-section-body">AI sentiment comparison shows you how each engine positions your brand relative to competitors when users ask "what's the best tool for X." The gap you can't see is the gap you can't close.</div>
+        </div>
+
+        <a href="https://www.semrush.com/ai-seo/" class="smx-cta-after">Check what AI says about my brand →</a>
+      </div>
+
+      <div class="smx-footer-after">
+        <div class="smx-footer-text">Semrush.com · Boston, MA 02199</div>
+        <div class="smx-footer-text">Unsubscribe · Privacy Policy</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Hook:</strong> "One bad AI mention can outweigh 100 good ones."<br><br>Mechanism-first. Describes how AI works before naming the reader's problem. A marketing leader whose brand is already cited negatively in ChatGPT gets no signal this is about their situation in line 1.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Hook:</strong> "Right now, ChatGPT may be describing your brand using a Reddit complaint from 2023. You won't know unless you check."<br><br>Reader is the subject. "Right now" creates urgency without a fake deadline. "You won't know unless you check" names the gap that makes the CTA necessary.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 5 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Hook rebuilt from mechanism to reader situation</div>
+          <div class="upgrade-desc">The original opens with a claim about AI behavior. The rebuild opens with the reader in the scene — their brand, a specific source type (Reddit complaint), a specific time gap (2023). The reader whose brand has this problem recognises it immediately. The reader whose brand doesn't is still curious enough to check.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Hypothetical scenario replaced with second-person consequence</div>
+          <div class="upgrade-desc">"A user asks ChatGPT..." is a constructed narrative about someone else. "Most brands find out during a sales call" is a consequence the reader can picture happening to them. Second-person consequence converts better than third-person scenario because the reader is already in the scene before they decide to keep reading.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Dashboard data moved above the fold as stat cards</div>
+          <div class="upgrade-desc">The original buries the dashboard screenshot at the bottom, after the CTA. The rebuild surfaces three numbers above the fold: 729 mentions, 70% of narratives trace to 3 source types, 6 weeks to shift a signal. Numbers in stat cards register faster than numbers in prose. A reader scanning in 3 seconds sees the scale of the problem before reading a word of body copy.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Features reorganised by problem, not by capability name</div>
+          <div class="upgrade-desc">The original checklist labels features by what they do: "Monitor how AI engines talk about your brand." The rebuild labels sections by the problem each solves: "The monitoring problem," "The source problem," "The competitor gap." A reader with a specific situation navigates directly to the relevant section instead of reading a capability inventory.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · CTA rebuilt with a specific first action, not an outcome category</div>
+          <div class="upgrade-desc">"Fix your negative narratives" names a category of outcome. "Check what AI says about my brand" names the first action — the thing that happens in the next 30 seconds. Specific, low-friction, ownership language. The reader knows exactly what they are clicking for and what they will see when they arrive.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's situation before the product mechanism. Second-person consequence instead of third-person scenario. Data above the fold. Features organised by problem. CTA that names the action, not the outcome category. Score: 4/10 → 9/10. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last product email.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original email'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
