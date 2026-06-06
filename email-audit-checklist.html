@@ -18,8 +18,8 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--white);font-family:'Figtree',sans-serif;font-size:15px;line-height:1.6;}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,237,232,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,232,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
-.wrapper{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 24px 80px;position:relative;z-index:1;}
-.layout{display:grid;grid-template-columns:1fr 360px;gap:28px;max-width:1200px;width:100%;}
+.wrapper{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 16px 80px;position:relative;z-index:1;overflow-x:hidden;}
+.layout{display:grid;grid-template-columns:1fr 320px;gap:20px;max-width:1080px;width:100%;min-width:0;}
 
 /* HERO */
 .hero{padding:56px 48px 48px;border:1px solid var(--border);background:var(--card);position:relative;overflow:hidden;margin-bottom:20px;}
@@ -247,8 +247,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .audit-cta-note{font-size:14px;color:var(--mid);margin-top:12px;font-family:'DM Mono',monospace;}
 
 /* FOOTER */
-.page-footer{padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;background:var(--card);border:1px solid var(--border);}
-.footer-left{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.06em;color:rgba(255,255,255,0.5);line-height:1.8;}
+.page-footer{padding:20px 24px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;background:var(--card);border:1px solid var(--border);overflow:hidden;}
+.footer-left{font-family:'DM Mono',monospace;font-size:15px;letter-spacing:0.06em;color:rgba(255,255,255,0.5);line-height:1.8;min-width:0;overflow-wrap:break-word;word-break:break-word;}
 .footer-left strong{color:var(--signal);font-weight:500;}
 .footer-links{display:flex;gap:16px;margin-top:6px;flex-wrap:wrap;}
 .footer-link{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;transition:color .2s;}
@@ -287,7 +287,16 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .mcf-icon{flex-shrink:0;font-size:15px;}
 .mcf-text{color:var(--white);line-height:1.4;}
 
-@media(max-width:768px){
+@media(max-width:1100px) and (min-width:681px){
+  .wrapper{padding:32px 16px 60px;}
+  .layout{grid-template-columns:1fr 300px;gap:20px;}
+  .sidebar{top:32px;}
+  .hero{padding:40px 32px 36px;}
+  .benchmark,.why-section,.aha-section,.for-section,.method-section,.cva-section,.cases-section{padding:28px 28px;}
+  .bench-bar-label{width:160px;}
+}
+
+@media(max-width:680px){
   .wrapper{padding:0;}
   .layout{grid-template-columns:1fr;gap:0;}
   .sidebar{display:none;}
@@ -306,6 +315,38 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   .verdict-card.v-red{padding:24px 20px;}
   .verdict-card.v-red{padding:24px 20px;}
   .bench-bar-label{width:140px;font-size:15px;}
+  .page-footer{padding:16px;flex-direction:column;align-items:flex-start;}
+  .footer-left{font-size:12px;letter-spacing:0.04em;white-space:normal;}
+  .footer-links{gap:10px;margin-top:4px;}
+  .footer-link{font-size:11px;}
+  .footer-cta{font-size:13px;}
+}
+
+/* PLAN CARDS IN VERDICT */
+.plan-cards{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
+.plan-card{border:1px solid var(--border);padding:22px 24px;background:rgba(255,255,255,0.02);position:relative;transition:border-color .2s;}
+.plan-card:hover{border-color:rgba(74,143,231,0.3);}
+.plan-card.featured{border-color:var(--signal-border);background:var(--signal-dim);}
+.plan-card.top-pick::before{content:'RECOMMENDED';position:absolute;top:-1px;right:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;background:var(--signal);color:#000;padding:3px 10px;font-weight:700;}
+.plan-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.plan-name{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--signal);}
+.plan-price{font-family:'DM Serif Display',serif;font-size:26px;color:var(--white);line-height:1;}
+.plan-price span{font-family:'DM Mono',monospace;font-size:12px;color:var(--mid);}
+.plan-desc{font-size:13px;color:var(--mid);line-height:1.65;margin-bottom:16px;}
+.plan-includes{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.plan-include{font-family:'DM Mono',monospace;font-size:11px;color:var(--white);letter-spacing:0.03em;line-height:1.5;}
+.plan-cta{display:block;text-align:center;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;padding:13px;text-decoration:none;font-weight:700;transition:all .2s;}
+.plan-cta.primary{background:var(--signal);color:#000;}
+.plan-cta.primary:hover{background:#5aa8f0;}
+.plan-cta.outline{border:1px solid var(--signal-border);color:var(--signal);}
+.plan-cta.outline:hover{background:var(--signal-dim);}
+.plan-cta.red-cta{background:var(--red);color:#fff;}
+.plan-cta.red-cta:hover{background:#c94d2a;}
+.plan-divider{height:1px;background:var(--border);margin:20px 0;}
+.plan-proof{font-family:'DM Serif Display',serif;font-size:16px;font-style:italic;color:var(--mid);line-height:1.5;margin-bottom:4px;}
+.plan-proof-attr{font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:0.06em;}
+@media(max-width:680px){
+  .plan-row{flex-direction:column;gap:4px;}
 }
 </style>
 </head>
@@ -546,9 +587,39 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div class="verdict-card v-green" id="verdict-green">
   <div class="verdict-title">Architecture solid. Ship it.</div>
   <div class="verdict-body">Your email passes the structural checks. Open rate and click rate are now a function of your audience and timing — not your architecture.</div>
-  <div class="verdict-ctas">
-    <a href="https://strategicflow.tech/teardowns.html" class="verdict-cta primary-green" target="_blank">See how competitors fail →</a>
+  <div class="verdict-ctas" style="margin-bottom:0;">
     <a href="https://strategic-flow-audit.replit.app" class="verdict-cta outline-signal" target="_blank">Run the full audit →</a>
+  </div>
+  <div class="plan-divider"></div>
+  <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--signal);margin-bottom:16px;">If you send more than one email a month</div>
+  <div class="plan-cards">
+    <div class="plan-card featured top-pick">
+      <div class="plan-row">
+        <div class="plan-name">Growth Pack</div>
+        <div class="plan-price">$499 <span>/mo</span></div>
+      </div>
+      <div class="plan-desc">Every email your team sends, audited and rebuilt. Unlimited rebuilds. 7-point diagnosis per send. Subject line variants with predicted open rate delta. The architecture stays clean at scale.</div>
+      <div class="plan-includes">
+        <div class="plan-include">✓ Unlimited email rebuilds — HTML ready to ship</div>
+        <div class="plan-include">✓ 3 subject line variants + open rate delta per send</div>
+        <div class="plan-include">✓ Full 7-bug diagnosis on every email</div>
+        <div class="plan-include">✓ Score lift tracked across your sequence</div>
+      </div>
+      <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="plan-cta primary" target="_blank">Start Growth Pack →</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-row">
+        <div class="plan-name">Architecture Retainer</div>
+        <div class="plan-price">$2,500 <span>/mo</span></div>
+      </div>
+      <div class="plan-desc">Full communication audit across your entire email program. Every email scored. Monthly diagnostic call. Direct Slack access. ROI projection updated every rebuild.</div>
+      <div class="plan-includes">
+        <div class="plan-include">✓ 90-day full sequence audit</div>
+        <div class="plan-include">✓ Monthly diagnostic call + direct Slack</div>
+        <div class="plan-include">✓ ROI projection per rebuild</div>
+      </div>
+      <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" class="plan-cta outline" target="_blank">See Architecture →</a>
+    </div>
   </div>
 </div>
 
@@ -556,9 +627,43 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 <div class="verdict-card v-amber" id="verdict-amber">
   <div class="verdict-title">One fix away from ship-ready.</div>
   <div class="verdict-body">Find the lowest-scoring check. Fix that one element before sending. One architectural fix compounds across every email after it.</div>
-  <div class="verdict-ctas">
+  <div class="verdict-ctas" style="margin-bottom:0;">
     <a href="https://strategic-flow-audit.replit.app" class="verdict-cta primary-amber" target="_blank">Run the full audit →</a>
   </div>
+  <div class="plan-divider"></div>
+  <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;">Stop guessing. Get the exact fix delivered.</div>
+  <div class="plan-cards">
+    <div class="plan-card featured top-pick">
+      <div class="plan-row">
+        <div class="plan-name">Single Rebuild</div>
+        <div class="plan-price">$49 <span>one-time</span></div>
+      </div>
+      <div class="plan-desc">This email, audited and rebuilt today. Score before and after. Every failure named. Rebuilt subject line, hook, and CTA. HTML ready to paste into your ESP.</div>
+      <div class="plan-includes">
+        <div class="plan-include">✓ Full 7-point diagnosis</div>
+        <div class="plan-include">✓ Rebuilt HTML — same day</div>
+        <div class="plan-include">✓ 3 A/B subject line variants</div>
+        <div class="plan-include">✓ Before/after score with named failures</div>
+      </div>
+      <a href="https://buy.stripe.com/14A14n8A08Rr69fdNF7wA04" class="plan-cta primary" target="_blank">Get this email rebuilt — $49 →</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-row">
+        <div class="plan-name">Growth Pack</div>
+        <div class="plan-price">$499 <span>/mo</span></div>
+      </div>
+      <div class="plan-desc">If you send more than one email a month, the fix compounds. Unlimited rebuilds, full diagnosis, subject line variants on every send.</div>
+      <div class="plan-includes">
+        <div class="plan-include">✓ Unlimited email rebuilds</div>
+        <div class="plan-include">✓ 3 subject line variants per send</div>
+        <div class="plan-include">✓ Score lift tracked across sequence</div>
+      </div>
+      <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="plan-cta outline" target="_blank">See Growth Pack →</a>
+    </div>
+  </div>
+  <div class="plan-divider"></div>
+  <div class="plan-proof">"Score went from 3 to 9. The subject line rewrite alone added 14 percentage points to open rate."</div>
+  <div class="plan-proof-attr">SaaS founder — 54-email teardown portfolio</div>
 </div>
 
 <!-- RED VERDICT + INTEGRATED REAL FORM -->
@@ -566,13 +671,47 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="verdict-title">Your architecture is costing clicks.</div>
   <div class="verdict-body">Rewriting the copy will not move the metrics. Most SaaS emails we rebuild start at this score.</div>
   <div class="verdict-lift">Average rebuilt score: <span>3 → 9</span></div>
-  <div class="verdict-ctas">
-    <a href="https://strategicflow.tech/teardowns.html" class="verdict-cta" style="background:var(--red);color:#fff;" target="_blank">See 54 SaaS emails rebuilt →</a>
+  <div class="plan-cards" style="margin-bottom:0;">
+    <div class="plan-card featured top-pick" style="border-color:rgba(255,77,46,0.5);background:rgba(255,77,46,0.06);">
+      <div class="plan-row">
+        <div class="plan-name" style="color:var(--red);">Single Rebuild</div>
+        <div class="plan-price">$49 <span>one-time</span></div>
+      </div>
+      <div class="plan-desc">This email has multiple structural failures. Get the full diagnosis and rebuilt HTML delivered today. Every failure named. Subject rewritten. CTA fixed. HTML ready to ship.</div>
+      <div class="plan-includes">
+        <div class="plan-include">✓ Full 7-point diagnosis — every failure named</div>
+        <div class="plan-include">✓ Rebuilt subject line, hook, CTA, and hierarchy</div>
+        <div class="plan-include">✓ 3 A/B subject variants with predicted open rate delta</div>
+        <div class="plan-include">✓ Rebuilt HTML — same day</div>
+      </div>
+      <a href="https://buy.stripe.com/14A14n8A08Rr69fdNF7wA04" class="plan-cta red-cta" target="_blank">Get this email rebuilt — $49 →</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-row">
+        <div class="plan-name">Growth Pack</div>
+        <div class="plan-price">$499 <span>/mo</span></div>
+      </div>
+      <div class="plan-desc">If this is a recurring problem across your sequence — it usually is — unlimited rebuilds compound the fix across every email you send.</div>
+      <div class="plan-includes">
+        <div class="plan-include">✓ Unlimited rebuilds — every email in your sequence</div>
+        <div class="plan-include">✓ 3 subject variants + open rate delta per send</div>
+        <div class="plan-include">✓ Score lift tracked month over month</div>
+      </div>
+      <a href="https://buy.stripe.com/cNi5kD17y6Jjbtz6ld7wA02" class="plan-cta outline" target="_blank">See Growth Pack →</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-row">
+        <div class="plan-name">Architecture Retainer</div>
+        <div class="plan-price">$2,500 <span>/mo</span></div>
+      </div>
+      <div class="plan-desc">Full sequence audit + ongoing architecture. Every email scored. Monthly call. Direct Slack access. For teams where email is a primary revenue lever.</div>
+      <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" class="plan-cta outline" target="_blank">Apply for Architecture →</a>
+    </div>
   </div>
 
   <div class="rebuild-divider"></div>
 
-  <div class="rebuild-form-title">Paste the email.<br><em>I'll rebuild it.</em></div>
+  <div class="rebuild-form-title">Or paste the email.<br><em>I'll rebuild it.</em></div>
   <p class="rebuild-form-sub">Send it over and I'll review it personally, identify the main architectural failures, and send back my diagnosis.</p>
 
   <div class="rebuild-success" id="rebuild-success">
