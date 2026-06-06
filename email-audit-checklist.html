@@ -18,8 +18,8 @@
 html,body{height:100%;}
 body{background:var(--bg);color:var(--white);font-family:'Figtree',sans-serif;font-size:15px;line-height:1.6;}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,237,232,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,232,0.02) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
-.wrapper{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:48px 16px 80px;position:relative;z-index:1;overflow-x:hidden;}
-.layout{display:grid;grid-template-columns:1fr 320px;gap:20px;max-width:1080px;width:100%;min-width:0;}
+.wrapper{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:32px 20px 80px;position:relative;z-index:1;}
+.layout{display:block;max-width:720px;width:100%;margin:0 auto;}
 
 /* HERO */
 .hero{padding:56px 48px 48px;border:1px solid var(--border);background:var(--card);position:relative;overflow:hidden;margin-bottom:20px;}
@@ -256,7 +256,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .footer-cta{font-family:'DM Serif Display',serif;font-size:14px;font-style:italic;color:var(--signal);}
 
 /* SIDEBAR */
-.sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:48px;}
+.sidebar{display:none;}
 .sidebar-card{border:1px solid var(--border);padding:24px;background:var(--card);position:relative;}
 .sidebar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--signal);}
 .sidebar-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.14em;text-transform:uppercase;color:var(--signal);margin-bottom:12px;}
@@ -286,15 +286,6 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .mcf-row.good{border-color:var(--signal-border);background:var(--signal-dim);}
 .mcf-icon{flex-shrink:0;font-size:15px;}
 .mcf-text{color:var(--white);line-height:1.4;}
-
-@media(max-width:1100px) and (min-width:681px){
-  .wrapper{padding:32px 16px 60px;}
-  .layout{grid-template-columns:1fr 300px;gap:20px;}
-  .sidebar{top:32px;}
-  .hero{padding:40px 32px 36px;}
-  .benchmark,.why-section,.aha-section,.for-section,.method-section,.cva-section,.cases-section{padding:28px 28px;}
-  .bench-bar-label{width:160px;}
-}
 
 @media(max-width:680px){
   .wrapper{padding:0;}
@@ -365,6 +356,42 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div><div class="hstat-num">3→9</div><div class="hstat-label">Avg score lift</div></div>
     <div><div class="hstat-num">6</div><div class="hstat-label">Failure patterns</div></div>
     <div><div class="hstat-num">90s</div><div class="hstat-label">Full audit time</div></div>
+  </div>
+</div>
+
+<!-- INLINE STATS (moved from sidebar) -->
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;">
+  <div style="border:1px solid var(--border);padding:14px;background:var(--card);text-align:center;">
+    <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--signal);line-height:1;margin-bottom:3px;">7</div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);">Checkpoints</div>
+  </div>
+  <div style="border:1px solid var(--border);padding:14px;background:var(--card);text-align:center;">
+    <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--signal);line-height:1;margin-bottom:3px;">6</div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);">Failure patterns</div>
+  </div>
+  <div style="border:1px solid var(--border);padding:14px;background:var(--card);text-align:center;">
+    <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--signal);line-height:1;margin-bottom:3px;">54</div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);">Emails rebuilt</div>
+  </div>
+  <div style="border:1px solid var(--border);padding:14px;background:var(--card);text-align:center;">
+    <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--signal);line-height:1;margin-bottom:3px;">90s</div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);">Full audit</div>
+  </div>
+</div>
+
+<!-- MOST COMMON FAILURE inline -->
+<div style="border:1px solid rgba(224,90,58,0.35);background:rgba(224,90,58,0.05);padding:20px 24px;margin-bottom:20px;">
+  <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:8px;">Most common failure</div>
+  <div style="font-family:'DM Serif Display',serif;font-size:36px;color:var(--white);line-height:1;margin-bottom:2px;">81%</div>
+  <div style="font-size:13px;color:var(--mid);margin-bottom:10px;">of audited emails fail Check #1</div>
+  <div style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.1em;color:var(--red);margin-bottom:10px;">Filing Label Subject</div>
+  <div style="display:flex;flex-direction:column;gap:6px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(224,90,58,0.08);border:1px solid rgba(224,90,58,0.2);">
+      <span>❌</span><span style="font-size:13px;color:var(--mid);">New Feature: Dashboard Update</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(74,143,231,0.08);border:1px solid var(--signal-border);">
+      <span>✅</span><span style="font-size:13px;color:var(--white);">Your reports now load 4x faster</span>
+    </div>
   </div>
 </div>
 
