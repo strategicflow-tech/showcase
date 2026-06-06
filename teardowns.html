@@ -164,6 +164,11 @@ h1 em{font-style:italic;color:var(--teal)}
 .stat-l{font-size:11px;color:rgba(255,255,255,0.70);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
 
 .filters-wrap{max-width:1100px;margin:0 auto;padding:0 24px 28px}
+.search-wrap{max-width:1100px;margin:0 auto;padding:0 24px 16px}
+.search-input{width:100%;max-width:360px;padding:9px 16px 9px 38px;border:1px solid var(--border);border-radius:20px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6b66' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 12px center;outline:none;transition:border-color .15s}
+.search-input:focus{border-color:var(--teal-border)}
+.search-input::placeholder{color:var(--muted)}
+.no-results{display:none;padding:48px 24px;text-align:center;font-size:14px;color:var(--muted);grid-column:1/-1}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
 .filter-btn{padding:7px 16px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;color:var(--muted);background:none;cursor:pointer;transition:all .15s;white-space:nowrap}
 .filter-btn:hover,.filter-btn.active{border-color:var(--teal-border);color:var(--teal);background:var(--teal-dim)}
@@ -247,6 +252,10 @@ footer a:hover{color:var(--teal)}
   </div>
 </header>
 
+<div class="search-wrap">
+  <input type="text" class="search-input" id="search-input" placeholder="Search by company name..." oninput="onSearch()" autocomplete="off" spellcheck="false">
+</div>
+
 <div class="filters-wrap">
   <div class="filters" role="group" aria-label="Filter by category">
     <button class="filter-btn active" data-filter-cat="all" onclick="filter('all',this)">All <span class="filter-count"></span></button>
@@ -260,6 +269,7 @@ footer a:hover{color:var(--teal)}
 
 <main id="teardowns" class="grid-wrap">
   <div class="grid">
+    <div class="no-results" id="no-results">No teardowns found for that search.</div>
 
     <a href="heygen-showcase.html" class="card" data-cat="saas ai"
        title="HeyGen Newsletter Teardown — Before/After Conversion Analysis">
@@ -768,11 +778,20 @@ footer a:hover{color:var(--teal)}
 const PAGE_SIZE = 12;
 let currentCat = 'all';
 let visibleCount = PAGE_SIZE;
+let currentSearch = '';
+
+function onSearch() {
+  currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
+  visibleCount = PAGE_SIZE;
+  renderCards();
+}
 
 function getFilteredCards() {
   return Array.from(document.querySelectorAll('.card')).filter(card => {
-    if (currentCat === 'all') return true;
-    return (card.dataset.cat || '').includes(currentCat);
+    const catMatch = currentCat === 'all' || (card.dataset.cat || '').includes(currentCat);
+    const brand = (card.querySelector('.card-brand') || {}).textContent || '';
+    const searchMatch = !currentSearch || brand.toLowerCase().includes(currentSearch);
+    return catMatch && searchMatch;
   });
 }
 
@@ -781,6 +800,8 @@ function renderCards() {
   const filtered = getFilteredCards();
   all.forEach(card => card.classList.add('hidden'));
   filtered.slice(0, visibleCount).forEach(card => card.classList.remove('hidden'));
+  const noRes = document.getElementById('no-results');
+  if (noRes) noRes.style.display = filtered.length === 0 ? 'block' : 'none';
   const btn = document.getElementById('load-more-btn');
   if (filtered.length <= visibleCount) {
     btn.style.display = 'none';
