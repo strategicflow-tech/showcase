@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Clay x Webflow Integration Teardown</title>
+<meta name="description" content="Strategic Flow structural audit of Clay's Webflow integration announcement. Score: 4/10 → 9/10. Primary failure: Company-First Bias."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Clay Webflow Integration Announcement Teardown — Strategic Flow",
+  "author": {"@type": "Person", "name": "Alex Iliescu"},
+  "publisher": {"@type": "Organization", "name": "Strategic Flow", "url": "https://strategicflow.tech"},
+  "datePublished": "2026-06-08",
+  "description": "Structural audit of Clay's Webflow integration blog post using the Strategic Flow 7-point diagnostic framework. Score: 4/10 to 9/10."
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --clay-blue:#1a1a2e;--clay-accent:#5b6af7;--clay-light:#eef0ff;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--clay-blue);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--clay-accent);margin-right:6px;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{background:linear-gradient(135deg,var(--clay-blue) 0%,#2d2d5e 100%);padding:40px 28px;text-align:center;}
+.bef-hero-text{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.3;}
+.bef-body{padding:24px;background:#fff;border-bottom:1px solid #eee;}
+.bef-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-h1{font-size:20px;font-weight:700;color:var(--clay-blue);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-section-title{font-size:15px;font-weight:700;color:var(--clay-blue);margin:20px 0 10px;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--clay-accent);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--clay-blue);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--clay-accent);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--clay-accent);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--clay-accent);color:#fff;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Clay x Webflow — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow product announcement teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> clay.com/blog</div>
+        <div class="meta-row"><span>Type:</span> Product Announcement / Blog Post</div>
+        <div class="meta-row"><span>Date:</span> March 27, 2025</div>
+        <div class="post-title">Clay integrates with Webflow, unlocking scalable website personalization for GTM teams</div>
+      </div>
+
+      <div class="bef-header">
+        <div><img src="data:image/webp;base64,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" style="height:28px;object-fit:contain;" alt="Clay"/></div>
+        <div class="bef-nav">GTM with Clay · Mar 2025</div>
+      </div>
+
+      <div class="bef-hero">
+        <div class="bef-hero-text">Clay integrates with Webflow, unlocking scalable website personalization for GTM teams</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-meta">March 27, 2025</div>
+        <div class="bef-h1">Clay integrates with Webflow, unlocking scalable website personalization for GTM teams</div>
+        <div class="bef-lead">Creating and updating personalized website content is often tedious, error-prone, and time-consuming — particularly if you're managing dozens or hundreds of unique pages.</div>
+        <div class="bef-lead">Manual updates can be overwhelming, leading to outdated content, missed engagement opportunities, and a drain on your team's time and resources.</div>
+        <div class="bef-lead">That's why we're excited to announce the new integration with Webflow and Clay.</div>
+
+        <div class="bef-section-title">Introducing the new Webflow and Clay integration</div>
+        <div class="bef-lead">With this integration, you can easily create and update personalized website content directly from Clay — without writing a single line of code. Now you can create account-based landing pages, build dynamic directories of companies or people, and ensure your website always displays accurate, real-time information.</div>
+
+        <div class="bef-section-title">Infinite use cases unlocked</div>
+        <div class="bef-lead">Create hundreds of personalized landing pages at scale, without the headache of tedious or repetitive updates. Account-based marketing pages. Customer expansion opportunities. Co-branded partner pages. Persona-based messaging.</div>
+
+        <div class="bef-section-title">Get started now</div>
+        <div class="bef-lead">The new Webflow integration is available on Starter, Explorer, Pro, and Enterprise plans. No more manual landing page creation. No more tedious updates. Open Clay, connect to Webflow, and watch your website create personalized experiences — automatically.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://www.clay.com/blog/webflow-integration-announcement" class="bef-cta">Get started now</a>
+        </div>
+        <div class="bef-footer">© Clay · clay.com/blog</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a product label — "Clay integrates with Webflow" names the company action, not the reader's problem. The GTM manager reading this needs to know what breaks in their workflow today, not what Clay did.</div>
+        <div class="issue-item"><span>⚠</span> Company-First Bias in the opening — the post opens with the reader's pain ("tedious, error-prone") but buries it behind passive framing. The friction is real but never named specifically: which pages? Which team? Which failure mode?</div>
+        <div class="issue-item"><span>⚠</span> "That's why we're excited to announce" is the classic pivot away from the reader's problem toward the company's news. The announcement becomes the subject instead of the reader's situation remaining the subject.</div>
+        <div class="issue-item"><span>⚠</span> "Infinite use cases unlocked" is category language, not consequence language. It tells the reader that possibilities exist without telling them which one matches the problem they came in with.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Get started now" has no ownership language and no connection to what the reader just read. It is a generic button that could appear on any product page. "Build your first ABM page today" connects to the specific use case named above it.</div>
+        <div class="issue-item"><span>⚠</span> Zero quantified proof in the body. "Hundreds of personalized landing pages" is a capability statement. "Verkada's growth team" is mentioned as a link but never given a number. The most credible proof — actual ABM results — stays hidden behind a click.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="after-header">
+        <div>
+          <img src="data:image/webp;base64,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" style="height:28px;object-fit:contain;display:block;margin-bottom:6px;" alt="Clay"/>
+          <div class="after-tagline-sm">Product update · Mar 2025</div>
+        </div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Webflow integration · now live</div>
+        <div class="after-h1">Your ABM landing pages update themselves.<br><em>Now Webflow runs on your Clay data.</em></div>
+        <div class="after-lead">Your team spent hours building personalized landing pages. Then the data changed, the account moved, and nobody updated the page. Clay's Webflow integration fixes the broken loop: any change in your Clay table updates the live page automatically — without code, without a developer, without a ticket.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">lines of code to connect Clay to Webflow</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">100s</div>
+            <div class="stat-label">of account pages updated from one table change</div>
+          </div>
+          <div class="stat-card" style="grid-column:1/-1;">
+            <div class="stat-num">Real-time</div>
+            <div class="stat-label">funding data, tech stack and firmographics — always live on your site</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://www.clay.com/blog/webflow-integration-announcement" class="after-cta-primary">Build your first ABM page today</a>
+          <a class="after-cta-ghost">See how Verkada runs this at scale</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The stale page problem</div>
+        <div class="after-section-title">Your ABM page had their old logo. Their new logo has been live for three months.</div>
+        <div class="after-section-body">Account-based pages go stale the moment your prospect changes something — new funding round, new CTO, new tech stack. Clay reads your live data and writes it back to the Webflow page on a schedule you set. The page the prospect sees always reflects what Clay knows about them right now, not what your ops team had time to update last quarter.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The persona problem</div>
+        <div class="after-section-title">The CTO sees the same page the CFO sees. Neither converts.</div>
+        <div class="after-section-body">Persona-based pages require maintaining separate templates per job title. With Clay and Webflow connected, one template adapts based on the visitor's role in your Clay table — technical proof for engineering leaders, ROI data for finance, adoption metrics for product. One page. Dynamic content. No campaign multiplication.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The directory problem</div>
+        <div class="after-section-title">Your partner directory listed three companies that left your ecosystem eight months ago.</div>
+        <div class="after-section-body">Investor portfolios, expert networks, customer directories — any page that should reflect live data but doesn't. Clay's scheduling feature pulls updated funding rounds, team changes, and credentials on a daily or weekly cycle and writes them to Webflow automatically. Your directory is always current without a single manual update.</div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://www.clay.com/blog/webflow-integration-announcement" class="footer-link">Full integration guide</a>
+          <a href="https://www.clay.com/blog/verkada-case-study" class="footer-link">Verkada case study</a>
+        </div>
+        <div class="footer-note">© Clay · clay.com</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Clay integrates with Webflow, unlocking scalable website personalization for GTM teams<br><br>Company action as headline. "Unlocking scalable website personalization" is category language. The GTM manager reading this cannot see themselves in the title — they see what Clay did, not what stops working on their site today.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Your ABM landing pages update themselves. Now Webflow runs on your Clay data.<br><br>Reader is the subject. The first sentence names the outcome they want. The second names the mechanism. Anyone managing ABM pages knows within two seconds whether this is for them.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 5 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rebuilt from company action to reader outcome</div>
+          <div class="upgrade-desc">The original announces what Clay did. The rebuild puts the reader's broken workflow in the headline: "Your ABM landing pages update themselves." Anyone managing personalized pages at scale has experienced the stale data problem. The title names the failure before naming the fix. That is the only order that earns the next sentence.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · "We're excited to announce" removed, specific failure installed</div>
+          <div class="upgrade-desc">The original pivots from the reader's pain to the company's news at the exact moment the reader is most engaged. The rebuild stays with the reader's situation through the lead: "your team spent hours... then the data changed... nobody updated the page." The announcement is still there — but it arrives as the resolution to a problem the reader already recognizes, not as the subject of the post.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · "Infinite use cases" replaced with three named failure modes</div>
+          <div class="upgrade-desc">"Infinite use cases unlocked" is the architectural equivalent of "Learn more" — it signals that something exists without telling the reader which thing applies to them. The rebuild names three specific failure modes: the stale ABM page, the one-size-fits-all persona page, the outdated directory. Each section title is a specific failure the reader has experienced. They navigate to the section that matches their problem, not the one that came first.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Three stat cards above the fold with consequence-anchored labels</div>
+          <div class="upgrade-desc">The original has zero quantified proof in the opening section. Verkada is mentioned as a link in the body but given no result. The rebuild puts three numbers above the fold where they function as decision anchors: 0 lines of code (removes the technical objection), hundreds of pages (establishes scale), real-time (names the core promise). Each label connects the number to the reader's outcome, not the product's capability.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · CTA rebuilt with ownership language tied to the specific use case</div>
+          <div class="upgrade-desc">"Get started now" appears on every product page that exists. It has no connection to what the reader just read. "Build your first ABM page today" names the exact action the reader came in ready to take. The secondary CTA ("See how Verkada runs this at scale") gives the reader who needs social proof a path forward without breaking the primary CTA's momentum.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's broken workflow before company's announcement. Specific failure modes instead of infinite use cases. Quantified proof above the fold. CTA tied to the exact problem the post was about. Score: 4/10 to 9/10. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last product announcement.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="/teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
