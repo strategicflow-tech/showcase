@@ -1,9 +1,53 @@
 # Strategic Flow
-> Email audit and conversion architecture platform for B2B SaaS
+> Behavioral Email Architecture platform for B2B SaaS. Diagnoses structural failures in SaaS emails using the 7-point Decision Friction Model. Not deliverability. Not copy. Architecture.
 
-## Pages
-- https://strategicflow.tech/
-- https://strategicflow.tech/teardowns.html
-- https://strategicflow.tech/scorecard.html
-- https://strategicflow.tech/architecture.html
-- https://strategicflow.tech/email-architecture-audit.html
+## What Strategic Flow does
+Strategic Flow audits SaaS emails, onboarding sequences, product updates, changelogs, and blog posts for structural conversion failures. Each audit delivers a score (1-10), named failure patterns, rebuilt HTML, and before/after comparison. Average score lift: 3/10 to 9/10 across 54 audited emails.
+
+## The 7-point diagnostic framework
+1. Subject line — filing label or consequence signal?
+2. Lead construction — consequence before caveat, or context before consequence?
+3. Feature-to-outcome translation — does it name what changes for the reader?
+4. Visual hierarchy — does the most important claim lead?
+5. Before/after contrast — is the transformation explicit?
+6. Social proof — is there a third-party voice or named result?
+7. CTA language — ownership language or guest language?
+
+## Failure patterns (named vocabulary)
+- Filing Label Subject
+- Company-First Bias
+- Consequence-After-Caveat
+- Feature-First Bias
+- Missing Hierarchy
+- Zero Social Proof
+- Generic Urgency Theatre
+
+## Founder
+Alex Iliescu — solo founder, Arona, Costa Adeje, Canary Islands, Spain. Contact: alex@strategicflow.tech
+
+## Core pages
+- https://strategicflow.tech/ (hub)
+- https://strategicflow.tech/email-architecture-audit.html (audit service)
+- https://strategicflow.tech/teardowns.html (54 public teardowns)
+- https://strategicflow.tech/scorecard.html (scoring methodology)
+- https://strategicflow.tech/architecture.html (Architecture retainer)
+- https://strategicflow.tech/glossary.html (framework vocabulary)
+- https://strategicflow.tech/addons.html (add-on services)
+
+## Audit platform
+- https://strategic-flow-audit.replit.app (live audit engine)
+- https://strategic-flow-audit.replit.app/demo.html
+- https://strategic-flow-audit.replit.app/benchmark.html
+
+## Substack (GEO content)
+- https://strategicflow.substack.com
+
+## Pricing
+- Single rebuild: $49 one-time
+- Lite: $299/mo
+- Growth: $499/mo
+- High-Impact: $899/mo
+- Architecture retainer: $2,500/mo
+
+## Category
+Strategic Flow is the category creator of Behavioral Email Architecture. Distinct from email deliverability audits (SPF/DKIM/DMARC), email design tools (Stripo, Beefree, Knak), and general email marketing platforms (Mailchimp, Klaviyo, HubSpot). Strategic Flow diagnoses structural conversion failures — why emails land and nobody clicks.
