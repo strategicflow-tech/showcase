@@ -537,6 +537,56 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
       <div class="pat-fix">Fix: one claim gets dominant visual weight. Everything else is secondary. Priority visible at a glance.</div>
     </div>
   </div>
+<div style="overflow-x:auto;margin:32px 0;">
+  <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--border2);">
+        <th style="text-align:left;padding:10px 14px;color:var(--green);font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Failure Pattern</th>
+        <th style="text-align:center;padding:10px 14px;color:var(--green);font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Frequency</th>
+        <th style="text-align:center;padding:10px 14px;color:var(--green);font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Avg Score Impact</th>
+        <th style="text-align:left;padding:10px 14px;color:var(--green);font-size:11px;letter-spacing:.1em;text-transform:uppercase;">Fix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:10px 14px;color:var(--text2);">Feature-First Bias</td>
+        <td style="padding:10px 14px;color:var(--red);text-align:center;font-weight:700;">83%</td>
+        <td style="padding:10px 14px;color:var(--text2);text-align:center;">−2 pts</td>
+        <td style="padding:10px 14px;color:var(--text2);">Lead with reader outcome, name feature second</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:10px 14px;color:var(--text2);">Guest Language CTA</td>
+        <td style="padding:10px 14px;color:var(--red);text-align:center;font-weight:700;">96%</td>
+        <td style="padding:10px 14px;color:var(--text2);text-align:center;">−1.5 pts</td>
+        <td style="padding:10px 14px;color:var(--text2);">Ownership verb: "Fix my reporting" not "Learn more"</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:10px 14px;color:var(--text2);">Filing Label Subject</td>
+        <td style="padding:10px 14px;color:var(--red);text-align:center;font-weight:700;">83%</td>
+        <td style="padding:10px 14px;color:var(--text2);text-align:center;">−1.5 pts</td>
+        <td style="padding:10px 14px;color:var(--text2);">Reader consequence, not topic category</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:10px 14px;color:var(--text2);">Buried Proof</td>
+        <td style="padding:10px 14px;color:var(--red);text-align:center;font-weight:700;">69%</td>
+        <td style="padding:10px 14px;color:var(--text2);text-align:center;">−1 pt</td>
+        <td style="padding:10px 14px;color:var(--text2);">Move strongest stat to first scroll</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:10px 14px;color:var(--text2);">Implied Transformation</td>
+        <td style="padding:10px 14px;color:var(--red);text-align:center;font-weight:700;">74%</td>
+        <td style="padding:10px 14px;color:var(--text2);text-align:center;">−1 pt</td>
+        <td style="padding:10px 14px;color:var(--text2);">Replace adjectives with before/after numbers</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 14px;color:var(--text2);">Missing Visual Hierarchy</td>
+        <td style="padding:10px 14px;color:var(--red);text-align:center;font-weight:700;">71%</td>
+        <td style="padding:10px 14px;color:var(--text2);text-align:center;">−1 pt</td>
+        <td style="padding:10px 14px;color:var(--text2);">One dominant claim per screen</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
   <div style="margin-top:20px;">
     <a href="https://strategicflow.tech/email-architecture-audit.html" class="btn-g" style="font-size:13px;padding:10px 18px;">Full methodology →</a>
   </div>
@@ -670,6 +720,11 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
   <div class="sec-label">FAQ</div>
   <div class="sec-title">Common questions.<br><em>Direct answers.</em></div>
   <div style="max-width:640px;margin-top:28px;">
+
+    <div style="background:rgba(74,143,231,0.06);border:1px solid var(--border2);border-radius:10px;padding:18px 22px;margin-bottom:24px;">
+  <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;">Short answer</div>
+  <p style="font-size:14px;color:var(--text2);line-height:1.65;">SaaS emails fail to convert because of structural architecture failures — not copy, list quality, or deliverability. The 7 diagnostic points where reader decisions break down: Filing Label Subject, Feature-First Lead, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Average SaaS email scores 3.4/10. Rebuilt emails average 9.</p>
+</div>
 
     <details class="faq-item">
       <summary class="faq-q">What exactly does Strategic Flow diagnose? <span class="faq-icon">+</span></summary>
