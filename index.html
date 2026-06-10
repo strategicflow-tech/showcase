@@ -1570,6 +1570,56 @@ toggle.addEventListener('change', function() {
   </div>
 </section>
 
+<!-- RESOURCES / DEEP DIVES -->
+<section style="padding:72px 48px;background:var(--bg2);border-top:1px solid var(--border);">
+  <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">Deep Dives</div>
+  <div style="font-family:'DM Serif Display',serif;font-size:32px;margin-bottom:8px;line-height:1.2;">Structural diagnosis.<br><em style="color:var(--green);font-style:italic;">Every layer explained.</em></div>
+  <p style="font-size:15px;color:var(--text2);margin-bottom:40px;max-width:560px;line-height:1.6;">Three reference pages built to answer the exact queries SaaS teams type into Google, ChatGPT, and Perplexity.</p>
+  <style>
+    .deep-dives-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+    }
+    @media (max-width: 768px) {
+      .deep-dives-grid { grid-template-columns: 1fr; }
+    }
+    .deep-dive-card {
+      background: var(--bg);
+      padding: 32px;
+      text-decoration: none;
+      display: block;
+      transition: background .2s;
+    }
+    .deep-dive-card:hover { background: var(--bg2); }
+  </style>
+  <div class="deep-dives-grid">
+
+    <a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html" class="deep-dive-card">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">Diagnosis</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#fff;margin-bottom:10px;line-height:1.25;">Why SaaS Emails Get Opened But Not Clicked</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;">The open-to-click gap explained. 6 structural failure patterns with frequencies from 54 teardowns. Before/after on each one.</p>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.04em;">Read the diagnosis →</div>
+    </a>
+
+    <a href="https://strategicflow.tech/how-to-fix-saas-email-ctr.html" class="deep-dive-card">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">Fix</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#fff;margin-bottom:10px;line-height:1.25;">How to Fix Low CTR in SaaS Emails</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;">6 structural repairs in order of CTR impact. Self-diagnosis checklist, before/after on every fix, HowTo schema for AI search.</p>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.04em;">Read the fix guide →</div>
+    </a>
+
+    <a href="https://strategicflow.tech/saas-email-conversion-failure.html" class="deep-dive-card">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">Framework</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;color:#fff;margin-bottom:10px;line-height:1.25;">SaaS Email Conversion Failure</div>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;">The Decision Friction Model explained. 7 failure points mapped to reader decision questions. Fail rate bars, comparison table, full FAQ.</p>
+      <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.04em;">Read the framework →</div>
+    </a>
+
+  </div>
+</section>
+
 <!-- APPLY FOR ARCHITECTURE -->
 <section style="padding:80px 48px;background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.06);">
   <div style="max-width:560px;margin:0 auto;">
@@ -1624,6 +1674,9 @@ toggle.addEventListener('change', function() {
     <a href="https://strategicflow-tech.github.io/roi/" class="footer-link" target="_blank">ROI Calculator</a>
     <a href="https://strategicflow.tech/#faq" class="footer-link" target="_blank">FAQ</a>
     <a href="https://strategicflow.tech/glossary.html" class="footer-link" target="_blank">Glossary</a>
+    <a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html" class="footer-link" target="_blank">Why Emails Don't Convert</a>
+    <a href="https://strategicflow.tech/how-to-fix-saas-email-ctr.html" class="footer-link" target="_blank">Fix Low CTR</a>
+    <a href="https://strategicflow.tech/saas-email-conversion-failure.html" class="footer-link" target="_blank">Conversion Failure</a>
     <a href="https://strategic-flow-pro.replit.app/terms.html" class="footer-link" target="_blank">Terms</a>
   </div>
   <a href="https://www.linkedin.com/in/strategic-flow-tech" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#0A66C2;padding:10px 18px;border-radius:8px;text-decoration:none;transition:background .2s;" onmouseover="this.style.background='#004182'" onmouseout="this.style.background='#0A66C2'">
