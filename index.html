@@ -201,7 +201,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .price-note{font-size:12px;color:var(--text3);font-family:var(--mono);margin-top:20px;}
 
 /* DEEP DIVES */
-.deep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.deep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);}
 .deep-card{background:var(--bg);padding:28px;text-decoration:none;display:block;transition:background .2s;}
 .deep-card:hover{background:var(--bg2);}
 .deep-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:8px;}
@@ -256,7 +256,7 @@ footer{padding:40px 48px;border-top:1px solid var(--border);display:flex;gap:40p
   .about-img{width:120px;height:128px;}
   .price-grid{grid-template-columns:1fr;}
   .pat-grid{grid-template-columns:1fr 1fr;}
-  .deep-grid{grid-template-columns:1fr;}
+  .deep-grid{grid-template-columns:1fr 1fr;}
   .tools-grid{grid-template-columns:1fr;}
 }
 @media(max-width:640px){
@@ -269,7 +269,7 @@ footer{padding:40px 48px;border-top:1px solid var(--border);display:flex;gap:40p
   .td-grid{grid-template-columns:1fr;}
   .pat-grid{grid-template-columns:1fr;}
   .price-grid{grid-template-columns:1fr;}
-  .deep-grid{grid-template-columns:1fr;}
+  .deep-grid{grid-template-columns:1fr 1fr;}
   .tools-grid{grid-template-columns:1fr;}
 }
 </style>
@@ -627,6 +627,12 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
       <div class="deep-desc">The Decision Friction Model. 7 failure points mapped to reader decision questions. Full FAQ.</div>
       <div class="deep-cta">Read →</div>
     </a>
+    <a href="https://strategicflow.tech/strategic-flow-vs-scalero.html" class="deep-card">
+      <div class="deep-label">Comparison</div>
+      <div class="deep-title">Strategic Flow vs Scalero vs Inbox Collective</div>
+      <div class="deep-desc">Three email audit approaches, three different layers. Which one matches your actual problem.</div>
+      <div class="deep-cta">See comparison →</div>
+    </a>
   </div>
 </section>
 
@@ -733,6 +739,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
     <a href="https://strategicflow.tech/glossary.html" class="footer-link">Glossary</a>
     <a href="https://strategicflow.tech/architecture.html" class="footer-link">Architecture</a>
     <a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html" class="footer-link">Why Emails Fail</a>
+    <a href="https://strategicflow.tech/strategic-flow-vs-scalero.html" class="footer-link">vs Scalero</a>
     <a href="https://strategicflow.tech/how-to-fix-saas-email-ctr.html" class="footer-link">Fix Low CTR</a>
     <a href="https://strategicflow.tech/saas-email-conversion-failure.html" class="footer-link">Conversion Failure</a>
     <a href="https://strategicflow-tech.github.io/roi/" class="footer-link">ROI Calculator</a>
