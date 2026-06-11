@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Bubble Is Global V2 Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --bcom-blue:#0000FF;--bcom-blue-light:#EEF0FF;--bcom-yellow:#FFFFFF;--bcom-body:#FFFFFF;--bcom-teal:#0000FF;--bub-black:#262626;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--bcom-blue);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo span{display:inline-block;background:var(--bcom-yellow);color:var(--bcom-blue);border-radius:4px;padding:0 5px;margin-right:2px;font-size:18px;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{background:var(--bcom-blue);padding:0;}
+.bef-hero img{width:100%;display:block;max-height:220px;object-fit:cover;opacity:.9;}
+.bef-body{padding:24px;background:var(--bcom-body);border-bottom:1px solid #eee;}
+.bef-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-h1{font-size:20px;font-weight:700;color:var(--bcom-blue);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-section-title{font-size:15px;font-weight:700;color:var(--bcom-blue);margin:20px 0 10px;}
+.bef-bullets{list-style:none;padding:0;margin-bottom:16px;}
+.bef-bullets li{font-size:13px;color:#444;line-height:1.7;margin-bottom:10px;padding-left:16px;position:relative;}
+.bef-bullets li::before{content:"•";position:absolute;left:0;color:var(--bcom-teal);}
+.bef-bullets li strong{color:var(--bcom-blue);}
+.bef-quote{font-size:13px;color:#444;font-style:italic;line-height:1.7;padding:14px 16px;background:#f5f7fa;border-left:3px solid var(--bcom-teal);border-radius:0 6px 6px 0;margin:16px 0;}
+.bef-quote cite{font-style:normal;font-size:11px;color:#888;display:block;margin-top:6px;font-weight:500;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--bcom-blue);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--bcom-blue);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.after-logo-text span{display:inline-block;background:var(--bcom-yellow);color:var(--bcom-blue);border-radius:4px;padding:0 5px;margin-right:2px;font-size:18px;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--bcom-teal);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--bcom-blue);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--bcom-blue);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-quote{font-size:13px;color:var(--text-secondary);font-style:italic;line-height:1.7;padding:14px 16px;background:var(--bg-secondary);border-left:2px solid var(--bcom-teal);border-radius:0 8px 8px 0;margin-top:12px;}
+.after-quote cite{font-style:normal;font-size:11px;color:var(--text-secondary);display:block;margin-top:6px;font-weight:500;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+.bef-h1,.bef-section-title{color:var(--bub-black);}
+.bef-logo span,.after-logo-text span{background:none;color:#fff;padding:0;margin:0;font-size:inherit;}
+.bef-logo,.after-logo-text{text-transform:lowercase;letter-spacing:-.03em;}
+.stat-num{color:var(--bcom-blue);}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Bubble Is Global V2 — <em>Rebuilt.</em></div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="margin-left:auto;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> bubble.io/blog</div>
+        <div class="meta-row"><span>Type:</span> Product Announcement / Community</div>
+        <div class="meta-row"><span>Date:</span> 01 June 2026</div>
+        <div class="post-title">Every Launch, Every Country, Every Minute: Bubble Is Global V2</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo"><span>b</span>ubble</div>
+        <div class="bef-nav">Blog · Community</div>
+      </div>
+
+      <div class="bef-hero" style="background:var(--bcom-blue);min-height:80px;display:flex;align-items:center;justify-content:center;">
+        <div style="color:#fff;font-size:13px;font-family:'DM Mono',monospace;letter-spacing:.08em;">BUBBLE.IO/GLOBAL — V2</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-meta">Community · June 01, 2026 · 4 minute read</div>
+        <div class="bef-h1">Every Launch, Every Country, Every Minute: Bubble Is Global V2</div>
+        <div class="bef-lead">Just now, somewhere in the world, a Bubble app went live.</div>
+        <div class="bef-lead">Maybe it's a hospitality platform automating hotel operations in Philadelphia, or a financial planning tool helping an advisor in São Paulo convert a new client. None of these builders know each other and none of them coordinated.</div>
+        <div class="bef-lead">But head to bubble.io/global today and you'll see their launch registering on the map, a pulse of activity spreading across every continent — and now for the first time, that includes native mobile apps.</div>
+
+        <div class="bef-section-title">What's new in V2</div>
+        <ul class="bef-bullets">
+          <li><strong>Live launch feed:</strong> every time a Bubble app launches, it registers on the map in near real time (only a ~2-minute delay).</li>
+          <li><strong>Last 30 day rankings:</strong> each country's top apps are ranked by traffic and refresh every day.</li>
+          <li><strong>All / Web / Mobile filter:</strong> see top builders for web, native mobile, or both, by country.</li>
+          <li><strong>Builder profiles:</strong> featured builders now have richer profiles with logos, founder stories, and app screenshots.</li>
+        </ul>
+
+        <div class="bef-section-title">Mobile is here and worth celebrating</div>
+        <div class="bef-lead">Bubble's native mobile apps are on the global map for the first time. Toggle on the mobile filter and you'll see which builders are shipping native iOS and Android apps, ranked by country.</div>
+
+        <div class="bef-section-title">Builders on the map</div>
+        <div class="bef-lead">This month we're spotlighting five apps spanning five regions — a mix of consumer and B2B, all real businesses with real users. SuiteOp (#5 in the US) built a native mobile app in two months and serves 100+ organizations at $700,000 ARR. My AskAI (#2 in the UK) generates $25,000 in monthly recurring revenue with a team of two.</div>
+
+        <div class="bef-quote">
+          "Being able to use the same backend workflows, the same database — those things were really big time savers."
+          <cite>Jean-Emmanuel Losi, Co-founder · SuiteOp</cite>
+        </div>
+
+        <div class="bef-section-title">How to get your app on the map</div>
+        <div class="bef-lead">The map refreshes every day, which means there's always a next opportunity. If your app isn't on the map yet, submit it. Rankings refresh daily, so the next country slot could be yours soon.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://bubble.io/global" class="bef-cta">See the global map →</a>
+        </div>
+        <div class="bef-footer">© 2026, Bubble Group, Inc. · bubble.io/blog</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a milestone label — "Bubble Is Global V2" celebrates the platform's achievement. The builder's question is different: what does this map do for my app?</div>
+        <div class="issue-item"><span>⚠</span> The payoff is buried — free, daily-refreshed distribution ("the next country slot could be yours") is the single most valuable line in the post, and it sits in section 6 of 7, after every feature has been listed.</div>
+        <div class="issue-item"><span>⚠</span> Feature-First structure — live feed, rankings, filters, profiles are presented as product attributes. What they mean for the builder (visibility, traffic, credibility) is left for the reader to infer.</div>
+        <div class="issue-item"><span>⚠</span> The strongest proof reads as decoration — SuiteOp's $700K ARR and My AskAI's $25K MRR are told as stories mid-post, not placed as evidence that map visibility compounds into business results.</div>
+        <div class="issue-item"><span>⚠</span> The builder quote sells the wrong thing — "same backend workflows, same database" is an argument for Bubble's editor, not for submitting your app to the map. Right quote, wrong announcement.</div>
+        <div class="issue-item"><span>⚠</span> CTA "See the global map" is Guest Language — it casts the builder as a spectator. The action that benefits them is submitting their app, and that verb never reaches the button.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text"><span>b</span>ubble</div>
+          <div class="after-tagline-sm">Community · June 2026</div>
+        </div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Bubble is global · V2</div>
+        <div class="after-h1">Somewhere on this map,<br><em>a slot just opened</em><br>for your app.</div>
+        <div class="after-lead">You shipped. Being seen is the hard part. The global map now ranks the top apps in every country by real traffic, refreshed daily, with a live feed that registers every launch within about two minutes. Web and, for the first time, native mobile. If your app is live, this is free distribution you haven't claimed yet.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">~2 min</div>
+            <div class="stat-label">from your launch to the live map</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">Daily</div>
+            <div class="stat-label">country rankings refresh — slots reopen</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">30 days</div>
+            <div class="stat-label">of traffic behind every ranking</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://bubble.io/global" class="after-cta-primary">Put my app on the map →</a>
+          <a class="after-cta-ghost">See who ranks in my country</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The visibility problem</div>
+        <div class="after-section-title">Rankings reset every day. That is the opportunity.</div>
+        <div class="after-section-body">Each country's top apps are ranked by the last 30 days of traffic and recalculated daily. Yesterday's leaderboard is not tomorrow's. Log in, head to bubble.io/global, and submit your app through the popup — the next slot in your country could be yours.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The mobile problem</div>
+        <div class="after-section-title">Native mobile apps are on the map for the first time.</div>
+        <div class="after-section-body">Toggle the mobile filter and see which builders ship native iOS and Android, ranked by country. SuiteOp built theirs in two months on the same backend as their web app — and now serves 100+ organizations at $700,000 ARR with up to 30,000 daily guest users.</div>
+        <div class="after-quote">
+          "Being able to use the same backend workflows, the same database — those things were really big time savers."
+          <cite>Jean-Emmanuel Losi, Co-founder · SuiteOp (#5 in the US)</cite>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The credibility problem</div>
+        <div class="after-section-title">Your map profile is a free landing page. Most are empty.</div>
+        <div class="after-section-body">Featured builders get a full profile: logo, founder story, app screenshots. Submissions are published within three business days. If your app is on the map and the profile is sparse, you are ranking without converting the attention you already earned.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">What's next</div>
+        <div class="after-section-title">Builder milestones and a community feed are coming. The map is live now.</div>
+        <div class="after-section-body">Whether it's your own app or a builder from your country that caught your eye, share it with #BubbleIsGlobal. The map works because of the people on it.</div>
+        <div style="margin-top:16px;">
+          <a href="https://bubble.io/global" class="after-cta-primary" style="font-size:13px;">Submit my app →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://bubble.io/global" class="footer-link">Global map</a>
+          <a href="https://bubble.io/blog" class="footer-link">Blog</a>
+          <a href="https://bubble.io" class="footer-link">Start building</a>
+        </div>
+        <div class="footer-note">© 2026, Bubble Group, Inc.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Every Launch, Every Country, Every Minute: Bubble Is Global V2<br><br>A milestone headline. It celebrates what Bubble built. The builder's payoff — free, daily-refreshed distribution for their app — does not appear until section 6, and most readers never get there.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> Somewhere on this map, a slot just opened for your app.<br><br>The builder is the subject. Scarcity (a slot) and recency (just opened) do the work the original left to section 6. Anyone with a live Bubble app reads this as being about them.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Headline rebuilt from milestone to opening</div>
+          <div class="upgrade-desc">The original announces Bubble's achievement. The rebuild announces the reader's opportunity. Same map, same launch — but "a slot just opened for your app" creates a reason to act that "Bubble Is Global V2" cannot.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · The buried payoff moved from section 6 to the lead</div>
+          <div class="upgrade-desc">"The next country slot could be yours" is the most valuable sentence in the original, and it sits after every feature. The rebuild opens with the claim it implies: free distribution you haven't claimed yet. The payoff is the hook. The features become the mechanism.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · The mechanics surfaced as stat cards</div>
+          <div class="upgrade-desc">~2 minutes to the live map, daily ranking refresh, 30 days of traffic. These three numbers make the opportunity concrete and credible, and in the original they are scattered through prose. A scanning reader now sees the entire system above the fold.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Features reorganized around builder problems</div>
+          <div class="upgrade-desc">The original lists what V2 contains: feed, rankings, filter, profiles. The rebuild organizes the same content by what the builder is missing: visibility, mobile recognition, credibility. The reader navigates to their own situation instead of reading a changelog.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · SuiteOp turned from story into proof</div>
+          <div class="upgrade-desc">$700K ARR, 100+ organizations, 30,000 daily users, a mobile app shipped in two months. In the original these are a spotlight story. The rebuild places them inside the mobile section, where they prove the exact claim being made — and the founder quote confirms it at the moment of maximum belief.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA rebuilt with ownership language</div>
+          <div class="upgrade-desc">"See the global map" makes the builder a spectator. "Put my app on the map" and "Submit my app" make them a participant. The verb that benefits the reader finally reaches the button — and the daily ranking reset gives it a reason to be clicked today, not someday.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Builder's opportunity before platform's milestone. The buried payoff promoted to the lead. Mechanics as stat cards, features as problems solved, proof placed where belief peaks, ownership language on every button. Score: 6/10 → 9/10 — well above the SaaS average of 3.4, the narrative open was already strong work. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last announcement.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
