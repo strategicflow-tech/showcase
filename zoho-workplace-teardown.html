@@ -779,11 +779,13 @@ function switchPanel(id,btn){
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #111111;
+  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  border-top: 1px solid rgba(29, 158, 117, 0.3);
+  box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
   z-index: 9999;
   display: none;
   transform: translateY(100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
 }
 #sf-sticky-bar.visible {
@@ -795,71 +797,140 @@ function switchPanel(id,btn){
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 12px 24px;
   gap: 16px;
-  flex-wrap: nowrap;
+}
+.sf-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
 }
 .sf-badge {
-  background: #1D9E75;
-  color: #fff;
+  background: rgba(29, 158, 117, 0.15);
+  color: #1D9E75;
   font-family: 'DM Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 500;
   padding: 4px 10px;
   border-radius: 4px;
+  border: 1px solid rgba(29, 158, 117, 0.35);
   white-space: nowrap;
   flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.sf-affiliate-tag {
+  background: rgba(74, 143, 231, 0.1);
+  color: #4A8FE7;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(74, 143, 231, 0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 .sf-text {
-  color: #ffffff;
+  color: #e8e8e8;
   font-family: 'Figtree', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sf-text strong {
+  color: #ffffff;
+  font-weight: 600;
 }
 .sf-cta {
   background: #1D9E75;
   color: #ffffff;
   font-family: 'Figtree', sans-serif;
   font-weight: 600;
-  font-size: 14px;
-  padding: 10px 20px;
+  font-size: 13px;
+  padding: 9px 18px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
   flex-shrink: 0;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.01em;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 16px rgba(29, 158, 117, 0.25);
 }
-.sf-cta:hover { background: #178a63; }
+.sf-cta:hover {
+  background: #178a63;
+  box-shadow: 0 0 24px rgba(29, 158, 117, 0.4);
+}
+.sf-cta-arrow {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+.sf-cta:hover .sf-cta-arrow {
+  transform: translateX(2px);
+}
 .sf-close {
-  color: #999;
-  font-size: 18px;
+  color: #555;
+  font-size: 16px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px 8px;
   flex-shrink: 0;
   line-height: 1;
+  transition: color 0.2s ease;
 }
+.sf-close:hover { color: #999; }
+
 @media (max-width: 768px) {
   .sf-bar-inner {
     flex-wrap: wrap;
-    padding: 12px 16px;
-    gap: 10px;
+    padding: 10px 16px;
+    gap: 8px;
   }
-  .sf-text { font-size: 13px; width: 100%; order: 2; }
-  .sf-badge { order: 1; }
-  .sf-cta { order: 3; width: 100%; text-align: center; }
-  .sf-close { order: 0; margin-left: auto; }
+  .sf-bar-left {
+    width: 100%;
+    flex-wrap: wrap;
+    order: 2;
+  }
+  .sf-affiliate-tag { order: 1; }
+  .sf-badge { display: none; }
+  .sf-text {
+    width: 100%;
+    white-space: normal;
+    font-size: 13px;
+  }
+  .sf-cta {
+    order: 3;
+    width: calc(100% - 40px);
+    justify-content: center;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+  .sf-close { order: 1; margin-left: auto; padding: 4px; }
 }
 </style>
 
 <div id="sf-sticky-bar">
   <div class="sf-bar-inner">
-    <span class="sf-badge" id="sf-badge-text"></span>
-    <span class="sf-text" id="sf-main-text"></span>
-    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank"></a>
+    <div class="sf-bar-left">
+      <span class="sf-affiliate-tag">affiliate</span>
+      <span class="sf-badge" id="sf-badge-text"></span>
+      <span class="sf-text" id="sf-main-text"></span>
+    </div>
+    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank">
+      <span id="sf-cta-text"></span>
+      <span class="sf-cta-arrow">→</span>
+    </a>
     <button class="sf-close" id="sf-close-btn">✕</button>
   </div>
 </div>
@@ -867,20 +938,23 @@ function switchPanel(id,btn){
 <script>
 (function() {
   if (sessionStorage.getItem('sf-bar-closed')) return;
+
   var bar = document.getElementById('sf-sticky-bar');
   var badge = document.getElementById('sf-badge-text');
   var text = document.getElementById('sf-main-text');
-  var cta = document.getElementById('sf-cta-btn');
+  var ctaText = document.getElementById('sf-cta-text');
   var type = document.body.getAttribute('data-sf-bar') || 'services';
+
   if (type === 'content') {
-    badge.textContent = '40% recurring commission';
-    text.textContent = 'Know a SaaS team with a broken email stack? Earn $199–$1,000/mo per referral.';
-    cta.textContent = 'Join Affiliate Program →';
+    badge.textContent = '10 spots · 40% locked';
+    text.innerHTML = 'Know a SaaS team with broken emails? <strong>Earn $199–$1,000/mo per referral.</strong>';
+    ctaText.textContent = 'Join Affiliate Program';
   } else {
-    badge.textContent = 'First 10 spots — 40% locked';
-    text.textContent = 'Refer once. Get paid every month they stay subscribed.';
-    cta.textContent = 'See How It Works →';
+    badge.textContent = 'First 10 spots · 40% forever';
+    text.innerHTML = 'Refer once. <strong>Get paid every month they stay subscribed.</strong>';
+    ctaText.textContent = 'See How It Works';
   }
+
   var shown = false;
   function showBar() {
     if (shown) return;
@@ -888,14 +962,17 @@ function switchPanel(id,btn){
     bar.style.display = 'flex';
     setTimeout(function() { bar.classList.add('visible'); }, 50);
   }
+
   setTimeout(showBar, 15000);
+
   window.addEventListener('scroll', function() {
-    var scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-    if (scrolled >= 0.4) showBar();
-  });
+    var scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if (scrollPct >= 0.4) showBar();
+  }, { passive: true });
+
   document.getElementById('sf-close-btn').addEventListener('click', function() {
     bar.classList.remove('visible');
-    setTimeout(function() { bar.style.display = 'none'; }, 300);
+    setTimeout(function() { bar.style.display = 'none'; }, 350);
     sessionStorage.setItem('sf-bar-closed', '1');
   });
 })();
