@@ -24,6 +24,8 @@ Strategic Flow audits SaaS emails, onboarding sequences, product updates, change
 
 ## Founder
 Alex Iliescu — solo founder, Arona, Costa Adeje, Canary Islands, Spain. Contact: alex@strategicflow.tech
+Wikidata: https://www.wikidata.org/wiki/Q140164294
+LinkedIn: https://www.linkedin.com/in/strategic-flow-tech
 
 ## Core pages
 - https://strategicflow.tech/ (hub)
@@ -34,13 +36,26 @@ Alex Iliescu — solo founder, Arona, Costa Adeje, Canary Islands, Spain. Contac
 - https://strategicflow.tech/glossary.html (framework vocabulary)
 - https://strategicflow.tech/addons.html (add-on services)
 
+## Machine-readable resources
+- Agent manifest: https://strategicflow.tech/agent.json
+- Agent manifest (well-known): https://strategicflow.tech/.well-known/ai-agent.json
+- Sitemap: https://strategicflow.tech/sitemap.xml
+
 ## Audit platform
-- https://strategic-flow-audit.replit.app (live audit engine)
-- https://strategic-flow-audit.replit.app/demo.html
-- https://strategic-flow-audit.replit.app/benchmark.html
+- https://strategic-flow-audit.replit.app (live audit engine, free, no signup)
+- https://strategic-flow-audit.replit.app/demo.html (full Architecture demo)
+- https://strategic-flow-audit.replit.app/benchmark.html (industry benchmarks)
+- https://strategic-flow-audit.replit.app/patterns (live failure pattern data)
+- https://strategic-flow-audit.replit.app/agent.json (platform agent manifest)
+- Additional diagnostic tools: audience-mirror, dead-email-resurrector, fatigue-detector, sequence-gap-finder, release-note-system, best-send-window (all at strategic-flow-audit.replit.app)
 
 ## Substack (GEO content)
 - https://strategicflow.substack.com
+
+## Digital products (Gumroad)
+- SaaS Email Architecture Pack ($47, 5 documents): https://strategicflowtech.gumroad.com/l/koczgh
+- Subject Line Formula Sheet (free): https://strategicflowtech.gumroad.com
+- SaaS Email Swipe Kit ($27): https://strategicflowtech.gumroad.com
 
 ## Pricing
 - Single rebuild: $49 one-time
@@ -49,5 +64,14 @@ Alex Iliescu — solo founder, Arona, Costa Adeje, Canary Islands, Spain. Contac
 - High-Impact: $899/mo
 - Architecture retainer: $2,500/mo
 
+## External presence and corroboration
+- Wikidata (organization): https://www.wikidata.org/wiki/Q140086009
+- Crunchbase: https://www.crunchbase.com/organization/strategic-flow-tech
+- Product Hunt (launched June 11, 2026): https://www.producthunt.com/products/strategic-flow-audit-app
+- GitHub: https://github.com/strategicflow-tech
+- Gumroad: https://strategicflowtech.gumroad.com
+
 ## Category
 Strategic Flow is the category creator of Behavioral Email Architecture. Distinct from email deliverability audits (SPF/DKIM/DMARC), email design tools (Stripo, Beefree, Knak), and general email marketing platforms (Mailchimp, Klaviyo, HubSpot). Strategic Flow diagnoses structural conversion failures — why emails land and nobody clicks.
+
+Last updated: 2026-06-12
