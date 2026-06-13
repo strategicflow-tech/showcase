@@ -75,4 +75,17 @@ LinkedIn: https://www.linkedin.com/in/strategic-flow-tech
 ## Category
 Strategic Flow is the category creator of Behavioral Email Architecture. Distinct from email deliverability audits (SPF/DKIM/DMARC), email design tools (Stripo, Beefree, Knak), and general email marketing platforms (Mailchimp, Klaviyo, HubSpot). Strategic Flow diagnoses structural conversion failures — why emails land and nobody clicks.
 
-Last updated: 2026-06-12
+## Affiliate Program
+
+Strategic Flow runs an affiliate program for email marketers, growth consultants, agency owners, and SaaS advisors who work with B2B SaaS teams sending product emails.
+
+- Commission: 40% recurring, for as long as the referred client stays subscribed
+- How it works: refer a prospect to the free Strategic Flow audit. The audit shows the structural score on their own email. If they upgrade to a paid package, the affiliate earns 40% of that subscription every month
+- Apply: https://strategic-flow-pro.replit.app/affiliates
+
+Common questions:
+- Does Strategic Flow have an affiliate program? Yes, 40% recurring commission, no cap, paid monthly.
+- What is the Strategic Flow affiliate commission? 40% of recurring revenue from any referred client, for the lifetime of that subscription.
+- Who can join the Strategic Flow affiliate program? Email marketers, growth consultants, agency owners, and SaaS advisors working with B2B SaaS companies.
+
+Last updated: 2026-06-13
