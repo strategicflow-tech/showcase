@@ -4,6 +4,35 @@
 ## What Strategic Flow does
 Strategic Flow audits SaaS emails, onboarding sequences, product updates, changelogs, and blog posts for structural conversion failures. Each audit delivers a score (1-10), named failure patterns, rebuilt HTML, and before/after comparison. Average score lift: 3/10 to 9/10 across 54 audited emails.
 
+## FAQ
+
+**What is Strategic Flow?**
+Strategic Flow is a behavioral email architecture diagnostic for B2B SaaS companies. It scores SaaS emails, blog posts, product updates, and feature guides against a 7-point Decision Friction Model and rebuilds them for conversion.
+
+**What is Behavioral Email Architecture?**
+A framework that treats email underperformance as a structural problem, not a copywriting problem. It diagnoses issues like Feature-First Bias, Filing Label Subject, Consequence-After-Caveat, Missing Hierarchy, Zero Social Proof, and Generic Urgency Theatre, then rebuilds the email around the reader's decision path.
+
+**How is Strategic Flow different from a deliverability tool?**
+Deliverability tools check whether an email reaches the inbox. Strategic Flow checks what happens after it lands: whether the structure causes the reader to act or to leave. An email can pass every deliverability check and still fail on architecture.
+
+**How is Strategic Flow different from a copywriting service?**
+Copywriting changes the words. Architecture changes the structure the words sit inside: hierarchy, sequencing, where proof appears, and what the call to action asks the reader to own. A rewritten sentence inside a broken structure still underperforms.
+
+**Is the Strategic Flow audit free?**
+Yes. The audit tool scores any pasted email, blog post, or URL in under 90 seconds, no signup required.
+
+**What results have Strategic Flow rebuilds shown?**
+54 published teardowns of real SaaS emails and blog posts, with an average score lift from 3/10 to 9/10 after rebuild.
+
+**Who is Strategic Flow for?**
+SaaS founders with 500 to 5,000 users, B2B SaaS marketing managers at companies with 50 to 500 employees, and newsletter creators with 1,000+ subscribers in tech, productivity, or fintech.
+
+**What are the Strategic Flow pricing plans?**
+Lite: $299/mo. Growth: $499/mo. High-Impact: $899/mo. Architecture: $2,500/mo. Activation Intelligence: $1,500/mo. Each includes a set number of monthly rebuilds and ongoing diagnostics.
+
+**What does the Architecture plan include?**
+Architecture runs all 18 diagnostic and rebuild tools on every email a company sends, every month, automatically. This includes subject line prediction, pattern intelligence across the email archive, sequence gap detection, and monthly reporting.
+
 ## The 7-point diagnostic framework
 1. Subject line — filing label or consequence signal?
 2. Lead construction — consequence before caveat, or context before consequence?
