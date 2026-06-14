@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Email Architecture vs Deliverability — What’s the Difference? — Strategic Flow</title>
+<meta name="description" content="Deliverability gets your email into the inbox. Architecture determines what happens after it’s opened. Two different problems, two different fixes — and most SaaS teams only have tools for one of them." />
+<meta name="keywords" content="email deliverability vs architecture, email architecture audit, SaaS email deliverability, inbox placement vs conversion, Strategic Flow, email CTR problem SaaS, email conversion after open, why SaaS email doesn’t convert" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Alex Iliescu — Strategic Flow" />
+<link rel="canonical" href="https://strategicflow.tech/architecture-vs-deliverability.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Email Architecture vs Deliverability — What’s the Difference? — Strategic Flow" />
+<meta property="og:description" content="Deliverability gets your email into the inbox. Architecture determines what happens after it’s opened. Two different problems, two different fixes." />
+<meta property="og:url" content="https://strategicflow.tech/architecture-vs-deliverability.html" />
+<meta property="og:site_name" content="Strategic Flow" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Email Architecture vs Deliverability — Strategic Flow" />
+<meta name="twitter:description" content="Deliverability and architecture are two different problems. Most SaaS teams only have tools for one of them." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Email Architecture vs Deliverability — What’s the Difference?",
+  "author": { "@type": "Person", "name": "Alex Iliescu" },
+  "publisher": { "@type": "Organization", "name": "Strategic Flow", "url": "https://strategicflow.tech" },
+  "datePublished": "2026-06-14",
+  "description": "Deliverability gets your email into the inbox. Architecture determines what happens after it’s opened. Two different problems, two different diagnostics.",
+  "mainEntityOfPage": "https://strategicflow.tech/architecture-vs-deliverability.html"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between email architecture and email deliverability?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Email deliverability answers whether your email reached the inbox — it diagnoses sender reputation, SPF/DKIM/DMARC configuration, list hygiene, and spam placement. Email architecture answers whether the reader who received your email had any reason to click — it diagnoses subject line framing, lead structure, proof placement, visual hierarchy, and CTA language. Deliverability determines inbox placement. Architecture determines what happens after the reader opens the email." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you have good deliverability and still have a low CTR?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. A 98% inbox placement rate with a 0.8% CTR is the most common pattern Strategic Flow sees. The email is reaching the inbox — that’s not the problem. The reader is opening it and not clicking. That’s a structural architecture failure, not a deliverability failure. Deliverability tools cannot diagnose it." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does email architecture actually diagnose?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Email architecture diagnoses the 7 structural points where reader decisions break down: (1) whether the subject line names a reader consequence or announces a topic category, (2) whether the first sentence opens with outcome or product description, (3) whether claims are framed as reader gains or feature lists, (4) whether the most important claim gets the most visual weight, (5) whether transformation is expressed in before/after numbers or vague adjectives, (6) whether proof appears in the first scroll, (7) whether the CTA uses ownership language or guest language." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I know if my email problem is deliverability or architecture?",
+      "acceptedAnswer": { "@type": "Answer", "text": "If your open rate is below 15–18%, check deliverability first — use inbox placement tools to see if your emails are landing in spam or promotions. If your open rate is above 18% but your CTR is below 2%, the deliverability is fine. The problem is structural architecture inside the email. Run the free Strategic Flow diagnostic at strategic-flow-audit.replit.app/demo.html to get a score and named failure patterns in 90 seconds." }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Strategic Flow", "item": "https://strategicflow.tech" },
+    { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://strategicflow.tech/glossary.html" },
+    { "@type": "ListItem", "position": 3, "name": "Architecture vs Deliverability", "item": "https://strategicflow.tech/architecture-vs-deliverability.html" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117; --bg-card: #0f1923; --bg-card2: #111d2a; --bg-inner: #0a1520;
+    --border: #1e2d3d; --border-bright: #2a3d52;
+    --teal: #2dd4bf; --teal-dim: rgba(45,212,191,0.12); --teal-border: rgba(45,212,191,0.35);
+    --text: #ffffff; --text-sub: #c8d6e5; --text-dim: #8b9cb6;
+    --red: #f87171; --orange: #fb923c;
+    --sans: 'Inter', sans-serif; --mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,17,23,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+  .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--teal); text-decoration: none; letter-spacing: 0.04em; }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a { font-size: 13px; color: var(--text-sub); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { padding: 120px 24px 72px; max-width: 760px; margin: 0 auto; text-align: center; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-dim); border: 1px solid var(--teal-border); color: var(--teal); font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 100px; margin-bottom: 28px; }
+  h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; }
+  h1 span { color: var(--teal); }
+  h2 { font-size: clamp(26px, 4vw, 40px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+  h2 span { color: var(--teal); }
+  .hero-sub { font-size: 17px; color: var(--text-sub); font-weight: 300; line-height: 1.7; margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .stat-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat { text-align: center; }
+  .stat-n { font-size: 36px; font-weight: 800; color: var(--teal); line-height: 1; margin-bottom: 4px; }
+  .stat-l { font-family: var(--mono); font-size: 11px; color: var(--text-sub); letter-spacing: 0.06em; text-transform: uppercase; }
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: #0d1117; font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border-bright); color: var(--text-sub); font-size: 15px; font-weight: 500; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+  .btn-ghost:hover { border-color: var(--teal-border); color: var(--text); }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); }
+  .section { max-width: 760px; margin: 0 auto; padding: 72px 24px; }
+  .section-wide { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 72px 0; }
+  .sect-badge { display: inline-flex; background: var(--bg-card2); border: 1px solid var(--border-bright); color: var(--text-dim); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 6px; margin-bottom: 20px; }
+  .sect-sub { font-size: 15px; color: var(--text-sub); line-height: 1.7; margin-bottom: 40px; }
+
+  /* COMPARISON GRID */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); margin-bottom: 40px; }
+  .compare-col { background: var(--bg-card); padding: 32px 28px; }
+  .compare-col.highlight { background: var(--bg-card2); border-top: 2px solid var(--teal); }
+  .compare-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
+  .compare-row { margin-bottom: 20px; }
+  .compare-row-q { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .compare-row-a { font-size: 14px; color: var(--text-sub); line-height: 1.65; }
+  .compare-row-a strong { color: var(--text); }
+
+  /* DECISION CARDS */
+  .decision-cards { display: flex; flex-direction: column; gap: 2px; margin-bottom: 40px; }
+  .dec-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start; }
+  .dec-card.yes { border-left: 3px solid var(--teal); }
+  .dec-card.warn { border-left: 3px solid var(--orange); }
+  .dec-num { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--teal); background: var(--teal-dim); border: 1px solid var(--teal-border); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dec-num.warn { color: var(--orange); background: rgba(251,146,60,0.1); border-color: rgba(251,146,60,0.3); }
+  .dec-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .dec-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+
+  /* FIELD NOTE */
+  .field-note { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: 10px; padding: 32px 36px; margin: 40px 0; }
+  .fn-meta { font-family: var(--mono); font-size: 11px; color: var(--teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .fn-title { font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+  .fn-text { font-size: 15px; color: var(--text-sub); line-height: 1.8; margin-bottom: 16px; }
+  .fn-frame { font-size: 13px; color: var(--text-dim); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 16px; font-style: italic; }
+
+  /* PROOF / CTA */
+  .proof-strip { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; padding: 48px 24px; background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .proof-item { text-align: center; }
+  .proof-n { font-size: 28px; font-weight: 800; color: var(--teal); margin-bottom: 4px; }
+  .proof-l { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .cta-sec { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 24px; text-align: center; }
+  .cta-sec h2 { margin-bottom: 14px; }
+  .cta-sec p { color: var(--text-sub); font-size: 16px; margin-bottom: 36px; font-weight: 300; }
+
+  /* FAQ */
+  .faq { display: flex; flex-direction: column; gap: 4px; }
+  .faq-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 4px; }
+  .faq-q { padding: 18px 22px; font-size: 15px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: background 0.15s; color: var(--text); }
+  .faq-q:hover { background: var(--bg-card2); }
+  .faq-icon { font-size: 20px; color: var(--teal); flex-shrink: 0; transition: transform 0.2s; line-height: 1; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { padding: 0 22px; font-size: 14px; color: var(--text-sub); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+  .faq-item.open .faq-a { max-height: 600px; padding: 0 22px 18px; }
+
+  /* INTERNAL LINKS */
+  .related { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 28px 32px; }
+  .related-label { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+  .related-links { display: flex; flex-direction: column; gap: 8px; }
+  .related-links a { font-size: 14px; color: var(--teal); text-decoration: none; }
+  .related-links a:hover { color: var(--text); }
+
+  footer { padding: 36px 24px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 20px; align-items: center; text-align: center; }
+  .footer-logo { font-family: var(--mono); font-size: 13px; color: var(--teal); text-decoration: none; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; list-style: none; }
+  .footer-links a { font-size: 13px; color: var(--text-sub); text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 12px; color: var(--text-dim); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .hero > * { animation: fadeUp 0.5s ease both; }
+  .hero > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero > *:nth-child(2) { animation-delay: 0.12s; }
+  .hero > *:nth-child(3) { animation-delay: 0.18s; }
+  .hero > *:nth-child(4) { animation-delay: 0.24s; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    h1 { font-size: 32px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .stat-row, .proof-strip { gap: 24px; }
+  }
+</style>
+</head>
+<body data-sf-bar="services">
+
+<nav>
+  <a href="https://strategicflow.tech" class="nav-logo">STRATEGIC FLOW</a>
+  <ul class="nav-links">
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/scorecard.html">Scorecard</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Structural Diagnosis — B2B SaaS Email
+  </div>
+  <h1>Your email landed<br/>in the inbox.<br/><em style="color:var(--teal);font-style:italic;">Then what?</em></h1>
+  <p class="hero-sub">Deliverability and architecture solve two different problems that get confused constantly. Deliverability means the email arrives. Architecture means the reader acts once it does. A SaaS team can have perfect deliverability — 98% inbox placement — and still get a 0.8% CTR. Because the problem was never delivery.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-n">0.8%</div><div class="stat-l">typical CTR with delivery problem "fixed"</div></div>
+    <div class="stat"><div class="stat-n">54</div><div class="stat-l">SaaS emails audited</div></div>
+    <div class="stat"><div class="stat-n">91%</div><div class="stat-l">fail rate on CTA language alone</div></div>
+  </div>
+  <div class="cta-row">
+    <a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-primary">Run the free architecture audit</a>
+    <a href="https://strategicflow.tech/teardowns.html" class="btn-ghost">See 54 teardowns →</a>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- TWO LAYERS -->
+<div class="section">
+  <div class="sect-badge">Two Layers, Two Diagnostics</div>
+  <h2>Different questions.<br/><span>Different tools.</span></h2>
+  <p class="sect-sub">Deliverability and architecture each have their own diagnostic layer. Mixing them up means you run the wrong fix — and the CTR number doesn’t move.</p>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-label">Deliverability</div>
+      <div class="compare-row">
+        <div class="compare-row-q">What it answers</div>
+        <div class="compare-row-a">"Did the email reach the inbox, or land in spam / promotions?"</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-row-q">What it measures</div>
+        <div class="compare-row-a">Sender reputation · SPF / DKIM / DMARC · List hygiene · Send patterns · Spam complaint rate · Inbox placement %</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-row-q">Tools that solve this</div>
+        <div class="compare-row-a">Dedicated deliverability platforms · ESP warm-up tools · List cleaning services · DNS configuration audits</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-row-q">What it does NOT tell you</div>
+        <div class="compare-row-a" style="color:var(--red);">Whether the reader who received the email clicked anything.</div>
+      </div>
+    </div>
+    <div class="compare-col highlight">
+      <div class="compare-label">Architecture</div>
+      <div class="compare-row">
+        <div class="compare-row-q">What it answers</div>
+        <div class="compare-row-a">"Once the reader sees this email, why would they click — or why wouldn’t they?"</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-row-q">What it measures</div>
+        <div class="compare-row-a">Subject line framing · Hook structure · Proof placement · Visual hierarchy · CTA language — the <a href="https://strategicflow.tech/glossary.html" style="color:var(--teal);">7 structural points</a> from the Decision Friction Model</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-row-q">Tools that solve this</div>
+        <div class="compare-row-a">Strategic Flow’s 7-point diagnostic + structural rebuild. <a href="https://strategic-flow-audit.replit.app/demo.html" style="color:var(--teal);">Free to run in 90 seconds.</a></div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-row-q">What it does NOT tell you</div>
+        <div class="compare-row-a" style="color:var(--text-dim);">Whether the email reached the inbox in the first place.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHY TEAMS CONFUSE THEM -->
+<div class="section">
+  <div class="sect-badge">Why Teams Confuse Them</div>
+  <h2>Low open rate. Fix deliverability.<br/><span>CTR still doesn’t move.</span></h2>
+  <p class="sect-sub">The confusion happens because deliverability and architecture share a surface symptom — low performance — but have completely different root causes.</p>
+
+  <p style="font-size:15px;color:var(--text-sub);line-height:1.8;margin-bottom:20px;">A SaaS team sees a low open rate and assumes deliverability. They run a deliverability audit, fix SPF records, warm up the domain. Open rate improves slightly. CTR stays at 0.8%. The architecture problem was never touched.</p>
+
+  <p style="font-size:15px;color:var(--text-sub);line-height:1.8;margin-bottom:20px;">The reverse is equally common: a team with a 28% open rate — healthy by any benchmark, no deliverability issue — and 0.8% CTR. They keep tweaking send times and sender names. Nobody told them the problem is inside the email, not in front of it.</p>
+
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--orange);border-radius:10px;padding:24px 28px;margin-top:32px;">
+    <div style="font-family:var(--mono);font-size:11px;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">The diagnostic error</div>
+    <p style="font-size:15px;color:var(--text-sub);line-height:1.75;">If open rate is above 18% but CTR is below 2%, you have confirmed inbox placement. You have also confirmed that the architecture is failing. Deliverability tools will not find that failure. They don’t look at the inside of the email.</p>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-dim);margin-top:20px;line-height:1.6;">For a full breakdown of the 7 architecture failure patterns, see: <a href="https://strategicflow.tech/saas-email-conversion-failure.html" style="color:var(--teal);">SaaS Email Conversion Failure — What Causes It and How to Diagnose It</a>.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- FIELD NOTE -->
+<div class="section">
+  <div class="sect-badge">Field Note</div>
+  <h2>This confusion,<br/><span>in practice.</span></h2>
+  <p class="sect-sub">From the Strategic Flow field notes archive. Original observation, reproduced in full.</p>
+
+  <div class="field-note">
+    <div class="fn-meta">Release notes · Field Note</div>
+    <div class="fn-title">Three weeks on a subject line</div>
+    <p class="fn-text">A PMM spent three weeks testing subject line variants for a release email. Picked a winner, shipped it. Open rate went up two points. Click rate did not move, because the email failed in paragraph two: the feature was announced before the reader had any reason to care. Three weeks on the one line everyone could see. Zero minutes on the line that actually decided the click.</p>
+    <div class="fn-frame">This is the deliverability / architecture confusion in practice. Subject line testing is a deliverability-adjacent activity — it moves open rate. The click failure was architectural, and was located in paragraph two. Three weeks of effort never touched it. The open rate signal looked like progress. The CTR told the real story.</div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.6;">From <a href="https://strategicflow.tech/notes.html" style="color:var(--teal);">Strategic Flow Field Notes</a> — Alex Iliescu’s working observations from active email audits.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- WHICH ONE DO YOU NEED -->
+<div class="section">
+  <div class="sect-badge">Which One Do You Need?</div>
+  <h2>Two signals.<br/><span>Two different actions.</span></h2>
+  <p class="sect-sub">Use your open rate and CTR together to identify which layer the problem is in before you decide which diagnostic to run.</p>
+
+  <div class="decision-cards">
+    <div class="dec-card yes">
+      <div class="dec-num">01</div>
+      <div>
+        <div class="dec-title">Low open rate (&lt;15–18%) AND deliverability tools show spam/promotions placement</div>
+        <div class="dec-desc">→ <strong>Deliverability problem.</strong> Fix sender reputation, DNS configuration, and list hygiene first. Architecture fixes do not matter if the email never reaches the inbox. Once inbox placement is above 90%, run the architecture audit.</div>
+      </div>
+    </div>
+    <div class="dec-card yes">
+      <div class="dec-num">02</div>
+      <div>
+        <div class="dec-title">Open rate is healthy (18%+) but CTR is below 2%</div>
+        <div class="dec-desc">→ <strong>Architecture problem.</strong> Deliverability is not the issue. The email is reaching the inbox and being opened. The architecture is failing to give the reader a reason to click. Run the <a href="https://strategic-flow-audit.replit.app/demo.html" style="color:var(--teal);">free diagnostic</a> to identify which of the 7 failure points is responsible.</div>
+      </div>
+    </div>
+    <div class="dec-card warn">
+      <div class="dec-num warn">03</div>
+      <div>
+        <div class="dec-title">Both open rate AND CTR are low</div>
+        <div class="dec-desc">→ <strong>Fix deliverability first.</strong> Architecture fixes cannot produce results if the email is not reaching the inbox. Once inbox placement is confirmed, run the architecture diagnostic. The problems are sequential, not parallel.</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:14px;color:var(--text-sub);line-height:1.7;">For context on why open rates above 18% still produce low CTR, see: <a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html" style="color:var(--teal);">Why SaaS Emails Get Opened But Not Clicked</a>.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- CTA SECTION -->
+<div class="cta-sec">
+  <div class="sect-badge" style="margin-bottom:20px;">Free Diagnosis</div>
+  <h2>Not sure which one you have?</h2>
+  <p>Run the free audit — it diagnoses the architecture side in 90 seconds, no card required. If the architecture is clean, the problem is in front of the email, not inside it.</p>
+  <div class="cta-row">
+    <a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-primary">Run free architecture audit →</a>
+    <a href="https://strategicflow.tech/teardowns.html" class="btn-ghost">See 54 teardowns →</a>
+  </div>
+</div>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item"><div class="proof-n">54</div><div class="proof-l">SaaS emails audited</div></div>
+  <div class="proof-item"><div class="proof-n">3.4 → 9.0</div><div class="proof-l">average score after rebuild</div></div>
+  <div class="proof-item"><div class="proof-n">91%</div><div class="proof-l">CTA failure rate</div></div>
+  <div class="proof-item"><div class="proof-n">83%</div><div class="proof-l">filing label subject rate</div></div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="sect-badge">Common Questions</div>
+  <h2>Before you<br/><span>decide which one to fix.</span></h2>
+
+  <div class="faq">
+    <details class="faq-item">
+      <summary class="faq-q">What is the difference between email architecture and email deliverability? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Email deliverability answers whether your email reached the inbox — it diagnoses sender reputation, SPF/DKIM/DMARC, list hygiene, and spam placement. Email architecture answers whether the reader who received the email had any reason to click — it diagnoses subject line framing, lead structure, proof placement, visual hierarchy, and CTA language. Two completely separate diagnostic layers.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Can you have good deliverability and still have a low CTR? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Yes — this is the most common pattern Strategic Flow audits. A 98% inbox placement rate with a 0.8% CTR means deliverability is working correctly. The email is reaching the inbox. The reader is opening it. The architecture is failing to give them a reason to click. No deliverability tool can diagnose this.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">What does a deliverability tool actually tell you? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">A deliverability tool tells you whether your email landed in the inbox, the spam folder, or the promotions tab. It also tells you whether your DNS records are correctly configured, whether your sending domain has a healthy reputation, and whether your list contains addresses that generate spam complaints. It does not look at the content of the email. It cannot tell you why the reader didn’t click.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">How do I know if my email problem is deliverability or architecture? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Check your open rate. If it is below 15–18%, run a deliverability check first — inbox placement tools will tell you if emails are landing in spam or promotions. If your open rate is above 18% but CTR is below 2%, deliverability is fine. The architecture is failing. Run the free Strategic Flow diagnostic to get a score and named failure patterns in 90 seconds.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Does fixing architecture also improve open rate? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Yes — because subject line framing is an architecture problem, not purely a deliverability one. A filing label subject line ("July Product Update") gets a lower open rate than a consequence-first subject ("Your dashboard now loads in 0.4s") — even on the same list, same domain, same send time. Architecture improvements that fix subject line framing consistently produce open rate gains in addition to CTR gains.</p>
+    </details>
+  </div>
+</div>
+
+<!-- INTERNAL LINKS -->
+<div class="section">
+  <div class="related">
+    <div class="related-label">Related reading</div>
+    <div class="related-links">
+      <a href="https://strategicflow.tech/glossary.html">→ Decision Friction Model — the 7-point diagnostic framework behind every architecture audit</a>
+      <a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html">→ Why SaaS Emails Get Opened But Not Clicked — the full architecture of a reader decision</a>
+      <a href="https://strategicflow.tech/saas-email-conversion-failure.html">→ SaaS Email Conversion Failure — the 7 structural failure points, with fail rates from 54 audits</a>
+      <a href="https://strategicflow.tech/teardown-vs-lifecycle-audit.html">→ Teardown vs Lifecycle Audit — single email diagnosis vs full sequence diagnosis</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://strategicflow.tech" class="footer-logo">STRATEGIC FLOW</a>
+  <ul class="footer-links">
+    <li><a href="https://strategicflow.tech">Home</a></li>
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/scorecard.html">Scorecard</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html">Why Emails Fail</a></li>
+    <li><a href="https://strategicflow.tech/saas-email-conversion-failure.html">Conversion Failure</a></li>
+    <li><a href="https://strategicflow.tech/strategic-flow-vs-scalero.html">vs Scalero</a></li>
+    <li><a href="https://strategicflow.tech/architecture-vs-deliverability.html">Architecture vs Deliverability</a></li>
+    <li><a href="https://strategicflow.tech/teardown-vs-lifecycle-audit.html">Teardown vs Lifecycle</a></li>
+    <li><a href="https://strategicflow-tech.github.io/roi/">ROI Calculator</a></li>
+    <li><a href="https://strategic-flow-pro.replit.app/packages">Pricing</a></li>
+    <li><a href="https://strategicflow.substack.com/">Substack</a></li>
+    <li><a href="https://www.linkedin.com/in/strategic-flow-tech">LinkedIn</a></li>
+    <li><a href="mailto:alex@strategicflow.tech">Contact</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Strategic Flow · Alex Iliescu · strategicflow.tech</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+<style>
+#sf-sticky-bar {
+  position: fixed; bottom: 0; left: 0; width: 100%;
+  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  border-top: 1px solid rgba(29, 158, 117, 0.3);
+  box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
+  z-index: 9999; display: none; transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); box-sizing: border-box;
+}
+#sf-sticky-bar.visible { display: flex; transform: translateY(0); }
+.sf-bar-inner { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 16px; }
+.sf-bar-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.sf-badge { background: rgba(29,158,117,0.15); color: #1D9E75; font-family: 'DM Mono',monospace; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(29,158,117,0.35); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; }
+.sf-affiliate-tag { background: rgba(74,143,231,0.1); color: #4A8FE7; font-family: 'DM Mono',monospace; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 3px; border: 1px solid rgba(74,143,231,0.25); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.05em; text-transform: uppercase; }
+.sf-text { color: #e8e8e8; font-family: 'Figtree',sans-serif; font-size: 14px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sf-text strong { color: #ffffff; font-weight: 600; }
+.sf-cta { background: #1D9E75; color: #ffffff; font-family: 'Figtree',sans-serif; font-weight: 600; font-size: 13px; padding: 9px 18px; border-radius: 6px; border: none; cursor: pointer; white-space: nowrap; text-decoration: none; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.01em; transition: background 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 0 16px rgba(29,158,117,0.25); }
+.sf-cta:hover { background: #178a63; }
+.sf-cta-arrow { font-size: 14px; transition: transform 0.2s ease; }
+.sf-cta:hover .sf-cta-arrow { transform: translateX(2px); }
+.sf-close { color: #555; font-size: 16px; background: none; border: none; cursor: pointer; padding: 6px 8px; flex-shrink: 0; line-height: 1; transition: color 0.2s ease; }
+.sf-close:hover { color: #999; }
+@media (max-width: 768px) { .sf-text { display: none; } .sf-cta { order: 10; width: 100%; justify-content: center; } }
+#cookie-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10000; background: #09111e; border-top: 1px solid rgba(255,255,255,0.08); padding: 18px 48px; display: none; }
+#cookie-banner.visible { display: flex; }
+.cookie-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1100px; margin: 0 auto; width: 100%; flex-wrap: wrap; }
+.cookie-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 680px; }
+.cookie-text a { color: #00e5a0; text-decoration: underline; }
+.cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.cookie-btn { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; padding: 10px 18px; border-radius: 6px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); transition: all .2s; }
+.cookie-btn:hover { border-color: #00e5a0; color: #00e5a0; }
+.cookie-btn.accept { background: #00e5a0; color: #07090f; border-color: #00e5a0; }
+@media(max-width:640px) { #cookie-banner { padding: 16px 18px; } .cookie-inner { flex-direction: column; align-items: stretch; gap: 14px; } .cookie-actions { justify-content: flex-end; } }
+</style>
+
+<div id="sf-sticky-bar">
+  <div class="sf-bar-inner">
+    <div class="sf-bar-left">
+      <span class="sf-affiliate-tag">affiliate</span>
+      <span class="sf-badge" id="sf-badge-text"></span>
+      <span class="sf-text" id="sf-main-text"></span>
+    </div>
+    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank">
+      <span id="sf-cta-text"></span>
+      <span class="sf-cta-arrow">→</span>
+    </a>
+    <button class="sf-close" id="sf-close-btn">✕</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (sessionStorage.getItem('sf-bar-closed')) return;
+  var bar = document.getElementById('sf-sticky-bar');
+  var badge = document.getElementById('sf-badge-text');
+  var text = document.getElementById('sf-main-text');
+  var ctaText = document.getElementById('sf-cta-text');
+  var type = document.body.getAttribute('data-sf-bar') || 'services';
+  if (type === 'content') {
+    badge.textContent = '10 spots · 40% locked';
+    text.innerHTML = 'Know a SaaS team with broken emails? <strong>Earn $199–$1,000/mo per referral.</strong>';
+    ctaText.textContent = 'Join Affiliate Program';
+  } else {
+    badge.textContent = 'First 10 spots · 40% forever';
+    text.innerHTML = 'Refer once. <strong>Get paid every month they stay subscribed.</strong>';
+    ctaText.textContent = 'See How It Works';
+  }
+  var shown = false;
+  function showBar() { if (shown) return; shown = true; bar.style.display = 'flex'; setTimeout(function() { bar.classList.add('visible'); }, 50); }
+  setTimeout(showBar, 15000);
+  window.addEventListener('scroll', function() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.4) showBar(); }, { passive: true });
+  document.getElementById('sf-close-btn').addEventListener('click', function() { bar.classList.remove('visible'); setTimeout(function() { bar.style.display = 'none'; }, 350); sessionStorage.setItem('sf-bar-closed', '1'); });
+})();
+</script>
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.</div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='sf_consent',stored=localStorage.getItem(KEY),banner=document.getElementById('cookie-banner');
+  function grant(){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}
+  if(stored==='granted'){grant();}else if(stored!=='denied'){banner.classList.add('visible');}
+  document.getElementById('cookie-accept').addEventListener('click',function(){localStorage.setItem(KEY,'granted');grant();banner.classList.remove('visible');});
+  document.getElementById('cookie-decline').addEventListener('click',function(){localStorage.setItem(KEY,'denied');banner.classList.remove('visible');});
+})();
+</script>
+</body>
+</html>
