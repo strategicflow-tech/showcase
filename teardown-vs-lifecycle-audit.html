@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SaaS Email Teardown vs Lifecycle Audit — What’s the Difference? — Strategic Flow</title>
+<meta name="description" content="A teardown diagnoses one email. A lifecycle audit diagnoses an entire sequence — onboarding, retention, or re-engagement — as a system. Different scope, different output, different use case." />
+<meta name="keywords" content="email teardown vs lifecycle audit, SaaS email sequence audit, onboarding sequence diagnosis, single email audit vs sequence audit, Strategic Flow, email lifecycle diagnosis, SaaS onboarding email audit" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Alex Iliescu — Strategic Flow" />
+<link rel="canonical" href="https://strategicflow.tech/teardown-vs-lifecycle-audit.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="SaaS Email Teardown vs Lifecycle Audit — What’s the Difference? — Strategic Flow" />
+<meta property="og:description" content="A teardown diagnoses one email. A lifecycle audit diagnoses the entire sequence as a system. Different scope, different output." />
+<meta property="og:url" content="https://strategicflow.tech/teardown-vs-lifecycle-audit.html" />
+<meta property="og:site_name" content="Strategic Flow" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="SaaS Email Teardown vs Lifecycle Audit — Strategic Flow" />
+<meta name="twitter:description" content="One email or the whole sequence. Different diagnosis, different fix." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "SaaS Email Teardown vs Lifecycle Audit — What’s the Difference?",
+  "author": { "@type": "Person", "name": "Alex Iliescu" },
+  "publisher": { "@type": "Organization", "name": "Strategic Flow", "url": "https://strategicflow.tech" },
+  "datePublished": "2026-06-14",
+  "description": "A teardown diagnoses one email. A lifecycle audit diagnoses an entire sequence as a system. Different scope, different output, different use case.",
+  "mainEntityOfPage": "https://strategicflow.tech/teardown-vs-lifecycle-audit.html"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is an email teardown?",
+      "acceptedAnswer": { "@type": "Answer", "text": "An email teardown is a structural diagnosis of a single email — one product update, one newsletter issue, one onboarding step. It finds the specific architecture failures within that one message: subject line framing, hook placement, proof position, CTA language, visual hierarchy. Output is a scored before/after with the specific email rebuilt. Best for: I have one email that isn’t performing and I want to know exactly why." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a lifecycle email audit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A lifecycle audit diagnoses an entire email sequence — onboarding (Day 1–14), re-engagement, trial-to-paid, retention — as a connected system. It finds structural failures within each individual email, plus systemic issues that only appear when you look at the full sequence: repeated CTAs with no progression, missing emails at critical decision points, inconsistent framing between Day 1 and Day 7, cumulative reader fatigue. Output includes a sequence-level health score, a gap map, and individual email rebuilds." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the key difference between a teardown and a lifecycle audit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A teardown answers what’s wrong with this specific email. A lifecycle audit answers what’s wrong with the system of emails — including what’s missing between them. A sequence can have 5 individually well-structured emails and still fail as a system, if email 3 repeats the CTA from email 1 with no new information, or if there is no email addressing the gap between signup and first value moment." }
+    },
+    {
+      "@type": "Question",
+      "name": "When should I run a single-email teardown vs a lifecycle audit?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Run a teardown if: you have one underperforming email and want to know exactly why. Run a lifecycle audit if: you have multiple emails in a sequence and users drop off somewhere in the sequence but you don’t know where, OR if you’re building a new sequence from scratch and want to find the gaps before they’re shipped. If you’ve never audited your welcome or onboarding sequence, that’s a lifecycle audit problem — not a single-email problem." }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Strategic Flow", "item": "https://strategicflow.tech" },
+    { "@type": "ListItem", "position": 2, "name": "Teardowns", "item": "https://strategicflow.tech/teardowns.html" },
+    { "@type": "ListItem", "position": 3, "name": "Teardown vs Lifecycle Audit", "item": "https://strategicflow.tech/teardown-vs-lifecycle-audit.html" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117; --bg-card: #0f1923; --bg-card2: #111d2a; --bg-inner: #0a1520;
+    --border: #1e2d3d; --border-bright: #2a3d52;
+    --teal: #2dd4bf; --teal-dim: rgba(45,212,191,0.12); --teal-border: rgba(45,212,191,0.35);
+    --text: #ffffff; --text-sub: #c8d6e5; --text-dim: #8b9cb6;
+    --red: #f87171; --orange: #fb923c;
+    --sans: 'Inter', sans-serif; --mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,17,23,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+  .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--teal); text-decoration: none; letter-spacing: 0.04em; }
+  .nav-links { display: flex; gap: 24px; list-style: none; }
+  .nav-links a { font-size: 13px; color: var(--text-sub); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { padding: 120px 24px 72px; max-width: 760px; margin: 0 auto; text-align: center; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-dim); border: 1px solid var(--teal-border); color: var(--teal); font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 100px; margin-bottom: 28px; }
+  h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; }
+  h1 span { color: var(--teal); }
+  h2 { font-size: clamp(26px, 4vw, 40px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+  h2 span { color: var(--teal); }
+  .hero-sub { font-size: 17px; color: var(--text-sub); font-weight: 300; line-height: 1.7; margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .stat-row { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; }
+  .stat { text-align: center; }
+  .stat-n { font-size: 36px; font-weight: 800; color: var(--teal); line-height: 1; margin-bottom: 4px; }
+  .stat-l { font-family: var(--mono); font-size: 11px; color: var(--text-sub); letter-spacing: 0.06em; text-transform: uppercase; }
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: #0d1117; font-size: 15px; font-weight: 600; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border-bright); color: var(--text-sub); font-size: 15px; font-weight: 500; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+  .btn-ghost:hover { border-color: var(--teal-border); color: var(--text); }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); }
+  .section { max-width: 760px; margin: 0 auto; padding: 72px 24px; }
+  .section-wide { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 72px 0; }
+  .sect-badge { display: inline-flex; background: var(--bg-card2); border: 1px solid var(--border-bright); color: var(--text-dim); font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 6px; margin-bottom: 20px; }
+  .sect-sub { font-size: 15px; color: var(--text-sub); line-height: 1.7; margin-bottom: 40px; }
+
+  /* COMPARISON GRID */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); margin-bottom: 40px; }
+  .compare-col { background: var(--bg-card); padding: 32px 28px; }
+  .compare-col.highlight { background: var(--bg-card2); border-top: 2px solid var(--teal); }
+  .compare-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
+  .compare-row { margin-bottom: 20px; }
+  .compare-row-q { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+  .compare-row-a { font-size: 14px; color: var(--text-sub); line-height: 1.65; }
+  .compare-row-a strong { color: var(--text); }
+
+  /* DECISION CARDS */
+  .decision-cards { display: flex; flex-direction: column; gap: 2px; margin-bottom: 40px; }
+  .dec-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 24px 28px; display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start; }
+  .dec-card.yes { border-left: 3px solid var(--teal); }
+  .dec-card.warn { border-left: 3px solid var(--orange); }
+  .dec-num { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--teal); background: var(--teal-dim); border: 1px solid var(--teal-border); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dec-num.warn { color: var(--orange); background: rgba(251,146,60,0.1); border-color: rgba(251,146,60,0.3); }
+  .dec-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .dec-desc { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+
+  /* FIELD NOTE */
+  .field-note { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: 10px; padding: 32px 36px; margin: 40px 0; }
+  .fn-meta { font-family: var(--mono); font-size: 11px; color: var(--teal); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .fn-title { font-size: 20px; font-weight: 700; margin-bottom: 14px; }
+  .fn-text { font-size: 15px; color: var(--text-sub); line-height: 1.8; margin-bottom: 16px; }
+  .fn-frame { font-size: 13px; color: var(--text-dim); line-height: 1.7; border-top: 1px solid var(--border); padding-top: 16px; font-style: italic; }
+
+  /* PROOF / CTA */
+  .proof-strip { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; padding: 48px 24px; background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .proof-item { text-align: center; }
+  .proof-n { font-size: 28px; font-weight: 800; color: var(--teal); margin-bottom: 4px; }
+  .proof-l { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .cta-sec { background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 24px; text-align: center; }
+  .cta-sec h2 { margin-bottom: 14px; }
+  .cta-sec p { color: var(--text-sub); font-size: 16px; margin-bottom: 36px; font-weight: 300; }
+
+  /* FAQ */
+  .faq { display: flex; flex-direction: column; gap: 4px; }
+  .faq-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 4px; }
+  .faq-q { padding: 18px 22px; font-size: 15px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: background 0.15s; color: var(--text); }
+  .faq-q:hover { background: var(--bg-card2); }
+  .faq-icon { font-size: 20px; color: var(--teal); flex-shrink: 0; transition: transform 0.2s; line-height: 1; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { padding: 0 22px; font-size: 14px; color: var(--text-sub); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+  .faq-item.open .faq-a { max-height: 600px; padding: 0 22px 18px; }
+
+  /* INTERNAL LINKS */
+  .related { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 28px 32px; }
+  .related-label { font-family: var(--mono); font-size: 11px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+  .related-links { display: flex; flex-direction: column; gap: 8px; }
+  .related-links a { font-size: 14px; color: var(--teal); text-decoration: none; }
+  .related-links a:hover { color: var(--text); }
+
+  footer { padding: 36px 24px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 20px; align-items: center; text-align: center; }
+  .footer-logo { font-family: var(--mono); font-size: 13px; color: var(--teal); text-decoration: none; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; list-style: none; }
+  .footer-links a { font-size: 13px; color: var(--text-sub); text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 12px; color: var(--text-dim); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .hero > * { animation: fadeUp 0.5s ease both; }
+  .hero > *:nth-child(1) { animation-delay: 0.05s; }
+  .hero > *:nth-child(2) { animation-delay: 0.12s; }
+  .hero > *:nth-child(3) { animation-delay: 0.18s; }
+  .hero > *:nth-child(4) { animation-delay: 0.24s; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    h1 { font-size: 32px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .stat-row, .proof-strip { gap: 24px; }
+  }
+</style>
+</head>
+<body data-sf-bar="services">
+
+<nav>
+  <a href="https://strategicflow.tech" class="nav-logo">STRATEGIC FLOW</a>
+  <ul class="nav-links">
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/scorecard.html">Scorecard</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    Diagnostic Scope — B2B SaaS Email
+  </div>
+  <h1>One email.<br/>Or the whole sequence.<br/><em style="color:var(--teal);font-style:italic;">Different diagnosis, different fix.</em></h1>
+  <p class="hero-sub">A teardown and a lifecycle audit both diagnose structural problems in SaaS email — but at different scopes. Understanding which one you need depends on whether your problem is in one message or in the system connecting multiple messages.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-n">54</div><div class="stat-l">single-email teardowns</div></div>
+    <div class="stat"><div class="stat-n">3.4</div><div class="stat-l">avg original score</div></div>
+    <div class="stat"><div class="stat-n">Day 7</div><div class="stat-l">most common lifecycle gap</div></div>
+  </div>
+  <div class="cta-row">
+    <a href="https://strategicflow.tech/teardowns.html" class="btn-primary">See 54 teardowns →</a>
+    <a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-ghost">Run free single-email audit →</a>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHAT A TEARDOWN DIAGNOSES -->
+<div class="section">
+  <div class="sect-badge">Single Email</div>
+  <h2>What a teardown<br/><span>diagnoses.</span></h2>
+  <p class="sect-sub">A teardown looks at one message and asks: at exactly which structural point does this email lose the reader?</p>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Scope</div>
+      <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">A single email — one product update, one newsletter issue, one onboarding step.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">What it finds</div>
+      <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">Structural failures within that one message: subject line framing (filing label vs consequence-first), hook placement (feature-first vs outcome-first), proof position (buried vs above fold), CTA language (guest vs ownership), visual hierarchy.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Output</div>
+      <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">A scored before/after on the 7-point <a href="https://strategicflow.tech/glossary.html" style="color:var(--teal);">Decision Friction Model</a>, with the specific email rebuilt. Delivered as HTML ready to send.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Best for</div>
+      <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">"I have one email that isn’t performing and I want to know why." See the <a href="https://strategicflow.tech/teardowns.html" style="color:var(--teal);">54 published teardowns</a> for examples.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border-bright);border-left:2px solid var(--orange);border-radius:10px;padding:20px 24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Limitation</div>
+      <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">A teardown does not tell you whether the <em>next</em> email in the sequence repeats the same failure, or whether there is a gap between emails that no single email can fix. It is a single-message diagnosis.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHAT A LIFECYCLE AUDIT DIAGNOSES -->
+<div class="section-wide">
+  <div class="section">
+    <div class="sect-badge">Full Sequence</div>
+    <h2>What a lifecycle audit<br/><span>diagnoses.</span></h2>
+    <p class="sect-sub">A lifecycle audit looks at the sequence as a connected system — not just individual message quality, but what happens between messages.</p>
+
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:32px;">
+      <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Scope</div>
+        <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">An entire sequence — onboarding (Day 1–14), re-engagement, trial-to-paid, retention. Every email in the flow, plus the gaps between them.</p>
+      </div>
+      <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">What it finds</div>
+        <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">Structural failures within each individual email, <strong>plus</strong> systemic issues that only appear across the sequence: repeated CTAs with no progression, missing emails at critical decision points, inconsistent framing between Day 1 and Day 7, cumulative reader fatigue that builds across sends.</p>
+      </div>
+      <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Output</div>
+        <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">A sequence-level health score, a gap map (where emails are missing or redundant), plus individual email rebuilds for each message in the sequence.</p>
+      </div>
+      <div style="background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Best for</div>
+        <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">"My onboarding sequence has multiple emails and users still drop off — I don’t know if it’s one email or the whole flow." Also: building a new sequence and wanting to identify gaps before they ship.</p>
+      </div>
+      <div style="background:var(--bg-card2);border:1px solid var(--border-bright);border-left:2px solid var(--orange);border-radius:10px;padding:20px 24px;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;">Limitation</div>
+        <p style="font-size:15px;color:var(--text-sub);line-height:1.7;">Requires the full sequence to diagnose. Cannot be run meaningfully on a single email in isolation — the systemic failures are only visible when the sequence is complete.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE KEY DIFFERENCE -->
+<div class="section">
+  <div class="sect-badge">The Key Difference</div>
+  <h2>One email.<br/><span>Or the system between emails.</span></h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-bottom:32px;">
+    <div style="background:var(--bg-card);padding:28px 24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Teardown answers</div>
+      <p style="font-size:17px;font-weight:700;line-height:1.4;">"What’s wrong with <em>this</em> email?"</p>
+    </div>
+    <div style="background:var(--bg-card2);border-top:2px solid var(--teal);padding:28px 24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Lifecycle audit answers</div>
+      <p style="font-size:17px;font-weight:700;line-height:1.4;">"What’s wrong with the <em>system</em> of emails — including what’s missing between them?"</p>
+    </div>
+  </div>
+
+  <p style="font-size:15px;color:var(--text-sub);line-height:1.8;margin-bottom:20px;">A sequence can have 5 individually well-structured emails and still fail as a system — if email 3 repeats the CTA from email 1 with no new information, or if the gap between "user signed up" and "user got value" has no email addressing it at all.</p>
+
+  <p style="font-size:15px;color:var(--text-sub);line-height:1.8;">A teardown on email 3 will not find that failure. The email itself may score fine structurally. The failure is in the system logic — visible only when you look at all 5 emails together.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- FIELD NOTE -->
+<div class="section">
+  <div class="sect-badge">Field Note</div>
+  <h2>The lifecycle gap<br/><span>nobody noticed.</span></h2>
+  <p class="sect-sub">From the Strategic Flow field notes archive. Original observation, reproduced in full.</p>
+
+  <div class="field-note">
+    <div class="fn-meta">Onboarding · Welcome email · Field Note</div>
+    <div class="fn-title">Nobody has reread the welcome email</div>
+    <p class="fn-text">Asked a marketing team when they last read their own welcome email end to end. Nobody could answer. The person who wrote it left two years ago. It still sends every day to every new signup. Nothing about it is wrong exactly. It is addressed to a product that has since changed, in a tone nobody on the current team would choose.</p>
+    <div class="fn-frame">This is exactly the kind of problem a single-email teardown CAN catch — the email itself may score fine structurally on the 7-point diagnostic. But a lifecycle audit catches it differently: by asking whether this email’s tone and claims still match what the rest of the sequence promises, whether the product described in Day 1 is still the product the reader encounters in Day 7, and whether anyone on the current team has actually read the full sequence end to end. A teardown scores the message. A lifecycle audit asks whether the message still belongs in the sequence.</div>
+  </div>
+
+  <p style="font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.6;">From <a href="https://strategicflow.tech/notes.html" style="color:var(--teal);">Strategic Flow Field Notes</a> — Alex Iliescu’s working observations from active email audits.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- WHICH ONE DO YOU NEED -->
+<div class="section">
+  <div class="sect-badge">Which One Do You Need?</div>
+  <h2>Three scenarios.<br/><span>Three different starting points.</span></h2>
+  <p class="sect-sub">The scope of the problem determines the scope of the diagnosis.</p>
+
+  <div class="decision-cards">
+    <div class="dec-card yes">
+      <div class="dec-num">01</div>
+      <div>
+        <div class="dec-title">One underperforming email, rest of sequence is fine or doesn’t exist</div>
+        <div class="dec-desc">→ <strong>Teardown.</strong> You have a single-email problem. Run the <a href="https://strategic-flow-audit.replit.app/demo.html" style="color:var(--teal);">free 90-second audit</a> to get a score and named failure patterns, or see the <a href="https://strategicflow.tech/teardowns.html" style="color:var(--teal);">54 published teardowns</a> for examples of structural failures in comparable emails.</div>
+      </div>
+    </div>
+    <div class="dec-card yes">
+      <div class="dec-num">02</div>
+      <div>
+        <div class="dec-title">Multiple emails in sequence, drop-off happens somewhere but unclear where</div>
+        <div class="dec-desc">→ <strong>Lifecycle audit.</strong> The problem may not be in any single email — it may be in the gap between emails, in cumulative CTA repetition, or in the mismatch between what Day 1 promises and what Day 7 delivers. A single teardown won’t reveal this.</div>
+      </div>
+    </div>
+    <div class="dec-card warn">
+      <div class="dec-num warn">03</div>
+      <div>
+        <div class="dec-title">No sequence exists yet, building one from scratch</div>
+        <div class="dec-desc">→ <strong>Lifecycle audit first.</strong> Diagnosing gaps before building prevents shipping a structurally broken sequence from day one. The most common lifecycle failure — no email between signup and the first value moment — is easiest to fix before the sequence ships. For an example of lifecycle-level diagnosis applied to onboarding, see <a href="https://strategicflow.tech/architecture.html" style="color:var(--teal);">Strategic Flow Architecture</a>.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- CTA SECTION -->
+<div class="cta-sec">
+  <div class="sect-badge" style="margin-bottom:20px;">Start With One Email</div>
+  <h2>See what a teardown looks like.</h2>
+  <p>54 published examples — each with the original email, named failure patterns, a 1–10 score, and the rebuilt version. Or run the free audit on your own email in 90 seconds.</p>
+  <div class="cta-row">
+    <a href="https://strategicflow.tech/teardowns.html" class="btn-primary">See 54 teardowns →</a>
+    <a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-ghost">Run free single-email audit →</a>
+  </div>
+</div>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item"><div class="proof-n">54</div><div class="proof-l">single-email teardowns published</div></div>
+  <div class="proof-item"><div class="proof-n">3.4 → 9.0</div><div class="proof-l">average score after rebuild</div></div>
+  <div class="proof-item"><div class="proof-n">7</div><div class="proof-l">structural failure points</div></div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="sect-badge">Common Questions</div>
+  <h2>Before you<br/><span>decide the scope.</span></h2>
+
+  <div class="faq">
+    <details class="faq-item">
+      <summary class="faq-q">What is an email teardown? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">An email teardown is a structural diagnosis of a single email using the 7-point Decision Friction Model. It finds the specific architecture failures within that one message — subject line framing, hook placement, proof position, CTA language, visual hierarchy — and produces a scored before/after with the email rebuilt. Run in 90 seconds at strategic-flow-audit.replit.app/demo.html, or browse 54 published examples at teardowns.html.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">What is a lifecycle email audit? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">A lifecycle audit diagnoses an entire sequence as a connected system — onboarding, re-engagement, trial-to-paid, retention. It finds structural failures within each individual email plus systemic issues only visible across the sequence: missing emails at critical points, CTA repetition with no progression, tone mismatches between early and late sequence, cumulative fatigue. Output includes a sequence-level health score and a gap map.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Can a sequence have well-structured emails and still fail as a system? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Yes. This is one of the most common lifecycle failures. Email 1 passes all 7 structural checks. Email 3 also passes all 7. But email 3 repeats the same CTA as email 1 with no new information — the reader has already decided. Or there is no email between Day 3 and Day 10, and the user who hasn’t activated simply hears nothing. Individual email quality is necessary but not sufficient for a working sequence.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">When should I use a lifecycle audit instead of a teardown? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Use a lifecycle audit when: users drop off somewhere in a multi-email sequence but you don’t know which email (or gap) is responsible. Or when your welcome or onboarding sequence has not been reviewed since it was built. Or when you’re building a new sequence and want to identify structural gaps before they ship.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Is a teardown useful if my sequence already has problems? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Yes — start with a teardown on the highest-traffic email in the sequence (often the welcome email or the Day 3 activation email). If that email passes the 7-point structural check cleanly, the problem is systemic and requires a lifecycle audit. If it fails 3 or more checks, fix the architecture of that email first — that alone will show measurable CTR improvement before you address the sequence-level issues.</p>
+    </details>
+  </div>
+</div>
+
+<!-- INTERNAL LINKS -->
+<div class="section">
+  <div class="related">
+    <div class="related-label">Related reading</div>
+    <div class="related-links">
+      <a href="https://strategicflow.tech/glossary.html">→ Glossary — Decision Friction Model, Sequence Gap, and all 7 failure pattern definitions</a>
+      <a href="https://strategicflow.tech/teardowns.html">→ 54 published teardowns — single-email diagnoses with before/after and rebuild</a>
+      <a href="https://strategicflow.tech/architecture.html">→ Strategic Flow Architecture — one example of lifecycle-level email diagnosis at the retainer level</a>
+      <a href="https://strategicflow.tech/architecture-vs-deliverability.html">→ Architecture vs Deliverability — which problem you’re actually solving</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://strategicflow.tech" class="footer-logo">STRATEGIC FLOW</a>
+  <ul class="footer-links">
+    <li><a href="https://strategicflow.tech">Home</a></li>
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/scorecard.html">Scorecard</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html">Why Emails Fail</a></li>
+    <li><a href="https://strategicflow.tech/saas-email-conversion-failure.html">Conversion Failure</a></li>
+    <li><a href="https://strategicflow.tech/strategic-flow-vs-scalero.html">vs Scalero</a></li>
+    <li><a href="https://strategicflow.tech/architecture-vs-deliverability.html">Architecture vs Deliverability</a></li>
+    <li><a href="https://strategicflow.tech/teardown-vs-lifecycle-audit.html">Teardown vs Lifecycle</a></li>
+    <li><a href="https://strategicflow-tech.github.io/roi/">ROI Calculator</a></li>
+    <li><a href="https://strategic-flow-pro.replit.app/packages">Pricing</a></li>
+    <li><a href="https://strategicflow.substack.com/">Substack</a></li>
+    <li><a href="https://www.linkedin.com/in/strategic-flow-tech">LinkedIn</a></li>
+    <li><a href="mailto:alex@strategicflow.tech">Contact</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Strategic Flow · Alex Iliescu · strategicflow.tech</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+<style>
+#sf-sticky-bar {
+  position: fixed; bottom: 0; left: 0; width: 100%;
+  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  border-top: 1px solid rgba(29, 158, 117, 0.3);
+  box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
+  z-index: 9999; display: none; transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); box-sizing: border-box;
+}
+#sf-sticky-bar.visible { display: flex; transform: translateY(0); }
+.sf-bar-inner { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 16px; }
+.sf-bar-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.sf-badge { background: rgba(29,158,117,0.15); color: #1D9E75; font-family: 'DM Mono',monospace; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(29,158,117,0.35); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; }
+.sf-affiliate-tag { background: rgba(74,143,231,0.1); color: #4A8FE7; font-family: 'DM Mono',monospace; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 3px; border: 1px solid rgba(74,143,231,0.25); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.05em; text-transform: uppercase; }
+.sf-text { color: #e8e8e8; font-family: 'Figtree',sans-serif; font-size: 14px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sf-text strong { color: #ffffff; font-weight: 600; }
+.sf-cta { background: #1D9E75; color: #ffffff; font-family: 'Figtree',sans-serif; font-weight: 600; font-size: 13px; padding: 9px 18px; border-radius: 6px; border: none; cursor: pointer; white-space: nowrap; text-decoration: none; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.01em; transition: background 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 0 16px rgba(29,158,117,0.25); }
+.sf-cta:hover { background: #178a63; }
+.sf-cta-arrow { font-size: 14px; transition: transform 0.2s ease; }
+.sf-cta:hover .sf-cta-arrow { transform: translateX(2px); }
+.sf-close { color: #555; font-size: 16px; background: none; border: none; cursor: pointer; padding: 6px 8px; flex-shrink: 0; line-height: 1; transition: color 0.2s ease; }
+.sf-close:hover { color: #999; }
+@media (max-width: 768px) { .sf-text { display: none; } .sf-cta { order: 10; width: 100%; justify-content: center; } }
+#cookie-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10000; background: #09111e; border-top: 1px solid rgba(255,255,255,0.08); padding: 18px 48px; display: none; }
+#cookie-banner.visible { display: flex; }
+.cookie-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1100px; margin: 0 auto; width: 100%; flex-wrap: wrap; }
+.cookie-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 680px; }
+.cookie-text a { color: #00e5a0; text-decoration: underline; }
+.cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.cookie-btn { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; padding: 10px 18px; border-radius: 6px; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); transition: all .2s; }
+.cookie-btn:hover { border-color: #00e5a0; color: #00e5a0; }
+.cookie-btn.accept { background: #00e5a0; color: #07090f; border-color: #00e5a0; }
+@media(max-width:640px) { #cookie-banner { padding: 16px 18px; } .cookie-inner { flex-direction: column; align-items: stretch; gap: 14px; } .cookie-actions { justify-content: flex-end; } }
+</style>
+
+<div id="sf-sticky-bar">
+  <div class="sf-bar-inner">
+    <div class="sf-bar-left">
+      <span class="sf-affiliate-tag">affiliate</span>
+      <span class="sf-badge" id="sf-badge-text"></span>
+      <span class="sf-text" id="sf-main-text"></span>
+    </div>
+    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank">
+      <span id="sf-cta-text"></span>
+      <span class="sf-cta-arrow">→</span>
+    </a>
+    <button class="sf-close" id="sf-close-btn">✕</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (sessionStorage.getItem('sf-bar-closed')) return;
+  var bar = document.getElementById('sf-sticky-bar');
+  var badge = document.getElementById('sf-badge-text');
+  var text = document.getElementById('sf-main-text');
+  var ctaText = document.getElementById('sf-cta-text');
+  var type = document.body.getAttribute('data-sf-bar') || 'services';
+  if (type === 'content') {
+    badge.textContent = '10 spots · 40% locked';
+    text.innerHTML = 'Know a SaaS team with broken emails? <strong>Earn $199–$1,000/mo per referral.</strong>';
+    ctaText.textContent = 'Join Affiliate Program';
+  } else {
+    badge.textContent = 'First 10 spots · 40% forever';
+    text.innerHTML = 'Refer once. <strong>Get paid every month they stay subscribed.</strong>';
+    ctaText.textContent = 'See How It Works';
+  }
+  var shown = false;
+  function showBar() { if (shown) return; shown = true; bar.style.display = 'flex'; setTimeout(function() { bar.classList.add('visible'); }, 50); }
+  setTimeout(showBar, 15000);
+  window.addEventListener('scroll', function() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.4) showBar(); }, { passive: true });
+  document.getElementById('sf-close-btn').addEventListener('click', function() { bar.classList.remove('visible'); setTimeout(function() { bar.style.display = 'none'; }, 350); sessionStorage.setItem('sf-bar-closed', '1'); });
+})();
+</script>
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.</div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='sf_consent',stored=localStorage.getItem(KEY),banner=document.getElementById('cookie-banner');
+  function grant(){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}
+  if(stored==='granted'){grant();}else if(stored!=='denied'){banner.classList.add('visible');}
+  document.getElementById('cookie-accept').addEventListener('click',function(){localStorage.setItem(KEY,'granted');grant();banner.classList.remove('visible');});
+  document.getElementById('cookie-decline').addEventListener('click',function(){localStorage.setItem(KEY,'denied');banner.classList.remove('visible');});
+})();
+</script>
+</body>
+</html>
