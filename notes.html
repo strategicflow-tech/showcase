@@ -415,6 +415,11 @@ hb.addEventListener('click',()=>{hb.classList.toggle('open');mm.classList.toggle
 mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()=>{hb.classList.remove('open');mm.classList.remove('open');document.body.style.overflow='';}));
 </script>
 
+<style>
+.note-link{display:inline-block;font-size:12px;font-weight:600;color:var(--green);text-decoration:none;padding:5px 12px;border:1px solid var(--border2);border-radius:6px;transition:all .15s;margin-top:12px;font-family:var(--mono);}
+.note-link:hover{background:rgba(74,143,231,0.08);}
+</style>
+
 <!-- FIELD NOTES HEADER -->
 <section class="section" style="padding-top:72px;border-bottom:1px solid var(--border);">
   <div class="hero-tag">Field Notes · 54 Teardowns</div>
@@ -427,34 +432,39 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
   <div class="sec-label">From the Audits</div>
   <div class="notes-list">
 
-    <div class="note-card">
+    <div class="note-card" id="ps-ran-twice">
       <div class="note-label">Onboarding · Welcome email</div>
       <div class="note-title">The P.S. that ran twice</div>
       <p class="note-text">A welcome email with a P.S. block at the bottom carrying the upgrade offer. Then the same P.S. block again, pasted directly underneath it, word for word. It had been running like that for over a year. The welcome email gets the highest open rate of anything in the sequence. For a year, half of that attention went into reading the same paragraph twice.</p>
+      <a href="https://strategicflow.tech/splitmetrics-showcase.html" class="note-link">→ See the SplitMetrics teardown</a>
     </div>
 
-    <div class="note-card">
+    <div class="note-card" id="budget-not-architecture">
       <div class="note-label">Product update · Enterprise</div>
       <div class="note-title">Budget does not buy architecture</div>
       <p class="note-text">A company worth nine figures. Their product update email scored 2 out of 10 on the same checks as a three-person seed-stage startup: Feature-First lead, buried proof, guest language CTA. The design budget was a hundred times larger. The structure underneath was identical.</p>
+      <a href="https://strategicflow.tech/booking_com_showcase.html" class="note-link">→ See the Booking.com teardown</a>
     </div>
 
-    <div class="note-card">
+    <div class="note-card" id="cold-email-four-hours">
       <div class="note-label">Cold outreach</div>
       <div class="note-title">The cold email that arrived four hours later</div>
       <p class="note-text">Launched on Product Hunt. Four hours in, a cold email landed from someone who had clearly scraped the launch page. The hook was good: consequence first, naming the exact thing that had just shipped. Then the rest fell apart. No name in the greeting, a typo in line one, and a CTA that read "curious to hear your thoughts." Scored 4 out of 10. A strong hook does not save an email that forgets who it is talking to.</p>
+      <a href="https://strategicflow.tech/teardowns.html" class="note-link">→ See 54 teardowns</a>
     </div>
 
-    <div class="note-card">
+    <div class="note-card" id="nobody-reread-welcome">
       <div class="note-label">Onboarding · Welcome email</div>
       <div class="note-title">Nobody has reread the welcome email</div>
       <p class="note-text">Asked a marketing team when they last read their own welcome email end to end. Nobody could answer. The person who wrote it left two years ago. It still sends every day to every new signup. Nothing about it is wrong exactly. It is addressed to a product that has since changed, in a tone nobody on the current team would choose.</p>
+      <a href="https://strategicflow.tech/splitmetrics-showcase.html" class="note-link">→ See the SplitMetrics teardown (same email)</a>
     </div>
 
-    <div class="note-card">
+    <div class="note-card" id="three-weeks-subject-line">
       <div class="note-label">Release notes</div>
       <div class="note-title">Three weeks on a subject line</div>
       <p class="note-text">A PMM spent three weeks testing subject line variants for a release email. Picked a winner, shipped it. Open rate went up two points. Click rate did not move, because the email failed in paragraph two: the feature was announced before the reader had any reason to care. Three weeks on the one line everyone could see. Zero minutes on the line that actually decided the click.</p>
+      <a href="https://strategicflow.tech/teardowns.html" class="note-link">→ See 54 teardowns</a>
     </div>
 
   </div>
