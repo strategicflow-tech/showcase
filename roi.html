@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROI Calculator — Strategic Flow</title>
+<meta name="description" content="Calculate the ROI of rebuilding your SaaS emails with Strategic Flow. Enter hourly rate, email volume, and engagement metrics to see recovered value per month, hours saved, and ROI on your plan.">
+<meta name="keywords" content="SaaS email ROI calculator, email architecture ROI, email rebuild ROI, Strategic Flow ROI calculator, email conversion ROI, email marketing ROI, SaaS email revenue recovery">
+<link rel="canonical" href="https://strategicflow.tech/roi.html">
+<meta property="og:title" content="ROI Calculator — Strategic Flow">
+<meta property="og:description" content="See exactly how much revenue your current SaaS emails are leaving on the table. Enter your metrics — get your ROI dashboard in seconds.">
+<meta property="og:url" content="https://strategicflow.tech/roi.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ROI Calculator — Strategic Flow">
+<meta name="twitter:description" content="Calculate recovered value, hours saved, and ROI on your Strategic Flow plan. Takes 60 seconds.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f0efe9;
+    --green: #00ff88;
+    --green-dim: rgba(0,255,136,0.08);
+    --red: #ff4444;
+    --grey: #555;
+    --grey-light: #888;
+    --border: #1a1a1a;
+    --border-light: #222;
+    --card: #0f0f0f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 28px 48px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--white);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .brand em { color: var(--green); font-style: normal; }
+
+  .period-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--border-light);
+    padding: 6px 14px;
+  }
+
+  /* LAYOUT */
+  .layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    min-height: calc(100vh - 73px);
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .header { padding: 20px 24px; }
+  }
+
+  /* INPUTS PANEL */
+  .inputs-panel {
+    background: var(--card);
+    border-right: 1px solid var(--border-light);
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .panel-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+
+  .input-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .input-sublabel {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: #aaa;
+    letter-spacing: 0.08em;
+    margin-top: -4px;
+  }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-light);
+    background: var(--black);
+    transition: border-color 0.2s;
+  }
+
+  .input-row:focus-within { border-color: var(--green); }
+
+  .input-prefix {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--white);
+    padding: 12px 14px;
+    border-right: 1px solid var(--border-light);
+  }
+
+  .input-row input, .input-row select {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    padding: 12px 14px;
+    width: 100%;
+    appearance: none;
+  }
+
+  .input-row select option { background: #111; }
+
+  .slider-wrap { display: flex; flex-direction: column; gap: 8px; }
+
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 2px;
+    background: var(--border-light);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--green);
+    cursor: pointer;
+  }
+
+  .slider-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    min-width: 44px;
+    text-align: right;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border-light);
+  }
+
+  .calc-btn {
+    background: var(--green);
+    color: var(--black);
+    border: none;
+    padding: 16px 24px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+    width: 100%;
+  }
+
+  .calc-btn:hover { opacity: 0.85; }
+
+  /* DASHBOARD PANEL */
+  .dashboard {
+    padding: 40px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  @media (max-width: 900px) {
+    .dashboard { padding: 32px 24px; }
+    .inputs-panel { padding: 32px 24px; }
+  }
+
+  .dash-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dash-subtitle {
+    font-size: 9px;
+    color: #aaa;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* HERO METRICS */
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-light);
+    border: 1px solid var(--border-light);
+  }
+
+  @media (max-width: 600px) {
+    .hero-metrics { grid-template-columns: 1fr; }
+  }
+
+  .hero-metric {
+    background: var(--black);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .hero-metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--white);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero-metric-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--green);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-metric-value.neutral { color: var(--white); }
+  .hero-metric-value.red { color: var(--red); }
+
+  .hero-metric-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: #aaa;
+    letter-spacing: 0.08em;
+  }
+
+  /* SECTION GRID */
+  .section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .section-grid { grid-template-columns: 1fr; }
+    .hero-metrics { grid-template-columns: 1fr; }
+  }
+
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border-light);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .section-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--white);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  /* BAR CHART */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    min-width: 80px;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border-light);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--green);
+    transition: width 0.6s ease;
+  }
+
+  .bar-fill.red { background: var(--red); }
+
+  .bar-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    min-width: 48px;
+    text-align: right;
+  }
+
+  /* COMPARISON TABLE */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .compare-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .compare-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    text-align: center;
+    padding: 8px;
+  }
+
+  .compare-val.before {
+    color: var(--red);
+    background: rgba(255,68,68,0.05);
+  }
+
+  .compare-val.after {
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .compare-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--white);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  /* ROI BREAKDOWN */
+  .roi-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .roi-line:last-child { border-bottom: none; }
+
+  .roi-line-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+  }
+
+  .roi-line-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--white);
+  }
+
+  .roi-line-val.green { color: var(--green); font-size: 14px; }
+  .roi-line-val.red { color: var(--red); }
+
+  /* VERDICT */
+  .verdict-box {
+    background: var(--green-dim);
+    border: 1px solid rgba(0,255,136,0.2);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .verdict-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--green);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .verdict-text {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--white);
+  }
+
+  .verdict-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--grey-light);
+    margin-top: 4px;
+  }
+
+  /* FOOTER */
+  .dash-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-light);
+  }
+
+  .dash-footer-left {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--white);
+    letter-spacing: 0.1em;
+  }
+
+  .dash-footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--green);
+    letter-spacing: 0.08em;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 16px;
+    min-height: 400px;
+    opacity: 0.4;
+  }
+
+  .empty-icon {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--border-light);
+    line-height: 1;
+  }
+
+  .empty-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--white);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hidden { display: none; }
+
+  /* ARCHITECTURE BOX */
+  .arch-box {
+    background: var(--card);
+    border: 1px solid rgba(0,255,136,0.25);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .arch-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .arch-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .arch-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+
+  .arch-price span {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 0.1em;
+  }
+
+  .arch-desc {
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.65;
+  }
+
+  .arch-includes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .arch-include-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+  }
+
+  .arch-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .arch-btn-primary {
+    background: var(--green);
+    color: var(--black);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .arch-btn-primary:hover { opacity: 0.85; }
+
+  .arch-btn-secondary {
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .arch-btn-secondary:hover {
+    background: var(--green);
+    color: var(--black);
+  }
+
+  .arch-free {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: #aaa;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+  }
+
+  .arch-free a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,255,136,0.3);
+  }
+
+  .arch-free a:hover { border-bottom-color: var(--green); }
+
+  .apply-box {
+    background: var(--card);
+    border: 1px solid var(--border-light);
+    padding: 36px;
+    display: none;
+  }
+  .apply-box.visible { display: block; }
+  .apply-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .apply-desc {
+    font-size: 13px;
+    color: var(--grey-light);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .apply-fields { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; }
+  .apply-field { display: flex; flex-direction: column; gap: 6px; }
+  .apply-field label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--white);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .apply-field input {
+    background: #111;
+    border: 1px solid var(--border-light);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .apply-field input:focus { border-color: var(--green); }
+  .apply-error { font-size: 12px; color: var(--red); min-height: 18px; margin-bottom: 8px; font-family: 'DM Mono', monospace; }
+  .apply-btn {
+    background: var(--green);
+    color: var(--black);
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .apply-btn:hover { opacity: 0.85; }
+  .apply-btn:disabled { opacity: 0.4; cursor: default; }
+  .apply-success {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+  }
+
+  /* ACTIVATION BOX */
+  .activation-box {
+    background: var(--card);
+    border: 1px solid rgba(0,255,136,0.25);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    display: none;
+  }
+  .activation-box.visible { display: flex; }
+  .activation-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .activation-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .activation-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+  .activation-price span {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 0.1em;
+  }
+  .activation-desc {
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.65;
+  }
+  .activation-includes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .activation-include-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+  }
+  .activation-roi-panel {
+    background: #111;
+    border: 1px solid var(--border-light);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .activation-roi-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .activation-roi-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--grey-light);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .activation-roi-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .activation-roi-val { color: var(--green); font-size: 13px; }
+  .activation-roi-val.neg { color: var(--red); }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand">Strategic Flow <em>/ ROI Calculator</em></div>
+  <div class="period-badge" id="period-label">Configure inputs</div>
+</div>
+
+<div class="layout">
+
+  <!-- INPUTS PANEL -->
+  <div class="inputs-panel">
+    <div class="panel-title">Your Numbers</div>
+
+    <!-- Hourly rate -->
+    <div class="input-group">
+      <div class="input-label">Hourly Rate</div>
+      <div class="input-sublabel">Your time value in USD</div>
+      <div class="input-row">
+        <div class="input-prefix">$</div>
+        <input type="number" id="hourly-rate" value="150" min="10" max="2000" step="10">
+        <div class="input-prefix">/hr</div>
+      </div>
+    </div>
+
+    <!-- Emails rebuilt -->
+    <div class="input-group">
+      <div class="input-label">Emails Rebuilt</div>
+      <div class="input-sublabel">Number of emails per month</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <input type="range" id="emails-rebuilt" min="1" max="30" value="4">
+          <div class="slider-val" id="emails-rebuilt-val">4</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hours per rebuild -->
+    <div class="input-group">
+      <div class="input-label">Hours per Rebuild (Before)</div>
+      <div class="input-sublabel">Manual process without Strategic Flow</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <input type="range" id="hours-before" min="0.5" max="8" value="2" step="0.5">
+          <div class="slider-val" id="hours-before-val">2h</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hours per rebuild after -->
+    <div class="input-group">
+      <div class="input-label">Hours per Rebuild (After)</div>
+      <div class="input-sublabel">With Strategic Flow audit + rebuild</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <input type="range" id="hours-after" min="0.1" max="2" value="0.25" step="0.05">
+          <div class="slider-val" id="hours-after-val">0.25h</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- List size -->
+    <div class="input-group">
+      <div class="input-label">Email List Size</div>
+      <div class="input-sublabel">Total subscribers</div>
+      <div class="input-row">
+        <input type="number" id="list-size" value="3000" min="100" max="500000" step="100">
+      </div>
+    </div>
+
+    <!-- Open rate before -->
+    <div class="input-group">
+      <div class="input-label">Open Rate — Before</div>
+      <div class="input-sublabel">Current average open rate</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <input type="range" id="open-before" min="5" max="60" value="22">
+          <div class="slider-val" id="open-before-val">22%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Open rate after -->
+    <div class="input-group">
+      <div class="input-label">Open Rate — After Rebuild</div>
+      <div class="input-sublabel">Based on Strategic Flow benchmarks</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <input type="range" id="open-after" min="5" max="80" value="38">
+          <div class="slider-val" id="open-after-val">38%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTR before -->
+    <div class="input-group">
+      <div class="input-label">CTR — Before</div>
+      <div class="input-sublabel">Click-through rate current</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <input type="range" id="ctr-before" min="0.5" max="20" value="1.5" step="0.5">
+          <div class="slider-val" id="ctr-before-val">1.5%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTR after -->
+    <div class="input-group">
+      <div class="input-label">CTR — After Rebuild</div>
+      <div class="input-sublabel">Expected after consequence-first architecture</div>
+      <div class="slider-wrap">
+        <div class="slider-row">
+          <input type="range" id="ctr-after" min="0.5" max="20" value="4" step="0.5">
+          <div class="slider-val" id="ctr-after-val">4%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Revenue per click -->
+    <div class="input-group">
+      <div class="input-label">Revenue per Click</div>
+      <div class="input-sublabel">Avg value of one converted click ($)</div>
+      <div class="input-row">
+        <div class="input-prefix">$</div>
+        <input type="number" id="rev-per-click" value="50" min="1" max="10000" step="1">
+      </div>
+    </div>
+
+    <!-- Service tier -->
+    <div class="input-group">
+      <div class="input-label">Strategic Flow Plan</div>
+      <div class="input-row">
+        <select id="service-tier" onchange="onTierChange()">
+          <option value="49">Single Rebuild — $49</option>
+          <option value="299" selected>Lite — $299/mo</option>
+          <option value="499">Growth — $499/mo</option>
+          <option value="899">High-Impact — $899/mo</option>
+          <option value="2500">Architecture — $2,500/mo</option>
+          <option value="activation">Activation Intelligence — $1,500/mo</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculate()">Calculate ROI</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard">
+    <div class="dash-title">
+      <span>ROI Dashboard</span>
+      <span class="dash-subtitle" id="dash-date"></span>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">ROI</div>
+      <div class="empty-text">Configure inputs and calculate</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results" class="hidden">
+
+      <!-- HERO METRICS -->
+      <div class="hero-metrics">
+        <div class="hero-metric">
+          <div class="hero-metric-label">Recovered Value / Mo</div>
+          <div class="hero-metric-value" id="m-recovered">—</div>
+          <div class="hero-metric-sub" id="m-recovered-sub"></div>
+        </div>
+        <div class="hero-metric">
+          <div class="hero-metric-label">Hours Saved / Mo</div>
+          <div class="hero-metric-value neutral" id="m-hours">—</div>
+          <div class="hero-metric-sub" id="m-hours-sub"></div>
+        </div>
+        <div class="hero-metric">
+          <div class="hero-metric-label">ROI on Plan Cost</div>
+          <div class="hero-metric-value" id="m-roi">—</div>
+          <div class="hero-metric-sub" id="m-roi-sub"></div>
+        </div>
+      </div>
+
+      <!-- SECTION GRID -->
+      <div class="section-grid">
+
+        <!-- EMAIL PERFORMANCE -->
+        <div class="section-card">
+          <div class="section-card-title">Email Performance — Before vs After</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <div class="compare-row" style="margin-bottom:8px;">
+                <div></div>
+                <div class="compare-header">Before</div>
+                <div class="compare-header">After</div>
+              </div>
+              <div class="compare-row" style="margin-bottom:6px;">
+                <div class="compare-label">Open Rate</div>
+                <div class="compare-val before" id="c-open-before">—</div>
+                <div class="compare-val after" id="c-open-after">—</div>
+              </div>
+              <div class="compare-row" style="margin-bottom:6px;">
+                <div class="compare-label">CTR</div>
+                <div class="compare-val before" id="c-ctr-before">—</div>
+                <div class="compare-val after" id="c-ctr-after">—</div>
+              </div>
+              <div class="compare-row" style="margin-bottom:6px;">
+                <div class="compare-label">Openers</div>
+                <div class="compare-val before" id="c-openers-before">—</div>
+                <div class="compare-val after" id="c-openers-after">—</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-label">Clicks</div>
+                <div class="compare-val before" id="c-clicks-before">—</div>
+                <div class="compare-val after" id="c-clicks-after">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIME SAVED -->
+        <div class="section-card">
+          <div class="section-card-title">Time Recovered</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="bar-row">
+              <div class="bar-label">Before</div>
+              <div class="bar-track"><div class="bar-fill red" id="bar-before" style="width:100%"></div></div>
+              <div class="bar-val" id="bv-before">—</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">After</div>
+              <div class="bar-track"><div class="bar-fill" id="bar-after" style="width:20%"></div></div>
+              <div class="bar-val" id="bv-after">—</div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Saved</div>
+              <div class="bar-track"><div class="bar-fill" id="bar-saved" style="width:80%"></div></div>
+              <div class="bar-val" id="bv-saved">—</div>
+            </div>
+            <div style="height:1px;background:var(--border-light);margin:4px 0;"></div>
+            <div class="roi-line" style="border:none;padding:0;">
+              <div class="roi-line-label">Time value recovered</div>
+              <div class="roi-line-val green" id="time-value">—</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ROI BREAKDOWN -->
+      <div class="section-card">
+        <div class="section-card-title">Full ROI Breakdown — Monthly</div>
+        <div style="display:flex;flex-direction:column;">
+          <div class="roi-line">
+            <div class="roi-line-label">Extra clicks per send (after rebuild)</div>
+            <div class="roi-line-val" id="r-extra-clicks">—</div>
+          </div>
+          <div class="roi-line">
+            <div class="roi-line-label">Extra clicks per month</div>
+            <div class="roi-line-val" id="r-extra-clicks-mo">—</div>
+          </div>
+          <div class="roi-line">
+            <div class="roi-line-label">Revenue from extra clicks</div>
+            <div class="roi-line-val green" id="r-rev-clicks">—</div>
+          </div>
+          <div class="roi-line">
+            <div class="roi-line-label">Time value recovered</div>
+            <div class="roi-line-val green" id="r-time-val">—</div>
+          </div>
+          <div class="roi-line">
+            <div class="roi-line-label">Total value generated</div>
+            <div class="roi-line-val green" id="r-total-val">—</div>
+          </div>
+          <div class="roi-line">
+            <div class="roi-line-label">Strategic Flow cost</div>
+            <div class="roi-line-val red" id="r-sf-cost">—</div>
+          </div>
+          <div class="roi-line">
+            <div class="roi-line-label">Net ROI</div>
+            <div class="roi-line-val green" style="font-size:18px;" id="r-net-roi">—</div>
+          </div>
+          <div class="roi-line" style="border:none;padding-top:12px;">
+            <div class="roi-line-label">ROI multiple</div>
+            <div class="roi-line-val" style="font-size:20px;color:var(--green);font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em;" id="r-multiple">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VERDICT -->
+      <div class="verdict-box" id="verdict-box">
+        <div class="verdict-label">Verdict</div>
+        <div class="verdict-text" id="verdict-text">—</div>
+        <div class="verdict-sub" id="verdict-sub">—</div>
+      </div>
+
+      <!-- ARCHITECTURE CTA -->
+      <div class="arch-box">
+        <div class="arch-top">
+          <div class="arch-label">Strategic Flow Architecture</div>
+          <div class="arch-price">$2,500 <span>/mo</span></div>
+        </div>
+        <div class="arch-desc">
+          This ROI projection is what Architecture delivers for every email your company sends.
+          Unlimited rebuilds. Full 7-bug diagnostic. Subject line variants with predicted open rate delta.
+          Monthly diagnostic call. Direct Slack access.
+        </div>
+        <div class="arch-includes">
+          <div class="arch-include-item">✓ Unlimited email rebuilds — HTML ready to ship</div>
+          <div class="arch-include-item">✓ 90-day communication audit — every email scored</div>
+          <div class="arch-include-item">✓ 3 subject line variants + open rate delta per send</div>
+          <div class="arch-include-item">✓ ROI projection updated every rebuild</div>
+          <div class="arch-include-item">✓ Monthly diagnostic call + direct Slack access</div>
+        </div>
+        <div class="arch-actions">
+          <a href="https://strategicflow.tech/architecture.html" target="_blank" class="arch-btn-primary">See Architecture →</a>
+          <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" target="_blank" class="arch-btn-secondary">Book Assessment →</a>
+        </div>
+        <div class="arch-free">
+          Or start free: paste any email at
+          <a href="https://strategic-flow-audit.replit.app" target="_blank">strategic-flow-audit.replit.app</a>
+          — score in 60 seconds, no card required.
+          <div style="margin-top:10px;font-family:'Bebas Neue',sans-serif;font-size:22px;color:#ffffff;letter-spacing:0.08em;">FREE TRIAL</div>
+        </div>
+      </div>
+
+      <!-- ACTIVATION INTELLIGENCE BOX -->
+      <div class="activation-box" id="activation-box">
+        <div class="activation-top">
+          <div class="activation-label">Activation Intelligence</div>
+          <div class="activation-price">$1,500 <span>/mo</span></div>
+        </div>
+        <div class="activation-desc">
+          Behavioral email architecture for your full onboarding and lifecycle sequence.
+          Every email diagnosed against the 7-point Decision Friction Model.
+          Rebuilt with consequence-first hooks, ownership CTAs, and score-lift tracking.
+          Built for SaaS teams where activation rate is the revenue lever.
+        </div>
+        <div class="activation-includes">
+          <div class="activation-include-item">✓ Full onboarding sequence audit — every email scored 1-10</div>
+          <div class="activation-include-item">✓ Decision Friction Model applied to each touchpoint</div>
+          <div class="activation-include-item">✓ Rebuilt HTML for every underperforming email</div>
+          <div class="activation-include-item">✓ Before/after teardown with named failure patterns</div>
+          <div class="activation-include-item">✓ Subject line variants + open rate delta per email</div>
+        </div>
+        <div class="activation-roi-panel" id="activation-roi-panel">
+          <div class="activation-roi-title">ROI Projection — Activation Intelligence</div>
+          <div class="activation-roi-row">
+            <span>Extra activated users/mo</span>
+            <span class="activation-roi-val" id="ai-extra-users">—</span>
+          </div>
+          <div class="activation-roi-row">
+            <span>Revenue from activation lift</span>
+            <span class="activation-roi-val" id="ai-rev-lift">—</span>
+          </div>
+          <div class="activation-roi-row">
+            <span>Time value recovered/mo</span>
+            <span class="activation-roi-val" id="ai-time-val">—</span>
+          </div>
+          <div class="activation-roi-row">
+            <span>Total value generated</span>
+            <span class="activation-roi-val" id="ai-total-val">—</span>
+          </div>
+          <div class="activation-roi-row">
+            <span>Activation Intelligence cost</span>
+            <span class="activation-roi-val neg">-$1,500/mo</span>
+          </div>
+          <div class="activation-roi-row">
+            <span>Net ROI</span>
+            <span class="activation-roi-val" id="ai-net-roi">—</span>
+          </div>
+          <div class="activation-roi-row">
+            <span>Return multiple</span>
+            <span class="activation-roi-val" id="ai-multiple">—</span>
+          </div>
+        </div>
+        <div class="arch-actions">
+          <a href="https://strategicflow.tech/activation-intelligence.html" target="_blank" class="arch-btn-primary">See Activation Intelligence →</a>
+          <a href="https://strategic-flow-audit.replit.app" target="_blank" class="arch-btn-secondary">Try Free Audit →</a>
+        </div>
+      </div>
+
+      <!-- APPLICATION FORM -->
+      <div class="apply-box" id="apply-box">
+        <div class="apply-label">Apply for Architecture</div>
+        <div class="apply-desc">5 spots open. Selected manually based on fit. No pitch — just the diagnostic.</div>
+        <div class="apply-fields">
+          <div class="apply-field">
+            <label>Email</label>
+            <input type="email" id="apply-email" placeholder="you@company.com" autocomplete="email" />
+          </div>
+          <div class="apply-field">
+            <label>Company</label>
+            <input type="text" id="apply-company" placeholder="Acme Inc." />
+          </div>
+          <div class="apply-field">
+            <label>What are you currently sending?</label>
+            <input type="text" id="apply-sending" placeholder="Product updates, onboarding sequences, newsletters..." />
+          </div>
+        </div>
+        <div class="apply-error" id="apply-error"></div>
+        <button class="apply-btn" id="apply-btn" onclick="submitApplication()">Send Application →</button>
+        <div class="apply-success" id="apply-success" style="display:none;">
+          Application received. You'll get a teardown of your email within 24h.
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="dash-footer">
+        <div class="dash-footer-left">strategic-flow-audit.replit.app &nbsp;·&nbsp; Built by Alex Iliescu</div>
+        <div class="dash-footer-right">strategicflow.tech</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Set date
+  const now = new Date();
+  document.getElementById('dash-date').textContent =
+    now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  // Slider sync
+  function syncSlider(id, suffix, decimals) {
+    const el = document.getElementById(id);
+    const val = document.getElementById(id + '-val');
+    el.addEventListener('input', () => {
+      val.textContent = parseFloat(el.value).toFixed(decimals) + suffix;
+    });
+  }
+
+  syncSlider('emails-rebuilt', '', 0);
+  syncSlider('hours-before', 'h', 1);
+  syncSlider('hours-after', 'h', 2);
+  syncSlider('open-before', '%', 0);
+  syncSlider('open-after', '%', 0);
+  syncSlider('ctr-before', '%', 1);
+  syncSlider('ctr-after', '%', 1);
+
+  function fmt(n) {
+    if (n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
+    if (n >= 1000) return '$' + (n/1000).toFixed(1) + 'K';
+    return '$' + Math.round(n).toLocaleString();
+  }
+
+  function fmtN(n) {
+    return Math.round(n).toLocaleString();
+  }
+
+  function calculate() {
+    const hourly = parseFloat(document.getElementById('hourly-rate').value);
+    const emails = parseInt(document.getElementById('emails-rebuilt').value);
+    const hrsBefore = parseFloat(document.getElementById('hours-before').value);
+    const hrsAfter = parseFloat(document.getElementById('hours-after').value);
+    const listSize = parseInt(document.getElementById('list-size').value);
+    const openBefore = parseFloat(document.getElementById('open-before').value) / 100;
+    const openAfter = parseFloat(document.getElementById('open-after').value) / 100;
+    const ctrBefore = parseFloat(document.getElementById('ctr-before').value) / 100;
+    const ctrAfter = parseFloat(document.getElementById('ctr-after').value) / 100;
+    const revPerClick = parseFloat(document.getElementById('rev-per-click').value);
+    const tierVal = document.getElementById('service-tier').value;
+    const sfCost = tierVal === 'activation' ? 1500 : parseInt(tierVal);
+
+    // TIME
+    const totalBefore = hrsBefore * emails;
+    const totalAfter = hrsAfter * emails;
+    const hoursSaved = totalBefore - totalAfter;
+    const timeValue = hoursSaved * hourly;
+
+    // EMAIL PERFORMANCE
+    const openersBefore = Math.round(listSize * openBefore);
+    const openersAfter = Math.round(listSize * openAfter);
+    const clicksBefore = Math.round(listSize * ctrBefore);
+    const clicksAfter = Math.round(listSize * ctrAfter);
+    const extraClicksPerSend = clicksAfter - clicksBefore;
+    const extraClicksMo = extraClicksPerSend * emails;
+    const revFromClicks = extraClicksMo * revPerClick;
+
+    // ROI
+    const totalValue = timeValue + revFromClicks;
+    const netRoi = totalValue - sfCost;
+    const roiMultiple = totalValue / sfCost;
+
+    // Update hero metrics
+    document.getElementById('m-recovered').textContent = fmt(totalValue);
+    document.getElementById('m-recovered-sub').textContent = 'time + pipeline combined';
+    document.getElementById('m-hours').textContent = hoursSaved.toFixed(1) + 'h';
+    document.getElementById('m-hours-sub').textContent = fmt(timeValue) + ' value at your rate';
+    document.getElementById('m-roi').textContent = roiMultiple.toFixed(1) + 'x';
+    document.getElementById('m-roi-sub').textContent = 'return on plan cost';
+
+    // Update comparison
+    document.getElementById('c-open-before').textContent = Math.round(openBefore*100) + '%';
+    document.getElementById('c-open-after').textContent = Math.round(openAfter*100) + '%';
+    document.getElementById('c-ctr-before').textContent = (ctrBefore*100).toFixed(1) + '%';
+    document.getElementById('c-ctr-after').textContent = (ctrAfter*100).toFixed(1) + '%';
+    document.getElementById('c-openers-before').textContent = fmtN(openersBefore);
+    document.getElementById('c-openers-after').textContent = fmtN(openersAfter);
+    document.getElementById('c-clicks-before').textContent = fmtN(clicksBefore);
+    document.getElementById('c-clicks-after').textContent = fmtN(clicksAfter);
+
+    // Update bars
+    const maxHrs = totalBefore;
+    document.getElementById('bv-before').textContent = totalBefore.toFixed(1) + 'h';
+    document.getElementById('bv-after').textContent = totalAfter.toFixed(1) + 'h';
+    document.getElementById('bv-saved').textContent = hoursSaved.toFixed(1) + 'h';
+    document.getElementById('bar-after').style.width = (totalAfter/maxHrs*100) + '%';
+    document.getElementById('bar-saved').style.width = (hoursSaved/maxHrs*100) + '%';
+    document.getElementById('time-value').textContent = fmt(timeValue) + '/mo';
+
+    // Update breakdown
+    document.getElementById('r-extra-clicks').textContent = '+' + fmtN(extraClicksPerSend) + ' clicks/send';
+    document.getElementById('r-extra-clicks-mo').textContent = '+' + fmtN(extraClicksMo) + ' clicks/mo';
+    document.getElementById('r-rev-clicks').textContent = fmt(revFromClicks) + '/mo';
+    document.getElementById('r-time-val').textContent = fmt(timeValue) + '/mo';
+    document.getElementById('r-total-val').textContent = fmt(totalValue) + '/mo';
+    document.getElementById('r-sf-cost').textContent = '-' + fmt(sfCost) + '/mo';
+    document.getElementById('r-net-roi').textContent = fmt(netRoi) + '/mo';
+    document.getElementById('r-multiple').textContent = roiMultiple.toFixed(1) + 'x';
+
+    // Verdict
+    let verdict, verdictSub;
+    if (roiMultiple >= 10) {
+      verdict = `Every dollar spent on Strategic Flow returns ${roiMultiple.toFixed(1)} in recovered pipeline and time. At ${fmt(sfCost)}/mo, the cost disappears inside the first email send.`;
+      verdictSub = `Net ROI: ${fmt(netRoi)}/mo · Break-even: ${(sfCost/totalValue*emails).toFixed(1)} emails`;
+    } else if (roiMultiple >= 5) {
+      verdict = `${roiMultiple.toFixed(1)}x return on plan cost. ${fmt(hoursSaved * hourly)} recovered in time alone, plus ${fmt(revFromClicks)} in pipeline from extra clicks.`;
+      verdictSub = `Net ROI: ${fmt(netRoi)}/mo · ${fmtN(extraClicksMo)} extra clicks per month`;
+    } else if (roiMultiple >= 2) {
+      verdict = `${roiMultiple.toFixed(1)}x return. The rebuild pays for itself in ${(sfCost/revFromClicks*emails).toFixed(1)} emails. Scale the list or increase revenue per click to compound faster.`;
+      verdictSub = `Net ROI: ${fmt(netRoi)}/mo`;
+    } else {
+      verdict = `ROI is positive but slim at ${roiMultiple.toFixed(1)}x. Increase list size, revenue per click, or open rate delta to improve the return.`;
+      verdictSub = `Net ROI: ${fmt(netRoi)}/mo`;
+    }
+
+    document.getElementById('verdict-text').textContent = verdict;
+    document.getElementById('verdict-sub').textContent = verdictSub;
+
+    // Update period badge
+    document.getElementById('period-label').textContent = emails + ' emails/mo · ' + fmtN(listSize) + ' subscribers';
+
+    // Show results
+    document.getElementById('empty-state').classList.add('hidden');
+    document.getElementById('results').classList.remove('hidden');
+
+    // Show application form
+    document.getElementById('apply-box').classList.add('visible');
+
+    // Show/hide arch-box vs activation-box
+    const archBox = document.getElementById('arch-box-wrapper');
+    const activationBox = document.getElementById('activation-box');
+    if (tierVal === 'activation') {
+      activationBox.classList.add('visible');
+      // Activation ROI calc
+      const extraActivated = Math.round(listSize * (openAfter - openBefore) * 0.15);
+      const arpu = revPerClick * 12;
+      const revLift = extraActivated * arpu / 12;
+      const aiTotal = timeValue + revLift;
+      const aiNet = aiTotal - 1500;
+      const aiMultiple = aiTotal / 1500;
+      document.getElementById('ai-extra-users').textContent = '+' + fmtN(extraActivated) + ' users/mo';
+      document.getElementById('ai-rev-lift').textContent = fmt(revLift) + '/mo';
+      document.getElementById('ai-time-val').textContent = fmt(timeValue) + '/mo';
+      document.getElementById('ai-total-val').textContent = fmt(aiTotal) + '/mo';
+      document.getElementById('ai-net-roi').textContent = fmt(aiNet) + '/mo';
+      document.getElementById('ai-multiple').textContent = aiMultiple.toFixed(1) + 'x';
+    } else {
+      activationBox.classList.remove('visible');
+    }
+  }
+
+  function onTierChange() {
+    // Reset results when tier changes so user recalculates
+    const activationBox = document.getElementById('activation-box');
+    activationBox.classList.remove('visible');
+  }
+
+  async function submitApplication() {
+    const email = document.getElementById('apply-email').value.trim();
+    const company = document.getElementById('apply-company').value.trim();
+    const sending = document.getElementById('apply-sending').value.trim();
+    const errEl = document.getElementById('apply-error');
+    const btn = document.getElementById('apply-btn');
+
+    errEl.textContent = '';
+
+    if (!email || !email.includes('@')) { errEl.textContent = 'Valid email required.'; return; }
+    if (!company) { errEl.textContent = 'Company name required.'; return; }
+    if (!sending) { errEl.textContent = 'Tell us what you\'re sending.'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    try {
+      const res = await fetch('https://strategic-flow-audit.replit.app/apply-architecture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, company, sending })
+      });
+      if (res.ok) {
+        btn.style.display = 'none';
+        document.getElementById('apply-success').style.display = 'block';
+      } else {
+        errEl.textContent = 'Something went wrong. Email alex@strategicflow.tech directly.';
+        btn.disabled = false;
+        btn.textContent = 'Send Application →';
+      }
+    } catch (e) {
+      errEl.textContent = 'Connection error. Email alex@strategicflow.tech directly.';
+      btn.disabled = false;
+      btn.textContent = 'Send Application →';
+    }
+  }
+</script>
+
+</body>
+</html>
