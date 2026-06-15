@@ -462,28 +462,6 @@
   });
 </script>
 <style>
-#sf-sticky-bar {
-  position: fixed; bottom: 0; left: 0; width: 100%;
-  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
-  border-top: 1px solid rgba(29, 158, 117, 0.3);
-  box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
-  z-index: 9999; display: none; transform: translateY(100%);
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); box-sizing: border-box;
-}
-#sf-sticky-bar.visible { display: flex; transform: translateY(0); }
-.sf-bar-inner { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 16px; }
-.sf-bar-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-.sf-badge { background: rgba(29,158,117,0.15); color: #1D9E75; font-family: 'DM Mono',monospace; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 4px; border: 1px solid rgba(29,158,117,0.35); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; }
-.sf-affiliate-tag { background: rgba(74,143,231,0.1); color: #4A8FE7; font-family: 'DM Mono',monospace; font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 3px; border: 1px solid rgba(74,143,231,0.25); white-space: nowrap; flex-shrink: 0; letter-spacing: 0.05em; text-transform: uppercase; }
-.sf-text { color: #e8e8e8; font-family: 'Figtree',sans-serif; font-size: 14px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sf-text strong { color: #ffffff; font-weight: 600; }
-.sf-cta { background: #1D9E75; color: #ffffff; font-family: 'Figtree',sans-serif; font-weight: 600; font-size: 13px; padding: 9px 18px; border-radius: 6px; border: none; cursor: pointer; white-space: nowrap; text-decoration: none; flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.01em; transition: background 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 0 16px rgba(29,158,117,0.25); }
-.sf-cta:hover { background: #178a63; }
-.sf-cta-arrow { font-size: 14px; transition: transform 0.2s ease; }
-.sf-cta:hover .sf-cta-arrow { transform: translateX(2px); }
-.sf-close { color: #555; font-size: 16px; background: none; border: none; cursor: pointer; padding: 6px 8px; flex-shrink: 0; line-height: 1; transition: color 0.2s ease; }
-.sf-close:hover { color: #999; }
-@media (max-width: 768px) { .sf-text { display: none; } .sf-cta { order: 10; width: 100%; justify-content: center; } }
 #cookie-banner { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10000; background: #09111e; border-top: 1px solid rgba(255,255,255,0.08); padding: 18px 48px; display: none; }
 #cookie-banner.visible { display: flex; }
 .cookie-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1100px; margin: 0 auto; width: 100%; flex-wrap: wrap; }
@@ -495,46 +473,6 @@
 .cookie-btn.accept { background: #00e5a0; color: #07090f; border-color: #00e5a0; }
 @media(max-width:640px) { #cookie-banner { padding: 16px 18px; } .cookie-inner { flex-direction: column; align-items: stretch; gap: 14px; } .cookie-actions { justify-content: flex-end; } }
 </style>
-
-<div id="sf-sticky-bar">
-  <div class="sf-bar-inner">
-    <div class="sf-bar-left">
-      <span class="sf-affiliate-tag">affiliate</span>
-      <span class="sf-badge" id="sf-badge-text"></span>
-      <span class="sf-text" id="sf-main-text"></span>
-    </div>
-    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank">
-      <span id="sf-cta-text"></span>
-      <span class="sf-cta-arrow">→</span>
-    </a>
-    <button class="sf-close" id="sf-close-btn">✕</button>
-  </div>
-</div>
-
-<script>
-(function() {
-  if (sessionStorage.getItem('sf-bar-closed')) return;
-  var bar = document.getElementById('sf-sticky-bar');
-  var badge = document.getElementById('sf-badge-text');
-  var text = document.getElementById('sf-main-text');
-  var ctaText = document.getElementById('sf-cta-text');
-  var type = document.body.getAttribute('data-sf-bar') || 'services';
-  if (type === 'content') {
-    badge.textContent = '10 spots · 40% locked';
-    text.innerHTML = 'Know a SaaS team with broken emails? <strong>Earn $199–$1,000/mo per referral.</strong>';
-    ctaText.textContent = 'Join Affiliate Program';
-  } else {
-    badge.textContent = 'First 10 spots · 40% forever';
-    text.innerHTML = 'Refer once. <strong>Get paid every month they stay subscribed.</strong>';
-    ctaText.textContent = 'See How It Works';
-  }
-  var shown = false;
-  function showBar() { if (shown) return; shown = true; bar.style.display = 'flex'; setTimeout(function() { bar.classList.add('visible'); }, 50); }
-  setTimeout(showBar, 15000);
-  window.addEventListener('scroll', function() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.4) showBar(); }, { passive: true });
-  document.getElementById('sf-close-btn').addEventListener('click', function() { bar.classList.remove('visible'); setTimeout(function() { bar.style.display = 'none'; }, 350); sessionStorage.setItem('sf-bar-closed', '1'); });
-})();
-</script>
 <div id="cookie-banner">
   <div class="cookie-inner">
     <div class="cookie-text">This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.</div>
