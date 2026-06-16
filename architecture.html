@@ -190,7 +190,7 @@
 
   .hero-title {
     font-family: 'DM Serif Display', serif;
-    font-size: clamp(52px, 7vw, 96px);
+    font-size: clamp(36px, 7vw, 96px);
     line-height: 1.0;
     letter-spacing: -0.02em;
     max-width: 900px;
@@ -905,7 +905,7 @@
     .hero { padding: 120px 24px 60px; }
     .score-ticker { display: none; }
     .stat-bar { grid-template-columns: 1fr 1fr; }
-    .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 24px 20px; }
     section { padding: 48px 20px; }
     .engine-grid { gap: 16px; margin-top: 32px; }
     .engine-card { padding: 24px 20px; }
@@ -964,6 +964,9 @@
   [style*="grid-template-columns: 1fr auto 1fr"] {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
+  }
+  .path-in-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 </style>
@@ -1610,7 +1613,7 @@
 <!-- 3-STEP FUNNEL -->
 <section style="padding:48px 48px 0;background:var(--bg);">
   <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--signal);margin-bottom:20px;">// The path in</div>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);">
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);" class="path-in-grid">
 
     <div style="background:var(--bg);padding:28px 32px;">
       <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);margin-bottom:10px;">Step 1 — Free</div>
