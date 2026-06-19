@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Xelix Blog Post Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --xx-black:#16140F;--xx-red:#E8432A;--xx-body:#F7F6F3;--xx-cream:#FAF9F6;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--xx-black);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:19px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo .dotred{color:var(--xx-red);}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{background:var(--xx-black);padding:0;}
+.bef-body{padding:24px;background:var(--xx-cream);border-bottom:1px solid #eee;}
+.bef-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-h1{font-size:19px;font-weight:700;color:var(--xx-black);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-section-title{font-size:15px;font-weight:700;color:var(--xx-black);margin:20px 0 10px;}
+.bef-bullets{list-style:none;padding:0;margin-bottom:16px;}
+.bef-bullets li{font-size:13px;color:#444;line-height:1.7;margin-bottom:10px;padding-left:16px;position:relative;}
+.bef-bullets li::before{content:"•";position:absolute;left:0;color:var(--xx-red);}
+.bef-bullets li strong{color:var(--xx-black);}
+.bef-quote{font-size:13px;color:#444;font-style:italic;line-height:1.7;padding:14px 16px;background:#f5f7fa;border-left:3px solid var(--xx-red);border-radius:0 6px 6px 0;margin:16px 0;}
+.bef-quote cite{font-style:normal;font-size:11px;color:#888;display:block;margin-top:6px;font-weight:500;}
+.bef-stat-callout{background:#fff;border:1px solid #eee;border-radius:8px;padding:14px 16px;margin:16px 0;font-size:13px;color:#444;}
+.bef-stat-callout b{color:var(--xx-red);font-size:15px;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--xx-black);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--xx-black);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:19px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.after-logo-text .dotred{color:var(--xx-red);}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:27px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--xx-red);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:540px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--xx-black);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--xx-black);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-quote{font-size:13px;color:var(--text-secondary);font-style:italic;line-height:1.7;padding:14px 16px;background:var(--bg-secondary);border-left:2px solid var(--xx-red);border-radius:0 8px 8px 0;margin-top:12px;}
+.after-quote cite{font-style:normal;font-size:11px;color:var(--text-secondary);display:block;margin-top:6px;font-weight:500;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Xelix Blog Post — <em>Rebuilt.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow blog post teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> xelix.com/resources</div>
+        <div class="meta-row"><span>Type:</span> Blog Post / Thought Leadership</div>
+        <div class="post-title">How Accounts Payable teams make time for higher value work</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Xelix<span class="dotred">.</span></div>
+        <div class="bef-nav">Resources · Jun 2026</div>
+      </div>
+
+      <div class="bef-hero" style="background:var(--xx-black);min-height:80px;display:flex;align-items:center;justify-content:center;">
+        <div style="font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em;padding:24px;text-align:center;">How AP Teams Make Time For Higher Value Work</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-meta">Jun 2026</div>
+        <div class="bef-h1">How Accounts Payable teams make time for higher value work</div>
+        <div class="bef-lead">At every P2P conference we attend, we always hear how stretched AP and shared services teams are. Query volumes up, headcount flat, and somewhere in the background, a leadership message to "be more strategic." It's well-meaning but it's also hard to square with an AP helpdesk still processing the same types of vendor queries it was processing two years ago.</div>
+        <div class="bef-lead">At the Procure to Pay network event, hosted by The Shared Services Forum UK, we ran a live benchmarking session with 40 shared services and P2P leaders to get closer to the real question: are AP teams busy with the right work?</div>
+
+        <div class="bef-section-title">Baseline → benchmark → best practice</div>
+        <div class="bef-lead">The framework behind the session is simple enough: you can't benchmark without a baseline, and you can't drive best practice without a benchmark. For vendor query management, a useful baseline means consistently capturing first response time, resolution time, SLA attainment, escalation rate and why queries are arriving in the first place.</div>
+
+        <div class="bef-stat-callout">Only <b>31%</b> of participants had full visibility into why their AP queries arise.</div>
+
+        <div class="bef-section-title">What root cause analysis actually tells you</div>
+        <div class="bef-lead">Around 40% of queries are payment-status requests, around 30% are invoice disputes, and roughly 20% are statement reconciliation queries. Without root cause data, you can manage query volume. You can't reduce it.</div>
+
+        <div class="bef-section-title">What could your AP team do with 60% of their time back?</div>
+        <div class="bef-lead">When you strip out payment-status queries and statement reconciliation queries, you're looking at potentially 60% of current helpdesk workload that could be automated or prevented entirely.</div>
+
+        <div class="bef-quote">
+          "If you could reduce resolution times by 60% whilst improving SLA performance to 90%+, what would that additional FTE capacity and supplier confidence be worth to your organisation?"
+          <cite>From the SSF UK benchmarking session</cite>
+        </div>
+
+        <div class="bef-cta-box">
+          <a href="#" class="bef-cta">Get in touch</a>
+        </div>
+        <div class="bef-footer">© 2026 GSPV Ltd · xelix.com</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> Title is a filing label — "How AP teams make time for higher value work" describes an outcome category, not the reader's actual situation. An AP leader scanning a resources feed doesn't know yet whether this is about headcount, software, or process. The specific hook, 60% of query volume being preventable, doesn't appear until six paragraphs in.</div>
+        <div class="issue-item"><span>⚠</span> Conference-First Bias in the opening — "At every P2P conference we attend, we always hear..." centers Xelix's vantage point before the reader's problem. The reader doesn't arrive caring what Xelix hears at conferences. They arrive stretched, with query volumes up and headcount flat.</div>
+        <div class="issue-item"><span>⚠</span> The strongest stat in the piece — only 31% of teams have root cause visibility — is delivered as a section finding, not as the hook. It's the single most quotable, most alarming number in the post, and it's buried under a methodology explainer about baselines and benchmarks.</div>
+        <div class="issue-item"><span>⚠</span> The 60%-time-back framing, the actual payoff of the entire piece, is introduced as a rhetorical question asked in a conference room ("Nobody needed long to think about it") rather than stated as a direct claim to the reader. The reader has to do the math themselves to feel the size of the opportunity.</div>
+        <div class="issue-item"><span>⚠</span> CTA "Get in touch" carries no ownership language and no connection to the specific gap just demonstrated. After reading about root cause blindness, the natural next CTA is something that addresses that blindness directly, not a generic contact link.</div>
+        <div class="issue-item"><span>⚠</span> The compliance section (late payment reforms, board-level scrutiny) is strong, specific, and urgent, but arrives after the product pitch rather than before it. Regulatory consequence is a stronger opening hook for a finance-leadership audience than a benchmarking session recap.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">Xelix<span class="dotred">.</span></div>
+          <div class="after-tagline-sm">Accounts Payable · Jun 2026</div>
+        </div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">AP benchmarking · 40 P2P leaders</div>
+        <div class="after-h1">69% of AP teams don't know<br>why their queries exist.<br><em>That's the 60% you can get back.</em></div>
+        <div class="after-lead">We benchmarked 40 shared services and P2P leaders at the SSF UK Procure to Pay event. Only 31% had full visibility into why their vendor queries arise. The other 69% are managing volume blind, and that blindness is costing them exactly the capacity their leadership keeps asking them to free up.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">31%</div>
+            <div class="stat-label">have full root cause visibility</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">60%</div>
+            <div class="stat-label">of query volume is preventable or automatable</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">56.4h</div>
+            <div class="stat-label">average resolution time across the cohort</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="#" class="after-cta-primary">See what's in your query inbox →</a>
+          <a class="after-cta-ghost">Read the full benchmark</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The visibility problem</div>
+        <div class="after-section-title">You can manage query volume blind. You can't reduce it blind.</div>
+        <div class="after-section-body">A useful baseline means tracking first response time, resolution time, SLA attainment, escalation rate, and why each query exists in the first place. Most teams in our benchmark had the first two. Root cause was the gap: only 31% of participants could say with confidence what was actually generating their helpdesk volume.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The math problem</div>
+        <div class="after-section-title">Strip out payment-status and reconciliation queries. 60% of the inbox disappears.</div>
+        <div class="after-section-body">Across Xelix customer data, roughly 40% of vendor queries are payment-status requests and 20% are statement reconciliation. Both categories exist because of process gaps, not because the work is necessary. Remove them and you're not streamlining the AP helpdesk. You're removing six in ten tickets from it.</div>
+        <div class="after-quote">
+          "If you could reduce resolution times by 60% whilst improving SLA performance to 90%+, what would that additional FTE capacity and supplier confidence be worth to your organisation?"
+          <cite>Asked live to 40 P2P leaders at SSF UK · Jun 2026</cite>
+        </div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">The compliance problem</div>
+        <div class="after-section-title">UK boards are now reading the data that used to sit in your inbox.</div>
+        <div class="after-section-body">The April 2026 late payment reforms introduced a 30-day dispute resolution window, board-level payment scrutiny, and new reporting obligations. A 56.4-hour average resolution time isn't just a speed problem anymore. It's a number your audit committee can now see.</div>
+        <div style="margin-top:16px;">
+          <a href="#" class="after-cta-primary" style="font-size:13px;">Get your root cause baseline →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="#" class="footer-link">Helpdesk</a>
+          <a href="#" class="footer-link">Statement reconciliation</a>
+          <a href="#" class="footer-link">Customer stories</a>
+        </div>
+        <div class="footer-note">© 2026 GSPV Ltd.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> How Accounts Payable teams make time for higher value work<br><br>Outcome category as headline. The reader doesn't know yet what specifically this is about. The actual hook, 60% of query volume being preventable, is six paragraphs deep.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> 69% of AP teams don't know why their queries exist. That's the 60% you can get back.<br><br>The number is the headline. Any AP leader scanning a feed sees their own blind spot named in the first six words.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title rebuilt from outcome category to specific number</div>
+          <div class="upgrade-desc">The original promises "higher value work" without saying what's blocking it. The rebuild leads with the 31%/69% split, the single most alarming stat in the piece, and connects it directly to the 60% time-back claim. A reader self-selects in the first line instead of the seventh paragraph.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Conference-recap opening replaced with the reader's blind spot</div>
+          <div class="upgrade-desc">The original opens with what Xelix hears at conferences. The rebuild opens with what the reader doesn't know about their own queries. The pain is the hook. The benchmarking session becomes the evidence, not the framing device.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · The 31% stat moved from mid-article finding to hero stat card</div>
+          <div class="upgrade-desc">The original buries this number under a methodology section about baselines and benchmarks. The rebuild surfaces it above the fold as a visual anchor. A scanning reader registers "31%" before reading a single sentence of explanation.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · The rhetorical question rewritten as a direct stated claim</div>
+          <div class="upgrade-desc">"Nobody needed long to think about it" describes the room's reaction instead of stating the payoff. The rebuild keeps the quote as proof but states the 60% claim directly in the lead paragraph, so the reader doesn't have to do the math themselves to feel the size of the opportunity.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Compliance section repositioned as proof, not closing argument</div>
+          <div class="upgrade-desc">The April 2026 late payment reforms are genuinely urgent for a UK finance audience, but the original places them after the product pitch, where urgency reads as an afterthought. The rebuild keeps it as a dedicated section with its own CTA, positioned so consequence lands right before the final action.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA rebuilt with ownership language tied to the specific gap</div>
+          <div class="upgrade-desc">"Get in touch" carries no connection to what the reader just learned about their own blind spot. "Get your root cause baseline" and "See what's in your query inbox" both name the exact gap the post just demonstrated, so the reader understands precisely what clicking does for them.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's blind spot before the company's conference recap. The strongest stat surfaced as the hook, not buried as a finding. Compliance urgency placed as proof, not closing decoration. CTA connected to the specific gap just demonstrated. Score: 3/10 → 9/10. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last post.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
