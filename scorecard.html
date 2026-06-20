@@ -2,7 +2,29 @@
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB">
+function submitGate() {
+  var input = document.getElementById('gateEmail');
+  var errEl = document.getElementById('gateError');
+  var val = input ? input.value.trim() : '';
+  if (!val || !val.includes('@') || !val.includes('.')) {
+    if (errEl) errEl.style.display = '';
+    return;
+  }
+  if (errEl) errEl.style.display = 'none';
+  // Submit email to backend (best-effort)
+  fetch('https://strategic-flow-audit.replit.app/api/scorecard-email', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ email: val })
+  }).catch(function(){});
+  gateSubmitted = true;
+  var gate = document.getElementById('summaryGate');
+  var summary = document.getElementById('summarySection');
+  if (gate) gate.style.display = 'none';
+  if (summary) { summary.style.display = ''; }
+  updateSummary();
+}
+</script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -357,6 +379,15 @@
     .cta-section { padding: 28px 20px; }
     .related-grid { grid-template-columns: 1fr !important; }
   }
+
+  /* EMAIL GATE */
+  .summary-gate { background: rgba(74,143,231,0.05); border: 1px solid rgba(74,143,231,0.25); border-radius: 10px; padding: 28px 24px; margin-top: 24px; text-align: center; }
+  .gate-title { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; line-height: 1.4; }
+  .gate-sub { font-size: 12px; color: var(--mid); margin-bottom: 20px; font-family: 'DM Mono', monospace; letter-spacing: 0.03em; }
+  .gate-row { display: flex; gap: 8px; max-width: 380px; margin: 0 auto; }
+  .gate-input { flex: 1; background: rgba(244,242,237,0.06); border: 1px solid rgba(244,242,237,0.15); color: #f4f2ed; font-family: 'Instrument Sans', sans-serif; font-size: 13px; padding: 10px 14px; outline: none; border-radius: 4px; min-width: 0; }
+  .gate-btn { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; background: #4A8FE7; color: #fff; border: none; padding: 10px 16px; cursor: pointer; border-radius: 4px; flex-shrink: 0; white-space: nowrap; }
+  .gate-btn:hover { background: #3a7fd7; }
 </style>
 </head>
 <body data-sf-bar="services">
@@ -389,8 +420,19 @@
     <div id="emailCards"></div>
   </div>
 
+  <!-- EMAIL GATE -->
+  <div class="summary-gate" id="summaryGate" style="display:none">
+    <div class="gate-title">See your score + get the fix for your lowest scoring email →</div>
+    <div class="gate-sub">// One email · No spam · Used in 57+ audits</div>
+    <div class="gate-row">
+      <input type="email" class="gate-input" id="gateEmail" placeholder="your@email.com">
+      <button class="gate-btn" onclick="submitGate()">See score →</button>
+    </div>
+    <div id="gateError" style="font-family:DM Mono,monospace;font-size:11px;color:#f87171;margin-top:8px;display:none">Please enter a valid email address.</div>
+  </div>
+
   <!-- SUMMARY -->
-  <div class="summary-section" id="summarySection">
+  <div class="summary-section" id="summarySection" style="display:none">
     <div class="summary-header">
       <span class="summary-header-title">// Score summary</span>
       <span style="font-family:DM Mono,monospace;font-size:11px;color:var(--mid);" id="summaryAvg">Avg: —</span>
@@ -436,6 +478,7 @@
 </main>
 
 <script>
+var gateSubmitted = false;
 const BUGS = [
   { name: "Filing label subject", desc: "Subject announces the product, not the reader's problem.", bad: "New dashboard features available", good: "Your reporting is 3 clicks slower than it should be" },
   { name: "Caveat opener", desc: "Email opens with disclaimer before delivering value.", bad: "This update is rolling out gradually over 2 weeks...", good: "This week, your team can do something it could not do last week." },
@@ -608,8 +651,13 @@ function updateCardScore(ei) {
 function updateSummary() {
   var grid = document.getElementById('summaryGrid');
   var avgEl = document.getElementById('summaryAvg');
+  var gate = document.getElementById('summaryGate');
+  var summary = document.getElementById('summarySection');
   var filled = state.emails.filter(function(e) { return e.subject.trim().length > 0; });
+  if (!gateSubmitted && filled.length > 0 && gate) { gate.style.display = ''; }
+  if (gateSubmitted && summary) { summary.style.display = ''; }
   if (filled.length === 0) {
+    if (gate) gate.style.display = 'none';
     grid.innerHTML = '<div style="padding:24px;font-family:monospace;font-size:12px;color:var(--mid);grid-column:1/-1">Add email subject lines above to see your scores here.</div>';
     avgEl.textContent = 'Avg: —';
     return;
