@@ -207,6 +207,17 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--text); }
+  .nav-burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:44px;background:none;border:none;cursor:pointer;padding:0;z-index:101;flex-shrink:0;}
+  .nav-burger span{display:block;width:22px;height:2px;background:var(--text,#fff);border-radius:2px;transition:transform .25s ease,opacity .25s ease;transform-origin:center;}
+  .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+  .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .nav-mobile{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(13,17,23,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border,rgba(255,255,255,0.08));z-index:99;flex-direction:column;}
+  .nav-mobile.open{display:flex;}
+  .nav-mobile a{font-size:13px;color:var(--text-sub,#909088);text-decoration:none;padding:0 24px;height:52px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);transition:color .2s,background .2s;}
+  .nav-mobile a:last-child{border-bottom:none;}
+  .nav-mobile a:hover,.nav-mobile a:active{color:var(--teal,#2A7FE7);background:rgba(255,255,255,0.03);}
+  @media(max-width:768px){.nav-burger{display:flex;}.nav-links{display:none;}}
 
     /* HERO */
     .hero {
@@ -511,7 +522,6 @@
 
     /* RESPONSIVE */
     @media (max-width: 640px) {
-      .nav-links { display: none; }
       h1 { font-size: 34px; }
       .stat-row { gap: 24px; }
       .proof-strip { gap: 32px; padding: 36px 20px; }
@@ -591,7 +601,25 @@
     <li><a href="https://strategicflow.tech/architecture.html">Architecture</a></li>
     <li><a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a></li>
   </ul>
+  <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="https://strategicflow.tech/">Showcase</a>
+  <a href="https://strategicflow.tech/scorecard.html">Scorecard</a>
+  <a href="https://strategicflow.tech/architecture.html">Architecture</a>
+  <a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a>
+</div>
+<script>
+(function(){
+  var burger=document.getElementById('nav-burger');
+  var menu=document.getElementById('nav-mobile');
+  if(!burger||!menu)return;
+  function closeMenu(){burger.classList.remove('open');menu.classList.remove('open');burger.setAttribute('aria-expanded','false');}
+  burger.addEventListener('click',function(e){e.stopPropagation();menu.classList.contains('open')?closeMenu():(burger.classList.add('open'),menu.classList.add('open'),burger.setAttribute('aria-expanded','true'));});
+  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',closeMenu);});
+  document.addEventListener('click',function(e){if(!menu.contains(e.target)&&!burger.contains(e.target))closeMenu();});
+})();
+</script>
 
 <!-- HERO -->
 <div class="hero">

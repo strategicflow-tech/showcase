@@ -349,6 +349,17 @@ nav{position:sticky;top:0;z-index:100;background:rgba(4,8,15,0.95);backdrop-filt
 .nav-link:hover{color:var(--white);background:rgba(255,255,255,0.06)}
 .nav-cta{background:var(--teal);color:#04080f !important;border-radius:6px;font-weight:700}
 .nav-cta:hover{background:#2D6BE4}
+  .nav-burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:44px;background:none;border:none;cursor:pointer;padding:0;z-index:101;flex-shrink:0;}
+  .nav-burger span{display:block;width:22px;height:2px;background:var(--white,#fff);border-radius:2px;transition:transform .25s ease,opacity .25s ease;transform-origin:center;}
+  .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+  .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .nav-mobile{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(13,17,23,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border,rgba(255,255,255,0.08));z-index:99;flex-direction:column;}
+  .nav-mobile.open{display:flex;}
+  .nav-mobile a{font-size:13px;color:var(--muted,#909088);text-decoration:none;padding:0 24px;height:52px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);transition:color .2s,background .2s;}
+  .nav-mobile a:last-child{border-bottom:none;}
+  .nav-mobile a:hover,.nav-mobile a:active{color:var(--teal,#2A7FE7);background:rgba(255,255,255,0.03);}
+  @media(max-width:768px){.nav-burger{display:flex;}.nav-links{display:none;}}
 
 .hero{max-width:1100px;margin:0 auto;padding:72px 24px 56px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--teal-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
@@ -439,8 +450,26 @@ footer a:hover{color:var(--teal)}
       <a href="https://strategic-flow-audit.replit.app" class="nav-link" target="_blank" rel="noopener">Free Audit</a>
       <a href="https://strategic-flow-pro.replit.app" class="nav-link nav-cta" target="_blank" rel="noopener">Rebuild Yours →</a>
     </div>
+    <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Teardowns</a>
+  <a href="glossary.html" style="color:var(--teal)">Glossary</a>
+  <a href="https://strategic-flow-audit.replit.app" target="_blank" rel="noopener">Free Audit</a>
+  <a href="https://strategic-flow-pro.replit.app" style="background:var(--teal);color:#04080f;font-weight:700;justify-content:center;" target="_blank" rel="noopener">Rebuild Yours →</a>
+</div>
+<script>
+(function(){
+  var burger=document.getElementById('nav-burger');
+  var menu=document.getElementById('nav-mobile');
+  if(!burger||!menu)return;
+  function closeMenu(){burger.classList.remove('open');menu.classList.remove('open');burger.setAttribute('aria-expanded','false');}
+  burger.addEventListener('click',function(e){e.stopPropagation();menu.classList.contains('open')?closeMenu():(burger.classList.add('open'),menu.classList.add('open'),burger.setAttribute('aria-expanded','true'));});
+  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',closeMenu);});
+  document.addEventListener('click',function(e){if(!menu.contains(e.target)&&!burger.contains(e.target))closeMenu();});
+})();
+</script>
 
 <header class="hero">
   <div class="hero-badge"><div class="dot"></div>Strategic Flow Vocabulary</div>
