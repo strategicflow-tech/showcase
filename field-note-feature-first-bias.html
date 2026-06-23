@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Field Note: The PM Wanted Features Before Consequences — Feature-First Bias Explained | Strategic Flow</title>
+<meta name="description" content="Field note from a real SaaS email audit: why a product manager insisted on leading with the feature list instead of the consequence. What Feature-First Bias is, why it appears in 83% of audited SaaS emails, and how to fix it." />
+<meta name="keywords" content="Feature-First Bias, consequence-first email, SaaS product update email, email architecture field note, why product emails underperform, Strategic Flow field notes, decision friction email" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Alex Iliescu — Strategic Flow" />
+<link rel="canonical" href="https://strategicflow.tech/field-note-feature-first-bias.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Field Note: The PM Wanted Features Before Consequences — Feature-First Bias Explained" />
+<meta property="og:description" content="A real audit observation on why Feature-First Bias appears in 83% of SaaS product update emails, and why product teams default to it even when it costs clicks." />
+<meta property="og:url" content="https://strategicflow.tech/field-note-feature-first-bias.html" />
+<meta property="og:site_name" content="Strategic Flow" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Field Note: The PM Wanted Features Before Consequences" />
+<meta name="twitter:description" content="83% of audited SaaS product update emails lead with the feature instead of the consequence. Here's why, and what to do about it." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Field Note: The PM Wanted Features Before Consequences — Feature-First Bias Explained",
+  "author": { "@type": "Person", "name": "Alex Iliescu" },
+  "publisher": { "@type": "Organization", "name": "Strategic Flow", "url": "https://strategicflow.tech" },
+  "datePublished": "2026-06-23",
+  "description": "A field note from a real SaaS email audit on Feature-First Bias: leading a product update with what was built instead of what changes for the reader. Found in 83% of audited SaaS emails.",
+  "mainEntityOfPage": "https://strategicflow.tech/field-note-feature-first-bias.html"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Feature-First Bias in email writing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Feature-First Bias is when a product update email leads with what the team built — the feature name, the technical change, the release note — instead of what changes for the reader. The reader has to do the work of translating the feature into a reason to care." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do product teams write Feature-First emails?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The people writing the email usually built the feature, so the feature is the most natural and most interesting thing to them. Internal teams default to describing what changed in the product because that's the information they're closest to, not because it's what the reader needs first." }
+    },
+    {
+      "@type": "Question",
+      "name": "How common is Feature-First Bias in SaaS emails?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Across 59 published Strategic Flow teardowns, Feature-First Bias appears in 83% of audited SaaS product update emails, making it the second most common structural failure pattern after Guest Language CTA." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is consequence-first writing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Consequence-first writing puts the reader's outcome in line one, before any feature name or technical detail. Instead of 'Introducing Advanced Reporting,' it reads 'Your reports are now 40% faster to build.' The reader knows why it matters before they know what was built." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you fix Feature-First Bias in a product email?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Move the reader's consequence to the first line and the feature name to the second or third line. Ask what changes for the reader's day-to-day work, name that change in plain language first, then explain the feature that caused it." }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Strategic Flow", "item": "https://strategicflow.tech" },
+    { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://strategicflow.tech/glossary.html" },
+    { "@type": "ListItem", "position": 3, "name": "Field Note: Feature-First Bias", "item": "https://strategicflow.tech/field-note-feature-first-bias.html" }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg:#0d1117; --bg-card:#0f1923; --bg-card2:#111d2a; --bg-inner:#0a1520;
+    --border:#1e2d3d; --border-bright:#2a3d52;
+    --teal:#2dd4bf; --teal-dim:rgba(45,212,191,0.12); --teal-border:rgba(45,212,191,0.35);
+    --text:#ffffff; --text-sub:#c8d6e5; --text-dim:#8b9cb6;
+    --red:#f87171;
+    --sans:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,17,23,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+  .nav-logo{font-family:var(--mono);font-size:13px;color:var(--teal);text-decoration:none;letter-spacing:.04em;}
+  .nav-links{display:flex;gap:24px;list-style:none;}
+  .nav-links a{font-size:13px;color:var(--text-sub);text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:44px;background:none;border:none;cursor:pointer;padding:0;z-index:101;flex-shrink:0;}
+  .nav-burger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform .25s ease,opacity .25s ease;transform-origin:center;}
+  .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+  .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .nav-mobile{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(13,17,23,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:99;flex-direction:column;}
+  .nav-mobile.open{display:flex;}
+  .nav-mobile a{font-family:var(--mono);font-size:13px;color:var(--text-sub);text-decoration:none;padding:0 24px;height:52px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);transition:color .2s,background .2s;}
+  .nav-mobile a:last-child{border-bottom:none;}
+  .nav-mobile a:hover,.nav-mobile a:active{color:var(--teal);background:rgba(255,255,255,0.03);}
+  @media(max-width:768px){.nav-burger{display:flex;}.nav-links{display:none;}}
+
+  .hero{padding:120px 24px 72px;max-width:760px;margin:0 auto;text-align:center;}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--teal-dim);border:1px solid var(--teal-border);color:var(--teal);font-size:13px;font-weight:500;padding:6px 16px;border-radius:100px;margin-bottom:28px;}
+  h1{font-size:clamp(32px,5vw,52px);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:20px;}
+  h1 span{color:var(--teal);}
+  h2{font-size:clamp(24px,4vw,38px);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px;}
+  h2 span{color:var(--teal);}
+  .hero-sub{font-size:17px;color:var(--text-sub);font-weight:300;line-height:1.7;margin-bottom:40px;max-width:560px;margin-left:auto;margin-right:auto;}
+  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:#0d1117;font-size:14px;font-weight:600;padding:14px 28px;border-radius:8px;text-decoration:none;transition:opacity .2s;}
+  .btn-primary:hover{opacity:.88;}
+  .btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--teal);font-size:14px;font-weight:500;padding:13px 28px;border-radius:8px;text-decoration:none;border:1px solid var(--teal-border);transition:background .2s;}
+  .btn-ghost:hover{background:var(--teal-dim);}
+
+  hr.divider{border:none;border-top:1px solid var(--border);}
+  .section{padding:72px 24px;max-width:760px;margin:0 auto;}
+  .section-wide{padding:72px 24px;max-width:960px;margin:0 auto;}
+  .sect-badge{display:inline-flex;background:var(--bg-card2);border:1px solid var(--border-bright);color:var(--text-dim);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:6px;margin-bottom:20px;}
+  .sect-sub{font-size:15px;color:var(--text-sub);line-height:1.7;margin-bottom:40px;}
+
+  .quote-card{background:var(--bg-card);border-left:3px solid var(--teal);border-radius:0 16px 16px 0;padding:28px 32px;margin-bottom:32px;}
+  .quote-card p{font-size:18px;color:var(--text);line-height:1.6;font-style:italic;}
+  .quote-card .source{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;font-style:normal;}
+
+  .before-after{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-bottom:32px;border-radius:12px;overflow:hidden;}
+  .ba-card{background:var(--bg-card);padding:24px;}
+  .ba-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+  .ba-label.bad{color:var(--red);}
+  .ba-label.good{color:var(--teal);}
+  .ba-text{font-size:16px;font-weight:600;color:var(--text);}
+
+  .proof-strip{background:var(--bg-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:48px 24px;display:flex;justify-content:center;gap:48px;flex-wrap:wrap;}
+  .proof-item{text-align:center;}
+  .proof-n{font-size:36px;font-weight:800;color:var(--teal);margin-bottom:4px;}
+  .proof-l{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;}
+
+  .faq{display:flex;flex-direction:column;gap:4px;}
+  .faq-item{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:4px;}
+  .faq-q{padding:18px 22px;font-size:15px;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:background .15s;color:var(--text);}
+  .faq-q:hover{background:var(--bg-card2);}
+  .faq-icon{font-size:20px;color:var(--teal);flex-shrink:0;transition:transform .2s;line-height:1;}
+  .faq-item.open .faq-icon{transform:rotate(45deg);}
+  .faq-a{padding:0 22px;font-size:14px;color:var(--text-sub);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;}
+  .faq-item.open .faq-a{max-height:400px;padding:0 22px 18px;}
+
+  .cta-sec{background:var(--bg-card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 24px;text-align:center;}
+  .cta-sec h2{margin-bottom:14px;}
+  .cta-sec p{color:var(--text-sub);font-size:16px;margin-bottom:36px;font-weight:300;}
+
+  footer{padding:36px 24px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:20px;align-items:center;text-align:center;}
+  .footer-logo{font-family:var(--mono);font-size:13px;color:var(--teal);text-decoration:none;}
+  .footer-links{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;list-style:none;}
+  .footer-links a{font-size:13px;color:var(--text-sub);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-size:12px;color:var(--text-dim);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .hero>*{animation:fadeUp .5s ease both;}
+  .hero>*:nth-child(1){animation-delay:.05s;}
+  .hero>*:nth-child(2){animation-delay:.12s;}
+  .hero>*:nth-child(3){animation-delay:.18s;}
+  .hero>*:nth-child(4){animation-delay:.24s;}
+
+  @media(max-width:640px){
+    h1{font-size:30px;}
+    .before-after{grid-template-columns:1fr;}
+    .proof-strip{gap:28px;padding:36px 20px;}
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body data-sf-bar="content">
+
+<nav>
+  <a href="https://strategicflow.tech" class="nav-logo">STRATEGIC FLOW</a>
+  <ul class="nav-links">
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a></li>
+  </ul>
+  <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a>
+  <a href="https://strategicflow.tech/teardowns.html">Teardowns</a>
+  <a href="https://strategicflow.tech/glossary.html">Glossary</a>
+  <a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a>
+</div>
+<script>
+(function(){
+  var burger=document.getElementById('nav-burger');
+  var menu=document.getElementById('nav-mobile');
+  if(!burger||!menu)return;
+  function closeMenu(){burger.classList.remove('open');menu.classList.remove('open');burger.setAttribute('aria-expanded','false');}
+  burger.addEventListener('click',function(e){e.stopPropagation();menu.classList.contains('open')?closeMenu():(burger.classList.add('open'),menu.classList.add('open'),burger.setAttribute('aria-expanded','true'));});
+  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',closeMenu);});
+  document.addEventListener('click',function(e){if(!menu.contains(e.target)&&!burger.contains(e.target))closeMenu();});
+})();
+</script>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 2v6m0 8v6m-8-10h6m4 0h6"/></svg>
+    Field Note · Strategic Flow
+  </div>
+  <h1>The PM wanted features<br/><span>before consequences.</span></h1>
+  <p class="hero-sub">An observation from a real SaaS email audit. The rebuild led with what changes for the reader. The PM wanted the feature name back in line one.</p>
+  <div class="cta-row">
+    <a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-primary" target="_blank">Run Free Audit →</a>
+    <a href="https://strategicflow.tech/glossary.html" class="btn-ghost">See the glossary →</a>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- THE OBSERVATION -->
+<div class="section">
+  <div class="sect-badge">What Happened</div>
+  <h2>"Shouldn't we say what<br/><span>we built first?"</span></h2>
+  <div class="quote-card">
+    <p>"This doesn't even mention Advanced Reporting until paragraph two. Shouldn't that be the headline?"</p>
+    <div class="source">— product manager, reviewing a rebuilt feature announcement</div>
+  </div>
+  <p class="sect-sub">The original subject line was "Introducing Advanced Reporting." The rebuild was "Your reports are now 40% faster to build." Same feature, same release, same recipients. The PM's objection was structural: the feature they spent a quarter building wasn't named first.</p>
+  <p class="sect-sub">That instinct is exactly why Feature-First Bias appears in 83% of audited SaaS product update emails. The person closest to the build is the person writing the email, and what's most interesting to them isn't automatically what matters most to the reader.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- WHAT FEATURE-FIRST BIAS IS -->
+<div class="section">
+  <div class="sect-badge">The Pattern</div>
+  <h2>The feature is the cause.<br/><span>The consequence is the headline.</span></h2>
+  <p class="sect-sub">Feature-First Bias puts the technical change in line one and leaves the reader to work out why it matters. Consequence-first writing reverses the order: the outcome comes first, the feature explains it second.</p>
+
+  <div class="before-after">
+    <div class="ba-card">
+      <div class="ba-label bad">✕ Feature-First</div>
+      <div class="ba-text">"Introducing Advanced Reporting"</div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-label good">✓ Consequence-First</div>
+      <div class="ba-text">"Your reports are now 40% faster to build"</div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-label bad">✕ Feature-First</div>
+      <div class="ba-text">"New: Bulk Export API"</div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-label good">✓ Consequence-First</div>
+      <div class="ba-text">"Stop exporting your data one record at a time"</div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-label bad">✕ Feature-First</div>
+      <div class="ba-text">"Announcing Real-Time Sync"</div>
+    </div>
+    <div class="ba-card">
+      <div class="ba-label good">✓ Consequence-First</div>
+      <div class="ba-text">"Your dashboard is never 10 minutes behind again"</div>
+    </div>
+  </div>
+
+  <p style="font-size:15px;color:var(--text-sub);line-height:1.8;">The feature name isn't removed in the rebuild. It moves to the second or third line, where it explains the consequence instead of substituting for it. The reader gets the "why this matters" before the "what we built" — because that's the order they actually decide in.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- PROOF STRIP -->
+<div class="proof-strip">
+  <div class="proof-item"><div class="proof-n">83%</div><div class="proof-l">Of teardowns have this pattern</div></div>
+  <div class="proof-item"><div class="proof-n">59</div><div class="proof-l">SaaS teardowns published</div></div>
+  <div class="proof-item"><div class="proof-n">3.4</div><div class="proof-l">Avg original score /10</div></div>
+  <div class="proof-item"><div class="proof-n">9/10</div><div class="proof-l">Avg rebuilt score</div></div>
+</div>
+
+<hr class="divider" />
+
+<!-- WHY IT PERSISTS -->
+<div class="section">
+  <div class="sect-badge">Why It Persists</div>
+  <h2>Proximity to the build<br/><span>distorts the priority.</span></h2>
+  <p class="sect-sub">Nobody on the product team is being deceptive. They spent weeks or months on the feature, so it feels like the headline. The reader spent zero time on it, so to them it's just a name they don't recognize yet. The gap between builder time and reader time is the entire bias.</p>
+  <p style="font-size:15px;color:var(--text-sub);line-height:1.8;">This is the same gap that shows up across product marketing generally: achievement framing announces what the company did, consequence framing announces what changes for the person reading. One is true and irrelevant in line one. The other is true and immediately useful.</p>
+</div>
+
+<hr class="divider" />
+
+<!-- FAQ -->
+<div class="section">
+  <div class="sect-badge">FAQ</div>
+  <h2>Direct questions.<br/><span>Direct answers.</span></h2>
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q"><span>What is Feature-First Bias in email writing?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a">Feature-First Bias is when a product update email leads with what the team built — the feature name, the technical change, the release note — instead of what changes for the reader. The reader has to do the work of translating the feature into a reason to care.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Why do product teams write Feature-First emails?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a">The people writing the email usually built the feature, so the feature is the most natural and most interesting thing to them. Internal teams default to describing what changed in the product because that's the information they're closest to, not because it's what the reader needs first.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>How common is Feature-First Bias in SaaS emails?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a">Across 59 published Strategic Flow teardowns, Feature-First Bias appears in 83% of audited SaaS product update emails — the second most common structural failure pattern after Guest Language CTA.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What is consequence-first writing?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a">Consequence-first writing puts the reader's outcome in line one, before any feature name or technical detail. Instead of "Introducing Advanced Reporting," it reads "Your reports are now 40% faster to build." The reader knows why it matters before they know what was built.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>How do you fix Feature-First Bias in a product email?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a">Move the reader's consequence to the first line and the feature name to the second or third line. Ask what changes for the reader's day-to-day work, name that change in plain language first, then explain the feature that caused it.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- RELATED -->
+<div class="section">
+  <div class="sect-badge">Related</div>
+  <h2>More from<br/><span>Strategic Flow.</span></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:0;">
+    <a href="https://strategicflow.tech/field-note-guest-language-cta.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px;text-decoration:none;display:block;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--teal-border)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;">Field Note</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;">The Client Rejected the Better CTA</div>
+      <div style="font-size:13px;color:var(--text-sub);line-height:1.5;">Guest Language CTA, the most common failure pattern of all.</div>
+    </a>
+    <a href="https://strategicflow.tech/glossary.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px;text-decoration:none;display:block;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--teal-border)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;">Glossary</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;">Behavioral Email Architecture Terms</div>
+      <div style="font-size:13px;color:var(--text-sub);line-height:1.5;">Every structural term Strategic Flow uses, defined in one place.</div>
+    </a>
+    <a href="https://strategicflow.tech/teardowns.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px;text-decoration:none;display:block;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--teal-border)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;">Archive</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;">59 SaaS Teardowns</div>
+      <div style="font-size:13px;color:var(--text-sub);line-height:1.5;">Feature-First Bias shown live in real audited emails, before and after.</div>
+    </a>
+    <a href="https://strategicflow.tech/email-architecture-audit.html" style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px;text-decoration:none;display:block;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--teal-border)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--teal);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase;">Methodology</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;">Email Architecture Audit</div>
+      <div style="font-size:13px;color:var(--text-sub);line-height:1.5;">Full methodology. The 7-point Decision Friction Model explained.</div>
+    </a>
+  </div>
+</div>
+
+<hr class="divider" />
+
+<!-- CTA -->
+<div class="cta-sec">
+  <h2>Check your own subject line<br/><span>in 90 seconds.</span></h2>
+  <p>Paste one email. Get a score, the named failure pattern, and a rebuilt consequence-first version. No signup.</p>
+  <div class="cta-row">
+    <a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-primary" target="_blank">Run Free Audit →</a>
+  </div>
+</div>
+
+<footer>
+  <a href="https://strategicflow.tech" class="footer-logo">STRATEGIC FLOW</a>
+  <ul class="footer-links">
+    <li><a href="https://strategicflow.tech">Home</a></li>
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Methodology</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategicflow.tech/field-note-guest-language-cta.html">Field Note: Guest Language</a></li>
+    <li><a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html">Why Emails Fail</a></li>
+    <li><a href="https://strategic-flow-pro.replit.app/packages">Pricing</a></li>
+    <li><a href="https://strategicflow.substack.com/">Substack</a></li>
+    <li><a href="https://www.linkedin.com/in/strategic-flow-tech">LinkedIn</a></li>
+    <li><a href="mailto:alex@strategicflow.tech">Contact</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Strategic Flow · Alex Iliescu · strategicflow.tech</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const item=q.parentElement;
+      const isOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!isOpen)item.classList.add('open');
+    });
+  });
+</script>
+<style>
+#sf-sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  border-top: 1px solid rgba(29, 158, 117, 0.3);
+  box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
+  z-index: 9999;
+  display: none;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+#sf-sticky-bar.visible {
+  display: flex;
+  transform: translateY(0);
+}
+.sf-bar-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  gap: 16px;
+}
+.sf-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.sf-badge {
+  background: rgba(29, 158, 117, 0.15);
+  color: #1D9E75;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(29, 158, 117, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.sf-affiliate-tag {
+  background: rgba(74, 143, 231, 0.1);
+  color: #4A8FE7;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(74, 143, 231, 0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.sf-text {
+  color: #e8e8e8;
+  font-family: 'Figtree', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sf-text strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+.sf-cta {
+  background: #1D9E75;
+  color: #ffffff;
+  font-family: 'Figtree', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.01em;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 16px rgba(29, 158, 117, 0.25);
+}
+.sf-cta:hover {
+  background: #178a63;
+  box-shadow: 0 0 24px rgba(29, 158, 117, 0.4);
+}
+.sf-cta-arrow {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+.sf-cta:hover .sf-cta-arrow {
+  transform: translateX(2px);
+}
+.sf-close {
+  color: #555;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+.sf-close:hover { color: #999; }
+
+@media (max-width: 768px) {
+  .sf-bar-inner {
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    gap: 8px;
+    align-items: center;
+  }
+  .sf-bar-left {
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+  }
+  .sf-text { display: none; }
+  .sf-cta {
+    order: 10;
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+  }
+  .sf-close {
+    flex-shrink: 0;
+    padding: 4px 6px;
+  }
+}
+
+#cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:#09111e;border-top:1px solid rgba(255,255,255,0.08);padding:18px 48px;display:none;}
+#cookie-banner.visible{display:flex;}
+.cookie-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;width:100%;flex-wrap:wrap;}
+.cookie-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;max-width:680px;}
+.cookie-text a{color:#00e5a0;text-decoration:underline;}
+.cookie-actions{display:flex;gap:10px;flex-shrink:0;}
+.cookie-btn{font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:10px 18px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.7);transition:all .2s;}
+.cookie-btn:hover{border-color:#00e5a0;color:#00e5a0;}
+.cookie-btn.accept{background:#00e5a0;color:#07090f;border-color:#00e5a0;}
+.cookie-btn.accept:hover{background:#00c88a;}
+@media(max-width:640px){#cookie-banner{padding:16px 18px;}.cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}.cookie-actions{justify-content:flex-end;}}
+</style>
+
+<div id="sf-sticky-bar">
+  <div class="sf-bar-inner">
+    <div class="sf-bar-left">
+      <span class="sf-affiliate-tag">affiliate</span>
+      <span class="sf-badge" id="sf-badge-text"></span>
+      <span class="sf-text" id="sf-main-text"></span>
+    </div>
+    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank">
+      <span id="sf-cta-text"></span>
+      <span class="sf-cta-arrow">→</span>
+    </a>
+    <button class="sf-close" id="sf-close-btn">✕</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (sessionStorage.getItem('sf-bar-closed')) return;
+
+  var bar = document.getElementById('sf-sticky-bar');
+  var badge = document.getElementById('sf-badge-text');
+  var text = document.getElementById('sf-main-text');
+  var ctaText = document.getElementById('sf-cta-text');
+  var type = document.body.getAttribute('data-sf-bar') || 'services';
+
+  if (type === 'content') {
+    badge.textContent = '10 spots · 40% locked';
+    text.innerHTML = 'Know a SaaS team with broken emails? <strong>Earn $199–$1,000/mo per referral.</strong>';
+    ctaText.textContent = 'Join Affiliate Program';
+  } else {
+    badge.textContent = 'First 10 spots · 40% forever';
+    text.innerHTML = 'Refer once. <strong>Get paid every month they stay subscribed.</strong>';
+    ctaText.textContent = 'See How It Works';
+  }
+
+  var shown = false;
+  function showBar() {
+    if (shown) return;
+    shown = true;
+    bar.style.display = 'flex';
+    setTimeout(function() { bar.classList.add('visible'); }, 50);
+  }
+
+  setTimeout(showBar, 15000);
+
+  window.addEventListener('scroll', function() {
+    var scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if (scrollPct >= 0.4) showBar();
+  }, { passive: true });
+
+  document.getElementById('sf-close-btn').addEventListener('click', function() {
+    bar.classList.remove('visible');
+    setTimeout(function() { bar.style.display = 'none'; }, 350);
+    sessionStorage.setItem('sf-bar-closed', '1');
+  });
+})();
+</script>
+<!-- COOKIE CONSENT BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.</div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='sf_consent',stored=localStorage.getItem(KEY),banner=document.getElementById('cookie-banner');
+  function grant(){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}
+  if(stored==='granted'){grant();}else if(stored!=='denied'){banner.classList.add('visible');}
+  document.getElementById('cookie-accept').addEventListener('click',function(){localStorage.setItem(KEY,'granted');grant();banner.classList.remove('visible');});
+  document.getElementById('cookie-decline').addEventListener('click',function(){localStorage.setItem(KEY,'denied');banner.classList.remove('visible');});
+})();
+</script>
+</body>
+</html>
