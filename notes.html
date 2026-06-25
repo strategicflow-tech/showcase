@@ -167,6 +167,46 @@
       "@type": "Question",
       "name": "How much does running an email architecture audit before sending improve click rates?",
       "acceptedAnswer": { "@type": "Answer", "text": "Teams that run the Strategic Flow audit before every product update email have lifted click rates by 3 to 6 percentage points on the same list, without changing the offer, the design, or the send time. The audit itself runs in 90 seconds, with a rebuilt version delivered within 24 hours." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between email architecture and email copywriting?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Email copywriting addresses the words. Email architecture addresses the order of information — what appears first, where the consequence sits relative to context, whether proof arrives before or after the reader has already decided to leave. A well-written email with broken architecture still fails. Architectural failures include Feature-First Bias, Filing Label Subject lines, Consequence-After-Caveat structure, Missing Visual Hierarchy, Guest Language CTAs, and Zero Social Proof. These are structural decisions made before the first word is written, not stylistic ones made during editing." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do SaaS emails get opened but not clicked?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The open rate and the click rate fail for different structural reasons. Open rate fails when the subject line acts as a filing label — announcing the category of email rather than a consequence for the reader. Click rate fails when the body leads with the feature instead of the reader's outcome, when proof is buried below the fold, or when the CTA uses guest language such as Learn more instead of ownership language such as Fix my reporting. Across 59 SaaS email audits, the average original score is 3.4 out of 10. The single most common failure is Guest Language CTA, present in 96% of audited emails." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Feature-First Bias in SaaS email marketing?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Feature-First Bias is a structural failure pattern in which a SaaS email leads with what the product does rather than what the reader gains. Instead of opening with the reader's problem or the consequence of not acting, the email opens with a feature announcement. The reader has no reason to care yet. Feature-First Bias appears in 83% of SaaS emails audited by Strategic Flow and is one of the primary causes of low click rates on product update and onboarding emails." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Guest Language CTA and why does it hurt SaaS email conversion?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A Guest Language CTA describes what the brand offers rather than what the reader does. Examples include Learn more, See features, Explore now, and View update. These CTAs position the reader as a visitor considering whether to engage, not someone already deciding to act. Ownership language CTAs name the reader's action directly: Fix my reporting, See my usage data, Get my first lesson. Guest Language CTA is the single most common structural failure in SaaS emails, appearing in 96% of the 59 emails audited by Strategic Flow." }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the Decision Friction Model score SaaS emails?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The Decision Friction Model is a 7-point behavioral diagnostic framework developed by Strategic Flow. It scores emails from 1 to 10 across: subject line construction (filing label or consequence signal), lead framing (feature-first or outcome-first), feature-to-outcome translation, visual hierarchy, before/after contrast, social proof placement, and CTA language (guest or ownership). Across 59 real SaaS email audits including companies like Notion, Revolut, Perplexity, and dbt Labs, the average original score is 3.4 out of 10 and the average score after structural rebuild is 9.0." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is behavioral email architecture for SaaS?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Behavioral email architecture is the structural design of SaaS email content mapped to reader decision behavior. It is the discipline of sequencing information so that the reader's most important decision — whether to act — is made with the correct information in the correct order. Strategic Flow applies behavioral email architecture through the Decision Friction Model, diagnosing where in the email structure the reader's decision to click is interrupted, delayed, or eliminated. It is distinct from deliverability consulting, lifecycle automation, and copywriting." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Filing Label Subject line and how does it affect open rates?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A Filing Label Subject line announces the category of the email rather than a consequence for the reader. Examples include New Feature: Advanced Reporting, Product Update: May 2026, and Introducing AI Inbox Sorting. These subject lines do not create a curiosity gap. The brain processes filing labels as metadata and routes the email to a mental folder labelled read later, which is never opened. Filing Label Subject appears in 83% of Strategic Flow audits. The fix is consequence-first construction: naming what the reader gains or avoids, not what the company has shipped." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do SaaS onboarding email sequences fail structurally?",
+      "acceptedAnswer": { "@type": "Answer", "text": "SaaS onboarding sequences fail structurally in two distinct ways. First, individual emails within the sequence have architectural failures: feature-first leads, guest language CTAs, buried consequences. These are detectable with a single-email audit. Second, the sequence itself has timing and gap failures that no single-email score can detect: silence windows between activation touchpoints, CTA fatigue from repeated identical calls to action, and orphaned consequences where an email references a benefit that was never introduced. The most common sequence-level failure is a silence gap between Day 3 and Day 7 of onboarding." }
     }
   ]
 }
@@ -514,6 +554,93 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
   <span style="font-size:12px;color:var(--text3);">+46 more</span>
 </div>
 
+<!-- SUBSTACK ARTICLES SECTION -->
+<section style="padding:80px 48px;border-bottom:1px solid var(--border);max-width:800px;margin:0 auto;">
+  <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;">From the Substack</div>
+  <h2 style="font-family:var(--serif);font-size:clamp(24px,3vw,34px);color:#fff;margin-bottom:12px;line-height:1.2;">SaaS Email Architecture — Deep Dives, Teardowns and Failure Pattern Analysis</h2>
+  <p style="font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:40px;">Published analysis on structural conversion failures in SaaS emails, onboarding sequences, and product update copy. Each issue names the pattern, shows the before and after, and explains the architectural decision that changed the outcome.</p>
+
+  <div style="display:flex;flex-direction:column;gap:0;">
+
+    <a href="https://strategicflow.substack.com/p/why-saas-subject-lines-kill-open-rates" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Failure Pattern · Filing Label Subject · 83%</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">Why SaaS subject lines kill open rates before anyone reads the email</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">The structural decision that files your email in the reader's mental archive before they open it. Before/after with three sub-patterns and the one fix that changes the open rate.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/the-onboarding-email-gap-that-kills" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Sequence Architecture · Activation Gap</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">The onboarding email gap that kills SaaS activation -- and how to find it</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">Five emails scored well individually. The sequence still failed. How a 6-day silence window between Day 3 and Day 9 breaks activation before the user reaches the feature that would have kept them.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/why-saas-email-audits-fail-the-structural" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Diagnostic Method · SaaS Email Audit</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">Why SaaS email audits fail: the structural problem teams miss</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">The bottleneck in most SaaS email reviews is not copy quality. It is waiting for someone else to run a structural diagnosis that nobody on the team is trained to do.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/why-saas-teams-write-weaker-emails" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Failure Pattern · Guest Language CTA · 96%</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">Why SaaS teams write weaker emails on purpose -- and what it costs</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">The rebuilt CTA scored higher. The reviewer approved the lower-scoring version anyway. Why "Learn more" survives every review meeting, and the structural cost of choosing safe over specific.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/the-most-common-saas-email-cta-mistake" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Failure Pattern · Guest Language CTA · 96%</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">The most common SaaS email CTA mistake: why 96% of emails use guest language</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">One CTA pattern appears in 96% of audited SaaS emails. It keeps the reader outside the action instead of inside it. The full list of guest language variants and their ownership rewrites.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/saas-renewal-email-sequence-mistakes" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Sequence Architecture · Renewal Sequence</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">SaaS renewal email sequence mistakes: why good emails in a broken sequence still fail</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">Five emails scored well individually. The sequence still failed. The structural gap between Day 4 and Day 7 that a single-email score cannot detect.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/free-saas-email-audit-tool-score" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Tool Reveal · Audit Engine</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">Free SaaS email audit tool: score your email architecture in 90 seconds</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">54 teardowns packaged into a diagnostic system. Paste your email or URL. Get the score, the named failure pattern, and a rebuilt version. No account required.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/saas-email-teardown-database-54-real" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Archive · 59 Real SaaS Emails</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">SaaS email teardown database: 59 real emails audited, scored, and rebuilt</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">The full archive. Notion, Revolut, Perplexity, HeyGen, dbt Labs, Medallia and 53 more. Average original score: 3.4. Average after rebuild: 9.0.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/why-b2b-creator-programs-dont-generate" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">B2B Marketing · Creator Programs</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">Why B2B creator programs don't generate pipeline -- and what converts instead</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">Three failure patterns. Same root cause. None of them about copywriting skill. Why buying reach and buying credibility produce different pipeline outcomes.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/heygen-email-teardown-feature-first" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Teardown · HeyGen · Score 4/10</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">HeyGen email teardown: feature-first subject line, guest language CTA, 4/10 score</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">HeyGen shipped 4K video. Nobody opened the email. No subject line, feature-first lead, one CTA that killed the click. Full diagnosis and rebuilt version.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/the-subject-line-that-killed-34-percent" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Case · Subject Line Architecture</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">How a filing label subject line destroyed a 34% open rate -- before/after rebuild</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">It wasn't the CTA. It wasn't the send time. It was the first word. The subject line that announced the product instead of the reader's consequence.</div>
+    </a>
+
+    <a href="https://strategicflow.substack.com/p/lodgify-blog-post-teardown-filing" target="_blank" rel="noopener" style="display:block;padding:20px 0;border-bottom:1px solid var(--border);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(29,158,117,0.04)'" onmouseout="this.style.background='transparent'">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Teardown · Lodgify · Blog Post</div>
+      <div style="font-size:17px;font-weight:600;color:#fff;margin-bottom:6px;line-height:1.35;">Lodgify blog post teardown: how filing label titles bury credibility signals</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;">Lodgify won an award. Their blog post title made sure nobody noticed. The structural difference between announcing an achievement and naming its consequence for the reader.</div>
+    </a>
+
+  </div>
+
+  <div style="margin-top:32px;">
+    <a href="https://strategicflow.substack.com" target="_blank" rel="noopener" style="font-family:var(--mono);font-size:12px;color:var(--green);text-decoration:none;border:1px solid var(--border2);padding:10px 18px;border-radius:6px;display:inline-block;transition:all .15s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--border2)'">→ All issues on Substack</a>
+  </div>
+</section>
+
 <!-- AGENCY WORKFLOW SECTION -->
 <section style="padding:80px 48px;border-bottom:1px solid var(--border);max-width:800px;margin:0 auto;">
   <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;">For agencies and internal teams</div>
@@ -567,6 +694,38 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
     <details class="faq-item">
       <summary class="faq-q">How much does running an email architecture audit before sending improve click rates? <span class="faq-icon">+</span></summary>
       <p class="faq-a">Teams that run the Strategic Flow audit before every product update email have lifted click rates by 3 to 6 percentage points on the same list, without changing the offer, the design, or the send time. The audit itself runs in 90 seconds, with a rebuilt version delivered within 24 hours.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">What is the difference between email architecture and email copywriting? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Email copywriting addresses the words. Email architecture addresses the order of information — what appears first, where the consequence sits relative to context, whether proof arrives before or after the reader has already decided to leave. A well-written email with broken architecture still fails. Architectural failures include Feature-First Bias, Filing Label Subject lines, Consequence-After-Caveat structure, Missing Visual Hierarchy, Guest Language CTAs, and Zero Social Proof. These are structural decisions made before the first word is written, not stylistic ones made during editing.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">Why do SaaS emails get opened but not clicked? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">The open rate and the click rate fail for different structural reasons. Open rate fails when the subject line acts as a filing label — announcing the category of email rather than a consequence for the reader. Click rate fails when the body leads with the feature instead of the reader's outcome, when proof is buried below the fold, or when the CTA uses guest language ("Learn more") instead of ownership language ("Fix my reporting"). Across 59 SaaS email audits, the average original score is 3.4 out of 10. The most common single failure is Guest Language CTA, present in 96% of audited emails.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">What is Feature-First Bias in SaaS email marketing? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Feature-First Bias is a structural failure pattern in which a SaaS email leads with what the product does rather than what the reader gains. Instead of opening with the reader's problem or the consequence of not acting, the email opens with a feature announcement: "We've launched X" or "Introducing Y." The reader has no reason to care yet. Feature-First Bias appears in 83% of SaaS emails audited by Strategic Flow and is one of the primary causes of low click rates on product update and onboarding emails.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">What is a Guest Language CTA and why does it hurt SaaS email conversion? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">A Guest Language CTA describes what the brand offers rather than what the reader does. Examples include "Learn more," "See features," "Explore now," and "View update." These CTAs position the reader as a visitor considering whether to engage, not someone already deciding to act. Ownership language CTAs name the reader's action directly: "Fix my reporting," "See my usage data," "Get my first lesson." Guest Language CTA is the single most common structural failure in SaaS emails, appearing in 96% of the 59 emails audited by Strategic Flow.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">How does the Decision Friction Model score SaaS emails? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">The Decision Friction Model is a 7-point behavioral diagnostic framework developed by Strategic Flow. It scores emails from 1 to 10 across: subject line construction (filing label or consequence signal), lead framing (feature-first or outcome-first), feature-to-outcome translation, visual hierarchy, before/after contrast, social proof placement, and CTA language (guest or ownership). Each check maps to a named failure pattern. Across 59 real SaaS email audits including companies like Notion, Revolut, Perplexity, and dbt Labs, the average original score is 3.4 out of 10 and the average score after structural rebuild is 9.0.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">What is behavioral email architecture for SaaS? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">Behavioral email architecture is the structural design of SaaS email content mapped to reader decision behavior. It is the discipline of sequencing information so that the reader's most important decision — whether to act — is made with the correct information in the correct order. Strategic Flow applies behavioral email architecture through the Decision Friction Model, diagnosing where in the email structure the reader's decision to click is interrupted, delayed, or eliminated. It is distinct from deliverability consulting, lifecycle automation, and copywriting. The diagnostic output names the exact failure pattern, scores the email, and delivers a rebuilt version.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">What is a Filing Label Subject line and how does it affect open rates? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">A Filing Label Subject line announces the category of the email rather than a consequence for the reader. Examples include "New Feature: Advanced Reporting," "Product Update: May 2026," and "Introducing AI Inbox Sorting." These subject lines do not create a curiosity gap — the reader can infer the full contents without opening. The brain processes filing labels as metadata and routes the email to a mental folder labelled "read later," which is never opened. Filing Label Subject is the second most common structural failure in SaaS emails, appearing in 83% of Strategic Flow audits. The fix is consequence-first construction: naming what the reader gains or avoids, not what the company has shipped.</p>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q">How do SaaS onboarding email sequences fail structurally? <span class="faq-icon">+</span></summary>
+      <p class="faq-a">SaaS onboarding sequences fail structurally in two distinct ways. First, individual emails within the sequence have architectural failures: feature-first leads, guest language CTAs, buried consequences. These are detectable with a single-email audit. Second, the sequence itself has timing and gap failures that no single-email score can detect: silence windows between activation touchpoints, CTA fatigue from repeated identical calls to action, and orphaned consequences where an email references a benefit that was never introduced. The most common sequence-level failure is a silence gap between Day 3 and Day 7 of onboarding, which Strategic Flow's sequence gap finder identifies as the point where activation decisions are made without a supporting email.</p>
     </details>
   </div>
 </section>
