@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Snoika LLM SEO Blog Teardown</title>
+<meta name="description" content="Strategic Flow — Snoika LLM SEO Blog Teardown — Before/after structural analysis by Strategic Flow. Title, hook, hierarchy and CTA rebuilt with conversion score.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --snoika:#7C3AED;--snoika-light:#EDE9FE;--snoika-dark:#4C1D95;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* SCORE */
+.score-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 22px 0;}
+.score-badge{display:flex;align-items:center;gap:8px;background:var(--amber-bg);border:1px solid #F09F27;border-radius:8px;padding:10px 16px;}
+.score-num{font-family:'DM Serif Display',serif;font-size:28px;color:#7a5a00;line-height:1;}
+.score-label{font-size:11px;color:var(--amber-dark);line-height:1.4;}
+.score-badge-after{background:var(--green-light);border-color:var(--green);}
+.score-num-after{color:var(--green-dark);}
+.score-label-after{color:var(--green-mid);}
+
+/* BEFORE */
+.bef-header{background:#0f0a1e;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-text{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo-text span{color:var(--snoika);}
+.bef-nav{font-size:11px;color:#666;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:12px;line-height:1.35;}
+.bef-meta{font-size:12px;color:#aaa;margin-bottom:16px;font-family:'DM Mono',monospace;}
+.bef-copy{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-h2{font-size:16px;font-weight:700;color:#111;margin:22px 0 10px;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--snoika);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'DM Serif Display',serif;font-size:20px;color:#fff;}
+.after-logo span{color:var(--snoika);}
+.after-tagline-sm{font-size:10px;color:#666;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.score-explain{background:var(--bg-secondary);border-radius:10px;padding:20px;margin-bottom:24px;}
+.score-explain-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:14px;}
+.score-row-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.score-item{padding:12px;border-radius:8px;font-size:12px;}
+.score-item.fail{background:#FFF0F0;border-left:3px solid #F09595;}
+.score-item.pass{background:var(--green-light);border-left:3px solid var(--green);}
+.score-item-label{font-weight:500;margin-bottom:4px;color:var(--text-primary);}
+.score-item-note{color:var(--text-secondary);line-height:1.5;}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:600px){
+  .notes-grid{grid-template-columns:1fr;}
+  .score-row-detail{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Snoika — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original blog post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> snoika.com/blog</div>
+        <div class="meta-row"><span>Type:</span> Blog Post — Framework Guide</div>
+        <div class="meta-row"><span>Date:</span> June 23, 2026 · Artem Lozinsky, EMBA, MSc</div>
+        <div class="post-title">LLM seo: a practical framework for AI visibility</div>
+      </div>
+
+      <div class="score-row">
+        <div class="score-badge">
+          <div class="score-num">3</div>
+          <div class="score-label">out of 10<br>Original score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Filing Label Title · Feature-First Lead · Definitions Before Diagnosis · Guest Language CTA · Missing Visual Hierarchy · Consequence Buried in Section 3</div>
+      </div>
+
+      <div class="bef-header">
+        <div>
+          <div class="bef-logo-text">snoika<span>.</span></div>
+          <div style="font-size:10px;color:#666;letter-spacing:.1em;font-family:'DM Mono',monospace;margin-top:2px;">AI VISIBILITY PLATFORM · BLOG</div>
+        </div>
+        <div class="bef-nav">Resources · Blog</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">LLM SEO · AI Visibility · June 23, 2026</div>
+        <div class="bef-h1">LLM seo: a practical framework for AI visibility</div>
+        <div class="bef-meta">Artem Lozinsky, EMBA, MSc · 9 min read</div>
+
+        <div class="bef-copy">This article gives you a vendor-neutral framework for LLM SEO, the practice of getting your brand cited inside AI-generated answers and included when those answers discuss your category. It explains source selection and measurement, with the carryover from your existing program built into the signal framework.</div>
+
+        <div class="bef-h2">What LLM SEO actually means</div>
+        <div class="bef-copy">LLM SEO is the work of getting a brand cited and recommended inside the answers that systems like ChatGPT and Google AI Overviews generate. You already feel the shift behind it. Discovery is moving from a ranked list of ten blue links toward a single synthesized answer, and the gap between the two is real. A page can hold position one and still never appear in the answer that sits above it.</div>
+
+        <div class="bef-h2">How answer engines pick sources</div>
+        <div class="bef-copy">The mechanism behind every one of these surfaces is retrieval followed by generation. The retrieval stage selects candidate documents by semantic relevance. Quality filters then re-rank that set before the system writes an answer with citations attached to specific passages. Perplexity runs this as a six-stage RAG pipeline that pulls 5 to 10 pages per query and cites 3 to 4 of them.</div>
+
+        <div class="bef-copy">For answer engine optimization, this differs from classic ranking in two ways that change how you work. Because models cite passages, a buried answer inside an otherwise strong article can be passed over. And corroboration matters, because a claim that several independent sources agree on is safer for the model to repeat than one that appears in a single place.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://snoika.com/contact" class="bef-cta">Get AI Visibility Report</a>
+        </div>
+        <div class="bef-footer">© 2026 Snoika · snoika.com/blog</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> <strong>Filing Label Title:</strong> "LLM seo: a practical framework for AI visibility" announces the category and format. The reader searching for this topic already knows what LLM SEO is. The title fails to answer the question that actually matters: what will I be able to do after reading this that I cannot do now?</div>
+        <div class="issue-item"><span>⚠</span> <strong>Feature-First Lead:</strong> "This article gives you a vendor-neutral framework..." describes the article, not the reader's problem. The lead positions the content as a deliverable rather than a solution. A reader who has already lost clicks to AI Overviews does not need to be told what the article contains. They need to know whether it addresses their situation.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Definitions Before Diagnosis:</strong> Section one defines LLM SEO for readers who are already searching for an LLM SEO framework. That audience does not need a definition. They need the diagnosis that explains why their current program is not producing citation results. The content exists — it arrives in section two — but the reader who needed it most has already bounced.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Strongest Insight Buried:</strong> "Because models cite passages, a buried answer inside an otherwise strong article can be passed over" — this is the most actionable line in the piece. It explains a structural failure most SEO teams are making right now. It arrives in the third paragraph of section two, after 400 words of context the reader did not need first.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Guest Language CTA:</strong> "Get AI Visibility Report" is a product name, not a reader action. The reader finishing a 9-minute framework article is not thinking about Snoika's product lineup. They are thinking about their own content and whether it surfaces in AI answers. The CTA should connect directly to that concern.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Missing Visual Hierarchy:</strong> A framework article with no visual differentiation between the diagnostic insight, the tactical steps, and the background context treats all information as equally important. The reader cannot identify what to act on versus what to file away.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> snoika.com/blog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Blog Post — Strategic Flow Rewrite</div>
+        <div class="post-title">Your content ranks on Google. It still does not appear in ChatGPT answers. Here is why.</div>
+      </div>
+
+      <div class="score-row" style="margin-bottom:16px;">
+        <div class="score-badge score-badge-after">
+          <div class="score-num score-num-after">9</div>
+          <div class="score-label score-label-after">out of 10<br>Rebuilt score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Consequence-first title · Problem-state lead · Strongest insight moved above fold · Actionable hierarchy · CTA connected to reader's situation</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">snoika<span>.</span></div>
+          <div class="after-tagline-sm">AI Visibility Platform · Blog</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#666;letter-spacing:.06em;">LLM SEO · Framework Guide</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">LLM SEO · AI Visibility · June 2026</div>
+        <div class="after-h1">Your content ranks. It still <em>does not get cited.</em></div>
+        <div class="after-lead">A page can hold position one in Google and still never appear in the AI Overview sitting above it. That gap is not a ranking problem. It is a structural problem. This is the framework for closing it — without rebuilding your existing SEO program from scratch.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">&lt;50%</div>
+            <div class="stat-label">of position-one pages appear in the AI Overview above them</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">3–4</div>
+            <div class="stat-label">sources cited per Perplexity answer from a pool of 5–10</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">signals ChatGPT uses to select sources: title, snippet, freshness, domain</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1st</div>
+            <div class="stat-label">rule of LLM SEO: models cite passages, not pages — position your answer, not your article</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://snoika.com/solutions/ai-visibility-report" class="after-cta-primary">See where your brand appears in AI answers →</a>
+          <a href="https://snoika.com/blog/llm-seo-ai-visibility-framework" class="after-cta-ghost">Read the full framework</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The core structural problem</div>
+        <div class="after-section-title">A buried answer inside an otherwise strong article gets passed over.</div>
+        <div class="after-section-body">This is the most important thing to understand about how LLM citation works differently from classic ranking. Google ranks pages. AI systems cite passages. A well-optimised page with the answer buried in paragraph four will lose to a weaker page where the answer appears in the first 150 words. The fix is not more content — it is repositioning the answer you already have.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">How retrieval actually works</div>
+        <div class="after-section-title">Retrieval, re-ranking, then citation — three stages, three different levers.</div>
+        <div class="after-section-body">Every AI answer surface runs a version of the same pipeline: retrieve candidate documents by semantic relevance, re-rank by quality signals, then generate an answer with citations attached to specific passages. Perplexity runs a six-stage RAG pipeline that pulls 5 to 10 pages and cites 3 to 4. ChatGPT's search mode selects based on title relevance, snippet content, freshness, and domain credibility. Each stage is a separate intervention point — and corroboration across multiple sources is a signal all of them weight.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">What your existing program already covers</div>
+        <div class="after-section-title">Most of LLM SEO runs on the same infrastructure you already have.</div>
+        <div class="after-section-body">Domain authority, structured content, topical depth, and external citations all carry over directly. The additional work is specific: answer positioning within articles, passage-level clarity, corroboration across independent sources, and structured data that makes your claims machine-readable. None of this requires rebuilding. It requires audit and adjustment.</div>
+        <div style="margin-top:16px;">
+          <a href="https://snoika.com/solutions/ai-visibility-report" class="after-cta-primary" style="font-size:13px;">Check your current AI citation rate →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://snoika.com/blog/llm-seo-ai-visibility-framework" class="footer-link">Full framework article</a>
+          <a href="https://snoika.com/product/ai-search-visibility" class="footer-link">AI Search Visibility</a>
+          <a href="https://snoika.com/blog" class="footer-link">Blog</a>
+        </div>
+        <div class="footer-note">© 2026 Snoika · snoika.com</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+
+        <div class="score-explain">
+          <div class="score-explain-title">Score explained — why 3/10 before and 9/10 after</div>
+          <div class="score-row-detail">
+            <div class="score-item fail">
+              <div class="score-item-label">Title — FAIL</div>
+              <div class="score-item-note">"LLM seo: a practical framework for AI visibility" — Filing Label. Announces the category and format. Does not tell the reader what will change for them after reading.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Title — PASS</div>
+              <div class="score-item-note">"Your content ranks. It still does not get cited." — Names the reader's exact failure state. The reader in that situation cannot not click.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Lead — FAIL</div>
+              <div class="score-item-note">"This article gives you a vendor-neutral framework..." — Describes the article. The reader does not need to know what the article is. They need to know whether it addresses their situation.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Lead — PASS</div>
+              <div class="score-item-note">"A page can hold position one and still never appear in the AI Overview above it. That gap is not a ranking problem. It is a structural problem." — Opens with the reader's failure, names the cause, promises the fix.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Strongest insight — FAIL</div>
+              <div class="score-item-note">"Models cite passages, not pages" is the most actionable insight in the piece. It arrives in the third paragraph of section two, after 400 words of context the advanced reader did not need.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Strongest insight — PASS</div>
+              <div class="score-item-note">Moved to stat card #4 above the fold and to section one headline. The reader who needs this insight most sees it before deciding whether to keep reading.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Visual hierarchy — FAIL</div>
+              <div class="score-item-note">Definition section, mechanism section, and tactical section all use identical heading weight. The reader cannot identify what is diagnostic versus what is background.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Visual hierarchy — PASS</div>
+              <div class="score-item-note">Three sections with clear labels: core structural problem, how retrieval works, what your existing program covers. Each section answers a different reader question at a different decision stage.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">CTA — FAIL</div>
+              <div class="score-item-note">"Get AI Visibility Report" is a product name. The reader finishing this article is thinking about their own content gap, not Snoika's product lineup.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">CTA — PASS</div>
+              <div class="score-item-note">"See where your brand appears in AI answers" and "Check your current AI citation rate" connect directly to the article's diagnostic framing. The action follows naturally from the read.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Audience assumption — FAIL</div>
+              <div class="score-item-note">Section one defines LLM SEO for an audience already searching for an LLM SEO framework. That audience does not need a definition. The definition delays the content they came for.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Audience assumption — PASS</div>
+              <div class="score-item-note">Rebuild assumes the reader knows what LLM SEO is and opens with their operational problem instead. Definitions moved to a glossary link for readers who need them.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before — Title</div>
+            <p>LLM seo: a practical framework for AI visibility<br><br>Filing Label. Announces the topic category. The reader already knows this is about LLM SEO. The title does not tell them what will be different after reading.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After — Title</div>
+            <p>Your content ranks. It still does not get cited.<br><br>Names the exact failure state the reader is experiencing. No reader in that situation can scroll past this without clicking.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 fixes — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title reframed from category label to reader failure state</div>
+          <div class="upgrade-desc">The original announces the topic and format. The rebuild names the specific situation the reader is already in: ranking without being cited. A title that mirrors the reader's current problem does not need to persuade anyone to click. The relevance is self-evident.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Lead moved from article description to diagnostic opening</div>
+          <div class="upgrade-desc">The original tells the reader what the article contains. The rebuild opens with the gap: position one, no citation. Then names why — structural, not a ranking problem. Then promises the fix without rebuilding the existing program. Three sentences, three reader objections handled before section one begins.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · "Models cite passages, not pages" rescued from section two</div>
+          <div class="upgrade-desc">This is the insight that changes how an SEO team works. In the original it arrives after 400 words of definition and mechanism. In the rebuild it appears in stat card four above the fold and as the section one headline. The reader who needed this most sees it before deciding whether to continue.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Definition section removed for the target audience</div>
+          <div class="upgrade-desc">A reader searching for an LLM SEO framework already knows what LLM SEO is. Opening with a definition delays the content they came for by one full section. The rebuild assumes prior knowledge and opens with the operational problem. Readers who need the definition can follow a glossary link.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Three sections with distinct reader purposes replace undifferentiated hierarchy</div>
+          <div class="upgrade-desc">The original uses identical heading weight across definition, mechanism, and tactic. The rebuild separates them: what is broken (structural problem), how the system works (retrieval mechanics), and what to do with your existing program (audit and adjustment). Each section answers a different question at a different decision stage.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the article's diagnostic framing</div>
+          <div class="upgrade-desc">"Get AI Visibility Report" names Snoika's product. The reader finishing a framework article on citation gaps is thinking about their own content, not the product name. "See where your brand appears in AI answers" and "Check your current AI citation rate" connect the action to the exact concern the article just surfaced. Same destination, different framing, different conversion rate.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Consequence before credentials. The reader's failure state leads, not the content format. Every section answers a specific question the reader is already asking before asking them to act. Visit <a href="https://strategicflow.tech/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> for a free audit of your content.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech/">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original blog post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="https://strategicflow.tech/teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+
+</body>
+</html>
