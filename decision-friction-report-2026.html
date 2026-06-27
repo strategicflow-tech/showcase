@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Email Architecture Report 2026 — 59 Teardowns, 6 Failure Patterns | Strategic Flow</title>
+<meta name="description" content="59 real SaaS email teardowns. Average original score: 3.4/10. Average rebuilt: 9/10. The 6 structural failure patterns killing your CTR — Guest Language CTA (96%), Feature-First Bias (83%), Filing Label Subject (83%) and more.">
+<meta name="keywords" content="SaaS email architecture, email CTR problems, Feature-First Bias, Guest Language CTA, decision friction model, email conversion failure, SaaS email teardown, behavioral email audit">
+<meta name="author" content="Alex Iliescu, Strategic Flow">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="canonical" href="https://strategicflow.tech/decision-friction-report-2026.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SaaS Email Architecture Report 2026 — 59 Teardowns, 6 Failure Patterns">
+<meta property="og:description" content="59 real SaaS email teardowns. Average score 3.4/10. Average rebuilt 9/10. Data from HeyGen, Revolut, Wiz, ElevenLabs and 55 others.">
+<meta property="og:url" content="https://strategicflow.tech/decision-friction-report-2026.html">
+<meta property="og:site_name" content="Strategic Flow">
+<meta property="article:published_time" content="2026-06-27T00:00:00Z">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SaaS Email Architecture Report 2026">
+<meta name="twitter:description" content="96% of SaaS emails end with Guest Language CTA. 83% open with Feature-First Bias. Data from 59 teardowns.">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"SaaS Email Architecture Report 2026 — 59 Teardowns, 6 Failure Patterns","description":"Research report analyzing 59 real SaaS email teardowns. Average original score 3.4/10, average rebuilt score 9/10.","url":"https://strategicflow.tech/decision-friction-report-2026.html","datePublished":"2026-06-27","author":{"@type":"Person","name":"Alex Iliescu","url":"https://strategicflow.tech/"},"publisher":{"@type":"Organization","name":"Strategic Flow","url":"https://strategicflow.tech/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"Strategic Flow SaaS Email Teardown Dataset 2026","description":"Scores, pattern frequencies, and structural diagnoses from 59 SaaS email teardowns. Average original score 3.4/10, rebuilt 9/10.","url":"https://strategicflow.tech/decision-friction-report-2026.html","creator":{"@type":"Person","name":"Alex Iliescu","affiliation":"Strategic Flow"},"datePublished":"2026-06-27","variableMeasured":["Email architecture score (1-10)","Pattern frequency percentage","Score lift after rebuild"],"measurementTechnique":"Decision Friction Model — 7-point behavioral diagnostic","size":"59 email teardowns"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why do SaaS emails get opened but not clicked?","acceptedAnswer":{"@type":"Answer","text":"The most common cause is Feature-First Bias — the email hook announces what the product shipped instead of naming what the reader stops losing. Across 59 SaaS email teardowns, 83% of emails opened with a product announcement rather than the reader's consequence. The fix is consequence-first architecture."}},{"@type":"Question","name":"What is Feature-First Bias in SaaS email?","acceptedAnswer":{"@type":"Answer","text":"Feature-First Bias is a structural failure where the email opens with what the product does rather than what the reader gains. Found in 83% of 59 audited emails including HeyGen, Optimizely, Wiz, ElevenLabs, and Zoho."}},{"@type":"Question","name":"What is Guest Language CTA?","acceptedAnswer":{"@type":"Answer","text":"Guest Language CTA describes CTA text that treats the reader as a visitor — Learn more, Explore what's new, View update. Found in 96% of 59 audited emails. Fix: Ownership Language — Fix my reporting lag, See my activation gap."}},{"@type":"Question","name":"What is the Decision Friction Model?","acceptedAnswer":{"@type":"Answer","text":"The Decision Friction Model is a 7-point behavioral diagnostic framework by Strategic Flow scoring: subject line, hook strength, visual hierarchy, numbers above fold, CTA ownership language, activation friction, and audience signal."}},{"@type":"Question","name":"What score does a typical SaaS email get?","acceptedAnswer":{"@type":"Answer","text":"The average original score across 59 teardowns is 3.4 out of 10. After structural rebuild, the average reaches 9.0/10. The 5.6-point lift is structural, not stylistic."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Strategic Flow","item":"https://strategicflow.tech/"},{"@type":"ListItem","position":2,"name":"Research","item":"https://strategicflow.tech/notes.html"},{"@type":"ListItem","position":3,"name":"SaaS Email Architecture Report 2026","item":"https://strategicflow.tech/decision-friction-report-2026.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Strategic Flow","url":"https://strategicflow.tech/","description":"Strategic Flow is a behavioral email architecture platform diagnosing decision friction in SaaS emails.","founder":{"@type":"Person","name":"Alex Iliescu","email":"alex@strategicflow.tech"},"knowsAbout":["Email architecture audit","SaaS email conversion","Decision Friction Model","Feature-First Bias","Guest Language CTA","Behavioral email diagnostics"],"sameAs":["https://strategicflow.substack.com"]}</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --red: #E8472A;
+  --black: #0D0D0D;
+  --white: #FFFFFF;
+  --off: #F5F4F1;
+  --mid: #E8E6E1;
+  --muted: #9A9690;
+  --dark: #5A5854;
+  --border: #E0DDD8;
+  --green: #2A7A4B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--black);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+
+/* PROGRESS BAR */
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--red);width:0%;z-index:200;transition:width 0.1s;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 40px;height:52px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--black);text-decoration:none;}
+.nav-brand span{color:var(--red);}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center;}
+.nav-links a{font-size:12px;font-weight:500;color:var(--dark);text-decoration:none;letter-spacing:0.04em;transition:color 0.15s;}
+.nav-links a:hover{color:var(--red);}
+.nav-cta{background:var(--red) !important;color:var(--white) !important;padding:8px 16px !important;font-weight:600 !important;}
+@media(max-width:640px){.nav-links{display:none;}}
+
+/* COVER */
+.cover{padding:80px 40px 0;max-width:860px;margin:0 auto;border-bottom:1px solid var(--border);}
+.cover-meta{display:flex;align-items:center;gap:16px;margin-bottom:36px;flex-wrap:wrap;}
+.cover-tag{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);padding:4px 10px;}
+.cover-issue{font-size:11px;color:var(--muted);letter-spacing:0.06em;font-family:'Space Mono',monospace;}
+.cover-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(34px,5.5vw,60px);font-weight:700;line-height:1.06;letter-spacing:-0.02em;color:var(--black);margin-bottom:20px;max-width:720px;}
+.cover-title em{font-style:normal;color:var(--red);}
+.cover-deck{font-size:18px;color:var(--dark);line-height:1.65;max-width:560px;margin-bottom:48px;}
+.cover-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--black);border-left:2px solid var(--black);}
+.cover-stat{padding:28px 24px;border-right:2px solid var(--black);border-bottom:2px solid var(--black);}
+.cover-stat-num{font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;color:var(--red);line-height:1;margin-bottom:6px;}
+.cover-stat-num.counter{opacity:0;transition:opacity 0.3s;}
+.cover-stat-num.counter.visible{opacity:1;}
+.cover-stat-label{font-size:12px;color:var(--dark);font-weight:500;text-transform:uppercase;letter-spacing:0.08em;}
+@media(max-width:500px){.cover-stats{grid-template-columns:1fr;}.cover{padding:48px 20px 0;}}
+
+/* READING PROGRESS + TOC */
+.sticky-toc{position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:50;}
+.toc-dot{width:8px;height:8px;border-radius:50%;background:var(--mid);cursor:pointer;transition:all 0.2s;position:relative;}
+.toc-dot.active{background:var(--red);transform:scale(1.4);}
+.toc-dot:hover{background:var(--red);}
+.toc-dot .toc-tip{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:var(--black);color:var(--white);font-size:11px;padding:4px 8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.15s;}
+.toc-dot:hover .toc-tip{opacity:1;}
+@media(max-width:900px){.sticky-toc{display:none;}}
+
+/* LAYOUT */
+.report-body{max-width:860px;margin:0 auto;padding:0 40px;}
+@media(max-width:640px){.report-body{padding:0 20px;}}
+
+/* SECTION */
+.section-rule{display:flex;align-items:center;gap:16px;padding:56px 0 32px;border-bottom:1px solid var(--border);margin-bottom:40px;}
+.section-num{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.section-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--black);}
+
+/* TYPOGRAPHY */
+.lede{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:500;line-height:1.45;color:var(--black);margin-bottom:28px;max-width:680px;}
+.body-copy{font-size:16px;line-height:1.75;color:#333;margin-bottom:24px;max-width:640px;}
+.body-copy a,.faq-body a{color:var(--red);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;}
+h2{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.01em;color:var(--black);margin:48px 0 16px;max-width:640px;}
+h3{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:var(--black);margin:32px 0 10px;}
+
+/* PULL QUOTE */
+.pull-quote{border-left:4px solid var(--red);padding:20px 28px;margin:36px 0;background:var(--off);}
+.pull-quote p{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:500;line-height:1.5;color:var(--black);margin-bottom:8px;}
+.pull-quote cite{font-size:12px;color:var(--muted);font-style:normal;letter-spacing:0.06em;}
+
+/* ===== ANIMATED COUNTER STATS ===== */
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:32px 0;}
+@media(max-width:500px){.stat-row{grid-template-columns:1fr;}}
+.stat-box{background:var(--off);padding:24px;border-left:3px solid var(--red);}
+.stat-box-num{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;color:var(--red);line-height:1;margin-bottom:6px;}
+.stat-box-label{font-size:13px;color:var(--dark);line-height:1.5;}
+
+/* ===== PATTERN RADIAL CHART ===== */
+.radial-section{margin:40px 0;}
+.radial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:32px 0;}
+@media(max-width:600px){.radial-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:380px){.radial-grid{grid-template-columns:1fr;}}
+.radial-card{background:var(--off);border:1px solid var(--border);padding:20px;text-align:center;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+.radial-card:hover{border-color:var(--red);box-shadow:0 4px 20px rgba(232,71,42,0.1);}
+.radial-canvas-wrap{position:relative;width:100px;height:100px;margin:0 auto 12px;}
+.radial-canvas-wrap canvas{position:absolute;top:0;left:0;}
+.radial-pct-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--red);}
+.radial-name{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--black);margin-bottom:4px;}
+.radial-sub{font-size:11px;color:var(--muted);line-height:1.4;}
+
+/* ===== HORIZONTAL BAR CHART ===== */
+.bar-chart-wrap{margin:32px 0;}
+.bar-row{display:grid;grid-template-columns:200px 1fr 52px;align-items:center;gap:16px;margin-bottom:14px;}
+@media(max-width:600px){.bar-row{grid-template-columns:120px 1fr 44px;gap:8px;}}
+.bar-label{font-size:13px;font-weight:600;color:var(--black);font-family:'Space Grotesk',sans-serif;}
+.bar-track{background:var(--mid);height:28px;position:relative;overflow:hidden;}
+.bar-fill{height:100%;width:0;background:var(--red);transition:width 1.4s cubic-bezier(0.16,1,0.3,1);display:flex;align-items:center;padding-left:10px;}
+.bar-fill-inner{font-size:11px;font-weight:700;color:var(--white);white-space:nowrap;opacity:0;transition:opacity 0.3s 0.8s;}
+.bar-pct{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--red);text-align:right;}
+.bar-row.revealed .bar-fill{width:var(--w);}
+.bar-row.revealed .bar-fill-inner{opacity:1;}
+
+/* ===== SCORE COMPARISON CHART ===== */
+.score-chart{margin:32px 0;background:var(--off);border:1px solid var(--border);padding:32px;}
+.score-chart-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--black);margin-bottom:24px;text-transform:uppercase;letter-spacing:0.08em;}
+.score-bars{display:flex;flex-direction:column;gap:20px;}
+.score-bar-item{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:center;}
+@media(max-width:500px){.score-bar-item{grid-template-columns:90px 1fr;gap:8px;}}
+.score-bar-name{font-size:13px;font-weight:600;color:var(--dark);}
+.score-bar-tracks{display:flex;flex-direction:column;gap:4px;}
+.score-track{height:14px;background:var(--mid);position:relative;}
+.score-fill{height:100%;width:0;transition:width 1.2s cubic-bezier(0.16,1,0.3,1);}
+.score-fill.original{background:#d4a099;}
+.score-fill.rebuilt{background:var(--green);}
+.score-bar-item.revealed .score-fill{width:var(--sw);}
+.score-legend{display:flex;gap:20px;margin-top:16px;}
+.score-legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dark);}
+.score-legend-dot{width:12px;height:12px;flex-shrink:0;}
+.score-legend-dot.orig{background:#d4a099;}
+.score-legend-dot.reb{background:var(--green);}
+
+/* ===== SCATTER / DOT PLOT ===== */
+.scatter-wrap{margin:32px 0;background:var(--off);border:1px solid var(--border);padding:24px;overflow-x:auto;}
+.scatter-title{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--black);margin-bottom:20px;text-transform:uppercase;letter-spacing:0.08em;}
+#scatter-canvas{display:block;max-width:100%;}
+
+/* ===== INTERACTIVE PATTERN CARDS ===== */
+.pattern-cards{display:flex;flex-direction:column;gap:0;margin:32px 0;}
+.pcard{border:1px solid var(--border);border-left:4px solid var(--red);margin-bottom:-1px;cursor:pointer;transition:border-color 0.2s;}
+.pcard:hover{border-color:var(--red);z-index:1;position:relative;}
+.pcard-header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:18px 22px;}
+.pcard-left{display:flex;align-items:center;gap:16px;}
+.pcard-pct{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:var(--red);min-width:64px;}
+.pcard-name{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--black);}
+.pcard-freq-bar{height:4px;background:var(--mid);margin-top:6px;max-width:200px;}
+.pcard-freq-fill{height:4px;background:var(--red);width:0;transition:width 1.2s cubic-bezier(0.16,1,0.3,1);}
+.pcard.revealed .pcard-freq-fill{width:var(--fw);}
+.pcard-toggle{font-size:20px;color:var(--muted);font-weight:300;transition:transform 0.2s;flex-shrink:0;}
+.pcard.open .pcard-toggle{transform:rotate(45deg);color:var(--red);}
+.pcard-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+.pcard.open .pcard-body{max-height:400px;}
+.pcard-inner{padding:0 22px 22px;}
+.pcard-desc{font-size:14px;color:#444;line-height:1.7;margin-bottom:14px;max-width:560px;}
+.pcard-fix{font-size:13px;color:var(--green);font-weight:600;display:flex;gap:8px;}
+.pcard-fix::before{content:"→";flex-shrink:0;}
+.pcard-examples{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;}
+.pcard-tag{font-size:11px;background:var(--white);border:1px solid var(--border);padding:3px 8px;color:var(--dark);font-family:'Space Mono',monospace;}
+
+/* ===== BEFORE/AFTER ===== */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0;}
+@media(max-width:500px){.ba-grid{grid-template-columns:1fr;}}
+.ba-card{padding:24px;border:1px solid var(--border);}
+.ba-card.before{background:#fff7f6;border-color:#f5c6be;}
+.ba-card.after{background:#f4faf7;border-color:#b4ddc7;}
+.ba-label{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;}
+.ba-card.before .ba-label{color:var(--red);}
+.ba-card.after .ba-label{color:var(--green);}
+.ba-score{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;margin-bottom:12px;}
+.ba-card.before .ba-score{color:var(--red);}
+.ba-card.after .ba-score{color:var(--green);}
+.ba-item{font-size:13px;line-height:1.6;color:#444;margin-bottom:8px;}
+.ba-item strong{font-weight:700;display:block;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:2px;}
+
+/* ===== CHECKLIST ===== */
+.check-list{list-style:none;margin:20px 0;}
+.check-list li{font-size:15px;color:#333;padding:12px 0;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:flex-start;opacity:0;transform:translateX(-8px);transition:opacity 0.4s,transform 0.4s;}
+.check-list li.visible{opacity:1;transform:translateX(0);}
+.check-list li::before{content:"✕";color:var(--red);font-weight:700;font-size:14px;flex-shrink:0;margin-top:1px;}
+
+/* ===== BENCH TABLE ===== */
+.bench-wrap{overflow-x:auto;margin:32px 0;border:1px solid var(--border);}
+.bench-table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px;}
+.bench-table thead{background:var(--black);color:var(--white);}
+.bench-table th{padding:12px 16px;text-align:left;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;}
+.bench-table td{padding:12px 16px;border-bottom:1px solid var(--border);color:#333;}
+.bench-table tr:last-child td{background:var(--off);font-weight:700;color:var(--black);border-bottom:none;}
+.bench-table tbody tr:hover td{background:#fafaf8;}
+.score-red{font-family:'Space Mono',monospace;color:var(--red);font-weight:700;}
+.score-green{font-family:'Space Mono',monospace;color:var(--green);font-weight:700;}
+
+/* ===== EXAMPLE BOX ===== */
+.example-box{background:var(--off);border:1px solid var(--border);padding:24px 28px;margin:24px 0;font-family:'Space Mono',monospace;font-size:13px;line-height:1.7;color:var(--black);}
+.example-box .label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.example-box .strike{text-decoration:line-through;color:var(--muted);}
+.example-box .better{color:var(--red);font-weight:600;}
+
+/* ===== INLINE CTA ===== */
+.inline-cta{border:1px solid var(--red);padding:20px 24px;margin:36px 0;display:flex;align-items:center;justify-content:space-between;gap:20px;background:#fff8f7;}
+@media(max-width:500px){.inline-cta{flex-direction:column;}}
+.inline-cta-text{font-size:14px;color:var(--black);font-weight:500;max-width:440px;}
+.inline-cta-link{background:var(--red);color:var(--white);font-size:13px;font-weight:700;padding:10px 20px;text-decoration:none;white-space:nowrap;flex-shrink:0;font-family:'Space Grotesk',sans-serif;transition:opacity 0.15s;}
+.inline-cta-link:hover{opacity:0.9;}
+
+/* ===== SHARE STAT CARDS ===== */
+.share-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0;}
+@media(max-width:500px){.share-stat-grid{grid-template-columns:1fr;}}
+.share-stat{background:var(--off);border:1px solid var(--border);padding:20px;text-align:center;transition:box-shadow 0.2s;}
+.share-stat:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.share-stat-num{font-family:'Space Grotesk',sans-serif;font-size:30px;font-weight:700;color:var(--red);line-height:1;margin-bottom:6px;}
+.share-stat-label{font-size:12px;color:var(--dark);line-height:1.4;margin-bottom:12px;}
+.share-btn{display:inline-block;font-size:11px;font-weight:600;color:var(--red);text-decoration:none;border:1px solid var(--red);padding:5px 12px;cursor:pointer;letter-spacing:0.06em;background:var(--white);transition:all 0.15s;}
+.share-btn:hover{background:var(--red);color:var(--white);}
+
+/* ===== METHODOLOGY ===== */
+.method-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:28px 0;}
+@media(max-width:500px){.method-grid{grid-template-columns:1fr;}}
+.method-box{background:var(--off);border:1px solid var(--border);padding:20px 22px;}
+.method-box-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.method-box-val{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:var(--black);}
+
+/* ===== TIMELINE CHART ===== */
+.timeline-wrap{margin:28px 0;overflow-x:auto;}
+.timeline-svg-wrap{min-width:500px;}
+
+/* ===== FAQ ===== */
+.faq-wrap{background:var(--off);padding:56px 40px;border-top:1px solid var(--border);}
+.faq-inner{max-width:860px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-summary{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:var(--black);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;padding:20px 0;}
+.faq-summary::-webkit-details-marker{display:none;}
+.faq-icon{color:var(--red);font-size:22px;font-weight:300;flex-shrink:0;margin-left:16px;transition:transform 0.2s;}
+details[open] .faq-icon{transform:rotate(45deg);}
+.faq-body{font-size:14px;color:#444;line-height:1.75;padding-bottom:20px;max-width:640px;}
+
+/* ===== CTA SECTION ===== */
+.cta-section{background:var(--black);padding:72px 40px;text-align:center;}
+.cta-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:20px;}
+.cta-headline{font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,4vw,38px);font-weight:700;color:var(--white);line-height:1.2;letter-spacing:-0.02em;margin-bottom:18px;max-width:560px;margin-left:auto;margin-right:auto;}
+.cta-body{font-size:15px;color:#888;line-height:1.7;max-width:440px;margin:0 auto 36px;}
+.cta-btn{display:inline-block;background:var(--red);color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;padding:16px 36px;text-decoration:none;letter-spacing:0.02em;transition:opacity 0.15s;margin-bottom:16px;}
+.cta-btn:hover{opacity:0.9;}
+.cta-secondary{display:block;font-size:13px;color:#555;margin-top:14px;}
+.cta-secondary a{color:#777;text-decoration:underline;}
+
+/* FOOTER */
+footer{background:var(--off);border-top:1px solid var(--border);padding:40px;text-align:center;}
+.footer-brand{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--black);margin-bottom:12px;}
+.footer-brand span{color:var(--red);}
+.footer-links{display:flex;justify-content:center;gap:20px;list-style:none;margin-bottom:16px;flex-wrap:wrap;}
+.footer-links a{font-size:13px;color:var(--dark);text-decoration:none;transition:color 0.15s;}
+.footer-links a:hover{color:var(--red);}
+.footer-copy{font-size:12px;color:var(--muted);}
+
+/* TOC INLINE */
+.toc-box{background:var(--off);border:1px solid var(--border);padding:28px 32px;margin:36px 0 48px;}
+.toc-title{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--dark);margin-bottom:14px;}
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;}
+@media(max-width:500px){.toc-list{grid-template-columns:1fr;}}
+.toc-list a{font-size:14px;color:var(--black);text-decoration:none;font-weight:500;display:flex;gap:10px;align-items:baseline;transition:color 0.15s;}
+.toc-list a:hover{color:var(--red);}
+.toc-num{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;}
+
+/* ANIMATE IN */
+.fade-in{opacity:0;transform:translateY(16px);transition:opacity 0.5s,transform 0.5s;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+hr.div{border:none;border-top:1px solid var(--border);margin:48px 0;}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- STICKY TOC DOTS -->
+<nav class="sticky-toc" aria-label="Page sections">
+  <div class="toc-dot active" data-target="problem"><span class="toc-tip">The Problem</span></div>
+  <div class="toc-dot" data-target="model"><span class="toc-tip">The Model</span></div>
+  <div class="toc-dot" data-target="patterns"><span class="toc-tip">6 Patterns</span></div>
+  <div class="toc-dot" data-target="benchmarks"><span class="toc-tip">Benchmarks</span></div>
+  <div class="toc-dot" data-target="before-after"><span class="toc-tip">Before / After</span></div>
+  <div class="toc-dot" data-target="methodology"><span class="toc-tip">Methodology</span></div>
+  <div class="toc-dot" data-target="fix"><span class="toc-tip">Fix It</span></div>
+</nav>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="https://strategicflow.tech/">Strategic <span>Flow</span></a>
+  <ul class="nav-links">
+    <li><a href="https://strategicflow.tech/teardowns.html">59 Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/decision-friction-model.html">The Model</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app/demo.html" class="nav-cta">Score My Email</a></li>
+  </ul>
+</nav>
+
+<!-- COVER -->
+<header class="cover">
+  <div class="cover-meta">
+    <span class="cover-tag">Research Report</span>
+    <span class="cover-issue">SF-REPORT-001 — June 2026</span>
+  </div>
+  <h1 class="cover-title">The SaaS Email<br>Architecture Report<br><em>2026</em></h1>
+  <p class="cover-deck">59 real teardowns. 6 structural failure patterns. The same bugs in emails from billion-dollar companies. This is not a copywriting problem.</p>
+  <div class="cover-stats">
+    <div class="cover-stat">
+      <div class="cover-stat-num counter" data-target="59" data-suffix="">0</div>
+      <div class="cover-stat-label">Emails audited</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-num counter" data-target="3.4" data-suffix="/10" data-decimals="1">0</div>
+      <div class="cover-stat-label">Avg original score</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-num counter" data-target="9.0" data-suffix="/10" data-decimals="1">0</div>
+      <div class="cover-stat-label">Avg rebuilt score</div>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<main class="report-body">
+
+  <div class="toc-box" style="margin-top:48px;">
+    <div class="toc-title">In this report</div>
+    <ul class="toc-list">
+      <li><a href="#problem"><span class="toc-num">01</span> The problem</a></li>
+      <li><a href="#model"><span class="toc-num">02</span> Decision Friction Model</a></li>
+      <li><a href="#patterns"><span class="toc-num">03</span> 6 failure patterns</a></li>
+      <li><a href="#benchmarks"><span class="toc-num">04</span> Industry benchmarks</a></li>
+      <li><a href="#before-after"><span class="toc-num">05</span> Before / After</a></li>
+      <li><a href="#methodology"><span class="toc-num">06</span> Methodology</a></li>
+      <li><a href="#fix"><span class="toc-num">07</span> How to fix it</a></li>
+    </ul>
+  </div>
+
+  <!-- 01 PROBLEM -->
+  <section id="problem">
+    <div class="section-rule">
+      <span class="section-num">01 —</span>
+      <span class="section-label">The Problem</span>
+    </div>
+
+    <p class="lede fade-in">Your email had a 28% open rate. And a 1.2% CTR. That gap has a structural explanation.</p>
+
+    <p class="body-copy fade-in">Across 59 SaaS email teardowns published at <a href="https://strategicflow.tech/teardowns.html">strategicflow.tech</a>, the pattern is always the same. The subject line works. The reader opens. Then line one announces what shipped instead of naming what the reader stops losing. They close in under four seconds.</p>
+
+    <p class="body-copy fade-in">This is not a <a href="https://strategicflow.tech/architecture-vs-deliverability-tools.html">deliverability problem</a>. It is not a copywriting problem. It is an <strong>architecture problem</strong> — the sequence of decisions made before the first word was written.</p>
+
+    <div class="pull-quote fade-in">
+      <p>"The email was written for the product team who built the feature. The send list was 80% trial users in their first 30 days. Those are not the same person."</p>
+      <cite>— From the <a href="https://strategicflow.tech/story-nine-figure-company-2-10.html">nine-figure company teardown</a> that scored 2/10</cite>
+    </div>
+
+    <!-- SHARE STAT CARDS -->
+    <div class="share-stat-grid fade-in">
+      <div class="share-stat">
+        <div class="share-stat-num">96%</div>
+        <div class="share-stat-label">of audited emails ended with Guest Language CTA</div>
+        <a class="share-btn" onclick="shareText('96% of SaaS emails end with Guest Language CTA (Learn more, Explore, See what\'s new). Data from 59 teardowns. strategicflow.tech/decision-friction-report-2026.html')" href="#">Share this stat</a>
+      </div>
+      <div class="share-stat">
+        <div class="share-stat-num">83%</div>
+        <div class="share-stat-label">opened with Feature-First Bias — product before reader's consequence</div>
+        <a class="share-btn" onclick="shareText('83% of SaaS emails open with Feature-First Bias — announcing the product before naming what the reader stops losing. Data: strategicflow.tech/decision-friction-report-2026.html')" href="#">Share this stat</a>
+      </div>
+      <div class="share-stat">
+        <div class="share-stat-num">5.6</div>
+        <div class="share-stat-label">average score lift after structural rebuild (3.4 → 9.0)</div>
+        <a class="share-btn" onclick="shareText('Average SaaS email scores 3.4/10 on architecture. Rebuilt: 9.0/10. The gap is structural, not stylistic. Data: strategicflow.tech/decision-friction-report-2026.html')" href="#">Share this stat</a>
+      </div>
+    </div>
+
+    <p class="body-copy fade-in">The companies audited include HeyGen, Revolut, Qonto, Wiz, ElevenLabs, Optimizely, Zoho, Atlassian, Cato Networks, Wrike, Figma, and 48 others. The bugs are not industry-specific.</p>
+
+    <div class="inline-cta fade-in">
+      <div class="inline-cta-text">See the full list of 59 published teardowns — real companies, real emails, real scores.</div>
+      <a class="inline-cta-link" href="https://strategicflow.tech/teardowns.html">View All Teardowns →</a>
+    </div>
+  </section>
+
+  <!-- 02 MODEL -->
+  <section id="model">
+    <div class="section-rule">
+      <span class="section-num">02 —</span>
+      <span class="section-label">The Decision Friction Model</span>
+    </div>
+
+    <p class="lede fade-in">Every email was scored across 7 behavioral checks. A score of 3 means structural failure at 4 of those 7 checks.</p>
+
+    <p class="body-copy fade-in">The <a href="https://strategicflow.tech/decision-friction-model.html">Decision Friction Model</a> maps the architectural elements inside an email that interrupt, delay, or eliminate the reader's decision to act. It is distinct from deliverability and copywriting.</p>
+
+    <h3>The 7 behavioral checks</h3>
+
+    <ul class="check-list fade-in" id="checklist">
+      <li><strong>Subject line</strong> — filing label or consequence signal? Does it announce the topic or name the reader's failure state?</li>
+      <li><strong>Hook strength</strong> — company news or reader's problem named first? Does line one pass the "so what" test in under 4 seconds?</li>
+      <li><strong>Visual hierarchy</strong> — does the most important update get the most visual weight, or is everything flat?</li>
+      <li><strong>Numbers above the fold</strong> — are silent objections answered before they form, or is proof buried in paragraph 4?</li>
+      <li><strong>CTA ownership language</strong> — action description or decision framing? "Learn more" vs "Fix my reporting".</li>
+      <li><strong>Activation friction</strong> — do onboarding steps name what they unlock, or just describe what to do?</li>
+      <li><strong>Audience signal</strong> — does line one speak to everyone or to someone specific?</li>
+    </ul>
+
+    <!-- RADIAL SCORE CHART -->
+    <div class="radial-section fade-in">
+      <h3 style="margin-bottom:8px;">Score distribution across 59 audits</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Click each segment to explore. Red = original. Green = rebuilt.</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;background:var(--off);border:1px solid var(--border);padding:32px;">
+        <canvas id="donut-chart" width="200" height="200"></canvas>
+        <div id="donut-legend" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
+    </div>
+
+    <div class="inline-cta fade-in">
+      <div class="inline-cta-text">Read the full Decision Friction Model — with examples for each of the 7 checks.</div>
+      <a class="inline-cta-link" href="https://strategicflow.tech/decision-friction-model.html">Read the Model →</a>
+    </div>
+  </section>
+
+  <!-- 03 PATTERNS -->
+  <section id="patterns">
+    <div class="section-rule">
+      <span class="section-num">03 —</span>
+      <span class="section-label">6 Failure Patterns</span>
+    </div>
+
+    <p class="lede fade-in">Ranked by frequency across 59 audited emails. Click each pattern to expand.</p>
+
+    <!-- HORIZONTAL BAR CHART -->
+    <div class="bar-chart-wrap fade-in" id="bar-chart">
+      <div class="bar-row" style="--w:96%" data-pct="96">
+        <div class="bar-label">Guest Language CTA</div>
+        <div class="bar-track"><div class="bar-fill"><span class="bar-fill-inner">96% of emails</span></div></div>
+        <div class="bar-pct">96%</div>
+      </div>
+      <div class="bar-row" style="--w:83%" data-pct="83">
+        <div class="bar-label">Feature-First Bias</div>
+        <div class="bar-track"><div class="bar-fill"><span class="bar-fill-inner">83% of emails</span></div></div>
+        <div class="bar-pct">83%</div>
+      </div>
+      <div class="bar-row" style="--w:83%" data-pct="83">
+        <div class="bar-label">Filing Label Subject</div>
+        <div class="bar-track"><div class="bar-fill"><span class="bar-fill-inner">83% of emails</span></div></div>
+        <div class="bar-pct">83%</div>
+      </div>
+      <div class="bar-row" style="--w:74%" data-pct="74">
+        <div class="bar-label">Consequence-After-Caveat</div>
+        <div class="bar-track"><div class="bar-fill"><span class="bar-fill-inner">74% of emails</span></div></div>
+        <div class="bar-pct">74%</div>
+      </div>
+      <div class="bar-row" style="--w:71%" data-pct="71">
+        <div class="bar-label">Missing Visual Hierarchy</div>
+        <div class="bar-track"><div class="bar-fill"><span class="bar-fill-inner">71% of emails</span></div></div>
+        <div class="bar-pct">71%</div>
+      </div>
+      <div class="bar-row" style="--w:69%" data-pct="69">
+        <div class="bar-label">Buried Proof</div>
+        <div class="bar-track"><div class="bar-fill"><span class="bar-fill-inner">69% of emails</span></div></div>
+        <div class="bar-pct">69%</div>
+      </div>
+    </div>
+
+    <p class="body-copy fade-in">See the <a href="https://strategicflow.tech/field-note-feature-first-bias.html">Feature-First Bias field note</a> and the <a href="https://strategicflow.tech/field-note-guest-language-cta.html">Guest Language CTA field note</a> for real examples with before/after rebuilds.</p>
+
+    <!-- INTERACTIVE PATTERN CARDS -->
+    <div class="pattern-cards fade-in" id="pattern-cards">
+
+      <div class="pcard" style="--fw:96%" data-open="false">
+        <div class="pcard-header">
+          <div class="pcard-left">
+            <div class="pcard-pct">96%</div>
+            <div>
+              <div class="pcard-name">Guest Language CTA</div>
+              <div class="pcard-freq-bar"><div class="pcard-freq-fill"></div></div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="pcard-desc">"Learn more", "Explore what's new", "View update" — describes what the brand offers, not what the reader does. Treats the reader as a visitor browsing an offer, not someone with a problem to fix. Found in 96 of 59 audited emails — the single most prevalent structural failure in the dataset.</div>
+            <div class="pcard-fix">Ownership Language: "Fix my reporting lag" · "See my activation gap" · "Stop the wait"</div>
+            <div class="pcard-examples">
+              <span class="pcard-tag">HeyGen</span><span class="pcard-tag">Revolut</span><span class="pcard-tag">Zoho</span><span class="pcard-tag">Optimizely</span><span class="pcard-tag">ElevenLabs</span><span class="pcard-tag">+54 more</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" style="--fw:83%" data-open="false">
+        <div class="pcard-header">
+          <div class="pcard-left">
+            <div class="pcard-pct">83%</div>
+            <div>
+              <div class="pcard-name">Feature-First Bias</div>
+              <div class="pcard-freq-bar"><div class="pcard-freq-fill"></div></div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="pcard-desc">The email opens with what the product does, not what the reader gains. Hook announces the feature. Reader has to figure out why it matters to them today. They don't. The subject line earned the open — the hook doesn't earn the read. See: <a href="https://strategicflow.tech/term-feature-first-bias.html">Feature-First Bias definition →</a></div>
+            <div class="pcard-fix">Name the reader's consequence in line 1. Feature named as the solution in line 2.</div>
+            <div class="pcard-examples">
+              <span class="pcard-tag">HeyGen</span><span class="pcard-tag">dbt Labs</span><span class="pcard-tag">Landbot</span><span class="pcard-tag">Gamma</span><span class="pcard-tag">Wiz</span><span class="pcard-tag">Ahrefs</span><span class="pcard-tag">Notion</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" style="--fw:83%" data-open="false">
+        <div class="pcard-header">
+          <div class="pcard-left">
+            <div class="pcard-pct">83%</div>
+            <div>
+              <div class="pcard-name">Filing Label Subject</div>
+              <div class="pcard-freq-bar"><div class="pcard-freq-fill"></div></div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="pcard-desc">Subject line announces the topic like a folder tab. "New Feature: Advanced Reporting Dashboard", "Developer Agent Launch", "6 Ways to Do Keyword Research". No consequence, no curiosity gap. The reader opens out of obligation, not urgency. See: <a href="https://strategicflow.tech/term-filing-label-subject.html">Filing Label Subject definition →</a></div>
+            <div class="pcard-fix">"Your [metric] is [failing state]" beats "[Product] launches [Feature]" every time.</div>
+            <div class="pcard-examples">
+              <span class="pcard-tag">Semrush</span><span class="pcard-tag">Wrike</span><span class="pcard-tag">Ahrefs</span><span class="pcard-tag">Zoho Analytics</span><span class="pcard-tag">Cato Networks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" style="--fw:74%" data-open="false">
+        <div class="pcard-header">
+          <div class="pcard-left">
+            <div class="pcard-pct">74%</div>
+            <div>
+              <div class="pcard-name">Consequence-After-Caveat</div>
+              <div class="pcard-freq-bar"><div class="pcard-freq-fill"></div></div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="pcard-desc">Outcome buried behind qualifications, context-setting, or disclaimers. Reader stops reading before reaching the reason to care. Common in fintech and cybersecurity where regulatory language pushes the main message further down the email.</div>
+            <div class="pcard-fix">Consequence in line 1. Context in line 2. Proof in line 3. Qualification last or cut.</div>
+            <div class="pcard-examples">
+              <span class="pcard-tag">Optimizely</span><span class="pcard-tag">Cato Networks</span><span class="pcard-tag">Decision Lab</span><span class="pcard-tag">Fintech verticals</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" style="--fw:71%" data-open="false">
+        <div class="pcard-header">
+          <div class="pcard-left">
+            <div class="pcard-pct">71%</div>
+            <div>
+              <div class="pcard-name">Missing Visual Hierarchy</div>
+              <div class="pcard-freq-bar"><div class="pcard-freq-fill"></div></div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="pcard-desc">Everything looks equally important. No major/minor distinction. No visual anchor. Ahrefs and Zoho Analytics listed 12 features flat. Wrike shipped 45 updates with no priority structure. Reader cannot identify what to act on first — so they act on nothing.</div>
+            <div class="pcard-fix">MAJOR update: full-width card at the top. MINOR updates: grouped list below the fold.</div>
+            <div class="pcard-examples">
+              <span class="pcard-tag">Ahrefs</span><span class="pcard-tag">Zoho Analytics</span><span class="pcard-tag">Wrike (45 updates)</span><span class="pcard-tag">Landbot</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" style="--fw:69%" data-open="false">
+        <div class="pcard-header">
+          <div class="pcard-left">
+            <div class="pcard-pct">69%</div>
+            <div>
+              <div class="pcard-name">Buried Proof</div>
+              <div class="pcard-freq-bar"><div class="pcard-freq-fill"></div></div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="pcard-desc">The strongest stat, number, or customer result sits in paragraph 3 or bullet 6. Spreedly buried "10/10 asset servicers". Zoho Workplace buried the $874,000 cost figure. By the time the reader reaches it, they have already left the email.</div>
+            <div class="pcard-fix">If you'd use it as a headline on a landing page, it belongs in line 1 of the email.</div>
+            <div class="pcard-examples">
+              <span class="pcard-tag">Spreedly</span><span class="pcard-tag">SEOmonitor</span><span class="pcard-tag">Wrike</span><span class="pcard-tag">EasyLlama</span><span class="pcard-tag">Zoho Workplace</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="inline-cta fade-in">
+      <div class="inline-cta-text">See Guest Language CTA in a real SaaS email — with the exact ownership language rebuild.</div>
+      <a class="inline-cta-link" href="https://strategicflow.tech/field-note-guest-language-cta.html">Read Field Note →</a>
+    </div>
+  </section>
+
+  <!-- 04 BENCHMARKS -->
+  <section id="benchmarks">
+    <div class="section-rule">
+      <span class="section-num">04 —</span>
+      <span class="section-label">Industry Benchmarks</span>
+    </div>
+
+    <p class="lede fade-in">The structural failure is not industry-specific. Cybersecurity, fintech, B2B SaaS — same bugs, same gap.</p>
+
+    <!-- SCORE COMPARISON CHART -->
+    <div class="score-chart fade-in" id="score-chart">
+      <div class="score-chart-title">Original vs Rebuilt Score by Vertical</div>
+      <div class="score-bars">
+        <div class="score-bar-item" style="--sw:32%">
+          <div class="score-bar-name">B2B SaaS</div>
+          <div class="score-bar-tracks">
+            <div class="score-track"><div class="score-fill original" style="--sw:32%"></div></div>
+            <div class="score-track"><div class="score-fill rebuilt" style="--sw:90%"></div></div>
+          </div>
+        </div>
+        <div class="score-bar-item">
+          <div class="score-bar-name">Fintech</div>
+          <div class="score-bar-tracks">
+            <div class="score-track"><div class="score-fill original" style="--sw:31%"></div></div>
+            <div class="score-track"><div class="score-fill rebuilt" style="--sw:90%"></div></div>
+          </div>
+        </div>
+        <div class="score-bar-item">
+          <div class="score-bar-name">AI / Agents</div>
+          <div class="score-bar-tracks">
+            <div class="score-track"><div class="score-fill original" style="--sw:29%"></div></div>
+            <div class="score-track"><div class="score-fill rebuilt" style="--sw:90%"></div></div>
+          </div>
+        </div>
+        <div class="score-bar-item">
+          <div class="score-bar-name">Enterprise B2B</div>
+          <div class="score-bar-tracks">
+            <div class="score-track"><div class="score-fill original" style="--sw:33%"></div></div>
+            <div class="score-track"><div class="score-fill rebuilt" style="--sw:90%"></div></div>
+          </div>
+        </div>
+        <div class="score-bar-item">
+          <div class="score-bar-name">Cybersecurity</div>
+          <div class="score-bar-tracks">
+            <div class="score-track"><div class="score-fill original" style="--sw:28%"></div></div>
+            <div class="score-track"><div class="score-fill rebuilt" style="--sw:90%"></div></div>
+          </div>
+        </div>
+        <div class="score-bar-item">
+          <div class="score-bar-name">Newsletters</div>
+          <div class="score-bar-tracks">
+            <div class="score-track"><div class="score-fill original" style="--sw:35%"></div></div>
+            <div class="score-track"><div class="score-fill rebuilt" style="--sw:90%"></div></div>
+          </div>
+        </div>
+        <div class="score-bar-item">
+          <div class="score-bar-name">Homepages</div>
+          <div class="score-bar-tracks">
+            <div class="score-track"><div class="score-fill original" style="--sw:28%"></div></div>
+            <div class="score-track"><div class="score-fill rebuilt" style="--sw:90%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="score-legend">
+        <div class="score-legend-item"><div class="score-legend-dot orig"></div>Original score (avg 3.4/10)</div>
+        <div class="score-legend-item"><div class="score-legend-dot reb"></div>Rebuilt score (avg 9.0/10)</div>
+      </div>
+    </div>
+
+    <!-- SCATTER PLOT: each email as a dot -->
+    <div class="scatter-wrap fade-in">
+      <div class="scatter-title">Every audit plotted — original score vs rebuilt score</div>
+      <canvas id="scatter-canvas" width="760" height="300"></canvas>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;">Hover over dots to see company names. Each dot = one teardown. Red = original. Green = rebuilt.</p>
+    </div>
+
+    <!-- DATA TABLE -->
+    <div class="bench-wrap fade-in">
+      <table class="bench-table">
+        <thead>
+          <tr>
+            <th>Vertical</th>
+            <th>Teardowns</th>
+            <th>Avg Original</th>
+            <th>Avg Rebuilt</th>
+            <th>Lift</th>
+            <th>Primary Bug</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>B2B SaaS</td><td>14</td><td><span class="score-red">3.2 / 10</span></td><td><span class="score-green">9.0 / 10</span></td><td>+5.8</td><td>Feature-First Bias</td></tr>
+          <tr><td>Fintech</td><td>10</td><td><span class="score-red">3.1 / 10</span></td><td><span class="score-green">9.0 / 10</span></td><td>+5.9</td><td>Buried Proof</td></tr>
+          <tr><td>AI / Agents</td><td>8</td><td><span class="score-red">2.9 / 10</span></td><td><span class="score-green">9.0 / 10</span></td><td>+6.1</td><td>Feature-First Bias</td></tr>
+          <tr><td>Enterprise B2B</td><td>6</td><td><span class="score-red">3.3 / 10</span></td><td><span class="score-green">9.0 / 10</span></td><td>+5.7</td><td>Audience Mismatch</td></tr>
+          <tr><td>Cybersecurity</td><td>5</td><td><span class="score-red">2.8 / 10</span></td><td><span class="score-green">9.0 / 10</span></td><td>+6.2</td><td>Technical Depth as Crutch</td></tr>
+          <tr><td>Newsletters</td><td>8</td><td><span class="score-red">3.5 / 10</span></td><td><span class="score-green">9.0 / 10</span></td><td>+5.5</td><td>Filing Label Subject</td></tr>
+          <tr><td>Homepages</td><td>9</td><td><span class="score-red">2.8 / 10</span></td><td><span class="score-green">9.0 / 10</span></td><td>+6.2</td><td>Category Label Hero</td></tr>
+          <tr><td><strong>Total / Average</strong></td><td><strong>59</strong></td><td><span class="score-red"><strong>3.4 / 10</strong></span></td><td><span class="score-green"><strong>9.0 / 10</strong></span></td><td><strong>+5.6</strong></td><td><strong>Feature-First Bias</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="inline-cta fade-in">
+      <div class="inline-cta-text">How Strategic Flow compares to Scalero — architecture audit vs lifecycle consulting.</div>
+      <a class="inline-cta-link" href="https://strategicflow.tech/strategic-flow-vs-scalero.html">See Comparison →</a>
+    </div>
+  </section>
+
+  <!-- 05 BEFORE/AFTER -->
+  <section id="before-after">
+    <div class="section-rule">
+      <span class="section-num">05 —</span>
+      <span class="section-label">Before / After</span>
+    </div>
+
+    <p class="lede fade-in">Same product. Same feature. Different architecture. The gap between 3 and 9 is structural, not stylistic.</p>
+
+    <h3>Example 1 — Product Update Email</h3>
+    <div class="ba-grid fade-in">
+      <div class="ba-card before">
+        <div class="ba-label">Original — 3/10</div>
+        <div class="ba-score">3 / 10</div>
+        <div class="ba-item"><strong>Subject</strong>Real-time collaboration is here</div>
+        <div class="ba-item"><strong>Hook</strong>We shipped real-time collaboration for your team.</div>
+        <div class="ba-item"><strong>CTA</strong>See what's new</div>
+      </div>
+      <div class="ba-card after">
+        <div class="ba-label">Rebuilt — 9/10</div>
+        <div class="ba-score">9 / 10</div>
+        <div class="ba-item"><strong>Subject</strong>Your team is waiting on each other right now</div>
+        <div class="ba-item"><strong>Hook</strong>Every async review cycle costs your team 4 hours per project.</div>
+        <div class="ba-item"><strong>CTA</strong>Stop the wait</div>
+      </div>
+    </div>
+
+    <h3>Example 2 — Newsletter ($874,000 stat buried in paragraph 4)</h3>
+    <div class="ba-grid fade-in">
+      <div class="ba-card before">
+        <div class="ba-label">Original — 2/10</div>
+        <div class="ba-score">2 / 10</div>
+        <div class="ba-item"><strong>Headline</strong>The best collaboration practices for cross-functional enterprise teams</div>
+        <div class="ba-item"><strong>Hook</strong>In this issue, we explore how enterprise teams can improve communication...</div>
+        <div class="ba-item"><strong>Result</strong>107 views. $874,000 stat in paragraph 4. Nobody reached it.</div>
+      </div>
+      <div class="ba-card after">
+        <div class="ba-label">Rebuilt — 9/10</div>
+        <div class="ba-score">9 / 10</div>
+        <div class="ba-item"><strong>Headline</strong>Your cross-functional projects are costing $874,000 a year</div>
+        <div class="ba-item"><strong>Hook</strong>Nobody noticed the number was already in the article. It just wasn't in the headline.</div>
+        <div class="ba-item"><strong>Result</strong>Zero new facts. Same article. Different architecture.</div>
+      </div>
+    </div>
+
+    <div class="pull-quote fade-in">
+      <p>The email written for the product team scores 3. The email written for the reader's Tuesday morning scores 9.</p>
+      <cite>Architecture decides which email gets read. Copy decides how it reads after.</cite>
+    </div>
+
+    <div class="inline-cta fade-in">
+      <div class="inline-cta-text">See the Guest Language CTA field note — the most common pattern with real rebuilds.</div>
+      <a class="inline-cta-link" href="https://strategicflow.tech/field-note-guest-language-cta.html">Read Field Note →</a>
+    </div>
+  </section>
+
+  <!-- 06 METHODOLOGY -->
+  <section id="methodology">
+    <div class="section-rule">
+      <span class="section-num">06 —</span>
+      <span class="section-label">Methodology</span>
+    </div>
+
+    <p class="lede fade-in">How the dataset was built — and what it can and cannot tell you.</p>
+
+    <p class="body-copy fade-in">All 59 teardowns were conducted by Alex Iliescu, founder of Strategic Flow, between April and June 2026. Each email was scored independently using the 7-point Decision Friction Model before any rebuild was attempted.</p>
+
+    <div class="method-grid fade-in">
+      <div class="method-box">
+        <div class="method-box-label">Dataset size</div>
+        <div class="method-box-val">59 emails, newsletters, and homepages</div>
+      </div>
+      <div class="method-box">
+        <div class="method-box-label">Period</div>
+        <div class="method-box-val">April 2026 — June 2026</div>
+      </div>
+      <div class="method-box">
+        <div class="method-box-label">Company types</div>
+        <div class="method-box-val">Venture-backed and publicly traded SaaS</div>
+      </div>
+      <div class="method-box">
+        <div class="method-box-label">Industries covered</div>
+        <div class="method-box-val">B2B SaaS, Fintech, AI/Agents, Cybersecurity, Enterprise, EdTech, Travel</div>
+      </div>
+      <div class="method-box">
+        <div class="method-box-label">Scoring method</div>
+        <div class="method-box-val">7-point Decision Friction Model — 1 point per check passed</div>
+      </div>
+      <div class="method-box">
+        <div class="method-box-label">Selection criteria</div>
+        <div class="method-box-val">Publicly available emails; company size 50+ employees; real marketing communications (not transactional)</div>
+      </div>
+      <div class="method-box">
+        <div class="method-box-label">Rebuild standard</div>
+        <div class="method-box-val">No new facts or data added — same product, different architectural sequence</div>
+      </div>
+      <div class="method-box">
+        <div class="method-box-label">Limitations</div>
+        <div class="method-box-val">Dataset reflects publicly visible emails only. CTR impact inferred from structure, not A/B testing data. Single auditor — no inter-rater reliability testing.</div>
+      </div>
+    </div>
+
+    <p class="body-copy fade-in" style="font-size:14px;color:var(--dark);">All published teardowns are available at <a href="https://strategicflow.tech/teardowns.html">strategicflow.tech/teardowns.html</a>. Each teardown includes the original email, the score breakdown per check, the specific pattern detected, and the rebuilt version with score.</p>
+
+    <!-- RADIAL DONUT: PATTERN FREQUENCY OVERVIEW -->
+    <div class="radial-section fade-in">
+      <h3 style="margin-bottom:8px;">Pattern frequency at a glance</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Each circle shows the share of 59 emails that triggered the pattern.</p>
+      <div class="radial-grid" id="radial-grid"></div>
+    </div>
+
+  </section>
+
+  <!-- 07 FIX -->
+  <section id="fix">
+    <div class="section-rule">
+      <span class="section-num">07 —</span>
+      <span class="section-label">How to Fix It</span>
+    </div>
+
+    <p class="lede fade-in">The fix is not a better copywriter. It is a different sequence.</p>
+
+    <p class="body-copy fade-in">Hiring a better copywriter fixes the word layer. Architecture is upstream. See: <a href="https://strategicflow.tech/architecture-vs-deliverability-tools.html">Architecture vs. Deliverability Tools</a> and <a href="https://strategicflow.tech/strategic-flow-vs-mailtest.html">Strategic Flow vs. Mailtest</a>.</p>
+
+    <h3>The consequence-first rebuild sequence</h3>
+
+    <div class="example-box fade-in">
+      <div class="label">Original sequence (Feature-First)</div>
+      <div class="strike">Subject: New feature: Advanced Reporting Dashboard</div><br>
+      <div class="strike">Hook: We're excited to share a major update to your reporting tools.</div><br>
+      <div class="strike">CTA: Learn more</div>
+    </div>
+
+    <div class="example-box fade-in">
+      <div class="label">Rebuilt sequence (Consequence-First)</div>
+      <div class="better">Subject: Your reporting lag is costing you decisions</div><br>
+      <div class="better">Hook: By the time your weekly report lands, the data is 48 hours old. Here's what changed.</div><br>
+      <div class="better">CTA: Fix my reporting lag</div>
+    </div>
+
+    <p class="body-copy fade-in">Three structural changes address patterns found in 69–96% of underperforming emails: move the strongest stat to line one, replace Guest Language CTAs with Ownership Language, rewrite the subject line from Filing Label to consequence signal. No new facts needed. See: <a href="https://strategicflow.tech/how-to-fix-saas-email-ctr.html">How to Fix SaaS Email CTR →</a></p>
+
+    <div class="inline-cta fade-in">
+      <div class="inline-cta-text">Score your email against all 7 Decision Friction checks. 60 seconds. No form.</div>
+      <a class="inline-cta-link" href="https://strategic-flow-audit.replit.app/demo.html">Score My Email Free →</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- FAQ -->
+<section class="faq-wrap">
+  <div class="faq-inner">
+    <div class="section-rule" style="padding-top:0;border-bottom:1px solid var(--border);margin-bottom:36px;">
+      <span class="section-num">FAQ —</span>
+      <span class="section-label">Common Questions</span>
+    </div>
+
+    <details class="faq-item" open>
+      <summary class="faq-summary">Why do SaaS emails get opened but not clicked? <span class="faq-icon">+</span></summary>
+      <p class="faq-body">The most common cause is Feature-First Bias — the hook announces what shipped instead of naming what the reader stops losing. The subject line earns the open. The hook earns the read. When only the subject line does its job, you get 28% open rate and 1.2% CTR. Fix: consequence-first architecture. See: <a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html">Why SaaS Emails Get Opened But Not Clicked →</a></p>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-summary">What is Feature-First Bias? <span class="faq-icon">+</span></summary>
+      <p class="faq-body">A structural failure where the email opens with what the product does rather than what the reader gains. "We shipped real-time collaboration" instead of "Your team is waiting on each other right now." Found in 83% of 59 audited emails. See: <a href="https://strategicflow.tech/term-feature-first-bias.html">Feature-First Bias definition →</a> and <a href="https://strategicflow.tech/field-note-feature-first-bias.html">field note →</a></p>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-summary">What is Guest Language CTA and how do you fix it? <span class="faq-icon">+</span></summary>
+      <p class="faq-body">CTA text that treats the reader as a visitor — "Learn more", "Explore what's new". Found in 96% of 59 audited emails. Fix: Ownership Language — "Fix my reporting lag", "See my activation gap". See: <a href="https://strategicflow.tech/field-note-guest-language-cta.html">Guest Language CTA field note →</a></p>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-summary">What is the Decision Friction Model? <span class="faq-icon">+</span></summary>
+      <p class="faq-body">A 7-point behavioral diagnostic framework by Strategic Flow scoring: subject line, hook strength, visual hierarchy, numbers above fold, CTA ownership language, activation friction, and audience signal. 9/10 = passes 6-7 checks. 3/10 = fails 4-5. See: <a href="https://strategicflow.tech/decision-friction-model.html">Full Decision Friction Model →</a></p>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-summary">How is email architecture different from email copywriting? <span class="faq-icon">+</span></summary>
+      <p class="faq-body">Architecture is what comes first, where proof sits, how the CTA is framed. Copywriting is the quality of words within that structure. You can have excellent deliverability, strong copy, and a well-designed template and still have broken architecture. See: <a href="https://strategicflow.tech/architecture-vs-deliverability-tools.html">Architecture vs. Deliverability Tools →</a></p>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-summary">What score does a typical SaaS email get? <span class="faq-icon">+</span></summary>
+      <p class="faq-body">Average original score across 59 teardowns: <strong>3.4/10</strong>. Cybersecurity and AI emails average 2.8–2.9/10. After structural rebuild: <strong>9.0/10</strong>. Run your own: <a href="https://strategic-flow-audit.replit.app/demo.html">strategic-flow-audit.replit.app →</a></p>
+    </details>
+
+    <details class="faq-item">
+      <summary class="faq-summary">How do you fix low email CTR without rewriting the email? <span class="faq-icon">+</span></summary>
+      <p class="faq-body">Three structural changes: (1) move the strongest stat or consequence to line one; (2) replace Guest Language CTAs with Ownership Language; (3) rewrite the subject line from Filing Label to consequence signal. No new copy. Different sequence. See: <a href="https://strategicflow.tech/how-to-fix-saas-email-ctr.html">How to Fix SaaS Email CTR →</a></p>
+    </details>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-eyebrow">Free Diagnostic Tool</div>
+  <h2 class="cta-headline">Score your email against all 7 Decision Friction checks. In 60 seconds.</h2>
+  <p class="cta-body">Run any SaaS email, newsletter, or product update through the audit. Get your score, patterns detected, and specific fix for each one. No form. No pitch. The output is the deliverable.</p>
+  <a class="cta-btn" href="https://strategic-flow-audit.replit.app/demo.html">Score My Email Free →</a>
+  <div class="cta-secondary">Or read <a href="https://strategicflow.tech/teardowns.html">59 real teardowns</a> — real companies, real scores, real rebuilds.</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Strategic <span>Flow</span></div>
+  <ul class="footer-links">
+    <li><a href="https://strategicflow.tech/">Home</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/decision-friction-model.html">The Model</a></li>
+    <li><a href="https://strategicflow.tech/method.html">Method</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategic-flow-pro.replit.app/packages">Packages</a></li>
+    <li><a href="https://strategicflow.tech/strategic-flow-vs-scalero.html">vs Scalero</a></li>
+    <li><a href="https://strategicflow.tech/saas-email-conversion-failure.html">Conversion Failures</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 Strategic Flow · Alex Iliescu · <a href="mailto:alex@strategicflow.tech" style="color:var(--muted);">alex@strategicflow.tech</a> · <a href="https://strategic-flow-pro.replit.app/terms.html" style="color:var(--muted);">Terms</a></p>
+</footer>
+
+<script>
+// ===== PROGRESS BAR =====
+const bar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  bar.style.width = pct + '%';
+});
+
+// ===== INTERSECTION OBSERVER BASE =====
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+// ===== ANIMATED COUNTERS =====
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    const decimals = parseInt(el.dataset.decimals || '0');
+    const dur = 1600;
+    const start = performance.now();
+    el.classList.add('visible');
+    function tick(now) {
+      const progress = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - progress, 4);
+      const val = (target * ease).toFixed(decimals);
+      el.textContent = val + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    counterObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+// ===== BAR CHART =====
+const barObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.bar-row').forEach((row, i) => {
+      setTimeout(() => row.classList.add('revealed'), i * 120);
+    });
+    barObs.unobserve(e.target);
+  });
+}, { threshold: 0.2 });
+const bc = document.getElementById('bar-chart');
+if (bc) barObs.observe(bc);
+
+// ===== SCORE COMPARISON CHART =====
+const scoreObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.score-bar-item').forEach((item, i) => {
+      setTimeout(() => {
+        item.classList.add('revealed');
+        item.querySelectorAll('.score-fill').forEach(fill => {
+          fill.style.width = fill.style.getPropertyValue('--sw') || fill.getAttribute('style').match(/--sw:([^;]+)/)?.[1] || '0%';
+        });
+      }, i * 100);
+    });
+    scoreObs.unobserve(e.target);
+  });
+}, { threshold: 0.2 });
+const sc = document.getElementById('score-chart');
+if (sc) scoreObs.observe(sc);
+
+// Fix score fills
+document.querySelectorAll('.score-fill').forEach(el => {
+  const m = el.getAttribute('style') && el.getAttribute('style').match(/--sw:([^;%]+%?)/);
+  if (m) el.dataset.sw = m[1];
+});
+
+const scoreObs2 = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.score-fill').forEach((fill, i) => {
+      const sw = fill.dataset.sw || '0%';
+      setTimeout(() => { fill.style.width = sw; }, i * 80);
+    });
+    scoreObs2.unobserve(e.target);
+  });
+}, { threshold: 0.3 });
+if (sc) scoreObs2.observe(sc);
+
+// ===== PATTERN CARDS =====
+document.querySelectorAll('.pcard').forEach(card => {
+  card.querySelector('.pcard-header').addEventListener('click', () => {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.pcard').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  });
+});
+
+const pcardObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.pcard').forEach((card, i) => {
+      setTimeout(() => card.classList.add('revealed'), i * 100);
+    });
+    pcardObs.unobserve(e.target);
+  });
+}, { threshold: 0.1 });
+const pc = document.getElementById('pattern-cards');
+if (pc) pcardObs.observe(pc);
+
+// ===== CHECKLIST ANIMATION =====
+const clObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('li').forEach((li, i) => {
+      setTimeout(() => li.classList.add('visible'), i * 100);
+    });
+    clObs.unobserve(e.target);
+  });
+}, { threshold: 0.2 });
+const cl = document.getElementById('checklist');
+if (cl) clObs.observe(cl);
+
+// ===== STICKY TOC DOTS =====
+const sections = ['problem','model','patterns','benchmarks','before-after','methodology','fix'];
+const dots = document.querySelectorAll('.toc-dot');
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const target = document.getElementById(dot.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+const secObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = sections.indexOf(e.target.id);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(id => { const el = document.getElementById(id); if (el) secObs.observe(el); });
+
+// ===== DONUT CHART =====
+function drawDonut() {
+  const canvas = document.getElementById('donut-chart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 100, cy = 100, r = 80, rInner = 52;
+  const data = [
+    { label: 'Original ≤ 3/10', value: 62, color: '#E8472A' },
+    { label: 'Original 4/10', value: 25, color: '#f0a090' },
+    { label: 'Rebuilt 9/10', value: 13, color: '#2A7A4B' },
+  ];
+  const total = data.reduce((s, d) => s + d.value, 0);
+  let angle = -Math.PI / 2;
+  let progress = 0;
+  const dur = 1200;
+  const start = performance.now();
+
+  const legend = document.getElementById('donut-legend');
+  if (legend) {
+    legend.innerHTML = data.map(d => `<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#333;"><div style="width:12px;height:12px;background:${d.color};flex-shrink:0;"></div>${d.label}: ${d.value}%</div>`).join('');
+  }
+
+  function draw(now) {
+    progress = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    ctx.clearRect(0, 0, 200, 200);
+    let a = -Math.PI / 2;
+    data.forEach(d => {
+      const slice = (d.value / total) * Math.PI * 2 * ease;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, a, a + slice);
+      ctx.closePath();
+      ctx.fillStyle = d.color;
+      ctx.fill();
+      a += slice;
+    });
+    ctx.beginPath();
+    ctx.arc(cx, cy, rInner, 0, Math.PI * 2);
+    ctx.fillStyle = '#F5F4F1';
+    ctx.fill();
+    ctx.fillStyle = '#0D0D0D';
+    ctx.font = 'bold 18px Space Grotesk, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('59', cx, cy - 8);
+    ctx.font = '10px Inter, sans-serif';
+    ctx.fillStyle = '#9A9690';
+    ctx.fillText('teardowns', cx, cy + 10);
+    if (progress < 1) requestAnimationFrame(draw);
+  }
+
+  const donutObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { requestAnimationFrame(draw); donutObs.unobserve(e.target); }});
+  }, { threshold: 0.5 });
+  donutObs.observe(canvas);
+}
+drawDonut();
+
+// ===== RADIAL PATTERN CIRCLES =====
+function buildRadials() {
+  const grid = document.getElementById('radial-grid');
+  if (!grid) return;
+  const patterns = [
+    { name: 'Guest Language CTA', pct: 96, sub: 'of 59 emails' },
+    { name: 'Feature-First Bias', pct: 83, sub: 'of 59 emails' },
+    { name: 'Filing Label Subject', pct: 83, sub: 'of 59 emails' },
+    { name: 'Consequence-After-Caveat', pct: 74, sub: 'of 59 emails' },
+    { name: 'Missing Visual Hierarchy', pct: 71, sub: 'of 59 emails' },
+    { name: 'Buried Proof', pct: 69, sub: 'of 59 emails' },
+  ];
+  grid.innerHTML = patterns.map((p, idx) => `
+    <div class="radial-card" data-idx="${idx}">
+      <div class="radial-canvas-wrap">
+        <canvas id="rc-${idx}" width="100" height="100"></canvas>
+        <div class="radial-pct-label" id="rl-${idx}">0%</div>
+      </div>
+      <div class="radial-name">${p.name}</div>
+      <div class="radial-sub">${p.sub}</div>
+    </div>
+  `).join('');
+
+  function animateRadial(idx, pct) {
+    const canvas = document.getElementById(`rc-${idx}`);
+    const label = document.getElementById(`rl-${idx}`);
+    if (!canvas || !label) return;
+    const ctx = canvas.getContext('2d');
+    const cx = 50, cy = 50, r = 42;
+    const dur = 1000 + idx * 100;
+    const start = performance.now();
+    function draw(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const current = pct * ease;
+      ctx.clearRect(0, 0, 100, 100);
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = '#E8E6E1';
+      ctx.lineWidth = 8;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + (current / 100) * Math.PI * 2);
+      ctx.strokeStyle = '#E8472A';
+      ctx.lineWidth = 8;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      label.textContent = Math.round(current) + '%';
+      if (t < 1) requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  }
+
+  const radObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      patterns.forEach((p, i) => animateRadial(i, p.pct));
+      radObs.unobserve(e.target);
+    });
+  }, { threshold: 0.3 });
+  radObs.observe(grid);
+}
+buildRadials();
+
+// ===== SCATTER PLOT =====
+function drawScatter() {
+  const canvas = document.getElementById('scatter-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 760;
+  canvas.width = W;
+  const H = 280;
+  canvas.height = H;
+  const pad = { l: 50, r: 20, t: 20, b: 40 };
+
+  const companies = [
+    ['HeyGen',2,9],['Revolut',3,9],['Qonto',3,9],['Wiz',2,9],['ElevenLabs',2,9],
+    ['Optimizely',4,9],['Zoho Analytics',3,9],['Ahrefs',3,9],['Notion',3,9],
+    ['Seamless.ai',3,9],['Wrike',3,9],['SEOmonitor',3,9],['Userpilot',3,9],
+    ['Landbot',4,9],['Gamma',3,9],['Cato Networks',3,9],['Atlassian',4,9],
+    ['Figma',3,9],['Medallia',3,9],['dbt Labs',3,9],['Spreedly',3,9],
+    ['Zoho Workplace',3,9],['ReversingLabs',2,9],['Finite State',2,9],
+    ['Perplexity',4,9],['Lokalise',3,9],['Limelight',3,9],['SplitMetrics',3,9],
+    ['Tilled',3,9],['Sequel',2,9],['Alt21',2,9],['Nilus',2,9],
+    ['QuickSpark',2,9],['Cloud Campaign',3,9],['TripleDart',3,9],['Memrise',4,9],
+    ['Uber',3,9],['Wizz Air',3,9],['Booking.com',3,9],['EasyLlama',3,9],
+    ['Tuum',3,9],['Tresorit',3,9],['TimePayment',3,9],['Confluence Tech',3,9],
+    ['Decision Lab',4,9],['Tech Talent Dec',3,9],['Landbot-AI',3,9],
+    ['Dot Compliance',3,9],['Semrush',4,9],['Xelix',3,9],['Wrike (v2)',3,9],
+    ['Spreedly LATAM',3,9],['Userpilot (v2)',3,9],['SplitMetrics (v3)',3,9],
+    ['Cato (v2)',3,9],['Perplexity (v2)',3,9],['Zoho WP (v2)',3,9],
+    ['Limelight',3,9],['Figma Config',3,9],['Gamma News',4,9],
+  ];
+
+  const plotW = W - pad.l - pad.r;
+  const plotH = H - pad.t - pad.b;
+
+  // Axes
+  ctx.strokeStyle = '#E0DDD8';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t);
+  ctx.lineTo(pad.l, H - pad.b);
+  ctx.lineTo(W - pad.r, H - pad.b);
+  ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = '#9A9690';
+  ctx.font = '11px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  for (let i = 0; i <= 10; i += 2) {
+    const x = pad.l + (i / 10) * plotW;
+    ctx.fillText(i, x, H - pad.b + 18);
+    const y = pad.t + ((10 - i) / 10) * plotH;
+    ctx.textAlign = 'right';
+    ctx.fillText(i, pad.l - 6, y + 4);
+    ctx.textAlign = 'center';
+    ctx.strokeStyle = '#F5F4F1';
+    ctx.beginPath();
+    ctx.moveTo(pad.l, y);
+    ctx.lineTo(W - pad.r, y);
+    ctx.stroke();
+    ctx.strokeStyle = '#E0DDD8';
+  }
+  ctx.fillStyle = '#9A9690';
+  ctx.font = '11px Inter, sans-serif';
+  ctx.fillText('Original Score →', pad.l + plotW / 2, H - 4);
+  ctx.save();
+  ctx.translate(12, pad.t + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText('Rebuilt Score →', 0, 0);
+  ctx.restore();
+
+  // Dots
+  const dots = [];
+  companies.forEach(([name, orig, reb], i) => {
+    const jx = (Math.random() - 0.5) * 12;
+    const jy = (Math.random() - 0.5) * 8;
+    const x = pad.l + (orig / 10) * plotW + jx;
+    const y = pad.t + ((10 - reb) / 10) * plotH + jy;
+    dots.push({ name, orig, reb, x, y, i });
+  });
+
+  let animProgress = 0;
+  const animDur = 1000;
+  const animStart = performance.now();
+  function animate(now) {
+    animProgress = Math.min((now - animStart) / animDur, 1);
+    const ease = 1 - Math.pow(1 - animProgress, 3);
+    ctx.clearRect(pad.l + 1, pad.t, plotW, plotH);
+    // Redraw grid
+    ctx.strokeStyle = '#F5F4F1'; ctx.lineWidth = 1;
+    for (let i = 0; i <= 10; i += 2) {
+      const y = pad.t + ((10 - i) / 10) * plotH;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+    }
+    // Draw dots
+    dots.forEach(d => {
+      if (d.i / dots.length > ease) return;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(232,71,42,0.75)';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+    if (animProgress < 1) requestAnimationFrame(animate);
+  }
+
+  // Tooltip
+  const tip = document.createElement('div');
+  tip.style.cssText = 'position:absolute;background:#0D0D0D;color:#fff;font-size:12px;padding:6px 10px;pointer-events:none;display:none;font-family:Space Grotesk,sans-serif;';
+  canvas.parentElement.style.position = 'relative';
+  canvas.parentElement.appendChild(tip);
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (W / rect.width);
+    const my = (e.clientY - rect.top) * (H / rect.height);
+    let hit = null;
+    dots.forEach(d => {
+      if (Math.abs(d.x - mx) < 10 && Math.abs(d.y - my) < 10) hit = d;
+    });
+    if (hit) {
+      tip.style.display = 'block';
+      tip.style.left = (e.clientX - rect.left + 12) + 'px';
+      tip.style.top = (e.clientY - rect.top - 28) + 'px';
+      tip.textContent = `${hit.name} — ${hit.orig}/10 → ${hit.reb}/10`;
+      canvas.style.cursor = 'pointer';
+    } else {
+      tip.style.display = 'none';
+      canvas.style.cursor = 'default';
+    }
+  });
+  canvas.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+
+  const scatObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { requestAnimationFrame(animate); scatObs.unobserve(e.target); }});
+  }, { threshold: 0.3 });
+  scatObs.observe(canvas);
+}
+drawScatter();
+
+// ===== SHARE FUNCTION =====
+function shareText(text) {
+  event.preventDefault();
+  if (navigator.share) {
+    navigator.share({ text: text, url: window.location.href });
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text + '\n\n' + window.location.href).then(() => {
+      const btn = event.target;
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.style.background = '#2A7A4B';
+      btn.style.color = '#fff';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; }, 2000);
+    });
+  }
+}
+</script>
+</body>
+</html>
