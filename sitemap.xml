@@ -4,144 +4,298 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
+  <!-- ===================== -->
+  <!-- TIER 1 — CORE PAGES  -->
+  <!-- ===================== -->
+
   <url>
     <loc>https://strategicflow.tech/</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
   <url>
     <loc>https://strategicflow.tech/teardowns.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+
   <url>
-    <loc>https://strategicflow.tech/notes.html</loc>
-    <lastmod>2026-06-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/architecture.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <loc>https://strategicflow.tech/method.html</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <url>
+    <loc>https://strategicflow.tech/decision-friction-model.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/architecture.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/email-architecture-audit.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ============================= -->
+  <!-- TIER 2 — CONVERSION PAGES    -->
+  <!-- ============================= -->
+
   <url>
     <loc>https://strategicflow.tech/scorecard.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/strategic-flow-pricing.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/is-strategic-flow-worth-it.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/strategic-flow-reviews.html</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
   <url>
-    <loc>https://strategicflow.tech/email-architecture-audit.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <loc>https://strategicflow.tech/packages-promo.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/roi.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============================= -->
+  <!-- TIER 2 — RESEARCH / REPORT   -->
+  <!-- ============================= -->
+
+  <url>
+    <loc>https://strategicflow.tech/decision-friction-report-2026.html</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <url>
+    <loc>https://strategicflow.tech/saas-email-architecture-study.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ================================ -->
+  <!-- TIER 2 — PRE-SELL / EDUCATION   -->
+  <!-- ================================ -->
+
+  <url>
+    <loc>https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/how-to-fix-saas-email-ctr.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/saas-email-conversion-failure.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/audit-sequences-outcome-first.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/behavioral-email-architecture-tools.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- TIER 2 — FIELD NOTES          -->
+  <!-- ============================== -->
+
+  <url>
+    <loc>https://strategicflow.tech/field-note-feature-first-bias.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/field-note-guest-language-cta.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/field-note-filing-label-subject.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- TIER 2 — STORIES              -->
+  <!-- ============================== -->
+
+  <url>
+    <loc>https://strategicflow.tech/story-nine-figure-company-2-10.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/story-product-hunt-cold-email.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- TIER 2 — GLOSSARY / TERMS     -->
+  <!-- ============================== -->
+
   <url>
     <loc>https://strategicflow.tech/glossary.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/term-feature-first-bias.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/term-filing-label-subject.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/term-guest-language-cta.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============================== -->
+  <!-- TIER 2 — COMPARISONS          -->
+  <!-- ============================== -->
+
+  <url>
+    <loc>https://strategicflow.tech/strategic-flow-vs-scalero.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/strategic-flow-vs-mailtest.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/architecture-vs-deliverability.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/architecture-vs-deliverability-tools.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/teardown-vs-lifecycle-audit.html</loc>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
+  <!-- ============================== -->
+  <!-- TIER 3 — SUPPORT PAGES        -->
+  <!-- ============================== -->
+
+  <url>
+    <loc>https://strategicflow.tech/notes.html</loc>
+    <lastmod>2026-06-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://strategicflow.tech/subject-line-pack.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
   <url>
     <loc>https://strategicflow.tech/addons.html</loc>
-    <lastmod>2026-05-30</lastmod>
+    <lastmod>2026-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html</loc>
-    <lastmod>2026-06-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/how-to-fix-saas-email-ctr.html</loc>
-    <lastmod>2026-06-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/saas-email-conversion-failure.html</loc>
-    <lastmod>2026-06-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/strategic-flow-vs-scalero.html</loc>
-    <lastmod>2026-06-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/architecture-vs-deliverability.html</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/teardown-vs-lifecycle-audit.html</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/term-guest-language-cta.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/story-nine-figure-company-2-10.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/term-feature-first-bias.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/term-filing-label-subject.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/story-product-hunt-cold-email.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/field-note-guest-language-cta.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/field-note-feature-first-bias.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/field-note-filing-label-subject.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+
+  <!-- ============================== -->
+  <!-- TIER 3 — TEARDOWN SHOWCASES   -->
+  <!-- ============================== -->
+
   <url>
     <loc>https://strategicflow.tech/heygen-showcase.html</loc>
     <lastmod>2026-05-30</lastmod>
@@ -459,73 +613,6 @@
     <lastmod>2026-06-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://strategicflow.tech/roi.html</loc>
-    <lastmod>2026-06-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://strategicflow.tech/is-strategic-flow-worth-it.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/strategic-flow-pricing.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/strategic-flow-reviews.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://strategicflow.tech/behavioral-email-architecture-tools.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://strategicflow.tech/audit-sequences-outcome-first.html</loc>
-    <lastmod>2026-06-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://strategicflow.tech/method.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://strategicflow.tech/decision-friction-model.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://strategicflow.tech/strategic-flow-vs-mailtest.html</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://strategicflow.tech/architecture-vs-deliverability-tools.html</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
 
 </urlset>
