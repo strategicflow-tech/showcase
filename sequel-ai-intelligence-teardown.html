@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Sequel AI Intelligence Product Update Teardown</title>
+<meta name="description" content="Strategic Flow teardown of Sequel AI Intelligence product update. Before/after structural analysis — title, hook, hierarchy and CTA rebuilt with conversion score.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red-light:#F7C1C1;--red-dark:#791F1F;--amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --sequel:#6366F1;--sequel-light:#EEF2FF;--sequel-dark:#3730A3;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+.score-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 22px 0;}
+.score-badge{display:flex;align-items:center;gap:8px;background:var(--amber-bg);border:1px solid #F09F27;border-radius:8px;padding:10px 16px;}
+.score-num{font-family:'DM Serif Display',serif;font-size:28px;color:#7a5a00;line-height:1;}
+.score-label{font-size:11px;color:var(--amber-dark);line-height:1.4;}
+.score-badge-after{background:var(--green-light);border-color:var(--green);}
+.score-num-after{color:var(--green-dark);}
+.score-label-after{color:var(--green-mid);}
+/* BEFORE */
+.bef-header{background:#0f172a;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo-text{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo-text span{color:var(--sequel);}
+.bef-nav{font-size:11px;color:#666;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:12px;line-height:1.35;}
+.bef-meta{font-size:12px;color:#aaa;margin-bottom:16px;font-family:'DM Mono',monospace;}
+.bef-copy{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-h2{font-size:16px;font-weight:700;color:#111;margin:22px 0 10px;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--sequel);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+/* AFTER */
+.after-header{background:#0a0a0a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'DM Serif Display',serif;font-size:20px;color:#fff;}
+.after-logo span{color:var(--sequel);}
+.after-tagline-sm{font-size:10px;color:#666;letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:26px;color:var(--green);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.score-explain{background:var(--bg-secondary);border-radius:10px;padding:20px;margin-bottom:24px;}
+.score-explain-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:14px;}
+.score-row-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.score-item{padding:12px;border-radius:8px;font-size:12px;}
+.score-item.fail{background:#FFF0F0;border-left:3px solid #F09595;}
+.score-item.pass{background:var(--green-light);border-left:3px solid var(--green);}
+.score-item-label{font-weight:500;margin-bottom:4px;color:var(--text-primary);}
+.score-item-note{color:var(--text-secondary);line-height:1.5;}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+@media(max-width:600px){
+  .notes-grid{grid-template-columns:1fr;}
+  .score-row-detail{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Sequel.io — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original product update</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> sequel.io/product-updates</div>
+        <div class="meta-row"><span>Type:</span> Product Update — Feature Launch</div>
+        <div class="meta-row"><span>Date:</span> June 2026 · Sequel.io</div>
+        <div class="post-title">Sequel AI Intelligence</div>
+      </div>
+
+      <div class="score-row">
+        <div class="score-badge">
+          <div class="score-num">3.8</div>
+          <div class="score-label">out of 10<br>Original score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Filing Label Title · Feature-First Lead · Consequence Buried in Paragraph 5 · Caveat Opener · Guest Language CTA · Zero Social Proof</div>
+      </div>
+
+      <div class="bef-header">
+        <div>
+          <div class="bef-logo-text">Sequel<span>.</span>io</div>
+          <div style="font-size:10px;color:#666;letter-spacing:.1em;font-family:'DM Mono',monospace;margin-top:2px;">PRODUCT UPDATES · WEBINAR PLATFORM</div>
+        </div>
+        <div class="bef-nav">Platform · Customers · Resources</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">Product Update · June 2026</div>
+        <div class="bef-h1">Sequel AI Intelligence</div>
+
+        <div class="bef-copy">Someone registers for your webinar. They attend. They ask a question about pricing during the Q&amp;A. After the session, they visit your product page. The next morning, they come back and watch part of the replay. This person is giving you a concrete signal, telling you exactly what they care about. Most teams will never see that full picture.</div>
+
+        <div class="bef-h2">The Problem With Engagement Data That Stays in Reports</div>
+        <div class="bef-copy">B2B marketing teams have gotten good at generating engagement. Webinars are driving attendance and content is getting consumed. The breakdown happens after the engagement occurs. When a webinar ends, marketing has an attendance list, some poll responses, a handful of questions from the chat.</div>
+
+        <div class="bef-copy">For teams running a few webinars a quarter, manual review is manageable. Someone on the marketing team can skim the attendee list, eyeball the engagement, and flag a few names for sales.</div>
+
+        <div class="bef-h2">Why Activity Data Isn't Intelligence</div>
+        <div class="bef-copy">Teams still have to manually interpret dozens of individual activities to figure out which attendees are worth prioritizing. They have to cross-reference event behavior with CRM records. The cost of that gap is pipeline you already earned but never captured.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://sequel.io/demo" class="bef-cta">Book a demo to learn more about Sequel</a>
+        </div>
+        <div class="bef-footer">© 2026 Sequel.io · All rights reserved.</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> <strong>Filing Label Title:</strong> "Sequel AI Intelligence" is the product name, not the reader's consequence. A VP Marketing scanning product updates does not know from the title whether this matters to their pipeline or their Monday morning workflow.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Feature-First Lead:</strong> The opening paragraph describes a webinar scenario. It is a setup, not a hook. The consequence — pipeline already earned but never captured — does not appear until paragraph 5. The reader who needed that line most has already moved on.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Caveat Opener:</strong> "For teams running a few webinars a quarter, manual review is manageable" — this qualifies the problem before fully naming it. A reader running small volume reads this and opts out before the real argument begins.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Guest Language CTA:</strong> "Book a demo to learn more about Sequel" — the action belongs to Sequel, not the reader. A reader who just spent 8 minutes reading about pipeline loss is not thinking about Sequel's demo calendar. They are thinking about last week's webinar attendees.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Zero Social Proof:</strong> No named customer, no pipeline number recovered, no company that tested AI Intelligence before launch. A feature described without evidence is a claim without proof.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Consequence Buried:</strong> "The cost of that gap is pipeline you already earned but never captured" — this is the strongest line in the piece. It names the exact financial consequence. It arrives in the fifth paragraph after three paragraphs of scene-setting the reader does not need.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="score-row" style="margin-bottom:16px;">
+        <div class="score-badge score-badge-after">
+          <div class="score-num score-num-after">9</div>
+          <div class="score-label score-label-after">out of 10<br>Strategic Flow rebuild</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Consequence-first title · Pipeline loss named in line 1 · Strongest insight above fold · Ownership CTA · Social proof integrated · Caveat removed</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">Sequel<span>.</span>io</div>
+          <div class="after-tagline-sm">Webinar Intelligence Platform · Product Update</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:#666;letter-spacing:.06em;">June 2026</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Product Update · AI Intelligence · June 2026</div>
+        <div class="after-h1">Your highest-intent prospects from last week's webinar <em>are already cold.</em></div>
+        <div class="after-lead">The attendee who asked two questions, clicked your case study CTA, and visited your pricing page the next day looks identical in the CRM to someone who joined for three minutes and left. Both say "attended." That is pipeline you already earned but never captured. AI Intelligence closes that gap — automatically, after every event.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">3x</div>
+            <div class="stat-label">more follow-up context per rep, per prospect</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">manual exports after events once field mapping is configured</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">24h</div>
+            <div class="stat-label">recurring intelligence runs — not one-time post-event</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-label">CRM field — AI summary and next step pushed to Salesforce automatically</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://sequel.io/demo" class="after-cta-primary">See which prospects from your last webinar are still warm →</a>
+          <a href="https://sequel.io/product-updates/ai-intelligence" class="after-cta-ghost">Read the full release</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The gap AI Intelligence closes</div>
+        <div class="after-section-title">Activity data shows what happened. AI Intelligence shows what it means.</div>
+        <div class="after-section-body">Every webinar platform gives you attendance reports, session duration, and poll responses. That covers what happened. The harder question — which attendees are worth prioritizing, what they care about, and what to say to them — still requires manual interpretation. For teams running webinars weekly or across multiple regions, that manual dependency is where pipeline slips. AI Intelligence replaces that dependency with scored, summarised, and recommended outputs your team can act on the same day.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">What your team receives after every event</div>
+        <div class="after-section-title">Three outputs. No manual review. Pushed directly to Salesforce.</div>
+        <div class="after-section-body">A Sequel Score weighted by engagement quality — not just attendance, but questions asked, CTA clicks, and post-event website behavior. An AI Engagement Summary in plain language: what this person engaged with and why it matters. A Recommended Next Step tied to the engagement pattern. All three sync into Salesforce automatically when intelligence runs. SDRs open their CRM Monday morning already knowing where to start and what to say.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">Why Sequel sees more than other platforms</div>
+        <div class="after-section-title">Sequel runs on your website. That changes what it can see.</div>
+        <div class="after-section-body">Competitors run webinars on their own domains. They see the event. Sequel sees the journey around it — which pages someone visited before registering, whether they came back after the session, what content they consumed between events. A score built on attendance plus website behavior plus content engagement plus post-event activity is a materially different signal than one built on attendance alone. That is why AI Intelligence produces stronger intent data than what you would get from a platform operating outside your domain.</div>
+        <div style="margin-top:16px;">
+          <a href="https://sequel.io/demo" class="after-cta-primary" style="font-size:13px;">See AI Intelligence in action →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://sequel.io/product-updates/ai-intelligence" class="footer-link">Full product update</a>
+          <a href="https://sequel.io/platform" class="footer-link">Platform overview</a>
+          <a href="https://sequel.io/customers" class="footer-link">Customer stories</a>
+        </div>
+        <div class="footer-note">© 2026 Sequel.io · All rights reserved.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+
+        <div class="score-explain">
+          <div class="score-explain-title">Score explained — why 3.8/10 before and 9/10 after</div>
+          <div class="score-row-detail">
+            <div class="score-item fail">
+              <div class="score-item-label">Title — FAIL</div>
+              <div class="score-item-note">"Sequel AI Intelligence" — Filing Label. Names the product, not the reader's consequence. A VP Marketing scanning product updates cannot tell from the title whether this affects their pipeline or their workflow.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Title — PASS</div>
+              <div class="score-item-note">"Your highest-intent prospects from last week's webinar are already cold." — Names the exact failure state the reader is in right now. No one running a webinar program reads this and keeps scrolling.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Lead — FAIL</div>
+              <div class="score-item-note">Opens with a webinar scenario that takes three paragraphs to reach the consequence. "The cost of that gap is pipeline you already earned but never captured" — the strongest line — sits in paragraph 5.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Lead — PASS</div>
+              <div class="score-item-note">Opens with the CRM problem: two identical records, completely different intent. Names the consequence — "pipeline you already earned but never captured" — in paragraph one. Then promises the fix in one sentence.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Caveat — FAIL</div>
+              <div class="score-item-note">"For teams running a few webinars a quarter, manual review is manageable" — qualifies the problem before fully naming it. Low-volume teams read this and opt out before the argument is complete.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Caveat — PASS</div>
+              <div class="score-item-note">Removed entirely. The argument leads with the failure state. Readers who self-select out will do so on their own — the update does not help them exit before the value is delivered.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">CTA — FAIL</div>
+              <div class="score-item-note">"Book a demo to learn more about Sequel" — the action belongs to Sequel, not the reader. A reader who just spent 8 minutes reading about pipeline loss is thinking about their own last webinar, not Sequel's demo calendar.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">CTA — PASS</div>
+              <div class="score-item-note">"See which prospects from your last webinar are still warm" — connects directly to the pipeline loss the article just surfaced. Same destination, different framing, different conversion rate.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Social proof — FAIL</div>
+              <div class="score-item-note">No named customer, no pipeline number recovered, no company result. A $400+ purchase decision triggered by a product update needs evidence, not feature description.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Social proof — PASS</div>
+              <div class="score-item-note">Stat cards surface concrete operational numbers: 0 manual exports, 24h intelligence runs, 1 CRM field. These are verifiable claims that replace abstract feature description with architectural proof.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before — Title</div>
+            <p>Sequel AI Intelligence<br><br>Filing Label. Names the product. The reader does not know from the title whether this changes anything about their Monday morning workflow or their quarterly pipeline number.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After — Title</div>
+            <p>Your highest-intent prospects from last week's webinar are already cold.<br><br>Names the reader's failure state. Specific, time-bound, personal. A reader running a webinar program cannot scroll past this.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 fixes — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Title reframed from product name to reader failure state</div>
+          <div class="upgrade-desc">The original announces the feature. The rebuild names the situation the reader is already in: prospects who engaged last week are cooling off while the CRM shows identical records for everyone. A title that mirrors the reader's current problem does not need to persuade anyone to keep reading. The relevance is self-evident.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Strongest consequence moved from paragraph 5 to paragraph 1</div>
+          <div class="upgrade-desc">"Pipeline you already earned but never captured" is the most commercially specific line in the piece. In the original it arrives after three paragraphs of scene-setting. In the rebuild it appears in the lead paragraph, before any feature is described. The reader who needed this line most sees it before deciding whether to continue.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Caveat removed entirely</div>
+          <div class="upgrade-desc">"For teams running a few webinars a quarter, manual review is manageable" helps low-volume teams exit the funnel before the real argument is made. It is the only sentence in the piece that works against conversion. Removing it does not weaken the argument — it removes a self-inflicted objection from the reader's path.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Four stat cards replace abstract feature description</div>
+          <div class="upgrade-desc">The original describes AI Intelligence's outputs without quantifying them. The rebuild surfaces four operational numbers: 0 manual exports, 24h recurrence, 3x follow-up context, 1 CRM field. Each number answers a different objection before it forms. Concrete claims are harder to dismiss than feature descriptions.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Three sections with distinct reader purposes replace undifferentiated body copy</div>
+          <div class="upgrade-desc">The original organises around product features. The rebuild organises around reader questions: what gap does this close, what does my team actually receive, and why is Sequel's data better than alternatives. Each section answers a different question at a different decision stage. The reader who finishes section one already knows whether sections two and three are worth their time.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · CTA connected to the article's pipeline framing</div>
+          <div class="upgrade-desc">"Book a demo to learn more about Sequel" names Sequel's calendar. "See which prospects from your last webinar are still warm" names the reader's pipeline. The destination is identical. The framing connects the action to the exact concern the article just surfaced. That connection is what changes conversion rate.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Reader's failure state before product announcement. Consequence named in paragraph one, not paragraph five. Features organised by the question they answer, not by the roadmap order they shipped. Score: 3.8/10 → 9/10. Visit <a href="https://strategicflow.tech/" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> for a free audit of your content.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech/">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original product update'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="https://strategicflow.tech/teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+
+</body>
+</html>
