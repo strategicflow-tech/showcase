@@ -149,14 +149,14 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#04080f;--surface:#090e1a;--border:rgba(255,255,255,0.07);
-  --teal:#4A8FE7;--teal-dim:rgba(74,143,231,0.08);--teal-border:rgba(74,143,231,0.2);
-  --white:#f1f5f9;--muted:rgba(255,255,255,0.72);--dim:rgba(255,255,255,0.50)
+  --bg:#0a1628;--surface:#0f2035;--border:#1a3050;
+  --teal:#00d4c8;--teal-dim:rgba(0,212,200,0.08);--teal-border:rgba(0,212,200,0.2);
+  --white:#ffffff;--muted:#ffffff;--dim:rgba(255,255,255,0.50)
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6;min-height:100vh}
 
-nav{position:sticky;top:0;z-index:100;background:rgba(4,8,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,22,40,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
 .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
 .nav-logo{font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:var(--teal);text-decoration:none;letter-spacing:-0.3px;white-space:nowrap}
 .nav-logo span{color:var(--white)}
@@ -164,7 +164,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(4,8,15,0.95);backdrop-filt
 .nav-link{font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:6px;transition:color .15s,background .15s;white-space:nowrap}
 .nav-link:hover{color:var(--white);background:rgba(255,255,255,0.06)}
 .nav-cta{background:var(--teal);color:#04080f !important;border-radius:6px;font-weight:700}
-.nav-cta:hover{background:#2D6BE4}
+.nav-cta:hover{background:#00a89e}
 
 .hero{max-width:1100px;margin:0 auto;padding:72px 24px 56px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--teal-border);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
@@ -218,7 +218,7 @@ h1 em{font-style:italic;color:var(--teal)}
 .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .btn{display:inline-block;padding:13px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;transition:all .15s}
 .btn-primary{background:var(--teal);color:#04080f}
-.btn-primary:hover{background:#2D6BE4;transform:translateY(-1px)}
+.btn-primary:hover{background:#00a89e;transform:translateY(-1px)}
 .btn-ghost{border:1px solid var(--border);color:var(--white)}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.05)}
 
@@ -271,7 +271,7 @@ footer a:hover{color:var(--teal)}
 
 <!-- Add-Ons / Architecture Pack banner -->
 <div style="max-width:1100px;margin:0 auto 8px;padding:0 24px;">
-  <a href="addons.html" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 22px;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.25);border-radius:12px;text-decoration:none;">
+  <a href="addons.html" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 22px;background:rgba(74,143,231,0.06);border:1px solid rgba(0,212,200,0.25);border-radius:12px;text-decoration:none;">
     <div style="min-width:240px;flex:1;">
       <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">New · Launch week</div>
       <div style="font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:var(--white);line-height:1.4;">The diagnostic system behind all 59 teardowns is now a pack: 7 rebuilt templates, the 7 point checklist, CTA language guide. $47 instead of $97, plus done for you add-ons.</div>
@@ -403,8 +403,8 @@ footer a:hover{color:var(--teal)}
       <div class="card-tags"><span class="tag teal">Enterprise · AI</span><span class="tag">Product Update</span></div>
     </a>
 
-    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
-      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#4A8FE7;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
+    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(0,212,200,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
+      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#00d4c8;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
     </div>
 
 
@@ -496,8 +496,8 @@ footer a:hover{color:var(--teal)}
       <div class="card-tags"><span class="tag teal">Recruiting · B2B</span><span class="tag">Newsletter</span></div>
     </a>
 
-    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
-      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#4A8FE7;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
+    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(0,212,200,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
+      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#00d4c8;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
     </div>
 
 
@@ -596,8 +596,8 @@ footer a:hover{color:var(--teal)}
       <div class="card-tags"><span class="tag teal">Enterprise · Investment Data</span><span class="tag">Homepage</span></div>
     </a>
 
-    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
-      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#4A8FE7;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
+    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(0,212,200,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
+      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#00d4c8;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
     </div>
 
 
@@ -691,8 +691,8 @@ footer a:hover{color:var(--teal)}
       <div class="card-tags"><span class="tag teal">SaaS · Life Sciences</span><span class="tag">Blog Post</span></div>
     </a>
 
-    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
-      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#4A8FE7;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
+    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(0,212,200,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
+      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#00d4c8;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
     </div>
 
 
@@ -784,8 +784,8 @@ footer a:hover{color:var(--teal)}
       <div class="card-tags"><span class="tag teal">Travel · SaaS</span><span class="tag">Blog Announcement</span></div>
     </a>
 
-    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
-      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#4A8FE7;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
+    <div class="cta-banner" style="grid-column:1/-1;background:rgba(74,143,231,0.06);border:1px solid rgba(0,212,200,0.2);border-radius:8px;padding:18px 24px;text-align:center;margin:4px 0;">
+      <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:#00d4c8;text-decoration:none;" target="_blank">Want yours torn down like this? →</a>
     </div>
 
 
@@ -1012,7 +1012,7 @@ document.addEventListener('DOMContentLoaded', renderCards);
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  background: linear-gradient(90deg, #0a1628 0%, #111c18 50%, #0a1628 100%);
   border-top: 1px solid rgba(29, 158, 117, 0.3);
   box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
   z-index: 9999;
@@ -1055,7 +1055,7 @@ document.addEventListener('DOMContentLoaded', renderCards);
 }
 .sf-affiliate-tag {
   background: rgba(74, 143, 231, 0.1);
-  color: #4A8FE7;
+  color: #00d4c8;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   font-weight: 500;
