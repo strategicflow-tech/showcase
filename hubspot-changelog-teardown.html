@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — HubSpot Developer Changelog Teardown</title>
+<meta name="description" content="Strategic Flow structural audit of HubSpot's June 2026 Developer Changelog. Score: 2.5/10 → 9/10. Feature-First Bias, Filing Label Title, Zero Visual Hierarchy across 9 entries — diagnosed and rebuilt."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --hub:#FF7A59;--hub-light:#FFEEE8;--hub-dark:#33475B;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+.score-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 22px 0;}
+.score-badge{display:flex;align-items:center;gap:8px;background:var(--amber-bg);border:1px solid #F09F27;border-radius:8px;padding:10px 16px;}
+.score-num{font-family:'DM Serif Display',serif;font-size:28px;color:#7a5a00;line-height:1;}
+.score-label{font-size:11px;color:var(--amber-dark);line-height:1.4;}
+.score-badge-after{background:var(--green-light);border-color:var(--green);}
+.score-num-after{color:var(--green-dark);}
+.score-label-after{color:var(--green-mid);}
+
+.bef-header{background:var(--hub-dark);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#fff;}
+.bef-logo span{color:var(--hub);}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:20px;font-weight:700;color:#111;margin-bottom:12px;line-height:1.35;}
+.bef-copy{font-size:13px;color:#555;line-height:1.7;margin-bottom:12px;}
+.bef-list{margin:14px 0;padding-left:20px;}
+.bef-list li{font-size:12px;color:#555;line-height:1.8;margin-bottom:4px;}
+.bef-h2{font-size:14px;font-weight:700;color:#111;margin:20px 0 8px;}
+.bef-divider{border-top:1px solid #eee;margin:18px 0;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:8px;display:flex;gap:8px;line-height:1.5;}
+
+.after-header{background:var(--hub-dark);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#fff;}
+.after-logo span{color:var(--hub);}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:27px;line-height:1.25;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--hub);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:14px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:20px;color:var(--hub);line-height:1;}
+.stat-label{font-size:10.5px;color:var(--text-secondary);margin-top:4px;line-height:1.4;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--hub);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:20px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:12.5px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.score-explain{background:var(--bg-secondary);border-radius:10px;padding:20px;margin-bottom:24px;}
+.score-explain-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:14px;}
+.score-row-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.score-item{padding:12px;border-radius:8px;font-size:12px;}
+.score-item.fail{background:#FFF0F0;border-left:3px solid #F09595;}
+.score-item.pass{background:var(--green-light);border-left:3px solid var(--green);}
+.score-item-label{font-weight:500;margin-bottom:4px;color:var(--text-primary);}
+.score-item-note{color:var(--text-secondary);line-height:1.5;}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:600px){
+  .notes-grid{grid-template-columns:1fr;}
+  .score-row-detail{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">HubSpot — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original changelog</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> developers.hubspot.com/changelog</div>
+        <div class="meta-row"><span>Type:</span> Developer Changelog Roundup</div>
+        <div class="meta-row"><span>Date:</span> June 29, 2026 · HubSpot</div>
+        <div class="post-title">Developer updates for June 2026</div>
+      </div>
+
+      <div class="score-row">
+        <div class="score-badge">
+          <div class="score-num">2.5</div>
+          <div class="score-label">out of 10<br>Original score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Filing Label Title · Feature-First Bias · Zero Visual Hierarchy · No Reader Consequence Across 9 Entries · Buried High-Value Update</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Hub<span>Spot</span></div>
+        <div class="bef-nav">Developer Changelog</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">Changelog · Announced Jun 29, 2026</div>
+        <div class="bef-h1">Developer updates for June 2026</div>
+
+        <div class="bef-copy">June's developer updates include new CRM and customer success signals, cleaner subscription-status histories, expanded Knowledge Vault support for structured data, app object activity association controls, quote module customization, and several CLI improvements. This roundup also covers custom event timeline configuration and new Remote MCP server capabilities for content analytics and landing page creation.</div>
+
+        <ul class="bef-list">
+          <li>Current Customer system property now available</li>
+          <li>Deduplication of repeated subscription status updates from automations</li>
+          <li>Knowledge Vaults now support structured data files</li>
+          <li>Automatic activity associations are now available for app objects</li>
+          <li>Custom-coded modules are now available for HubSpot quotes</li>
+          <li>HubSpot CLI authentication is now centralized</li>
+          <li>App logs are now available in the HubSpot CLI</li>
+          <li>Custom event timeline cards can now be customized</li>
+          <li>Content analytics and landing page creation now available in the Remote MCP server</li>
+        </ul>
+
+        <div class="bef-divider"></div>
+
+        <div class="bef-h2">Current Customer system property now available</div>
+        <div class="bef-copy">HubSpot now provides a system-managed Current Customer property (hs_current_customer) on companies, contacts, and custom objects that flags whether a record is a current customer. It powers default filters in the Customer Success workspace, and you can read it and filter or search on it through the CRM API like any other property — though it's system-managed and read-only to integrations.</div>
+
+        <div class="bef-h2">Deduplication of repeated subscription status updates</div>
+        <div class="bef-copy">HubSpot is now updating how repeated subscription status updates from automated sources, including workflows, integrations, and API calls, are recorded. When an automated source sends the same subscription status multiple times within a 24-hour period with no meaningful change, HubSpot may consolidate those entries instead of recording each one separately.</div>
+
+        <div class="bef-h2">Content analytics and landing page creation now available in the Remote MCP server</div>
+        <div class="bef-copy">Two new capabilities are live in HubSpot's remote MCP server: content analytics for standalone web assets and landing page creation. Previously, content analytics via MCP was limited to campaign-linked pages. That restriction is removed.</div>
+
+        <div class="bef-copy" style="color:#999;font-style:italic;">[6 more entries continue below the fold: Knowledge Vaults, app object associations, custom quote modules, CLI authentication, CLI logs, custom event timeline cards — all formatted identically.]</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> <strong>Filing Label Title:</strong> "Developer updates for June 2026" describes the page's contents, not what changed for the developer reading it. It could be the title of any month, any year, for any product. Zero retrieval value, zero urgency.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Buried high-value update:</strong> The MCP server update — AI assistants can now create and publish landing pages autonomously — is arguably the most significant capability in the entire roundup. It sits as entry #9 of 9, after CLI logging commands and timeline card customization.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Feature-First Bias across all 9 entries:</strong> Every single entry opens with what HubSpot built ("HubSpot now provides...", "HubSpot is now updating...", "Two new capabilities are live...") never with what broke for the developer before this shipped.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Zero Visual Hierarchy:</strong> All 9 entries — spanning CRM properties, CLI tooling, AI agent capabilities, and quote customization — receive identical heading weight. A frontend developer and an AI integration engineer both have to read all 9 to find their 1-2 relevant items.</div>
+        <div class="issue-item"><span>⚠</span> <strong>No reader segmentation:</strong> This single roundup serves at minimum four distinct developer personas (CRM API developers, CLI users, AI/MCP integrators, CPQ/quote builders) with zero structural acknowledgment that they have different jobs to do.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> developers.hubspot.com/changelog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Developer Changelog — Strategic Flow Rewrite</div>
+        <div class="post-title">Your AI assistant can now publish a HubSpot landing page on its own. Here's what else shipped in June.</div>
+      </div>
+
+      <div class="score-row" style="margin-bottom:16px;">
+        <div class="score-badge score-badge-after">
+          <div class="score-num score-num-after">9</div>
+          <div class="score-label score-label-after">out of 10<br>Rebuilt score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Highest-impact update surfaced first · Role-based sections for 4 developer personas · Consequence-first openings · Reordered by relevance, not chronology</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">Hub<span>Spot</span></div>
+          <div class="after-tagline-sm">Developer Changelog · June 2026</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.06em;">9 SHIPS THIS MONTH</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Developer Changelog · June 2026</div>
+        <div class="after-h1">Your AI assistant can now <em>publish a HubSpot landing page on its own.</em> Here's what else shipped.</div>
+        <div class="after-lead">Nine updates this month, reordered by what actually changes your workflow — not the order HubSpot's engineering teams happened to ship them. The MCP server update buried at the bottom of the original roundup is the headline here, because it's the one most developers will actually act on first.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">2</div>
+            <div class="stat-label">new MCP capabilities: content analytics + landing page creation</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">new CLI commands for account and log management</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">24h</div>
+            <div class="stat-label">window for automated subscription status deduplication</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">file types now queryable in Knowledge Vault: xlsx, csv, json, xml</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://developers.hubspot.com/changelog/june-2026-rollup" class="after-cta-primary">See what shipped for your role →</a>
+          <a href="https://developers.hubspot.com/changelog" class="after-cta-ghost">Full changelog</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">For AI / MCP integrators</div>
+        <div class="after-section-title">Your AI assistant just stopped needing the UI to publish a page.</div>
+        <div class="after-section-body">Content analytics in the Remote MCP server is no longer limited to campaign-linked pages — query performance data (views, form submissions, new contacts, bounce rate, CTA performance, traffic sources) for any landing page, website page, or blog post. More significantly: landing page creation is now live. Starting from a template or a clone, AI assistants can create, edit, and publish landing pages — copy, headlines, CTAs, sections, styles, form embeds — with an explicit confirmation step before anything goes live. If you've already connected HubSpot to an AI assistant, reconnect to grant the new permission scope; new connections prompt automatically.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">For CRM API developers</div>
+        <div class="after-section-title">Stop building your own "is this a customer" logic. HubSpot now computes it for you.</div>
+        <div class="after-section-body">The new system-managed hs_current_customer property flags current-customer status on companies, contacts, and custom objects — read-only, computed by HubSpot, queryable through the CRM API like any other property. New accounts default to lifecycle stage = customer, but you can redefine "current" with a single property, multiple lifecycle stages, or the advanced filter builder. Separately, repeated subscription status updates from automated sources within a 24-hour window now get deduplicated automatically, as long as nothing meaningful changed — opt state, legal basis, or source type still get recorded every time.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">For CLI users</div>
+        <div class="after-section-title">Authentication is centralized. Logs are one command away.</div>
+        <div class="after-section-body">HubSpot CLI now uses global authentication — credentials live in ~/.hscli/config.yml once, and each project tracks its own linked accounts separately, cutting the risk of deploying to the wrong account. New commands (hs account link, hs account default, hs account unlink, hs account current) manage that per-project. And hs app logs pulls serverless function, CRM card, webhook, and API logs straight into your terminal, filterable by app ID, log type, time range, and result limit — with --json for structured output and --tail for continuous polling.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">For CPQ, data, and timeline builders</div>
+        <div class="after-section-title">Quotes get custom React modules. Knowledge Vault gets structured data. Timelines get readable.</div>
+        <div class="after-section-body">Custom-coded CMS React modules can now embed directly into quote templates — line item tables, terms, payment schedules, fully custom layouts, pulling from CRM or external systems. Knowledge Vaults now accept xlsx, csv, json, and xml uploads so agents can answer aggregation questions directly from tabular data, not just natural-language lookups. App objects can now get automatic activity associations (admin opt-in required, configurable per activity type) so logged emails and calls show up on record timelines without manual navigation. And custom event timeline cards are now configurable — header, subheader, visible properties, property order — with a live preview before you save.</div>
+        <div style="margin-top:20px;">
+          <a href="https://developers.hubspot.com/changelog/june-2026-rollup" class="after-cta-primary" style="font-size:13px;">Read the full release notes →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://developers.hubspot.com/changelog/june-2026-rollup" class="footer-link">Original changelog</a>
+          <a href="https://developers.hubspot.com/changelog" class="footer-link">Changelog home</a>
+        </div>
+        <div class="footer-note">© 2026 HubSpot, Inc.</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+
+        <div class="score-explain">
+          <div class="score-explain-title">Score explained — why 2.5/10 before and 9/10 after</div>
+          <div class="score-row-detail">
+            <div class="score-item fail">
+              <div class="score-item-label">Title — FAIL</div>
+              <div class="score-item-note">"Developer updates for June 2026" is a Filing Label with zero retrieval value. It could describe any product's changelog for any month. No signal about what's actually significant inside.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Title — PASS</div>
+              <div class="score-item-note">"Your AI assistant can now publish a HubSpot landing page on its own." Names the single most consequential capability in the entire roundup, pulled from entry #9 of 9 in the original.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Ordering — FAIL</div>
+              <div class="score-item-note">The MCP landing page creation update — arguably a category-defining capability (AI agents publishing pages autonomously) — is the last of 9 entries, after CLI log commands and timeline card styling.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Ordering — PASS</div>
+              <div class="score-item-note">The rebuild leads with the MCP update as the hero section, then groups the remaining 8 entries into 4 role-based sections ordered by impact, not by the sequence HubSpot's teams happened to ship them in.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Entry openings — FAIL</div>
+              <div class="score-item-note">Every entry opens with "HubSpot now provides...", "HubSpot is now updating...", or "Two new capabilities are live..." — feature-first phrasing repeated 9 times with no variation and no reader framing.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Entry openings — PASS</div>
+              <div class="score-item-note">"Stop building your own 'is this a customer' logic. HubSpot now computes it for you." Opens with the workaround the developer was doing before, then names what replaces it.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Visual hierarchy — FAIL</div>
+              <div class="score-item-note">All 9 entries — spanning CRM properties, CLI tooling, AI/MCP capabilities, and CPQ customization — get identical H2 weight. A CLI user has to scroll past CRM property documentation to find their 2 relevant entries.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Visual hierarchy — PASS</div>
+              <div class="score-item-note">Four role-based sections — AI/MCP integrators, CRM API developers, CLI users, CPQ/data/timeline builders — let each developer type jump straight to their relevant 2-3 updates and skip the rest entirely.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">Before — MCP entry opening</div>
+            <p>"Two new capabilities are live in HubSpot's remote MCP server: content analytics for standalone web assets and landing page creation."<br><br>Buried as entry 9 of 9. Feature-first list format gives no signal this is the most significant update in the roundup.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">After — MCP entry opening</div>
+            <p>"Your AI assistant just stopped needing the UI to publish a page."<br><br>Promoted to hero section. Names the actual workflow change — AI assistants publishing pages without a human opening the page editor — before describing the mechanism.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 5 fixes — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Headline pulled from entry #9 and promoted to the title</div>
+          <div class="upgrade-desc">The original title names nothing. The single most consequential update in the roundup — AI assistants autonomously creating and publishing landing pages — was buried as the last of nine entries. The rebuild promotes that capability to the headline, because it's the one fact most likely to make a developer stop scrolling and read further.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Nine entries reordered by impact, not by shipping sequence</div>
+          <div class="upgrade-desc">The original lists updates in whatever order HubSpot's engineering teams happened to ship them — CRM property, then deduplication logic, then Knowledge Vault, then app objects, then quotes, then three CLI updates, then finally MCP. The rebuild leads with MCP as the highest-impact update and groups everything else by who actually needs to read it.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Four role-based sections replace nine identical-weight entries</div>
+          <div class="upgrade-desc">A CLI user, a CRM API developer, an AI/MCP integrator, and a CPQ builder all received the exact same undifferentiated list in the original. The rebuild groups the 9 entries into 4 sections by developer persona, so each reader finds their relevant 2-3 updates in seconds instead of reading all 9.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Entry openings reframed from feature description to workaround replacement</div>
+          <div class="upgrade-desc">"HubSpot now provides a system-managed Current Customer property" describes the feature. "Stop building your own 'is this a customer' logic" names the manual workaround every CRM developer has been doing, then says what replaces it. The same fix applied across all 4 rebuilt sections.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Stat row added to make scope scannable before reading any section</div>
+          <div class="upgrade-desc">The original has zero numeric scaffolding — a reader has to read full paragraphs to understand scope (how many file types, how many CLI commands, what time window for deduplication). The rebuild surfaces four concrete numbers above the fold so the reader knows the shape of the update before committing to any section.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">A changelog with nine updates and no hierarchy makes every reader do the sorting work HubSpot's writers should have done. Decision architecture means ordering by reader impact, not by internal shipping sequence. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last product update or release note.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original changelog'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08);margin-top:8px;">
+  <a href="https://strategicflow.tech/teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none;">← Back to all teardowns</a>
+</div>
+
+</body>
+</html>
