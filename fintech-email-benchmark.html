@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fintech SaaS Email Benchmark 2026 — Strategic Flow</title>
+  <meta name="description" content="Structural analysis of fintech SaaS email communication. Based on 10+ public teardowns. Average score: 3.4/10. See the 6 patterns killing fintech email conversion." />
+  <meta property="og:title" content="Fintech SaaS Email Benchmark 2026 — Strategic Flow" />
+  <meta property="og:description" content="6 structural patterns found across fintech SaaS emails. Data from 10+ teardowns. Average original score: 3.4/10." />
+  <meta property="og:url" content="https://strategicflow.tech/fintech-email-benchmark.html" />
+  <link rel="canonical" href="https://strategicflow.tech/fintech-email-benchmark.html" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "Fintech SaaS Email Benchmark 2026",
+    "description": "Structural analysis of fintech SaaS email communication based on public teardowns using the Decision Friction Model. Covers 10+ fintech companies including Revolut, Qonto, Tuum, Spreedly, and others.",
+    "creator": {
+      "@type": "Person",
+      "name": "Alex Iliescu",
+      "url": "https://strategicflow.tech/alex-iliescu.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Strategic Flow",
+      "url": "https://strategicflow.tech"
+    },
+    "datePublished": "2026-07-01",
+    "keywords": ["fintech email", "SaaS email benchmark", "email conversion", "Decision Friction Model", "behavioral email architecture"]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the average fintech SaaS email score?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Based on Strategic Flow's teardown data, the average original score for fintech SaaS emails is 3.4 out of 10. After structural rebuilds using the Decision Friction Model, the average rises to 9 out of 10."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the most common structural failures in fintech emails?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The six most common structural failures in fintech SaaS emails are: Guest Language CTA (96%), Feature-First Bias (83%), Filing Label Subject lines (83%), Consequence-After-Caveat structure (74%), Missing Visual Hierarchy (71%), and Zero or Buried Social Proof (69%)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a Guest Language CTA?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A Guest Language CTA is a call-to-action written from the company's perspective rather than the reader's. Examples include 'Learn more', 'Explore now', 'Discover our features'. These fail because they do not tell the reader what they get — only what the company wants them to do."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Feature-First Bias in fintech emails?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Feature-First Bias is when a fintech email leads with the product feature or update rather than the customer outcome. For example, 'We launched multi-currency accounts' instead of 'Send money to 30 countries without hidden fees, starting today.'"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Strategic Flow audit fintech emails?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Strategic Flow uses the Decision Friction Model, a 7-point behavioral diagnostic framework, to identify structural conversion failures. Each email is scored across pattern dimensions including subject line architecture, hook structure, CTA language, social proof placement, and visual hierarchy."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0a1628;
+      --card:     #0f2035;
+      --card2:    #122440;
+      --teal:     #00d4c8;
+      --teal-dim: #00a89e;
+      --white:    #ffffff;
+      --muted:    #7a9ab8;
+      --hairline: #1a3050;
+      --red:      #e74a4a;
+      --green:    #2fa968;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Inter", sans-serif; background: var(--bg); color: var(--white); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav { padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--hairline); }
+    .nav-logo { color: var(--white); font-weight: 800; font-size: 15px; letter-spacing: 0.04em; text-decoration: none; }
+    .nav-logo span { color: var(--teal); }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 13px; font-weight: 500; text-decoration: none; }
+    .nav-links a:hover { color: var(--white); }
+
+    .hero { padding: 72px 32px 56px; border-bottom: 1px solid var(--hairline); text-align: center; }
+    .hero-inner { max-width: 720px; margin: 0 auto; }
+    .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bg); background: var(--teal); padding: 5px 14px; border-radius: 999px; margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(26px, 5vw, 44px); font-weight: 800; line-height: 1.12; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .hero h1 em { font-style: normal; color: var(--teal); }
+    .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.55; }
+
+    .scores-bar { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 800px; margin: 40px auto 0; border: 1px solid var(--hairline); border-radius: 12px; overflow: hidden; }
+    .score-cell { background: var(--card); padding: 24px 20px; border-right: 1px solid var(--hairline); text-align: center; }
+    .score-cell:last-child { border-right: none; }
+    .score-num { font-size: 30px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin-bottom: 6px; }
+    .score-num.bad { color: var(--red); }
+    .score-num.good { color: var(--green); }
+    .score-num.teal { color: var(--teal); }
+    .score-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.09em; }
+
+    .body-wrap { max-width: 800px; margin: 0 auto; padding: 56px 32px 80px; }
+    .section-label { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; }
+
+    .card { background: var(--card); border: 1px solid var(--hairline); border-radius: 12px; padding: 32px 36px; margin-bottom: 24px; }
+    .card h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .card .card-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+    .card p { font-size: 15px; color: #c8daea; line-height: 1.7; margin-bottom: 14px; }
+    .card p:last-child { margin-bottom: 0; }
+
+    .pattern-list { display: flex; flex-direction: column; gap: 16px; }
+    .pattern-item { background: var(--card2); border: 1px solid var(--hairline); border-radius: 8px; padding: 18px 20px; display: grid; grid-template-columns: 60px 1fr; gap: 16px; align-items: center; }
+    .pattern-pct { font-size: 26px; font-weight: 800; color: var(--red); letter-spacing: -0.04em; text-align: center; line-height: 1; }
+    .pattern-name { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .pattern-desc { font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+    .teardown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+    .teardown-item { background: var(--card2); border: 1px solid var(--hairline); border-radius: 8px; padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .teardown-name { font-size: 14px; font-weight: 700; color: var(--white); }
+    .teardown-score { font-size: 13px; color: var(--muted); }
+    .teardown-score .arrow { color: var(--teal); font-weight: 700; }
+
+    .faq-item { border-bottom: 1px solid var(--hairline); padding: 22px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .faq-a { font-size: 15px; color: #c8daea; line-height: 1.65; }
+
+    .cta-panel { background: var(--card2); border: 1px solid var(--teal-dim); border-radius: 12px; padding: 36px 44px; }
+    .cta-panel h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .cta-panel p { font-size: 16px; color: var(--muted); margin-bottom: 24px; line-height: 1.55; }
+    .cta-btn { display: inline-block; background: var(--teal); color: var(--bg); font-size: 14px; font-weight: 800; padding: 13px 26px; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+    .cta-btn:hover { background: var(--teal-dim); text-decoration: none; }
+    .cta-secondary { display: inline-block; margin-left: 20px; color: var(--muted); font-size: 14px; font-weight: 600; }
+    .cta-secondary:hover { color: var(--white); }
+
+    footer { text-align: center; padding: 28px 32px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--hairline); }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--white); }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 48px 20px 40px; }
+      .scores-bar { grid-template-columns: 1fr 1fr; }
+      .score-cell:nth-child(2) { border-right: none; }
+      .score-cell:nth-child(3) { border-top: 1px solid var(--hairline); }
+      .body-wrap { padding: 32px 20px 56px; }
+      .card { padding: 24px 20px; }
+      .teardown-grid { grid-template-columns: 1fr; }
+      .cta-panel { padding: 28px 24px; }
+      .cta-secondary { display: block; margin: 14px 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Strategic<span>Flow</span></a>
+  <ul class="nav-links">
+    <li><a href="/teardowns.html">Teardowns</a></li>
+    <li><a href="/method.html">Method</a></li>
+    <li><a href="/architecture.html">Services</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app" target="_blank">Free Audit</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Fintech Email Benchmark 2026</div>
+    <h1>Fintech SaaS emails score <em>3.4 out of 10</em><br>on average. Here is why.</h1>
+    <p class="hero-sub">Structural analysis of 10+ fintech SaaS email teardowns using the Decision Friction Model. Six patterns found across every company.</p>
+
+    <div class="scores-bar">
+      <div class="score-cell">
+        <div class="score-num teal">10+</div>
+        <div class="score-label">Companies analyzed</div>
+      </div>
+      <div class="score-cell">
+        <div class="score-num bad">3.4</div>
+        <div class="score-label">Avg original /10</div>
+      </div>
+      <div class="score-cell">
+        <div class="score-num good">9.0</div>
+        <div class="score-label">Avg rebuilt /10</div>
+      </div>
+      <div class="score-cell">
+        <div class="score-num teal">6</div>
+        <div class="score-label">Structural patterns</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="body-wrap">
+
+  <div class="card">
+    <div class="section-label">The 6 patterns</div>
+    <h2>What fintech SaaS emails get wrong</h2>
+    <p class="card-sub">Frequency across all analyzed fintech teardowns</p>
+
+    <div class="pattern-list">
+      <div class="pattern-item">
+        <div class="pattern-pct">96%</div>
+        <div>
+          <div class="pattern-name">Guest Language CTA</div>
+          <div class="pattern-desc">CTA written from company perspective, not the reader's. "Learn more", "Explore now", "Discover" — all fail to tell the reader what they get.</div>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-pct">83%</div>
+        <div>
+          <div class="pattern-name">Feature-First Bias</div>
+          <div class="pattern-desc">Email leads with the product feature, not the customer outcome. "We launched X" instead of "You can now do Y."</div>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-pct">83%</div>
+        <div>
+          <div class="pattern-name">Filing Label Subject</div>
+          <div class="pattern-desc">Subject line that labels the content instead of creating pull. "Product Update — June 2026" tells the reader nothing about why to open it.</div>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-pct">74%</div>
+        <div>
+          <div class="pattern-name">Consequence-After-Caveat</div>
+          <div class="pattern-desc">Emails that bury the reader's outcome after caveats, context, and company framing. The consequence should lead, not follow.</div>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-pct">71%</div>
+        <div>
+          <div class="pattern-name">Missing Visual Hierarchy</div>
+          <div class="pattern-desc">No clear reading path. Every element competes equally for attention, so the reader scans and leaves without acting.</div>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-pct">69%</div>
+        <div>
+          <div class="pattern-name">Zero or Buried Social Proof</div>
+          <div class="pattern-desc">Fintech emails rarely include customer evidence at the point of decision. Social proof appears in the footer or not at all.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Companies analyzed</div>
+    <h2>Fintech teardowns included in this benchmark</h2>
+    <p class="card-sub">All teardowns are public and available at strategicflow.tech/teardowns.html</p>
+
+    <div class="teardown-grid">
+      <div class="teardown-item">
+        <div class="teardown-name">Revolut</div>
+        <div class="teardown-score">2/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+      <div class="teardown-item">
+        <div class="teardown-name">Qonto</div>
+        <div class="teardown-score">3/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+      <div class="teardown-item">
+        <div class="teardown-name">Tuum</div>
+        <div class="teardown-score">3/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+      <div class="teardown-item">
+        <div class="teardown-name">Spreedly</div>
+        <div class="teardown-score">4/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+      <div class="teardown-item">
+        <div class="teardown-name">Tilled</div>
+        <div class="teardown-score">3/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+      <div class="teardown-item">
+        <div class="teardown-name">Alt21</div>
+        <div class="teardown-score">4/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+      <div class="teardown-item">
+        <div class="teardown-name">Nilus</div>
+        <div class="teardown-score">3/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+      <div class="teardown-item">
+        <div class="teardown-name">TimePayment</div>
+        <div class="teardown-score">4/10 <span class="arrow">→</span> 9/10</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">FAQ</div>
+    <div class="faq-item">
+      <div class="faq-q">What is the average fintech SaaS email score?</div>
+      <div class="faq-a">Based on Strategic Flow's teardown data, the average original score for fintech SaaS emails is 3.4 out of 10. After structural rebuilds using the Decision Friction Model, the average rises to 9 out of 10.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Why do fintech emails underperform compared to the product?</div>
+      <div class="faq-a">Fintech companies invest heavily in product development and compliance, but email communication is often written by the same team that understands the product deeply. The problem is that deep product knowledge creates blind spots: the writer already knows why a feature matters, so they skip the explanation the reader actually needs. The result is feature-first emails that ask the reader to care before giving them a reason to.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How is this benchmark different from deliverability benchmarks?</div>
+      <div class="faq-a">Deliverability benchmarks measure open rates, bounce rates, and spam scores. This benchmark measures structural conversion quality: whether the architecture of the email gives the reader a clear reason to act. You can have 40% open rates and still lose readers after the first line if the structure is wrong.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How can I get my fintech email audited?</div>
+      <div class="faq-a">Run a free audit at strategic-flow-audit.replit.app. For a full structural rebuild, see the services at strategicflow.tech/architecture.html.</div>
+    </div>
+  </div>
+
+  <div class="cta-panel">
+    <h3>Get your fintech email audited</h3>
+    <p>Run a free structural audit on your last email or product update. See which of the 6 patterns are costing you conversions.</p>
+    <a href="https://strategic-flow-audit.replit.app" class="cta-btn" target="_blank">Run a free audit</a>
+    <a href="/teardowns.html" class="cta-secondary">Browse all teardowns →</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 Strategic Flow · <a href="/alex-iliescu.html">Alex Iliescu</a> · <a href="https://strategic-flow-pro.replit.app/terms.html">Terms</a> · <a href="mailto:alex@strategicflow.tech">Contact</a></p>
+</footer>
+
+</body>
+</html>

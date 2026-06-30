@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strategic Flow vs Klaviyo — Email Architecture vs Email Automation</title>
+  <meta name="description" content="Strategic Flow and Klaviyo solve different problems. Klaviyo automates email sending. Strategic Flow fixes why the emails you send don't convert. Here is the difference." />
+  <meta property="og:title" content="Strategic Flow vs Klaviyo — What's the actual difference?" />
+  <meta property="og:description" content="Klaviyo is a sending platform. Strategic Flow is a structural audit. You may need both — or just the one you're missing." />
+  <meta property="og:url" content="https://strategicflow.tech/strategic-flow-vs-klaviyo.html" />
+  <link rel="canonical" href="https://strategicflow.tech/strategic-flow-vs-klaviyo.html" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Strategic Flow vs Klaviyo",
+    "description": "Comparison of Strategic Flow and Klaviyo for B2B SaaS email. Covers use cases, positioning, and which tool solves which problem.",
+    "url": "https://strategicflow.tech/strategic-flow-vs-klaviyo.html",
+    "author": {
+      "@type": "Person",
+      "name": "Alex Iliescu",
+      "url": "https://strategicflow.tech/alex-iliescu.html"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Strategic Flow",
+      "url": "https://strategicflow.tech"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the difference between Strategic Flow and Klaviyo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Klaviyo is an email sending and automation platform. It handles deliverability, segmentation, flows, and A/B testing. Strategic Flow is a structural audit and rebuild service. It diagnoses why your emails are opened but not acted on, and rebuilds the architecture so they convert. You can use Klaviyo to send emails that Strategic Flow has rebuilt."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Strategic Flow a Klaviyo alternative?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Strategic Flow is not a sending platform and does not replace Klaviyo. Strategic Flow diagnoses and fixes structural conversion failures in email content. Klaviyo sends and automates email delivery. The two tools solve different problems and can be used together."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use Strategic Flow with Klaviyo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Strategic Flow audits and rebuilds the structural architecture of your email content. Once rebuilt, those emails can be sent through any platform including Klaviyo, HubSpot, Customer.io, or any other ESP."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Klaviyo fix email copy and conversion architecture?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Klaviyo provides A/B testing tools that can help optimize subject lines and send times, but it does not diagnose structural conversion failures in email content. It does not identify Feature-First Bias, Guest Language CTAs, Filing Label Subjects, or Consequence-After-Caveat patterns. That is what Strategic Flow does."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which is better for B2B SaaS: Strategic Flow or Klaviyo?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For B2B SaaS, Klaviyo is optimized for ecommerce and B2C flows. Strategic Flow is built specifically for B2B SaaS email architecture, including product updates, onboarding sequences, changelogs, and activation emails. If you need a sending platform, use Klaviyo. If you need your emails to structurally convert, use Strategic Flow."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0a1628;
+      --card:     #0f2035;
+      --card2:    #122440;
+      --teal:     #00d4c8;
+      --teal-dim: #00a89e;
+      --white:    #ffffff;
+      --muted:    #7a9ab8;
+      --hairline: #1a3050;
+      --green:    #2fa968;
+      --amber:    #f0a500;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Inter", sans-serif; background: var(--bg); color: var(--white); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav { padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--hairline); }
+    .nav-logo { color: var(--white); font-weight: 800; font-size: 15px; letter-spacing: 0.04em; text-decoration: none; }
+    .nav-logo span { color: var(--teal); }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 13px; font-weight: 500; text-decoration: none; }
+    .nav-links a:hover { color: var(--white); }
+
+    .hero { padding: 72px 32px 56px; border-bottom: 1px solid var(--hairline); text-align: center; }
+    .hero-inner { max-width: 720px; margin: 0 auto; }
+    .eyebrow { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bg); background: var(--teal); padding: 5px 14px; border-radius: 999px; margin-bottom: 24px; }
+    .hero h1 { font-size: clamp(26px, 5vw, 44px); font-weight: 800; line-height: 1.12; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .hero h1 em { font-style: normal; color: var(--teal); }
+    .hero-sub { font-size: 17px; color: var(--muted); line-height: 1.55; }
+
+    .body-wrap { max-width: 800px; margin: 0 auto; padding: 56px 32px 80px; }
+    .section-label { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 20px; }
+
+    .card { background: var(--card); border: 1px solid var(--hairline); border-radius: 12px; padding: 32px 36px; margin-bottom: 24px; }
+    .card h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .card p { font-size: 15px; color: #c8daea; line-height: 1.7; margin-bottom: 14px; }
+    .card p:last-child { margin-bottom: 0; }
+    .card p strong { color: var(--white); }
+
+    /* VERSUS TABLE */
+    .vs-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    .vs-table th { padding: 14px 18px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-align: left; border-bottom: 2px solid var(--hairline); }
+    .vs-table th.sf { color: var(--teal); }
+    .vs-table th.kl { color: var(--amber); }
+    .vs-table th.dim { color: var(--muted); }
+    .vs-table td { padding: 14px 18px; font-size: 14px; border-bottom: 1px solid var(--hairline); vertical-align: top; line-height: 1.5; }
+    .vs-table td.dim { color: var(--muted); font-weight: 600; font-size: 13px; }
+    .vs-table td.sf { color: #c8daea; }
+    .vs-table td.kl { color: #c8daea; }
+    .vs-table tr:last-child td { border-bottom: none; }
+    .yes { color: var(--green); font-weight: 700; }
+    .no { color: var(--muted); }
+    .partial { color: var(--amber); font-weight: 600; }
+
+    /* USE CASE CARDS */
+    .use-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+    .use-item { background: var(--card2); border: 1px solid var(--hairline); border-radius: 8px; padding: 20px; }
+    .use-label { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .use-label.sf { color: var(--teal); }
+    .use-label.kl { color: var(--amber); }
+    .use-item ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .use-item li { font-size: 14px; color: #c8daea; padding-left: 16px; position: relative; line-height: 1.4; }
+    .use-item li::before { content: "→"; position: absolute; left: 0; color: var(--teal); font-weight: 700; }
+    .use-item.kl li::before { color: var(--amber); }
+
+    .verdict-box { background: var(--card2); border: 1px solid var(--teal-dim); border-radius: 10px; padding: 24px 28px; margin-top: 20px; }
+    .verdict-box p { font-size: 15px; color: #c8daea; line-height: 1.65; margin-bottom: 12px; }
+    .verdict-box p:last-child { margin-bottom: 0; }
+    .verdict-box p strong { color: var(--white); }
+
+    .faq-item { border-bottom: 1px solid var(--hairline); padding: 22px 0; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .faq-a { font-size: 15px; color: #c8daea; line-height: 1.65; }
+
+    .cta-panel { background: var(--card2); border: 1px solid var(--teal-dim); border-radius: 12px; padding: 36px 44px; }
+    .cta-panel h3 { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+    .cta-panel p { font-size: 16px; color: var(--muted); margin-bottom: 24px; line-height: 1.55; }
+    .cta-btn { display: inline-block; background: var(--teal); color: var(--bg); font-size: 14px; font-weight: 800; padding: 13px 26px; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+    .cta-btn:hover { background: var(--teal-dim); text-decoration: none; }
+    .cta-secondary { display: inline-block; margin-left: 20px; color: var(--muted); font-size: 14px; font-weight: 600; }
+    .cta-secondary:hover { color: var(--white); }
+
+    footer { text-align: center; padding: 28px 32px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--hairline); }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--white); }
+
+    @media (max-width: 640px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 48px 20px 40px; }
+      .body-wrap { padding: 32px 20px 56px; }
+      .card { padding: 24px 20px; }
+      .vs-table th, .vs-table td { padding: 10px 12px; font-size: 13px; }
+      .use-grid { grid-template-columns: 1fr; }
+      .cta-panel { padding: 28px 24px; }
+      .cta-secondary { display: block; margin: 14px 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Strategic<span>Flow</span></a>
+  <ul class="nav-links">
+    <li><a href="/teardowns.html">Teardowns</a></li>
+    <li><a href="/method.html">Method</a></li>
+    <li><a href="/architecture.html">Services</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app" target="_blank">Free Audit</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Strategic Flow vs Klaviyo</div>
+    <h1>Klaviyo sends your emails.<br><em>Strategic Flow fixes why they don't convert.</em></h1>
+    <p class="hero-sub">These two tools solve different problems. Here is an honest breakdown of what each one does — and which one you are actually missing.</p>
+  </div>
+</section>
+
+<div class="body-wrap">
+
+  <div class="card">
+    <div class="section-label">The short version</div>
+    <h2>Different tools, different problems</h2>
+    <p>Klaviyo is an email sending and automation platform. It is very good at what it does: segmentation, flows, deliverability, A/B testing, and analytics. If you are sending emails to a large list and you need automation, Klaviyo is a legitimate choice.</p>
+    <p>Strategic Flow is not a sending platform. It does not replace Klaviyo. Strategic Flow diagnoses structural conversion failures in your email content, the architecture level where most SaaS companies lose readers after the open. Across 59 public teardowns, the average original score is 3.4 out of 10. The problem is never deliverability. It is always structure.</p>
+    <p><strong>You can use both together.</strong> Strategic Flow rebuilds the structural architecture. Klaviyo sends it.</p>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Side by side</div>
+    <h2>What each tool actually does</h2>
+    <table class="vs-table">
+      <thead>
+        <tr>
+          <th class="dim">Dimension</th>
+          <th class="sf">Strategic Flow</th>
+          <th class="kl">Klaviyo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dim">Primary function</td>
+          <td class="sf">Structural audit and rebuild</td>
+          <td class="kl">Email sending and automation</td>
+        </tr>
+        <tr>
+          <td class="dim">Diagnoses conversion failures</td>
+          <td class="sf"><span class="yes">Yes</span> — 7-point behavioral model</td>
+          <td class="kl"><span class="no">No</span> — shows metrics, not causes</td>
+        </tr>
+        <tr>
+          <td class="dim">Rebuilds email copy and structure</td>
+          <td class="sf"><span class="yes">Yes</span> — before/after teardowns</td>
+          <td class="kl"><span class="no">No</span></td>
+        </tr>
+        <tr>
+          <td class="dim">Email automation and flows</td>
+          <td class="sf"><span class="no">No</span></td>
+          <td class="kl"><span class="yes">Yes</span> — core strength</td>
+        </tr>
+        <tr>
+          <td class="dim">Deliverability tools</td>
+          <td class="sf"><span class="no">No</span></td>
+          <td class="kl"><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="dim">Segmentation and list management</td>
+          <td class="sf"><span class="no">No</span></td>
+          <td class="kl"><span class="yes">Yes</span></td>
+        </tr>
+        <tr>
+          <td class="dim">B2B SaaS specialization</td>
+          <td class="sf"><span class="yes">Yes</span> — built exclusively for B2B SaaS</td>
+          <td class="kl"><span class="partial">Partial</span> — strong in ecommerce, B2C</td>
+        </tr>
+        <tr>
+          <td class="dim">Identifies Feature-First Bias</td>
+          <td class="sf"><span class="yes">Yes</span></td>
+          <td class="kl"><span class="no">No</span></td>
+        </tr>
+        <tr>
+          <td class="dim">Identifies Guest Language CTAs</td>
+          <td class="sf"><span class="yes">Yes</span></td>
+          <td class="kl"><span class="no">No</span></td>
+        </tr>
+        <tr>
+          <td class="dim">Identifies Filing Label Subjects</td>
+          <td class="sf"><span class="yes">Yes</span></td>
+          <td class="kl"><span class="partial">Partial</span> — subject line testing only</td>
+        </tr>
+        <tr>
+          <td class="dim">Pricing starts at</td>
+          <td class="sf">$49 one-time</td>
+          <td class="kl">~$45/month (500 contacts)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Use cases</div>
+    <h2>When to use which</h2>
+    <div class="use-grid">
+      <div class="use-item">
+        <div class="use-label sf">Use Strategic Flow when</div>
+        <ul>
+          <li>Your open rates are fine but nobody clicks</li>
+          <li>You launch features and nothing moves</li>
+          <li>Your onboarding emails don't activate users</li>
+          <li>You want to know why, not just what happened</li>
+          <li>You need a before/after structural rebuild</li>
+          <li>You are a B2B SaaS team of any size</li>
+        </ul>
+      </div>
+      <div class="use-item kl">
+        <div class="use-label kl">Use Klaviyo when</div>
+        <ul>
+          <li>You need to automate email flows at scale</li>
+          <li>You have a large ecommerce or B2C audience</li>
+          <li>You need advanced segmentation</li>
+          <li>You need deliverability management</li>
+          <li>You want a full sending platform</li>
+          <li>You already have strong email content</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="verdict-box">
+      <p><strong>The honest verdict:</strong> Klaviyo is a strong tool for what it does. Its ecommerce roots make it well-suited for B2C list-based sending, and its automation capabilities are genuinely powerful.</p>
+      <p>For B2B SaaS specifically, the gap Klaviyo does not close is structural: it can tell you that a campaign underperformed, but it cannot tell you that the subject line was a Filing Label, the hook had Feature-First Bias, or the CTA was written in Guest Language. That diagnostic layer is where Strategic Flow works.</p>
+      <p><strong>If you are sending emails through Klaviyo and they are not converting, Strategic Flow fixes the content before you send the next one.</strong></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">FAQ</div>
+    <div class="faq-item">
+      <div class="faq-q">Is Strategic Flow a Klaviyo alternative?</div>
+      <div class="faq-a">No. Strategic Flow does not replace Klaviyo. It solves a different problem. Klaviyo sends and automates email. Strategic Flow audits and rebuilds the structural architecture of your email content. You can use both.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I use Strategic Flow with Klaviyo?</div>
+      <div class="faq-a">Yes. Strategic Flow rebuilds your email content using the Decision Friction Model. Once rebuilt, the emails can be sent through any platform, including Klaviyo, HubSpot, Customer.io, Mailchimp, or any other ESP.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Does Klaviyo fix email conversion architecture?</div>
+      <div class="faq-a">Klaviyo provides A/B testing for subject lines and send times, which can improve open rates. It does not diagnose structural failures in email content such as Feature-First Bias, Guest Language CTAs, or Consequence-After-Caveat patterns. Those require a structural audit.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Which is better for B2B SaaS?</div>
+      <div class="faq-a">Strategic Flow is built specifically for B2B SaaS email architecture, including product updates, onboarding sequences, changelogs, and activation emails. Klaviyo is optimized for ecommerce and B2C. For B2B SaaS, if you need a sending platform, Klaviyo works. If you need your emails to structurally convert, Strategic Flow is the right tool.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How much does Strategic Flow cost compared to Klaviyo?</div>
+      <div class="faq-a">Strategic Flow starts at $49 for a single email rebuild. Monthly plans start at $299/month. Klaviyo starts at approximately $45/month for 500 contacts and scales with list size. The tools are not directly comparable because they do different things.</div>
+    </div>
+  </div>
+
+  <div class="cta-panel">
+    <h3>See why your emails are not converting</h3>
+    <p>Run a free structural audit on your last email or product update. Find out which patterns are costing you conversions — before you send the next one.</p>
+    <a href="https://strategic-flow-audit.replit.app" class="cta-btn" target="_blank">Run a free audit</a>
+    <a href="/architecture.html" class="cta-secondary">See all services →</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 Strategic Flow · <a href="/strategic-flow-vs-scalero.html">vs Scalero</a> · <a href="/strategic-flow-vs-mailtest.html">vs Mailtest</a> · <a href="https://strategic-flow-pro.replit.app/terms.html">Terms</a> · <a href="mailto:alex@strategicflow.tech">Contact</a></p>
+</footer>
+
+</body>
+</html>
