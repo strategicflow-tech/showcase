@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Linear Changelog Teardown</title>
+<meta name="description" content="Strategic Flow structural audit of Linear's June 18 2026 changelog. Score: 3/10 → 9/10. Feature-First Bias, Filing Label Titles, Zero Social Proof — diagnosed and rebuilt."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --lin:#5E6AD2;--lin-light:#EEF0FD;--lin-dark:#2B3499;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+.score-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 22px 0;}
+.score-badge{display:flex;align-items:center;gap:8px;background:var(--amber-bg);border:1px solid #F09F27;border-radius:8px;padding:10px 16px;}
+.score-num{font-family:'DM Serif Display',serif;font-size:28px;color:#7a5a00;line-height:1;}
+.score-label{font-size:11px;color:var(--amber-dark);line-height:1.4;}
+.score-badge-after{background:var(--green-light);border-color:var(--green);}
+.score-num-after{color:var(--green-dark);}
+.score-label-after{color:var(--green-mid);}
+
+.bef-header{background:#08090a;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:700;color:#fff;}
+.bef-logo span{color:var(--lin);}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h2{font-size:16px;font-weight:700;color:#111;margin:18px 0 8px;}
+.bef-copy{font-size:13px;color:#555;line-height:1.7;margin-bottom:10px;}
+.bef-divider{border-top:1px solid #eee;margin:22px 0;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:8px;display:flex;gap:8px;line-height:1.5;}
+
+.after-header{background:#08090a;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:700;color:#fff;}
+.after-logo span{color:var(--lin);}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.25;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--lin);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:14px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--lin);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;line-height:1.4;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--lin);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.score-explain{background:var(--bg-secondary);border-radius:10px;padding:20px;margin-bottom:24px;}
+.score-explain-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:14px;}
+.score-row-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.score-item{padding:12px;border-radius:8px;font-size:12px;}
+.score-item.fail{background:#FFF0F0;border-left:3px solid #F09595;}
+.score-item.pass{background:var(--green-light);border-left:3px solid var(--green);}
+.score-item-label{font-weight:500;margin-bottom:4px;color:var(--text-primary);}
+.score-item-note{color:var(--text-secondary);line-height:1.5;}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:600px){
+  .notes-grid{grid-template-columns:1fr;}
+  .score-row-detail{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Linear — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original changelog</span>
+      </div>
+    </div>
+
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> linear.app/changelog</div>
+        <div class="meta-row"><span>Type:</span> Product Changelog</div>
+        <div class="meta-row"><span>Date:</span> June 18, 2026 · Linear</div>
+        <div class="post-title">Changelog — June 18, 2026</div>
+      </div>
+
+      <div class="score-row">
+        <div class="score-badge">
+          <div class="score-num">3</div>
+          <div class="score-label">out of 10<br>Original score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Feature-First Bias · Filing Label Titles · Zero Social Proof · No Reader Consequence · Flat Visual Hierarchy</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Lin<span>ear</span></div>
+        <div class="bef-nav">Changelog</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">Changelog · June 18, 2026</div>
+
+        <div class="bef-h2">Agent assisted project updates</div>
+        <div class="bef-copy">Project and initiative updates keep teams aligned, but writing them means pulling out recent changes from issues, documents, and discussions.</div>
+        <div class="bef-copy">Instead of finding that context manually, click Write with Agent to let Linear do it for you. The agent reviews changes made since the last update, checks messages in the linked Slack channel, and writes an update draft for you to refine.</div>
+
+        <div class="bef-divider"></div>
+
+        <div class="bef-h2">Desktop navigation history and pinned tabs</div>
+        <div class="bef-copy">We've rebuilt our desktop tabs to make navigation feel fluid and predictable.</div>
+        <div class="bef-copy">Each desktop tab now has its own history stack, so moving backwards won't navigate you to another tab. Pinned tabs are now a reliable home for important work.</div>
+
+        <div class="bef-divider"></div>
+
+        <div class="bef-h2">Private sub-teams</div>
+        <div class="bef-copy">Private sub-teams organize groups that work together under one umbrella, like independent business units, skunkworks efforts, or teams handling sensitive data like People Ops.</div>
+
+        <div class="bef-divider"></div>
+
+        <div class="bef-h2">Build agents with Vercel Eve</div>
+        <div class="bef-copy">Vercel Eve is an open-source framework for building custom agents. Build agents that can investigate incidents, monitor SLAs, or analyze customer feedback.</div>
+
+        <div class="bef-divider"></div>
+
+        <div class="bef-h2">Release pipeline changelogs</div>
+        <div class="bef-copy">Releases let you plan and track your software releases. Now, you can also keep your team aligned on what's shipping with changelogs for each release pipeline.</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> <strong>Feature-First Bias:</strong> Every single entry opens with what the feature does, never with what the reader is currently struggling with. "Project and initiative updates keep teams aligned, but writing them means pulling out recent changes" describes the feature's function before naming the reader's actual Tuesday-afternoon frustration: forty minutes lost scrolling through issues to write one update.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Filing Label Titles:</strong> "Desktop navigation history and pinned tabs" and "Private sub-teams" describe the feature category, not the outcome. A reader scanning the changelog has no signal for which entries matter to their specific workflow.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Zero Social Proof:</strong> Five feature announcements, zero numbers, zero team quotes, zero before/after time saved. "Keep teams aligned" is asserted, never measured.</div>
+        <div class="issue-item"><span>⚠</span> <strong>No Reader Consequence:</strong> Each entry explains mechanism but never names what changes for the person reading it tomorrow morning. The reader has to do the translation work themselves.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Flat Visual Hierarchy:</strong> All five entries carry identical visual weight despite wildly different relevance. A solo engineer and an Enterprise admin both have to read all five to find the one that applies to them.</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> linear.app/changelog — Rebuilt</div>
+        <div class="meta-row"><span>Type:</span> Product Changelog — Strategic Flow Rewrite</div>
+        <div class="post-title">You're still writing project updates by hand. Linear's agent just took that off your plate.</div>
+      </div>
+
+      <div class="score-row" style="margin-bottom:16px;">
+        <div class="score-badge score-badge-after">
+          <div class="score-num score-num-after">9</div>
+          <div class="score-label score-label-after">out of 10<br>Rebuilt score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Consequence-first headline · Reader's friction named in line one · Role-based hierarchy · Specific outcome per entry</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">Lin<span>ear</span></div>
+          <div class="after-tagline-sm">Changelog · June 18, 2026</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.06em;">5 SHIPS THIS WEEK</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Changelog · June 18, 2026</div>
+        <div class="after-h1">You're still writing project updates by hand. <em>Linear's agent just took that off your plate.</em></div>
+        <div class="after-lead">Five things shipped this week. The biggest one removes a task most PMs do every Friday afternoon: piecing together what changed across a dozen issues to write one update nobody reads twice.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">1</div>
+            <div class="stat-label">click replaces the manual update-writing workflow</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2</div>
+            <div class="stat-label">access levels for sub-teams handling sensitive work</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">lost tabs now that pinned tabs survive app restarts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">ships, sorted by who actually needs to know</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://linear.app/changelog" class="after-cta-primary">See what shipped for your role →</a>
+          <a href="https://linear.app/changelog" class="after-cta-ghost">Full changelog</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">For PMs and team leads</div>
+        <div class="after-section-title">Write with Agent: the update writes itself from what already happened.</div>
+        <div class="after-section-body">You know the Friday ritual — scroll through a week of issues, cross-reference the Slack channel, try to remember what actually shipped versus what just moved columns. Write with Agent does that pull for you: it reviews every change since your last update, reads the linked Slack channel, and drafts the update. You add the one sentence only you would know to add, then publish. The work that used to take twenty minutes now takes the time it takes to read a draft.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">For desktop users</div>
+        <div class="after-section-title">Pinned tabs now survive everything. Including you quitting the app.</div>
+        <div class="after-section-body">Each tab now keeps its own back-button history, so going back never accidentally drops you into a different tab's context. Pinned tabs stay anchored in the bar permanently — they survive app restarts and won't get bumped by whatever you open next. If you've ever lost a pinned issue mid-sprint, this is built for exactly that moment.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">For admins and platform teams</div>
+        <div class="after-section-title">Private sub-teams, release pipeline changelogs, and an open framework for building your own agents.</div>
+        <div class="after-section-body">Private sub-teams now support two access modes for sensitive work like People Ops — restricted to parent team members, or fully hidden except to direct invites. Release pipelines can auto-generate their own changelogs so shipping status stays visible without manual tracking. And if you want to build custom agents — for incident response, SLA monitoring, or feedback analysis — Vercel Eve is now open source and connects directly to Linear issues and comments.</div>
+        <div style="margin-top:20px;">
+          <a href="https://linear.app/changelog" class="after-cta-primary" style="font-size:13px;">Read the full release notes →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://linear.app/changelog/2026-06-18-agent-assisted-project-updates" class="footer-link">Original changelog</a>
+          <a href="https://linear.app" class="footer-link">Linear</a>
+        </div>
+        <div class="footer-note">© 2026 Linear</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+
+        <div class="score-explain">
+          <div class="score-explain-title">Score explained — why 3/10 before and 9/10 after</div>
+          <div class="score-row-detail">
+            <div class="score-item fail">
+              <div class="score-item-label">Headline — FAIL</div>
+              <div class="score-item-note">No overall headline exists. The page is five entries stacked with equal weight and no entry point telling the reader why this update matters more than the last one.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Headline — PASS</div>
+              <div class="score-item-note">"You're still writing project updates by hand. Linear's agent just took that off your plate." Names the exact recurring task the reader does, then names what just changed about it.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Entry 1 opening — FAIL</div>
+              <div class="score-item-note">"Project and initiative updates keep teams aligned, but writing them means pulling out recent changes from issues, documents, and discussions." Explains the feature's purpose before naming the reader's friction.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Entry 1 opening — PASS</div>
+              <div class="score-item-note">"You know the Friday ritual — scroll through a week of issues, cross-reference Slack, try to remember what shipped." Opens inside the reader's actual experience, not the feature's description.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Titles — FAIL</div>
+              <div class="score-item-note">"Desktop navigation history and pinned tabs" and "Private sub-teams" are Filing Labels — they describe what the feature is, giving no signal about whether it matters to this specific reader.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Titles — PASS</div>
+              <div class="score-item-note">Sections reframed by role: "For PMs and team leads," "For desktop users," "For admins and platform teams." The reader self-selects in two seconds instead of reading all five entries.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Social proof — FAIL</div>
+              <div class="score-item-note">Zero numbers anywhere. "Keep teams aligned" and "make navigation feel fluid" are asserted claims with nothing measurable behind them.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Social proof — PASS</div>
+              <div class="score-item-note">Stat row above the fold: 1 click replaces the manual workflow, 2 access levels, 0 lost tabs, 5 ships sorted by relevance. Concrete numbers replace vague assertions.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">Before — Opening line</div>
+            <p>"Project and initiative updates keep teams aligned, but writing them means pulling out recent changes from issues, documents, and discussions."<br><br>Feature-First. Explains the purpose of project updates before acknowledging the reader already knows this and is tired of doing it manually.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">After — Opening line</div>
+            <p>"You're still writing project updates by hand. Linear's agent just took that off your plate."<br><br>Names the exact task the reader does every week, then immediately names what changed about it. No translation work required.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 5 fixes — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · Headline added where none existed</div>
+          <div class="upgrade-desc">The original changelog has no overall entry point — five entries with equal visual weight and no signal for which one matters most. The rebuild leads with the single highest-impact ship framed as a direct address to the reader's recurring task, giving the page a reason to keep scrolling.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Every entry opening reframed from feature purpose to reader friction</div>
+          <div class="upgrade-desc">"Project and initiative updates keep teams aligned, but writing them means..." explains why the feature category exists. The rebuild assumes the reader already knows why project updates matter and opens instead with the specific, recognizable moment of friction.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Titles reframed from Filing Labels to role-based relevance</div>
+          <div class="upgrade-desc">"Desktop navigation history and pinned tabs" tells the reader what the feature is. "For desktop users" tells them whether to keep reading. Role-based section headers let different readers skip past irrelevant sections without losing either reader.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Stat row added to replace unmeasured assertions</div>
+          <div class="upgrade-desc">"Keep teams aligned" and "make navigation feel fluid and predictable" are claims with no evidence behind them anywhere in the original. Four small, specific numbers above the fold give the reader something concrete before they read a single full entry.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Each entry closes with reader consequence, not just mechanism</div>
+          <div class="upgrade-desc">The original explains how each feature was built but stops short of saying what changes for the person reading it. The rebuild adds one closing sentence per entry naming the specific moment this fixes.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">A changelog with five features and zero consequences makes the reader do the translation work. Decision architecture means doing that translation for them, before they have to ask "does this matter to me?" Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last product update or release note.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original changelog'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08);margin-top:8px;">
+  <a href="https://strategicflow.tech/teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none;">← Back to all teardowns</a>
+</div>
+
+</body>
+</html>
