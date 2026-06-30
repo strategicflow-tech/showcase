@@ -24,9 +24,9 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#080b09;--white:#f0ede8;--signal:#4A8FE7;
-  --signal-dim:rgba(74,143,231,0.12);--signal-border:rgba(74,143,231,0.3);
-  --red:#e05a3a;--amber:#ffc400;--blue:#4A8FE7;
+  --bg:#080b09;--white:#f0ede8;--signal:#00d4c8;
+  --signal-dim:rgba(0,212,200,0.12);--signal-border:rgba(0,212,200,0.3);
+  --red:#e05a3a;--amber:#ffc400;--blue:#00d4c8;
   --mid:#8a9e90;--border:rgba(240,237,232,0.08);
   --card:rgba(255,255,255,0.02);
 }
@@ -69,7 +69,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .dist-bar-fill{height:100%;border-radius:2px;background:var(--red);opacity:0.7;}
 .dist-bar-fill.hi{background:var(--signal);opacity:0.8;}
 .dist-pct{font-family:'DM Mono',monospace;font-size:14px;color:var(--mid);width:28px;text-align:right;flex-shrink:0;}
-.bench-divider{height:1px;background:rgba(74,143,231,0.2);margin-bottom:20px;}
+.bench-divider{height:1px;background:rgba(0,212,200,0.2);margin-bottom:20px;}
 .bench-bars{display:flex;flex-direction:column;gap:12px;}
 .bench-row{display:flex;align-items:center;gap:12px;}
 .bench-bar-label{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.06em;color:var(--mid);width:200px;flex-shrink:0;}
@@ -169,7 +169,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .page-inner{padding:32px 36px 36px;}
 .checklist{display:flex;flex-direction:column;gap:8px;}
 .item{border:1px solid var(--border);background:rgba(255,255,255,0.01);cursor:pointer;transition:all .2s;overflow:hidden;}
-.item:hover{border-color:rgba(74,143,231,0.25);}
+.item:hover{border-color:rgba(0,212,200,0.25);}
 .item.checked{background:rgba(74,143,231,0.03);border-color:var(--signal-border);}
 .item-header{display:flex;align-items:flex-start;gap:14px;padding:18px 18px 14px;}
 .item-num{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--signal);flex-shrink:0;width:22px;padding-top:2px;}
@@ -241,10 +241,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .score-guide{border:1px solid var(--border);padding:24px;margin-bottom:20px;background:var(--card);}
 .guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .guide-item{padding:14px;border:1px solid var(--border);}
-.guide-item.g{border-color:rgba(74,143,231,0.2);background:rgba(74,143,231,0.04);}
+.guide-item.g{border-color:rgba(0,212,200,0.2);background:rgba(74,143,231,0.04);}
 .guide-item.a{border-color:rgba(255,196,0,0.2);background:rgba(255,196,0,0.03);}
 .guide-item.r{border-color:rgba(255,77,46,0.2);background:rgba(255,77,46,0.03);}
-.guide-item.b{border-color:rgba(74,143,231,0.2);background:rgba(74,143,231,0.03);}
+.guide-item.b{border-color:rgba(0,212,200,0.2);background:rgba(74,143,231,0.03);}
 .guide-score{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:0.08em;margin-bottom:6px;}
 .guide-item.g .guide-score{color:var(--signal);}
 .guide-item.a .guide-score{color:var(--amber);}
@@ -331,7 +331,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 /* PLAN CARDS IN VERDICT */
 .plan-cards{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
 .plan-card{border:1px solid var(--border);padding:22px 24px;background:rgba(255,255,255,0.02);position:relative;transition:border-color .2s;}
-.plan-card:hover{border-color:rgba(74,143,231,0.3);}
+.plan-card:hover{border-color:rgba(0,212,200,0.3);}
 .plan-card.featured{border-color:var(--signal-border);background:var(--signal-dim);}
 .plan-card.top-pick::before{content:'RECOMMENDED';position:absolute;top:-1px;right:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;background:var(--signal);color:#000;padding:3px 10px;font-weight:700;}
 .plan-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
@@ -404,7 +404,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(224,90,58,0.08);border:1px solid rgba(224,90,58,0.2);">
       <span>❌</span><span style="font-size:13px;color:var(--mid);">New Feature: Dashboard Update</span>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(74,143,231,0.08);border:1px solid var(--signal-border);">
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(0,212,200,0.08);border:1px solid var(--signal-border);">
       <span>✅</span><span style="font-size:13px;color:var(--white);">Your reports now load 4x faster</span>
     </div>
   </div>
@@ -1106,7 +1106,7 @@ async function submitRebuild(e){
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  background: linear-gradient(90deg, #0a1628 0%, #111c18 50%, #0a1628 100%);
   border-top: 1px solid rgba(29, 158, 117, 0.3);
   box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
   z-index: 9999;
@@ -1149,7 +1149,7 @@ async function submitRebuild(e){
 }
 .sf-affiliate-tag {
   background: rgba(74, 143, 231, 0.1);
-  color: #4A8FE7;
+  color: #00d4c8;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   font-weight: 500;
