@@ -85,14 +85,14 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #0a0a08;
-    --white: #f4f2ed;
-    --cream: #ede9e0;
-    --signal: #4A8FE7;
-    --signal-dim: #2D6BE4;
+    --black: #0a1628;
+    --white: #ffffff;
+    --cream: #ffffff;
+    --signal: #00d4c8;
+    --signal-dim: #00a89e;
     --noise: #ff4d2e;
-    --mid: #a8a39b;
-    --border: rgba(244,242,237,0.12);
+    --mid: #7a9ab8;
+    --border: #1a3050;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -114,8 +114,8 @@
     position: fixed;
     inset: 0;
     background-image:
-      linear-gradient(rgba(244,242,237,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(244,242,237,0.03) 1px, transparent 1px);
+      linear-gradient(rgba(0,212,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,200,0.03) 1px, transparent 1px);
     background-size: 60px 60px;
     pointer-events: none;
     z-index: 0;
@@ -131,7 +131,7 @@
     justify-content: space-between;
     padding: 20px 48px;
     border-bottom: 1px solid var(--border);
-    background: rgba(10,10,8,0.85);
+    background: rgba(10,22,40,0.92);
     backdrop-filter: blur(12px);
   }
 
@@ -285,7 +285,7 @@
   .score-bar {
     width: 120px;
     height: 2px;
-    background: rgba(244,242,237,0.1);
+    background: rgba(0,212,200,0.1);
     position: relative;
   }
 
@@ -402,7 +402,7 @@
 
   .problem-cell.highlight {
     background: rgba(74,143,231,0.05);
-    border-color: rgba(74,143,231,0.3);
+    border-color: rgba(0,212,200,0.3);
   }
 
   .cell-tag {
@@ -440,7 +440,7 @@
 
   /* ENGINE SECTION */
   .engine-section {
-    background: rgba(244,242,237,0.02);
+    background: rgba(0,212,200,0.02);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
@@ -462,7 +462,7 @@
     flex-direction: column;
   }
 
-  .engine-card:hover { border-color: rgba(74,143,231,0.4); }
+  .engine-card:hover { border-color: rgba(0,212,200,0.4); }
 
   .engine-num {
     font-family: 'DM Mono', monospace;
@@ -622,7 +622,7 @@
     transition: border-color 0.3s;
   }
 
-  .proof-card:hover { border-color: rgba(74,143,231,0.3); }
+  .proof-card:hover { border-color: rgba(0,212,200,0.3); }
 
   .proof-score {
     display: flex;
@@ -672,7 +672,7 @@
 
   .pricing-card {
     margin-top: 64px;
-    border: 1px solid rgba(74,143,231,0.3);
+    border: 1px solid rgba(0,212,200,0.3);
     background: rgba(74,143,231,0.03);
     display: grid;
     grid-template-columns: 380px 1fr;
@@ -758,7 +758,7 @@
     transition: border-color 0.2s;
   }
 
-  .includes-item:hover { border-color: rgba(74,143,231,0.3); }
+  .includes-item:hover { border-color: rgba(0,212,200,0.3); }
 
   .includes-item::before { display: none; }
 
@@ -786,7 +786,7 @@
   .compare-header {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
-    background: rgba(244,242,237,0.04);
+    background: rgba(0,212,200,0.04);
     border-bottom: 1px solid var(--border);
   }
 
@@ -936,7 +936,7 @@
     .compare-cell:last-child { border-bottom: none; }
 
     .compare-cell.feature {
-      background: rgba(244,242,237,0.04);
+      background: rgba(0,212,200,0.04);
       font-weight: 600;
       font-size: 14px;
     }
@@ -1053,29 +1053,29 @@
 
 
 <!-- BEFORE / AFTER ARTIFACT -->
-<section style="padding: 0; border-top: 1px solid rgba(244,242,237,0.12);">
+<section style="padding: 0; border-top: 1px solid #1a3050;">
   <div style="max-width: 900px; margin: 0 auto; padding: 64px 48px;">
     <div style="font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--signal); margin-bottom: 32px;">// This is what architecture looks like</div>
     <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;">
       <div style="border: 1px solid rgba(255,77,46,0.3); background: rgba(255,77,46,0.04); padding: 32px;">
         <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #ff4d2e; opacity: 0.8; margin-bottom: 20px;">Original — Score: 3/10</div>
-        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(244,242,237,0.5); margin-bottom: 8px;">Subject:</div>
+        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(0,212,200,0.5); margin-bottom: 8px;">Subject:</div>
         <div style="font-size: 15px; color: rgba(244,242,237,0.7); margin-bottom: 24px; line-height: 1.5;">"New Feature: Dashboard Update"</div>
-        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(244,242,237,0.5); margin-bottom: 8px;">Hook:</div>
+        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(0,212,200,0.5); margin-bottom: 8px;">Hook:</div>
         <div style="font-size: 15px; color: rgba(244,242,237,0.7); line-height: 1.6;">"We're excited to announce our new reporting dashboard, now available to all users."</div>
-        <div style="margin-top: 24px; font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(244,242,237,0.5); margin-bottom: 8px;">CTA:</div>
+        <div style="margin-top: 24px; font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(0,212,200,0.5); margin-bottom: 8px;">CTA:</div>
         <div style="font-size: 15px; color: rgba(244,242,237,0.7);">"Learn more"</div>
       </div>
       <div style="display: flex; align-items: center; justify-content: center; padding: 0 24px; flex-shrink: 0;">
         <div style="font-family: 'DM Mono', monospace; font-size: 22px; color: var(--signal);">→</div>
       </div>
-      <div style="border: 1px solid rgba(74,143,231,0.3); background: rgba(74,143,231,0.04); padding: 32px;">
+      <div style="border: 1px solid rgba(0,212,200,0.3); background: rgba(74,143,231,0.04); padding: 32px;">
         <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--signal); opacity: 0.9; margin-bottom: 20px;">Rebuilt — Score: 9/10</div>
-        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(244,242,237,0.5); margin-bottom: 8px;">Subject:</div>
+        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(0,212,200,0.5); margin-bottom: 8px;">Subject:</div>
         <div style="font-size: 15px; color: var(--white); margin-bottom: 24px; line-height: 1.5; font-weight: 500;">"Your reports now load 4x faster"</div>
-        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(244,242,237,0.5); margin-bottom: 8px;">Hook:</div>
+        <div style="font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(0,212,200,0.5); margin-bottom: 8px;">Hook:</div>
         <div style="font-size: 15px; color: var(--white); line-height: 1.6;">"Your weekly reporting used to take 3 hours. It now takes 40 minutes. Here is what changed."</div>
-        <div style="margin-top: 24px; font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(244,242,237,0.5); margin-bottom: 8px;">CTA:</div>
+        <div style="margin-top: 24px; font-family: 'DM Mono', monospace; font-size: 13px; color: rgba(0,212,200,0.5); margin-bottom: 8px;">CTA:</div>
         <div style="font-size: 15px; color: var(--white); font-weight: 500;">"Fix my reporting"</div>
       </div>
     </div>
@@ -1085,29 +1085,29 @@
 
 
 <!-- BEFORE / AFTER ARTIFACT -->
-<section style="padding:0;border-top:1px solid rgba(244,242,237,0.12);">
+<section style="padding:0;border-top:1px solid #1a3050;">
   <div style="max-width:900px;margin:0 auto;padding:64px 48px;">
     <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--signal);margin-bottom:32px;">// This is what architecture looks like</div>
     <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;">
       <div style="border:1px solid rgba(255,77,46,0.3);background:rgba(255,77,46,0.04);padding:32px;">
         <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#ff4d2e;opacity:0.8;margin-bottom:20px;">Original — Score: 3/10</div>
-        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(244,242,237,0.5);margin-bottom:8px;">Subject:</div>
+        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(0,212,200,0.5);margin-bottom:8px;">Subject:</div>
         <div style="font-size:15px;color:rgba(244,242,237,0.7);margin-bottom:24px;line-height:1.5;">"New Feature: Dashboard Update"</div>
-        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(244,242,237,0.5);margin-bottom:8px;">Hook:</div>
+        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(0,212,200,0.5);margin-bottom:8px;">Hook:</div>
         <div style="font-size:15px;color:rgba(244,242,237,0.7);line-height:1.6;">"We're excited to announce our new reporting dashboard, now available to all users."</div>
-        <div style="margin-top:24px;font-family:'DM Mono',monospace;font-size:13px;color:rgba(244,242,237,0.5);margin-bottom:8px;">CTA:</div>
+        <div style="margin-top:24px;font-family:'DM Mono',monospace;font-size:13px;color:rgba(0,212,200,0.5);margin-bottom:8px;">CTA:</div>
         <div style="font-size:15px;color:rgba(244,242,237,0.7);">"Learn more"</div>
       </div>
       <div style="display:flex;align-items:center;justify-content:center;padding:0 24px;flex-shrink:0;">
         <div style="font-family:'DM Mono',monospace;font-size:22px;color:var(--signal);">→</div>
       </div>
-      <div style="border:1px solid rgba(74,143,231,0.3);background:rgba(74,143,231,0.04);padding:32px;">
+      <div style="border:1px solid rgba(0,212,200,0.3);background:rgba(74,143,231,0.04);padding:32px;">
         <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--signal);opacity:0.9;margin-bottom:20px;">Rebuilt — Score: 9/10</div>
-        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(244,242,237,0.5);margin-bottom:8px;">Subject:</div>
+        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(0,212,200,0.5);margin-bottom:8px;">Subject:</div>
         <div style="font-size:15px;color:var(--white);margin-bottom:24px;line-height:1.5;font-weight:500;">"Your reports now load 4x faster"</div>
-        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(244,242,237,0.5);margin-bottom:8px;">Hook:</div>
+        <div style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(0,212,200,0.5);margin-bottom:8px;">Hook:</div>
         <div style="font-size:15px;color:var(--white);line-height:1.6;">"Your weekly reporting used to take 3 hours. It now takes 40 minutes. Here is what changed."</div>
-        <div style="margin-top:24px;font-family:'DM Mono',monospace;font-size:13px;color:rgba(244,242,237,0.5);margin-bottom:8px;">CTA:</div>
+        <div style="margin-top:24px;font-family:'DM Mono',monospace;font-size:13px;color:rgba(0,212,200,0.5);margin-bottom:8px;">CTA:</div>
         <div style="font-size:15px;color:var(--white);font-weight:500;">"Fix my reporting"</div>
       </div>
     </div>
@@ -1125,7 +1125,7 @@
     The subject line announces the product. The hook describes the feature. The CTA says "Learn more."
     The reader moves on.
   </p>
-  <div style="margin-top:40px;border:1px solid rgba(244,242,237,0.12);background:rgba(244,242,237,0.02);padding:32px;display:grid;grid-template-columns:1fr auto 1fr;gap:32px;align-items:center;">
+  <div style="margin-top:40px;border:1px solid #1a3050;background:rgba(0,212,200,0.02);padding:32px;display:grid;grid-template-columns:1fr auto 1fr;gap:32px;align-items:center;">
     <div>
       <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#ff4d2e;opacity:0.8;margin-bottom:12px;">Before architecture fix</div>
       <div style="font-family:'DM Serif Display',serif;font-size:36px;color:var(--white);line-height:1;margin-bottom:8px;">0.9%</div>
@@ -1143,7 +1143,7 @@
   </div>
   <div style="margin-top:12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--mid);letter-spacing:0.04em;">+1,000 additional visits per send. No new budget. No new audience. Different architecture.</div>
 
-  <div style="margin-top: 40px; border: 1px solid rgba(244,242,237,0.12); background: rgba(244,242,237,0.02); padding: 32px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 32px; align-items: center;">
+  <div style="margin-top: 40px; border: 1px solid #1a3050; background: rgba(0,212,200,0.02); padding: 32px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 32px; align-items: center;">
     <div>
       <div style="font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #ff4d2e; opacity: 0.8; margin-bottom: 12px;">Before architecture fix</div>
       <div style="font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--white); line-height: 1; margin-bottom: 8px;">0.9%</div>
@@ -1230,7 +1230,7 @@
       <p class="engine-body">
         Every product update email scored against the <strong>7-bug diagnostic</strong>. Subject line, preview text, hook, hierarchy, CTA — each element rebuilt and output as HTML ready to ship. 3 subject line variants with predicted open rate delta included.
       </p>
-      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(74,143,231,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(74,143,231,0.3)'">LIVE AT strategic-flow-audit.replit.app →</a></p>
+      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(0,212,200,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(0,212,200,0.3)'">LIVE AT strategic-flow-audit.replit.app →</a></p>
     </div>
     <div class="engine-card">
       <div class="engine-num">Module 02 — Changelog Audit</div>
@@ -1238,7 +1238,7 @@
       <p class="engine-body">
         Filing labels become curiosity gaps. Feature lists become <strong>consequence-first entries with stat cards and ownership CTAs</strong>. Every release note scored, diagnosed, and rebuilt. The update your users actually open.
       </p>
-      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app/changelog-audit-page" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(74,143,231,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(74,143,231,0.3)'">LIVE AT strategic-flow-audit.replit.app/changelog-audit-page →</a></p>
+      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app/changelog-audit-page" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(0,212,200,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(0,212,200,0.3)'">LIVE AT strategic-flow-audit.replit.app/changelog-audit-page →</a></p>
     </div>
     <div class="engine-card">
       <div class="engine-num">Module 03 — Onboarding Audit</div>
@@ -1246,7 +1246,7 @@
       <p class="engine-body">
         Every welcome screen, setup step, empty state, tooltip, and CTA scored against <strong>7 onboarding-specific bugs</strong>. Rebuilt with consequence-first hooks, progress indicators with rewards, and microcopy that actually explains why a field matters.
       </p>
-      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app/onboarding-audit-page" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(74,143,231,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(74,143,231,0.3)'">LIVE AT strategic-flow-audit.replit.app/onboarding-audit-page →</a></p>
+      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app/onboarding-audit-page" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(0,212,200,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(0,212,200,0.3)'">LIVE AT strategic-flow-audit.replit.app/onboarding-audit-page →</a></p>
     </div>
   </div>
   <div class="engine-grid" style="margin-top: 1px;">
@@ -1256,7 +1256,7 @@
       <p class="engine-body">
         Every LinkedIn product post scored against 7 structural bugs: <strong>hook without consequence, feature-first body, zero specificity, wall of text, dead-end CTA, no proof, wrong audience signal</strong>. Rebuilt with a consequence-first hook, specific numbers, and a CTA that names the next step. Ready to publish.
       </p>
-      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app/linkedin-audit-page" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(74,143,231,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(74,143,231,0.3)'">LIVE AT strategic-flow-audit.replit.app/linkedin-audit-page →</a></p>
+      <p style="margin-top: 16px; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: .06em;"><a href="https://strategic-flow-audit.replit.app/linkedin-audit-page" target="_blank" rel="noopener" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(0,212,200,0.3); transition: border-color 0.2s;" onmouseover="this.style.borderColor='var(--signal)'" onmouseout="this.style.borderColor='rgba(0,212,200,0.3)'">LIVE AT strategic-flow-audit.replit.app/linkedin-audit-page →</a></p>
     </div>
   </div>
 </section>
@@ -1322,12 +1322,12 @@
     </div>
   </div>
 
-  <div style="margin-top:32px;padding:28px 32px;border:1px solid rgba(74,143,231,0.3);background:rgba(74,143,231,0.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+  <div style="margin-top:32px;padding:28px 32px;border:1px solid rgba(0,212,200,0.3);background:rgba(74,143,231,0.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
     <div>
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#4A8FE7;margin-bottom:8px;">Calculate your own delta</div>
-      <div style="font-size:15px;color:#f4f2ed;line-height:1.6;max-width:480px;">Run the numbers with your list size, open rate, and hourly rate. The ROI calculator shows recovered pipeline and time value in real time.</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#00d4c8;margin-bottom:8px;">Calculate your own delta</div>
+      <div style="font-size:15px;color:#ffffff;line-height:1.6;max-width:480px;">Run the numbers with your list size, open rate, and hourly rate. The ROI calculator shows recovered pipeline and time value in real time.</div>
     </div>
-    <a href="https://strategicflow.tech/roi.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#0a0a08;background:#4A8FE7;padding:14px 28px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Open ROI Calculator →</a>
+    <a href="https://strategicflow.tech/roi.html" target="_blank" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#0a1628;background:#00d4c8;padding:14px 28px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Open ROI Calculator →</a>
   </div>
 
   </div>
@@ -1452,23 +1452,23 @@
   <div style="margin-top:32px;">
     <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--signal);margin-bottom:24px;">What Architecture prevents</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
-      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+      <div style="background:#0f0f0d;border:1px solid rgba(0,212,200,0.15);border-radius:4px;padding:24px;">
         <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Lifecycle oversight</div>
         <div style="font-size:13px;color:var(--mid);line-height:1.65;">Every email reviewed against current product positioning, not what was written at launch. Drift detected before it compounds.</div>
       </div>
-      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+      <div style="background:#0f0f0d;border:1px solid rgba(0,212,200,0.15);border-radius:4px;padding:24px;">
         <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Release analysis</div>
         <div style="font-size:13px;color:var(--mid);line-height:1.65;">Every product update reviewed before it ships. Feature announcements converted into reader problems before they reach the list.</div>
       </div>
-      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+      <div style="background:#0f0f0d;border:1px solid rgba(0,212,200,0.15);border-radius:4px;padding:24px;">
         <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Behavioral diagnostics</div>
         <div style="font-size:13px;color:var(--mid);line-height:1.65;">Monthly report showing where in the reader journey attention drops. Not open rates — behavioral friction points that explain why.</div>
       </div>
-      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+      <div style="background:#0f0f0d;border:1px solid rgba(0,212,200,0.15);border-radius:4px;padding:24px;">
         <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">External perception</div>
         <div style="font-size:13px;color:var(--mid);line-height:1.65;">Your team reads emails with product context. Your readers don't. Architecture provides the outside read your internal team structurally cannot.</div>
       </div>
-      <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.15);border-radius:4px;padding:24px;">
+      <div style="background:#0f0f0d;border:1px solid rgba(0,212,200,0.15);border-radius:4px;padding:24px;">
         <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px;">Communication risk detection</div>
         <div style="font-size:13px;color:var(--mid);line-height:1.65;">Flags buried CTAs, consequence-free hooks, and obligation language before they ship. Fixed before the damage is done.</div>
       </div>
@@ -1681,7 +1681,7 @@
 
 <!-- CTA ARCHITECTURE — SPEAK WITH ALEX -->
 <section style="padding:80px 48px 0;">
-  <div style="background:#0f0f0d;border:1px solid rgba(74,143,231,0.25);border-radius:4px;padding:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:28px;">
+  <div style="background:#0f0f0d;border:1px solid rgba(0,212,200,0.25);border-radius:4px;padding:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:28px;">
     <div>
       <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--signal);margin-bottom:12px;">Architecture · $2,500/mo</div>
       <div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--white);line-height:1.3;margin-bottom:8px;">Not sure if Architecture fits?<br><em>Talk to Alex directly.</em></div>
@@ -1695,7 +1695,7 @@
         Message Alex on WhatsApp
       </a>
       <a href="https://strategic-flow-audit.replit.app/demo.html"
-         style="display:inline-block;text-align:center;background:transparent;color:var(--signal);padding:12px 24px;border:1px solid rgba(74,143,231,0.3);border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;text-decoration:none;white-space:nowrap;">
+         style="display:inline-block;text-align:center;background:transparent;color:var(--signal);padding:12px 24px;border:1px solid rgba(0,212,200,0.3);border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;text-decoration:none;white-space:nowrap;">
         Run free diagnostic first →
       </a>
     </div>
@@ -1879,7 +1879,7 @@ async function submitArchitectureApplication() {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  background: linear-gradient(90deg, #0a1628 0%, #111c18 50%, #0a1628 100%);
   border-top: 1px solid rgba(29, 158, 117, 0.3);
   box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
   z-index: 9999;
@@ -1922,7 +1922,7 @@ async function submitArchitectureApplication() {
 }
 .sf-affiliate-tag {
   background: rgba(74, 143, 231, 0.1);
-  color: #4A8FE7;
+  color: #00d4c8;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   font-weight: 500;
