@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Alex Iliescu — Strategic Flow</title>
+  <meta name="description" content="Alex Iliescu is the founder of Strategic Flow, a behavioral email architecture audit platform for B2B SaaS. 59 teardowns. Average score: 3.4 → 9/10." />
+  <meta property="og:title" content="About Alex Iliescu — Strategic Flow" />
+  <meta property="og:description" content="Most SaaS emails are not a copy problem. They are an architecture problem." />
+  <meta property="og:url" content="https://strategicflow.tech/about.html" />
+  <link rel="canonical" href="https://strategicflow.tech/about.html" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Alex Iliescu",
+    "jobTitle": "Founder, Strategic Flow",
+    "url": "https://strategicflow.tech",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Strategic Flow",
+      "url": "https://strategicflow.tech"
+    },
+    "description": "Alex Iliescu is the founder of Strategic Flow, a behavioral email architecture audit and rebuild platform for B2B SaaS. Creator of the Decision Friction Model, a 7-point diagnostic framework.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "Tenerife",
+      "addressCountry": "ES"
+    }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0a1628;
+      --card:     #0f2035;
+      --card2:    #122440;
+      --teal:     #00d4c8;
+      --teal-dim: #00a89e;
+      --white:    #ffffff;
+      --muted:    #7a9ab8;
+      --hairline: #1a3050;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Inter", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .nav-logo {
+      color: var(--white);
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--teal); }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    /* HERO */
+    .hero {
+      padding: 72px 32px 64px;
+      border-bottom: 1px solid var(--hairline);
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--teal);
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 44px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--teal);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* STATS */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 720px;
+      margin: 0 auto;
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 48px;
+    }
+
+    .stat {
+      background: var(--card);
+      padding: 28px 24px;
+      border-right: 1px solid var(--hairline);
+      text-align: center;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-number .dimmed {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+
+    /* BODY */
+    .body-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 32px 80px;
+    }
+
+    .bio-block {
+      background: var(--card);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 40px 44px;
+      margin-bottom: 24px;
+    }
+
+    .opening-line {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.5;
+      color: var(--white);
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .bio-block p {
+      font-size: 16px;
+      line-height: 1.75;
+      color: #c8daea;
+      margin-bottom: 20px;
+    }
+
+    .bio-block p:last-child { margin-bottom: 0; }
+
+    .bio-block p strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* SIGNATURE */
+    .sig {
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 1px solid var(--hairline);
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .sig strong {
+      display: block;
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    /* CTA PANEL */
+    .cta-panel {
+      background: var(--card2);
+      border: 1px solid var(--teal-dim);
+      border-radius: 12px;
+      padding: 36px 44px;
+    }
+
+    .cta-panel p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.55;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--bg);
+      font-size: 14px;
+      font-weight: 800;
+      padding: 13px 26px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+    }
+
+    .cta-btn:hover {
+      background: var(--teal-dim);
+      text-decoration: none;
+    }
+
+    .cta-secondary {
+      display: inline-block;
+      margin-left: 20px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .cta-secondary:hover {
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 28px 32px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--hairline);
+    }
+
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--white); }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 48px 20px 40px; }
+      .stats-bar {
+        grid-template-columns: 1fr;
+        margin-top: 36px;
+      }
+      .stat { border-right: none; border-bottom: 1px solid var(--hairline); }
+      .stat:last-child { border-bottom: none; }
+      .body-wrap { padding: 32px 20px 56px; }
+      .bio-block { padding: 28px 24px; }
+      .cta-panel { padding: 28px 24px; }
+      .cta-secondary { display: block; margin: 14px 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Strategic<span>Flow</span></a>
+    <ul class="nav-links">
+      <li><a href="/teardowns.html">Teardowns</a></li>
+      <li><a href="/method.html">Method</a></li>
+      <li><a href="/architecture.html">Services</a></li>
+      <li><a href="https://strategic-flow-audit.replit.app" target="_blank">Free Audit</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">About Alex Iliescu</div>
+      <h1>Most SaaS emails are not a copy problem.<br><em>They are an architecture problem.</em></h1>
+      <p class="hero-sub">Founder of Strategic Flow · Creator of the Decision Friction Model · Tenerife, Spain</p>
+
+      <div class="stats-bar">
+        <div class="stat">
+          <div class="stat-number">59</div>
+          <div class="stat-label">Teardowns published</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">3.4 <span class="dimmed">avg</span></div>
+          <div class="stat-label">Original score /10</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">9.0 <span class="dimmed">avg</span></div>
+          <div class="stat-label">Rebuilt score /10</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="body-wrap">
+    <div class="bio-block">
+      <p class="opening-line">I noticed the same pattern across product updates, onboarding emails, launch announcements, and blog content: companies were explaining features clearly, but failing to show what changed for the customer.</p>
+
+      <p>So I started auditing SaaS communication through a different lens — not grammar, not tone, not "better copy," but <strong>decision friction</strong>.</p>
+
+      <p>Since February 2026, I have run 59 teardowns across SaaS companies in fintech, productivity, and developer tools. The average original score is 3.4 out of 10. The average rebuilt score is 9. Across every audit I have run, the biggest gap has not been talent. It has been architecture.</p>
+
+      <p>Strategic Flow helps SaaS founders, marketers, and product teams turn feature-first communication into outcome-first messaging that makes users understand, care, and click.</p>
+
+      <p>My mission is simple: help good products stop losing attention because the message was built in the wrong order.</p>
+
+      <p>I am not here to make emails sound prettier. I am here to make them work harder.</p>
+
+      <p>I work from Tenerife, Spain, building Strategic Flow remotely for SaaS teams around the world.</p>
+
+      <p>If your product is strong but your emails, updates, or content don't convert the way they should, Strategic Flow shows you where the reader drops off — and how to fix it.</p>
+
+      <div class="sig">
+        <strong>Alex Iliescu</strong>
+        Founder, Strategic Flow &middot;
+        <a href="https://strategicflow.tech">strategicflow.tech</a> &middot;
+        <a href="mailto:alex@strategicflow.tech">alex@strategicflow.tech</a>
+      </div>
+    </div>
+
+    <div class="cta-panel">
+      <p>See the Decision Friction Model in action — run a free audit on your last email or product update.</p>
+      <a href="https://strategic-flow-audit.replit.app" class="cta-btn" target="_blank">Run a free audit</a>
+      <a href="/teardowns.html" class="cta-secondary">Browse 59 teardowns →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Strategic Flow &middot; <a href="https://strategic-flow-pro.replit.app/terms.html">Terms</a> &middot; <a href="mailto:alex@strategicflow.tech">Contact</a></p>
+  </footer>
+
+</body>
+</html>
