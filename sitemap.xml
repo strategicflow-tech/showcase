@@ -50,6 +50,20 @@
     <priority>0.9</priority>
   </url>
 
+  <url>
+    <loc>https://strategicflow.tech/about.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/alex-iliescu.html</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- ============================= -->
   <!-- TIER 2 — CONVERSION PAGES    -->
   <!-- ============================= -->
@@ -110,6 +124,13 @@
   <url>
     <loc>https://strategicflow.tech/saas-email-architecture-study.html</loc>
     <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/fintech-email-benchmark.html</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -242,6 +263,13 @@
   <url>
     <loc>https://strategicflow.tech/strategic-flow-vs-mailtest.html</loc>
     <lastmod>2026-06-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://strategicflow.tech/strategic-flow-vs-klaviyo.html</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
