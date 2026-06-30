@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Strategic Flow — Leadpages Message Match Blog Teardown</title>
+<meta name="description" content="Strategic Flow structural audit of Leadpages's landing page message match blog post by Yvonne Chow. Score: 4.5/10 → 9/10."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --lp:#7C3AED;--lp-light:#EDE9FE;--lp-dark:#4C1D95;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+.score-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 22px 0;}
+.score-badge{display:flex;align-items:center;gap:8px;background:var(--amber-bg);border:1px solid #F09F27;border-radius:8px;padding:10px 16px;}
+.score-num{font-family:'DM Serif Display',serif;font-size:28px;color:#7a5a00;line-height:1;}
+.score-label{font-size:11px;color:var(--amber-dark);line-height:1.4;}
+.score-badge-after{background:var(--green-light);border-color:var(--green);}
+.score-num-after{color:var(--green-dark);}
+.score-label-after{color:var(--green-mid);}
+
+/* BEFORE — Leadpages brand */
+.bef-header{background:#1a0533;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.bef-logo span{color:var(--lp);}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-body{padding:28px 24px;background:#fafafa;border-bottom:1px solid #eee;}
+.bef-tag{display:inline-block;font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;}
+.bef-h1{font-family:'Figtree',sans-serif;font-size:22px;font-weight:700;color:#111;margin-bottom:12px;line-height:1.35;}
+.bef-meta{font-size:12px;color:#aaa;margin-bottom:16px;font-family:'DM Mono',monospace;}
+.bef-copy{font-size:14px;color:#555;line-height:1.75;margin-bottom:14px;}
+.bef-h2{font-size:15px;font-weight:700;color:#111;margin:20px 0 8px;}
+.bef-highlight{background:#f0ebff;border-left:3px solid var(--lp);padding:10px 14px;font-size:13px;color:#4C1D95;margin:16px 0;border-radius:0 6px 6px 0;font-style:italic;}
+.bef-cta-box{margin:24px 0;text-align:center;}
+.bef-cta{display:inline-block;background:var(--lp);color:#fff;padding:12px 28px;border-radius:6px;font-size:14px;font-weight:600;text-decoration:none;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:8px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:#1a0533;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo{font-family:'Figtree',sans-serif;font-size:18px;font-weight:800;color:#fff;}
+.after-logo span{color:var(--lp);}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.2;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--lp);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:14px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--lp);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;line-height:1.4;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--lp);color:white;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-cta-ghost{font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border-mid);padding-bottom:1px;text-decoration:none;cursor:pointer;}
+.after-section{padding:22px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--green);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:8px;}
+.after-section-body{font-size:13px;color:var(--text-secondary);line-height:1.65;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.score-explain{background:var(--bg-secondary);border-radius:10px;padding:20px;margin-bottom:24px;}
+.score-explain-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:14px;}
+.score-row-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.score-item{padding:12px;border-radius:8px;font-size:12px;}
+.score-item.fail{background:#FFF0F0;border-left:3px solid #F09595;}
+.score-item.pass{background:var(--green-light);border-left:3px solid var(--green);}
+.score-item-label{font-weight:500;margin-bottom:4px;color:var(--text-primary);}
+.score-item-note{color:var(--text-secondary);line-height:1.5;}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:600px){
+  .notes-grid{grid-template-columns:1fr;}
+  .score-row-detail{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Leadpages — <em>Rewritten.</em></div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original blog post</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> leadpages.com/blog</div>
+        <div class="meta-row"><span>Author:</span> Yvonne Chow, Head of Marketing</div>
+        <div class="meta-row"><span>Published:</span> June 29, 2026 · 20 min read</div>
+        <div class="post-title">Landing Page Message Match: The Boring Fix That Makes Paid Traffic Less Wasteful</div>
+      </div>
+
+      <div class="score-row">
+        <div class="score-badge">
+          <div class="score-num">4.5</div>
+          <div class="score-label">out of 10<br>Original score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Filing Label Title · Feature-First Bias · Consequence Buried in Section 4 · CTA Delayed 800+ Words · Strongest Line Hidden Mid-Article</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">Lead<span>pages</span></div>
+        <div class="bef-nav">Blog · Marketing Tips</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-tag">Performance Marketing · June 29, 2026 · 20 min read</div>
+        <div class="bef-h1">Landing Page Message Match: The Boring Fix That Makes Paid Traffic Less Wasteful</div>
+        <div class="bef-meta">By Yvonne Chow</div>
+
+        <div class="bef-h2">Short answer: What is landing page message match?</div>
+        <div class="bef-copy">Landing page message match means the promise in your ad, email, social post, or search result clearly matches what people see after they click.</div>
+        <div class="bef-copy">If your ad says "free landing page templates," the landing page should immediately show free landing page templates. Not a vague headline about growing your business. Not a generic homepage.</div>
+        <div class="bef-copy">Message match is not clever. It is not flashy. It is not the thing anyone wants to spend the meeting talking about. It is also one of the fastest ways to make paid traffic less wasteful.</div>
+
+        <div class="bef-h2">Why message match matters in paid campaigns</div>
+        <div class="bef-copy">Paid traffic is expensive because every click has a cost attached to it. That cost is obvious in Google Ads, Microsoft Advertising, Meta, LinkedIn, and other ad platforms. But the bigger cost is usually hidden: wasted attention.</div>
+        <div class="bef-copy">Someone clicked because they expected something. Your landing page either confirms they are in the right place or makes them re-orient. That re-orientation is friction.</div>
+
+        <div class="bef-h2">The boring truth: most message match problems start before the page</div>
+        <div class="bef-copy">When a campaign underperforms, everyone looks at the landing page. But message match often breaks earlier — in the campaign structure, when too many keywords get shoved into one ad group, when one generic page has to serve five different audiences.</div>
+
+        <div class="bef-highlight">"Break that promise on the landing page and you have paid for confusion."</div>
+
+        <div class="bef-copy">Good message match starts with deciding what the click is supposed to mean. Landing page technology helps because it lets you create pages around actual campaign intent instead of forcing every campaign into the same catch-all page.</div>
+
+        <div class="bef-cta-box">
+          <a href="https://leadpages.com" class="bef-cta">Build campaign pages with Leadpages</a>
+        </div>
+        <div class="bef-footer">© 2026 Leadpages · leadpages.com/blog</div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item"><span>⚠</span> <strong>Strongest line buried mid-article:</strong> "Break that promise on the landing page and you have paid for confusion" is the most powerful sentence in the piece — it appears in section 3, after 800+ words of setup. It should be line one.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Feature-First Bias:</strong> The article opens with a definition of message match, not with the reader's problem. A marketer landing here has already burned budget on a homepage. They need to see their situation reflected immediately, not explained.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Filing Label Title:</strong> "The Boring Fix That Makes Paid Traffic Less Wasteful" describes the content accurately but names no reader failure state. It tells them what the article is, not what it solves for them specifically.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Consequence-After-Caveat:</strong> "It is also one of the fastest ways to make paid traffic less wasteful" arrives after two paragraphs of framing. The consequence is the hook — it should not be a third sentence.</div>
+        <div class="issue-item"><span>⚠</span> <strong>CTA disconnected from reader moment:</strong> Leadpages appears as a product mention after 800+ words. The reader who just recognized their own campaign mistake is not redirected to a solution at the moment of recognition — the moment when they are most ready to act.</div>
+        <div class="issue-item"><span>⚠</span> <strong>Missing Visual Hierarchy:</strong> Every section heading describes the topic. None name what the reader gains or loses. "Why message match matters" is a Filing Label. "How much your last campaign lost to a half-second of confusion" is a consequence.</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> leadpages.com/blog — Rebuilt by Strategic Flow</div>
+        <div class="meta-row"><span>Author:</span> Yvonne Chow, Head of Marketing</div>
+        <div class="post-title">You paid for that click. Your landing page made the visitor forget why they came.</div>
+      </div>
+
+      <div class="score-row" style="margin-bottom:16px;">
+        <div class="score-badge score-badge-after">
+          <div class="score-num score-num-after">9</div>
+          <div class="score-label score-label-after">out of 10<br>Rebuilt score</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);max-width:360px;line-height:1.6;">Consequence-first title · Reader failure state in line one · Strongest sentence surfaced to hook · CTA placed at moment of recognition</div>
+      </div>
+
+      <div class="after-header">
+        <div>
+          <div class="after-logo">Lead<span>pages</span></div>
+          <div class="after-tagline-sm">Blog · Performance Marketing</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.06em;">June 29, 2026</div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">Performance Marketing · 20 min read · Yvonne Chow</div>
+        <div class="after-h1">You paid for that click. Your landing page made the visitor <em>forget why they came.</em></div>
+        <div class="after-lead">Break the promise between your ad and your page and you have paid for confusion. That confusion does not show up as a line item. It shows up as a conversion rate that never recovers no matter how many times you test the button color.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">½s</div>
+            <div class="stat-label">of confusion after the click is enough to kill a conversion</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">#1</div>
+            <div class="stat-label">reason paid campaigns underperform — not the ad, not targeting</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">levels of message match: intent, promise, language, visual</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">0</div>
+            <div class="stat-label">new pages needed to fix it — just better alignment per campaign</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://leadpages.com" class="after-cta-primary">Build campaign-specific pages with Leadpages →</a>
+          <a href="https://leadpages.com/blog" class="after-cta-ghost">Read more guides</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Why this keeps happening</div>
+        <div class="after-section-title">The ad was not the problem. The homepage was not the problem. The gap between them was.</div>
+        <div class="after-section-body">Message match is not a conversion optimization tactic. It is a structural decision made before the campaign launches. It breaks when too many keywords get shoved into one ad group. It breaks when one generic landing page has to serve five different audiences. It breaks when the ad was written by one person, the landing page by another, and the offer by a third. And it quietly breaks when someone says "Can we just send them to the main page for now?" — a sentence that has funded a lot of disappointing dashboards.</div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">The four levels</div>
+        <div class="after-section-title">Message match is not one thing. It is four decisions, and breaking any one of them breaks the click.</div>
+        <div class="after-section-body">Intent match: the page answers the same problem the visitor clicked to solve. Promise match: the offer on the page is the offer in the ad — not a bait-and-switch with a calendar widget. Language match: the page echoes the words the visitor searched, not a reworded version your copywriter preferred. Visual match: what the ad showed still shows after the click. All four need to hold. One broken level is enough to trigger re-orientation — and re-orientation is the conversion killer that never shows up in your attribution report.</div>
+      </div>
+
+      <div class="after-section" style="border-bottom:none;">
+        <div class="after-section-label">The fix</div>
+        <div class="after-section-title">You do not need a new page for every keyword. You need enough alignment that the visitor never has to re-figure out why they came.</div>
+        <div class="after-section-body">Group by intent, not by keyword. One page per audience problem, not one page per ad variation. Use page variants to handle language and visual match without multiplying your page count. And build the pages around the campaign intent that already exists in your ad — not the homepage story you wish they had read first.</div>
+        <div style="margin-top:20px;">
+          <a href="https://leadpages.com" class="after-cta-primary" style="font-size:13px;">Build campaign-specific pages with Leadpages →</a>
+        </div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="https://leadpages.com/blog/landing-page-message-match" class="footer-link">Full article</a>
+          <a href="https://leadpages.com" class="footer-link">Leadpages</a>
+          <a href="https://leadpages.com/blog" class="footer-link">Blog</a>
+        </div>
+        <div class="footer-note">© 2026 Leadpages</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+
+        <div class="score-explain">
+          <div class="score-explain-title">Score explained — why 4.5/10 before and 9/10 after</div>
+          <div class="score-row-detail">
+            <div class="score-item fail">
+              <div class="score-item-label">Title — FAIL</div>
+              <div class="score-item-note">"The Boring Fix That Makes Paid Traffic Less Wasteful" describes the article. It names no reader failure state and gives no reason to click over any other marketing article in a feed.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Title — PASS</div>
+              <div class="score-item-note">"You paid for that click. Your landing page made the visitor forget why they came." Names the exact moment of failure every paid marketer recognizes. Impossible to scroll past if you have run a paid campaign.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Opening — FAIL</div>
+              <div class="score-item-note">Opens with a definition: "Landing page message match means the promise in your ad clearly matches what people see after they click." The reader who already burned budget does not need a definition. They need to see their situation.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Opening — PASS</div>
+              <div class="score-item-note">"Break the promise between your ad and your page and you have paid for confusion." The strongest sentence in the original article becomes line one. The reader who has lived this moment recognizes it immediately.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">Buried consequence — FAIL</div>
+              <div class="score-item-note">"It is also one of the fastest ways to make paid traffic less wasteful" arrives as the third sentence in the third paragraph. The consequence — wasted budget, broken conversion — is the hook, not the payoff.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">Consequence first — PASS</div>
+              <div class="score-item-note">Stat cards above the fold surface the consequence immediately: half a second of confusion, the #1 reason campaigns underperform, four levels to check. The reader understands the cost before they read the fix.</div>
+            </div>
+            <div class="score-item fail">
+              <div class="score-item-label">CTA timing — FAIL</div>
+              <div class="score-item-note">Leadpages appears as a product mention after 800+ words of educational content. The reader who just recognized their campaign mistake has scrolled past the moment when they are most ready to act.</div>
+            </div>
+            <div class="score-item pass">
+              <div class="score-item-label">CTA timing — PASS</div>
+              <div class="score-item-note">CTA placed immediately after the reader recognizes the problem in the hero section, and again at the end of the fix section. Two placements at the two moments of highest motivation.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">Before — Opening</div>
+            <p>"Landing page message match means the promise in your ad clearly matches what people see after they click."<br><br>Definition. The reader already knows this concept exists — they clicked because they are living the problem, not because they need it explained.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">After — Opening</div>
+            <p>"Break the promise between your ad and your page and you have paid for confusion."<br><br>The original article's own strongest sentence, moved to line one where it stops the reader who has felt this exact thing.</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 6 fixes — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · The article's own strongest sentence moved to line one</div>
+          <div class="upgrade-desc">"Break that promise and you have paid for confusion" is the most specific, consequence-laden line in the entire piece. It appears in section 3 of the original. In the rebuild it is line one. The reader who has ever watched a paid campaign drain budget without understanding why cannot scroll past this sentence.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Title reframed from description to reader failure state</div>
+          <div class="upgrade-desc">The original title describes the article accurately. The rebuild names what happened to the reader before they arrived: they paid for a click, and their page broke the promise. Every paid marketer who has experienced this recognizes themselves in that title before they read a single word of the article.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Consequence surfaced above the fold with stat cards</div>
+          <div class="upgrade-desc">The original buries the cost of message mismatch inside paragraphs of educational framing. The rebuild surfaces four specific numbers above the fold: half a second of confusion, the #1 failure cause, four levels to check, zero new pages needed. The reader understands what they stand to lose before they read the first section.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · CTA placed at moment of maximum reader motivation</div>
+          <div class="upgrade-desc">The original introduces Leadpages after 800+ words of content. The reader who recognized their own campaign mistake in the hero section has scrolled through multiple sections before they see the product. The rebuild places the CTA immediately after the recognition moment — when the reader is most likely to act — and again at the end of the fix section.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">5 · Section headers reframed from topics to consequences</div>
+          <div class="upgrade-desc">"Why message match matters in paid campaigns" is a Filing Label — it describes the section. "The ad was not the problem. The homepage was not the problem. The gap between them was." names the specific misdiagnosis the reader has probably already made. Consequence-framed headers keep the reader moving through the article because each one answers a question they are already carrying.</div>
+        </div>
+        <div class="upgrade-item">
+          <div class="upgrade-head">6 · The four levels delivered as a single readable block</div>
+          <div class="upgrade-desc">The original dedicates four separate sections to Intent, Promise, Language, and Visual match. In the rebuild they are delivered in a single paragraph that shows how they connect rather than treating them as isolated concepts. The reader understands the system, not a checklist.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">The best line in your content is usually not in the first paragraph. The reader who needs to stay rarely sees it. Decision architecture means finding where consequence lives in your content and moving it to where the reader arrives. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last blog post or email.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original blog post'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08);margin-top:8px;">
+  <a href="https://strategicflow.tech/teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none;">← Back to all teardowns</a>
+</div>
+
+</body>
+</html>
