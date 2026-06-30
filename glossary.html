@@ -345,16 +345,16 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#04080f;--surface:#090e1a;--border:rgba(255,255,255,0.07);
-  --teal:#4A8FE7;--teal-dim:rgba(74,143,231,0.08);--teal-border:rgba(74,143,231,0.2);
-  --white:#f1f5f9;--muted:rgba(255,255,255,0.72);--dim:rgba(255,255,255,0.50);
+  --bg:#0a1628;--surface:#0f2035;--border:#1a3050;
+  --teal:#00d4c8;--teal-dim:rgba(0,212,200,0.08);--teal-border:rgba(0,212,200,0.2);
+  --white:#ffffff;--muted:#ffffff;--dim:rgba(255,255,255,0.70);
   --red-dim:rgba(239,68,68,0.08);--red-border:rgba(239,68,68,0.25);--red:#ef4444;
   --green-dim:rgba(34,197,94,0.08);--green-border:rgba(34,197,94,0.25);--green:#22c55e
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;line-height:1.6;min-height:100vh}
 
-nav{position:sticky;top:0;z-index:100;background:rgba(4,8,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,22,40,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
 .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
 .nav-logo{font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:var(--teal);text-decoration:none;letter-spacing:-0.3px;white-space:nowrap}
 .nav-logo span{color:var(--white)}
@@ -362,13 +362,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(4,8,15,0.95);backdrop-filt
 .nav-link{font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:6px;transition:color .15s,background .15s;white-space:nowrap}
 .nav-link:hover{color:var(--white);background:rgba(255,255,255,0.06)}
 .nav-cta{background:var(--teal);color:#04080f !important;border-radius:6px;font-weight:700}
-.nav-cta:hover{background:#2D6BE4}
+.nav-cta:hover{background:#00a89e}
   .nav-burger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:40px;height:44px;background:none;border:none;cursor:pointer;padding:0;z-index:101;flex-shrink:0;}
   .nav-burger span{display:block;width:22px;height:2px;background:var(--white,#fff);border-radius:2px;transition:transform .25s ease,opacity .25s ease;transform-origin:center;}
   .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
   .nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
   .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-  .nav-mobile{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(13,17,23,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border,rgba(255,255,255,0.08));z-index:99;flex-direction:column;}
+  .nav-mobile{display:none;position:fixed;top:56px;left:0;right:0;background:rgba(10,22,40,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border,rgba(255,255,255,0.08));z-index:99;flex-direction:column;}
   .nav-mobile.open{display:flex;}
   .nav-mobile a{font-size:13px;color:var(--muted,#909088);text-decoration:none;padding:0 24px;height:52px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);transition:color .2s,background .2s;}
   .nav-mobile a:last-child{border-bottom:none;}
@@ -423,7 +423,7 @@ h1 em{font-style:italic;color:var(--teal)}
 .teardown-link:hover{background:var(--teal-dim)}
 
 /* FREQUENCY BADGE */
-.freq-badge{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;background:rgba(74,143,231,0.12);border:1px solid var(--teal-border);color:var(--teal);margin-bottom:16px;font-family:'Inter',sans-serif}
+.freq-badge{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;background:rgba(0,212,200,0.12);border:1px solid var(--teal-border);color:var(--teal);margin-bottom:16px;font-family:'Inter',sans-serif}
 
 /* CTA */
 .cta-section{max-width:1100px;margin:0 auto;padding:0 24px 96px}
@@ -434,7 +434,7 @@ h1 em{font-style:italic;color:var(--teal)}
 .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 .btn{display:inline-block;padding:13px 28px;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;transition:all .15s}
 .btn-primary{background:var(--teal);color:#04080f}
-.btn-primary:hover{background:#2D6BE4;transform:translateY(-1px)}
+.btn-primary:hover{background:#00a89e;transform:translateY(-1px)}
 .btn-ghost{border:1px solid var(--border);color:var(--white)}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.05)}
 
@@ -490,8 +490,8 @@ footer a:hover{color:var(--teal)}
 <header class="hero">
   <div class="hero-badge"><div class="dot"></div>Strategic Flow Vocabulary</div>
   <h1>The language of<br><em>email failure.</em></h1>
-<div style="background:rgba(74,143,231,0.06);border:1px solid rgba(74,143,231,0.28);border-radius:10px;padding:18px 22px;margin:28px 0;">
-  <div style="font-family:monospace;font-size:10px;color:#4A8FE7;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">Short answer</div>
+<div style="background:rgba(74,143,231,0.06);border:1px solid rgba(0,212,200,0.28);border-radius:10px;padding:18px 22px;margin:28px 0;">
+  <div style="font-family:monospace;font-size:10px;color:#00d4c8;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">Short answer</div>
   <p style="font-size:14px;color:#ddddd8;line-height:1.65;margin:0;">The 6 structural failure patterns below appear in 69–96% of B2B SaaS emails audited by Strategic Flow. They are architecture problems — not copy problems. Each one adds friction at a specific point in the reader's decision sequence before the CTA.</p>
 </div>
   <p class="hero-sub">6 named failure patterns, ranging from 69% to 96% of audited SaaS emails. Each one has a definition, a real example, and an exact fix. These are the patterns the Strategic Flow Method diagnoses on every audit.</p>
@@ -811,7 +811,7 @@ footer a:hover{color:var(--teal)}
     <p class="term-definition" style="margin-top:12px;">This is the foundation of every Strategic Flow audit — the 7-point Decision Friction Model is a Behavioral Email Diagnostic applied at the individual message level. The same diagnostic, applied across an entire sequence, becomes what others call a lifecycle audit or customer journey audit.</p>
     <div class="fix-block">
       <div class="fix-label">See Also</div>
-      <div class="fix-text"><a href="#decision-friction" style="color:#4A8FE7;text-decoration:none;">See the Decision Friction Model →</a></div>
+      <div class="fix-text"><a href="#decision-friction" style="color:#00d4c8;text-decoration:none;">See the Decision Friction Model →</a></div>
     </div>
   </article>
   <article id="decision-friction" class="term-entry">
@@ -892,14 +892,14 @@ footer a:hover{color:var(--teal)}
 </section>
 
 <div style="padding:40px 48px;border-top:1px solid rgba(255,255,255,0.07);background:#111111;">
-  <div style="font-family:monospace;font-size:10px;color:#4A8FE7;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;">Related pages</div>
+  <div style="font-family:monospace;font-size:10px;color:#00d4c8;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;">Related pages</div>
   <div style="display:flex;flex-wrap:wrap;gap:12px;">
-    <a href="why-saas-emails-get-opened-but-not-clicked.html" style="color:#4A8FE7;font-size:13px;text-decoration:none;border:1px solid rgba(74,143,231,0.28);padding:8px 14px;border-radius:6px;">Why SaaS emails don't convert →</a>
-    <a href="how-to-fix-saas-email-ctr.html" style="color:#4A8FE7;font-size:13px;text-decoration:none;border:1px solid rgba(74,143,231,0.28);padding:8px 14px;border-radius:6px;">How to fix low CTR →</a>
-    <a href="email-architecture-audit.html" style="color:#4A8FE7;font-size:13px;text-decoration:none;border:1px solid rgba(74,143,231,0.28);padding:8px 14px;border-radius:6px;">Full methodology →</a>
-    <a href="saas-email-conversion-failure.html" style="color:#4A8FE7;font-size:13px;text-decoration:none;border:1px solid rgba(74,143,231,0.28);padding:8px 14px;border-radius:6px;">Conversion failure model →</a>
-    <a href="teardowns.html" style="color:#4A8FE7;font-size:13px;text-decoration:none;border:1px solid rgba(74,143,231,0.28);padding:8px 14px;border-radius:6px;">See all teardowns →</a>
-    <a href="scorecard.html" style="color:#4A8FE7;font-size:13px;text-decoration:none;border:1px solid rgba(74,143,231,0.28);padding:8px 14px;border-radius:6px;">Score your last 5 emails →</a>
+    <a href="why-saas-emails-get-opened-but-not-clicked.html" style="color:#00d4c8;font-size:13px;text-decoration:none;border:1px solid rgba(0,212,200,0.28);padding:8px 14px;border-radius:6px;">Why SaaS emails don't convert →</a>
+    <a href="how-to-fix-saas-email-ctr.html" style="color:#00d4c8;font-size:13px;text-decoration:none;border:1px solid rgba(0,212,200,0.28);padding:8px 14px;border-radius:6px;">How to fix low CTR →</a>
+    <a href="email-architecture-audit.html" style="color:#00d4c8;font-size:13px;text-decoration:none;border:1px solid rgba(0,212,200,0.28);padding:8px 14px;border-radius:6px;">Full methodology →</a>
+    <a href="saas-email-conversion-failure.html" style="color:#00d4c8;font-size:13px;text-decoration:none;border:1px solid rgba(0,212,200,0.28);padding:8px 14px;border-radius:6px;">Conversion failure model →</a>
+    <a href="teardowns.html" style="color:#00d4c8;font-size:13px;text-decoration:none;border:1px solid rgba(0,212,200,0.28);padding:8px 14px;border-radius:6px;">See all teardowns →</a>
+    <a href="scorecard.html" style="color:#00d4c8;font-size:13px;text-decoration:none;border:1px solid rgba(0,212,200,0.28);padding:8px 14px;border-radius:6px;">Score your last 5 emails →</a>
   </div>
 </div>
 
@@ -926,7 +926,7 @@ footer a:hover{color:var(--teal)}
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  background: linear-gradient(90deg, #0a1628 0%, #111c18 50%, #0a1628 100%);
   border-top: 1px solid rgba(29, 158, 117, 0.3);
   box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
   z-index: 9999;
@@ -969,7 +969,7 @@ footer a:hover{color:var(--teal)}
 }
 .sf-affiliate-tag {
   background: rgba(74, 143, 231, 0.1);
-  color: #4A8FE7;
+  color: #00d4c8;
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   font-weight: 500;
