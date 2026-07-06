@@ -5,7 +5,7 @@
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <!-- ===================== -->
-  <!-- TIER 1 — CORE PAGES  -->
+  <!-- TIER 1, CORE PAGES  -->
   <!-- ===================== -->
 
   <url>
@@ -65,7 +65,7 @@
   </url>
 
   <!-- ============================= -->
-  <!-- TIER 2 — CONVERSION PAGES    -->
+  <!-- TIER 2, CONVERSION PAGES    -->
   <!-- ============================= -->
 
   <url>
@@ -111,7 +111,7 @@
   </url>
 
   <!-- ============================= -->
-  <!-- TIER 2 — RESEARCH / REPORT   -->
+  <!-- TIER 2, RESEARCH / REPORT   -->
   <!-- ============================= -->
 
   <url>
@@ -129,6 +129,13 @@
   </url>
 
   <url>
+    <loc>https://strategicflow.tech/decision-friction-patterns.html</loc>
+    <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://strategicflow.tech/fintech-email-benchmark.html</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -136,7 +143,7 @@
   </url>
 
   <!-- ================================ -->
-  <!-- TIER 2 — PRE-SELL / EDUCATION   -->
+  <!-- TIER 2, PRE-SELL / EDUCATION   -->
   <!-- ================================ -->
 
   <url>
@@ -175,7 +182,7 @@
   </url>
 
   <!-- ============================== -->
-  <!-- TIER 2 — FIELD NOTES          -->
+  <!-- TIER 2, FIELD NOTES          -->
   <!-- ============================== -->
 
   <url>
@@ -200,7 +207,7 @@
   </url>
 
   <!-- ============================== -->
-  <!-- TIER 2 — STORIES              -->
+  <!-- TIER 2, STORIES              -->
   <!-- ============================== -->
 
   <url>
@@ -218,7 +225,7 @@
   </url>
 
   <!-- ============================== -->
-  <!-- TIER 2 — GLOSSARY / TERMS     -->
+  <!-- TIER 2, GLOSSARY / TERMS     -->
   <!-- ============================== -->
 
   <url>
@@ -243,7 +250,7 @@
   </url>
 
   <!-- ============================== -->
-  <!-- TIER 2 — COMPARISONS          -->
+  <!-- TIER 2, COMPARISONS          -->
   <!-- ============================== -->
 
   <url>
@@ -289,7 +296,7 @@
   </url>
 
   <!-- ============================== -->
-  <!-- TIER 3 — SUPPORT PAGES        -->
+  <!-- TIER 3, SUPPORT PAGES        -->
   <!-- ============================== -->
 
   <url>
@@ -314,7 +321,7 @@
   </url>
 
   <!-- ============================== -->
-  <!-- TIER 3 — TEARDOWN SHOWCASES   -->
+  <!-- TIER 3, TEARDOWN SHOWCASES   -->
   <!-- ============================== -->
 
   <url>
