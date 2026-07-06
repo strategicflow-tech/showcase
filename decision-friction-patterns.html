@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7 Decision Friction Patterns, Ranked by Frequency | Strategic Flow</title>
+  <meta name="description" content="Ranked list of the 7 most common structural failure patterns found across 59 SaaS email teardowns, from Guest Language CTA (96%) to Consequence-After-Caveat (53%)." />
+  <meta property="og:title" content="7 Decision Friction Patterns, Ranked by Frequency" />
+  <meta property="og:description" content="Guest Language CTA appears in 96% of audited SaaS emails. Here is the full ranked breakdown of every structural failure pattern, with real examples." />
+  <meta property="og:url" content="https://strategicflow.tech/decision-friction-patterns.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://strategicflow.tech/assets/strategic-flow-logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Decision Friction Patterns, Ranked by Frequency" />
+  <meta name="twitter:description" content="Guest Language CTA appears in 96% of audited SaaS emails. Here is the full ranked breakdown of every structural failure pattern, with real examples." />
+  <meta name="twitter:image" content="https://strategicflow.tech/assets/strategic-flow-logo.jpg" />
+  <link rel="canonical" href="https://strategicflow.tech/decision-friction-patterns.html" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Decision Friction Patterns Ranked by Frequency",
+    "description": "7 structural failure patterns found across 59 SaaS email teardowns, ranked by how often each pattern appears.",
+    "numberOfItems": 7,
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Guest Language CTA", "description": "The CTA describes what the brand offers instead of what the reader does. Found in 96% of 59 audited SaaS emails."},
+      {"@type": "ListItem", "position": 2, "name": "Feature-First Bias", "description": "The email opens with what the product does instead of what the reader gains. Found in 88% of 59 audited SaaS emails."},
+      {"@type": "ListItem", "position": 3, "name": "Filing Label Subject", "description": "The subject line announces the topic like a folder tab instead of naming a consequence. Found in 84% of 59 audited SaaS emails."},
+      {"@type": "ListItem", "position": 4, "name": "Buried Proof", "description": "The strongest stat or quote sits in paragraph 3 or later instead of the hook. Found in 78% of 59 audited SaaS emails."},
+      {"@type": "ListItem", "position": 5, "name": "Missing Visual Hierarchy", "description": "Every update or feature has equal visual weight, with no MAJOR versus MINOR distinction. Found in 63% of 59 audited SaaS emails."},
+      {"@type": "ListItem", "position": 6, "name": "Zero Social Proof", "description": "No third-party voice, named customer, or specific result appears anywhere in the email. Found in 57% of 59 audited SaaS emails."},
+      {"@type": "ListItem", "position": 7, "name": "Consequence-After-Caveat", "description": "The outcome is buried behind qualifications and disclaimers instead of leading the sentence. Found in 53% of 59 audited SaaS emails."}
+    ],
+    "disambiguatingDescription": "This research is published by Strategic Flow (strategicflow.tech), founded by Alex Iliescu, and is not affiliated with Strategic Flow Limited (strategicflow.io)."
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #0a1628;
+      --card:     #0f2035;
+      --card2:    #122440;
+      --teal:     #00d4c8;
+      --teal-dim: #00a89e;
+      --white:    #ffffff;
+      --muted:    #7a9ab8;
+      --hairline: #1a3050;
+      --red:      #ff6b6b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Inter", -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .nav-logo {
+      color: var(--white);
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--teal); }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .hero {
+      padding: 72px 32px 56px;
+      border-bottom: 1px solid var(--hairline);
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--teal);
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--teal);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .source-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .body-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 32px 80px;
+    }
+
+    .pattern-row {
+      display: grid;
+      grid-template-columns: 64px 1fr 96px;
+      gap: 20px;
+      align-items: start;
+      background: var(--card);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    .pattern-rank {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--teal);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .pattern-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .pattern-desc {
+      font-size: 15px;
+      color: #c8daea;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    .pattern-evidence {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pattern-evidence strong {
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .pattern-freq {
+      text-align: right;
+    }
+
+    .freq-number {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .freq-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-top: 4px;
+    }
+
+    .tier-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      margin-top: 8px;
+    }
+
+    .tier-universal {
+      background: rgba(255, 107, 107, 0.15);
+      color: var(--red);
+    }
+
+    .tier-common {
+      background: rgba(0, 212, 200, 0.15);
+      color: var(--teal);
+    }
+
+    .methodology {
+      background: var(--card2);
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      padding: 32px;
+      margin-top: 32px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .methodology strong { color: var(--white); }
+
+    .cta-panel {
+      background: var(--card2);
+      border: 1px solid var(--teal-dim);
+      border-radius: 12px;
+      padding: 36px 44px;
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .cta-panel p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.55;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--bg);
+      font-size: 14px;
+      font-weight: 800;
+      padding: 13px 26px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-btn:hover {
+      background: var(--teal-dim);
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 32px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--hairline);
+    }
+
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--white); }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 48px 20px 40px; }
+      .body-wrap { padding: 32px 20px 56px; }
+      .pattern-row {
+        grid-template-columns: 40px 1fr;
+        padding: 22px 18px;
+      }
+      .pattern-freq {
+        grid-column: 2;
+        text-align: left;
+        margin-top: 4px;
+      }
+      .cta-panel { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Strategic<span>Flow</span></a>
+    <ul class="nav-links">
+      <li><a href="/teardowns.html">Teardowns</a></li>
+      <li><a href="/method.html">Method</a></li>
+      <li><a href="/architecture.html">Services</a></li>
+      <li><a href="https://strategic-flow-audit.replit.app" target="_blank">Free Audit</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Decision Friction Model &middot; Research</div>
+      <h1>7 Decision Friction Patterns,<br><em>Ranked by Frequency</em></h1>
+      <p class="hero-sub">Every SaaS email we audit gets scored against the same 7-point framework. Here is which structural failures show up most, based on 59 published teardowns.</p>
+      <p class="source-note">Data current as of 59 published teardowns. Updated as new teardowns are added.</p>
+    </div>
+  </section>
+
+  <div class="body-wrap">
+
+    <div class="pattern-row">
+      <div class="pattern-rank">1</div>
+      <div>
+        <div class="pattern-name">Guest Language CTA</div>
+        <p class="pattern-desc">The call to action describes what the brand offers instead of what the reader does. "Learn more" and "Explore what's new" put the brand in the driver's seat. "Fix my reporting" puts the reader there instead.</p>
+        <p class="pattern-evidence">Found in almost every teardown across every vertical audited so far.</p>
+        <span class="tier-tag tier-universal">Universal</span>
+      </div>
+      <div class="pattern-freq">
+        <div class="freq-number">96%</div>
+      </div>
+    </div>
+
+    <div class="pattern-row">
+      <div class="pattern-rank">2</div>
+      <div>
+        <div class="pattern-name">Feature-First Bias</div>
+        <p class="pattern-desc">The email opens with what the product does instead of what the reader gains. Every product update email built this way makes the reader do the translation work themselves, and most don't.</p>
+        <p class="pattern-evidence">Found in 100% of B2B SaaS product update teardowns specifically.</p>
+        <span class="tier-tag tier-universal">Universal</span>
+      </div>
+      <div class="pattern-freq">
+        <div class="freq-number">88%</div>
+      </div>
+    </div>
+
+    <div class="pattern-row">
+      <div class="pattern-rank">3</div>
+      <div>
+        <div class="pattern-name">Filing Label Subject</div>
+        <p class="pattern-desc">The subject line announces the topic like a folder tab: "New Feature: Advanced Reporting Dashboard." No curiosity gap, no consequence, no reason to open it over the 40 other unread emails.</p>
+        <p class="pattern-evidence">Found in 92% of blog post and long-form title teardowns specifically.</p>
+        <span class="tier-tag tier-universal">Universal</span>
+      </div>
+      <div class="pattern-freq">
+        <div class="freq-number">84%</div>
+      </div>
+    </div>
+
+    <div class="pattern-row">
+      <div class="pattern-rank">4</div>
+      <div>
+        <div class="pattern-name">Buried Proof</div>
+        <p class="pattern-desc">The strongest stat or customer quote sits in paragraph 3, bullet 4, or section 6 of 10. If it would work as a landing page headline, it belongs in line 1 of the email, not after the first scroll.</p>
+        <p class="pattern-evidence">Most common in fintech teardowns, where the strongest numbers get buried under compliance language.</p>
+        <span class="tier-tag tier-universal">Universal</span>
+      </div>
+      <div class="pattern-freq">
+        <div class="freq-number">78%</div>
+      </div>
+    </div>
+
+    <div class="pattern-row">
+      <div class="pattern-rank">5</div>
+      <div>
+        <div class="pattern-name">Missing Visual Hierarchy</div>
+        <p class="pattern-desc">Every update, feature, or bullet carries the same visual weight. No MAJOR release gets a full-width card while MINOR fixes get grouped below. The reader has no signal for what actually matters.</p>
+        <p class="pattern-evidence">Most common in changelog and product update emails listing 8 or more items flat.</p>
+        <span class="tier-tag tier-common">Common</span>
+      </div>
+      <div class="pattern-freq">
+        <div class="freq-number">63%</div>
+      </div>
+    </div>
+
+    <div class="pattern-row">
+      <div class="pattern-rank">6</div>
+      <div>
+        <div class="pattern-name">Zero Social Proof</div>
+        <p class="pattern-desc">No third-party voice, no named customer, no specific attributed result anywhere in the email. Every claim is the brand talking about itself, with nothing to back it up.</p>
+        <p class="pattern-evidence">Most common in product launch and company announcement emails.</p>
+        <span class="tier-tag tier-common">Common</span>
+      </div>
+      <div class="pattern-freq">
+        <div class="freq-number">57%</div>
+      </div>
+    </div>
+
+    <div class="pattern-row">
+      <div class="pattern-rank">7</div>
+      <div>
+        <div class="pattern-name">Consequence-After-Caveat</div>
+        <p class="pattern-desc">The outcome is buried behind qualifications, context-setting, or disclaimers. The reader has to wade through setup before finding out why the email matters to them at all.</p>
+        <p class="pattern-evidence">Most common in regulated industries and general blog content.</p>
+        <span class="tier-tag tier-common">Common</span>
+      </div>
+      <div class="pattern-freq">
+        <div class="freq-number">53%</div>
+      </div>
+    </div>
+
+    <div class="methodology">
+      <strong>Methodology.</strong> Each pattern is identified during a manual audit against the Decision Friction Model, a 7-point diagnostic framework. A teardown can and usually does contain more than one pattern. Frequency reflects the share of published teardowns that contain each pattern, not how severe it was in any single email. Across all 59 published teardowns, average original score is 3.4 out of 10. Average rebuilt score is 9.0 out of 10.
+    </div>
+
+    <div class="cta-panel">
+      <p>Want to know which of these patterns is costing you clicks? Run a free audit on your last email or product update.</p>
+      <a href="https://strategic-flow-audit.replit.app" class="cta-btn" target="_blank">Run a free audit</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Strategic Flow &middot; <a href="/about.html">About</a> &middot; <a href="mailto:alex@strategicflow.tech">Contact</a></p>
+  </footer>
+
+</body>
+</html>
