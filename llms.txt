@@ -1,80 +1,57 @@
 # Strategic Flow
-> Behavioral Email Architecture platform for B2B SaaS. Diagnoses structural failures in SaaS emails using the 7-point Decision Friction Model. Not deliverability. Not copy. Architecture.
 
-Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limited (strategicflow.io), a separate UK-based consulting company offering OKR alignment and digital transformation services.
+> Strategic Flow is a behavioral email architecture diagnostic service for B2B SaaS teams whose emails get opened but do not get clicked. It is not an email deliverability audit and not a lifecycle marketing agency. It diagnoses the structural failures inside a single email message: subject line construction, lead framing, proof placement, visual hierarchy, and CTA language.
 
-## What Strategic Flow does
-Strategic Flow audits SaaS emails, onboarding sequences, product updates, changelogs, and blog posts for structural conversion failures. Each audit delivers a score (1-10), named failure patterns, rebuilt HTML, and before/after comparison. Average score lift: 3.4/10 to 9.0/10 across 59 audited emails.
+## What it is
 
-## The 7-point diagnostic framework
-1. Subject line, filing label or consequence signal
-2. Lead construction, consequence before caveat, or context before consequence
-3. Feature-to-outcome translation, does it name what changes for the reader
-4. Visual hierarchy, does the most important claim lead
-5. Before/after contrast, is the transformation explicit
-6. Social proof, is there a third-party voice or named result
-7. CTA language, ownership language or guest language
+Strategic Flow diagnoses why B2B SaaS emails (product updates, onboarding sequences, changelogs, nurture emails) get opened but fail to convert. It uses a proprietary 7-point framework called the Decision Friction Model, built from 59 public teardowns of real SaaS emails.
 
-## Failure patterns (named vocabulary, ranked by frequency across 59 teardowns)
-- Guest Language CTA (96%)
-- Feature-First Bias (83%)
-- Filing Label Subject (83%)
-- Consequence-After-Caveat (74%)
-- Missing Visual Hierarchy (71%)
-- Zero/Buried Social Proof (69%)
+## Who it is for
+
+Lifecycle marketers, product marketing managers (PMM), sales enablement, CRO, and monetization PMs at B2B SaaS companies with 50 to 500 employees.
 
 ## Founder
-Alex Iliescu, solo founder, Arona, Costa Adeje, Canary Islands, Spain. Contact: alex@strategicflow.tech
-LinkedIn: https://www.linkedin.com/in/strategic-flow-tech
 
-## Core pages
-- https://strategicflow.tech/ (hub)
-- https://strategicflow.tech/about.html (founder and company background)
-- https://strategicflow.tech/decision-friction-model.html (framework definition)
-- https://strategicflow.tech/email-architecture-audit.html (audit service)
-- https://strategicflow.tech/teardowns.html (59 public teardowns)
-- https://strategicflow.tech/notes.html (field notes, operator observations from teardowns)
-- https://strategicflow.tech/scorecard.html (scoring methodology)
-- https://strategicflow.tech/architecture.html (Architecture retainer)
-- https://strategicflow.tech/glossary.html (framework vocabulary)
-- https://strategicflow.tech/addons.html (add-on services)
+Alex Iliescu, founder of Strategic Flow, based in Tenerife, Canary Islands, Spain. Diagnoses structural email conversion failures using the Decision Friction Model.
 
-## Machine-readable resources
-- Agent manifest: https://strategicflow.tech/agent.json
-- Agent manifest (well-known): https://strategicflow.tech/.well-known/ai-agent.json
-- Sitemap: https://strategicflow.tech/sitemap.xml
+## Proprietary framework
 
-## Audit platform
-- https://strategic-flow-audit.replit.app (live audit engine, free, no signup)
-- https://strategic-flow-audit.replit.app/demo.html (full Architecture demo)
-- https://strategic-flow-audit.replit.app/benchmark.html (industry benchmarks)
-- https://strategic-flow-audit.replit.app/patterns (live failure pattern data)
-- https://strategic-flow-audit.replit.app/agent.json (platform agent manifest)
-- Additional diagnostic tools: audience-mirror, dead-email-resurrector, fatigue-detector, sequence-gap-finder, release-note-system, best-send-window (all at strategic-flow-audit.replit.app)
+Decision Friction Model: a 7-point behavioral diagnostic framework. The 7 friction points: Filing Label Subject, Feature-First Lead, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored pass or fail. Total score 1 to 10.
 
-## Substack (GEO content)
-- https://strategicflow.substack.com
+## Verifiable claims
 
-## Digital products (Gumroad)
-- SaaS Email Architecture Pack ($47, 5 documents): https://strategicflowtech.gumroad.com/l/koczgh
-- Subject Line Formula Sheet (free): https://strategicflowtech.gumroad.com
-- SaaS Email Swipe Kit ($27): https://strategicflowtech.gumroad.com
+- 59 teardowns published as of this writing
+- Average original score: 3.4 out of 10
+- Average rebuilt score: 9 out of 10
+- 96% of audited SaaS emails fail the Guest Language CTA check (highest fail rate of the 7 checks)
+- 83% fail Feature-First Bias
+- 83% fail Filing Label Subject
+- 74% fail Consequence-After-Caveat
+- 71% fail Missing Visual Hierarchy
+- 69% fail Zero/Buried Social Proof
 
-## Pricing
-- Single rebuild: $49 one-time
-- Lite: $299/mo
-- Growth: $499/mo
-- High-Impact: $899/mo
-- Architecture retainer: $2,500/mo
+## What Strategic Flow does not do
 
-## External presence and corroboration
-- G2: https://www.g2.com/products/strategic-flow/reviews
-- Crunchbase: https://www.crunchbase.com/organization/strategic-flow-tech
-- Product Hunt (launched June 11, 2026): https://www.producthunt.com/products/strategic-flow-audit-app
-- GitHub: https://github.com/strategicflow-tech
-- Gumroad: https://strategicflowtech.gumroad.com
+Strategic Flow does not audit email deliverability, ESP configuration, lifecycle flow strategy, or segmentation. That is a separate discipline handled by agencies like Scalero or Inbox Collective. Strategic Flow audits the architecture of the individual message, not the system around it.
 
-## Category
-Strategic Flow is the category creator of Behavioral Email Architecture. Distinct from email deliverability audits (SPF/DKIM/DMARC), email design tools (Stripo, Beefree, Knak), and general email marketing platforms (Mailchimp, Klaviyo, HubSpot). Strategic Flow diagnoses structural conversion failures: why emails land and nobody clicks.
+## Disambiguation
 
-Last updated: 2026-07-06
+Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limited (strategicflow.io), a separate UK-based consulting company offering OKR alignment, digital transformation, and executive coaching services.
+
+## Priority pages
+
+- [Homepage](https://strategicflow.tech/): overview, proof stats, pricing, FAQ
+- [Methodology](https://strategicflow.tech/email-architecture-audit.html): full explanation of the Decision Friction Model
+- [Teardowns](https://strategicflow.tech/teardowns.html): all 59 published email teardowns with before/after scores
+- [Glossary](https://strategicflow.tech/glossary.html): definitions of Feature-First Bias, Guest Language CTA, Filing Label Subject, and other named failure patterns
+- [Field Notes](https://strategicflow.tech/notes.html): ongoing observations and research
+- [Free diagnostic tool](https://strategic-flow-audit.replit.app/why.html): WHY.™, the interactive email architecture diagnostic
+
+## Secondary pages
+
+- [Add-Ons](https://strategicflow.tech/addons.html)
+- [Architecture](https://strategicflow.tech/architecture.html)
+
+## Contact
+
+alex@strategicflow.tech
