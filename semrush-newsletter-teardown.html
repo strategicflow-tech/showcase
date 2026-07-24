@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Semrush Newsletter Teardown — Score 5.5/10 → 9/10 | Strategic Flow</title>
+<meta name="description" content="Strategic Flow structural audit of Semrush's monthly newsletter digest. Score: 5.5/10 → 9/10. Primary failure: Missing Hierarchy — four competing CTAs dilute the strongest story."/>
+<meta name="keywords" content="Semrush newsletter teardown, email architecture audit, SaaS newsletter audit, Missing Hierarchy, Guest Language CTA, structural email diagnosis, Strategic Flow"/>
+<meta name="author" content="Alex Iliescu"/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1"/>
+<meta name="googlebot" content="index, follow"/>
+<link rel="canonical" href="https://strategicflow.tech/teardowns/semrush-newsletter-teardown.html"/>
+
+<!-- Open Graph -->
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="Semrush Newsletter Teardown — Score 5.5/10 → 9/10"/>
+<meta property="og:description" content="Four competing CTAs buried the strongest stat in Semrush's own newsletter. Full before/after structural rebuild, Strategic Flow method."/>
+<meta property="og:url" content="https://strategicflow.tech/teardowns/semrush-newsletter-teardown.html"/>
+<meta property="og:site_name" content="Strategic Flow"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="article:published_time" content="2026-07-24"/>
+<meta property="article:author" content="Alex Iliescu"/>
+<meta property="article:section" content="Teardowns"/>
+<meta property="article:tag" content="Missing Hierarchy"/>
+<meta property="article:tag" content="Guest Language CTA"/>
+<!-- og:image — replace with the real score-card screenshot before publishing -->
+<meta property="og:image" content="https://strategicflow.tech/assets/teardowns/semrush-newsletter-og.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Semrush Newsletter Teardown — Score 5.5/10 → 9/10"/>
+<meta name="twitter:description" content="Four competing CTAs buried the strongest stat in Semrush's own newsletter. Full before/after structural rebuild."/>
+<meta name="twitter:image" content="https://strategicflow.tech/assets/teardowns/semrush-newsletter-og.png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Article schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Semrush Newsletter Teardown — Strategic Flow",
+  "author": {"@type": "Person", "name": "Alex Iliescu", "url": "https://strategicflow.tech"},
+  "publisher": {
+    "@type": "Organization",
+    "name": "Strategic Flow",
+    "url": "https://strategicflow.tech",
+    "logo": {"@type": "ImageObject", "url": "https://strategicflow.tech/assets/logo.png"}
+  },
+  "datePublished": "2026-07-24",
+  "dateModified": "2026-07-24",
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://strategicflow.tech/teardowns/semrush-newsletter-teardown.html"},
+  "description": "Structural audit of Semrush's monthly newsletter digest using the Strategic Flow 7-point diagnostic framework. Score: 5.5/10 to 9/10.",
+  "about": [
+    {"@type": "Thing", "name": "Missing Hierarchy"},
+    {"@type": "Thing", "name": "Guest Language CTA"},
+    {"@type": "Thing", "name": "Email Architecture Audit"}
+  ]
+}
+</script>
+
+<!-- BreadcrumbList schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Strategic Flow", "item": "https://strategicflow.tech/"},
+    {"@type": "ListItem", "position": 2, "name": "Teardowns", "item": "https://strategicflow.tech/teardowns.html"},
+    {"@type": "ListItem", "position": 3, "name": "Semrush Newsletter Teardown", "item": "https://strategicflow.tech/teardowns/semrush-newsletter-teardown.html"}
+  ]
+}
+</script>
+
+<!-- FAQPage schema — matches the visible FAQ block near the footer -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why did Semrush's newsletter score 5.5 out of 10?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The subject line and one internal statistic (75% of featured AI SEO case studies lost traffic) are genuinely strong. But the email runs three unrelated stories plus a course ad, each with its own competing call to action, so the strongest material never gets to lead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Missing Hierarchy in email architecture?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Missing Hierarchy is a structural failure pattern where multiple calls to action carry equal visual weight, so the reader has no signal for which action matters most. In this teardown, four separate CTAs competed for the same click."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Guest Language CTA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Guest Language CTA is button copy that invites the reader to browse (Explore, Learn more) instead of asking them to act on their own asset. Ownership language (Check my site, Fix my reporting) converts at a higher rate because the reader pictures their own outcome."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg-primary:#ffffff;--bg-secondary:#f5f5f3;--bg-tertiary:#efefec;
+  --text-primary:#1a1a18;--text-secondary:#6b6b66;
+  --border-light:rgba(0,0,0,0.1);--border-mid:rgba(0,0,0,0.18);
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#085041;--green-mid:#0F6E56;--green-pale:#9FE1CB;
+  --red:#C0433E;--red-light:#FCEAEA;
+  --amber-bg:#fff8f0;--amber-dark:#7a5a00;
+  --brand:#1a1a1a;--brand-light:#f5f5f3;--brand-text:#ffffff;
+}
+html,body{width:100%;margin:0;padding:0;background:#efefec;}
+body{font-family:'Figtree',sans-serif;color:var(--text-primary);padding:32px 16px;}
+.page-header{max-width:720px;margin:0 auto 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--text-primary);line-height:1.2;}
+.page-title em{font-style:italic;color:var(--green);}
+.page-sub{font-size:12px;color:var(--text-secondary);font-family:'DM Mono',monospace;letter-spacing:.04em;}
+.sf-wrap{max-width:720px;margin:0 auto;}
+
+/* SCORE ROW — always visible, above the toggle */
+.score-row{display:flex;gap:14px;margin-bottom:24px;}
+.score-box{flex:1;border-radius:12px;padding:20px;text-align:center;background:var(--bg-primary);border:1px solid var(--border-light);box-shadow:0 4px 24px rgba(0,0,0,0.04);}
+.score-box.after{background:var(--text-primary);border-color:var(--text-primary);}
+.score-num{font-family:'DM Serif Display',serif;font-size:44px;line-height:1;}
+.score-num.low{color:var(--red);}
+.score-num.high{color:var(--green-pale);}
+.score-of{font-size:18px;color:var(--text-secondary);}
+.score-box.after .score-of{color:rgba(255,255,255,.5);}
+.score-label{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary);margin-top:6px;font-family:'DM Mono',monospace;}
+.score-box.after .score-label{color:rgba(255,255,255,.6);}
+.score-arrow{display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--text-secondary);padding:0 4px;}
+.score-explain{background:var(--bg-primary);border:1px solid var(--border-light);border-radius:10px;padding:14px 18px;font-size:12.5px;color:var(--text-secondary);line-height:1.7;margin-bottom:24px;}
+.score-explain strong{color:var(--text-primary);}
+
+.toggle-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.toggle-btn{padding:7px 18px;font-family:'Figtree',sans-serif;font-size:13px;font-weight:500;border-radius:20px;border:1px solid var(--border-mid);background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .2s;}
+.toggle-btn:hover{background:var(--bg-secondary);}
+.toggle-btn.active{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.email-shell{border:1px solid var(--border-light);border-radius:14px;overflow:hidden;background:var(--bg-primary);box-shadow:0 4px 32px rgba(0,0,0,0.06);}
+.email-toolbar{background:var(--bg-secondary);padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border-light);}
+.dot{width:12px;height:12px;border-radius:50%;}
+.label-pill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:12px;letter-spacing:.04em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.before-pill{background:#F7C1C1;color:#791F1F;}
+.after-pill{background:#9FE1CB;color:#085041;}
+.notes-pill{background:#CECBF6;color:#3C3489;}
+.meta-bar{padding:14px 22px;border-bottom:1px solid var(--border-light);}
+.meta-row{font-size:12px;color:var(--text-secondary);line-height:1.9;}
+.meta-row span{color:var(--text-primary);font-weight:500;}
+.post-title{font-size:18px;font-weight:600;color:var(--text-primary);margin-top:4px;line-height:1.3;}
+.panel{display:none;}.panel.active{display:block;}
+
+/* BEFORE */
+.bef-header{background:var(--brand);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.bef-logo{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:var(--brand-text);letter-spacing:-.02em;}
+.bef-nav{font-size:11px;color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;}
+.bef-hero{background:var(--brand);padding:32px 24px;text-align:center;}
+.bef-hero-text{font-size:22px;font-weight:900;color:var(--brand-text);letter-spacing:-.02em;}
+.bef-body{padding:24px;background:var(--bg-secondary);border-bottom:1px solid #eee;}
+.bef-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.bef-h1{font-size:19px;font-weight:700;color:var(--brand);line-height:1.3;margin-bottom:14px;}
+.bef-lead{font-size:14px;color:#555;line-height:1.75;margin-bottom:16px;}
+.bef-section-title{font-size:14px;font-weight:700;color:var(--brand);margin:20px 0 8px;}
+.bef-section-body{font-size:13px;color:#555;line-height:1.7;margin-bottom:6px;}
+.bef-cta-box{margin:16px 0;}
+.bef-cta{display:inline-block;background:var(--brand);color:var(--brand-text);padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;margin-right:8px;margin-bottom:8px;}
+.bef-footer{font-size:11px;color:#bbb;text-align:center;padding-top:16px;border-top:1px solid #eee;margin-top:20px;}
+.before-issues{margin:0 22px 22px;padding:16px;background:var(--amber-bg);border-left:3px solid #F09F27;border-radius:0 8px 8px 0;}
+.issue-item{font-size:12px;color:var(--amber-dark);margin-bottom:6px;display:flex;gap:8px;line-height:1.5;}
+
+/* AFTER */
+.after-header{background:var(--brand);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;}
+.after-logo-text{font-family:'Figtree',sans-serif;font-size:20px;font-weight:800;color:var(--brand-text);letter-spacing:-.02em;}
+.after-tagline-sm{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase;font-family:'DM Mono',monospace;}
+.after-hero-section{padding:36px 28px 28px;border-bottom:1px solid var(--border-light);}
+.after-kicker{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace;margin-bottom:14px;}
+.after-h1{font-family:'DM Serif Display',serif;font-size:25px;line-height:1.25;color:var(--text-primary);margin-bottom:16px;}
+.after-h1 em{font-style:italic;color:var(--green-mid);}
+.after-lead{font-size:14px;color:var(--text-secondary);line-height:1.75;max-width:520px;margin-bottom:24px;}
+.after-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px;}
+.stat-card{background:var(--bg-secondary);border-radius:10px;padding:16px;text-align:center;}
+.stat-num{font-family:'DM Serif Display',serif;font-size:22px;color:var(--green-mid);line-height:1;}
+.stat-label{font-size:11px;color:var(--text-secondary);margin-top:4px;}
+.after-cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.after-cta-primary{background:var(--green);color:#fff;padding:12px 24px;border-radius:7px;font-size:14px;font-weight:500;text-decoration:none;display:inline-block;}
+.after-section{padding:20px 28px;border-bottom:1px solid var(--border-light);}
+.after-section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.12em;color:var(--text-secondary);text-transform:uppercase;margin-bottom:10px;}
+.after-section-title{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:4px;}
+.after-section-body{font-size:12.5px;color:var(--text-secondary);line-height:1.6;}
+.after-section-link{font-size:12px;color:var(--green-mid);text-decoration:none;font-weight:500;}
+.after-footer{padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-link{font-size:11px;color:var(--text-secondary);cursor:pointer;text-decoration:none;}
+.footer-note{font-size:10px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+
+/* NOTES */
+.notes-body{padding:28px;}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.note-card{padding:16px;border-radius:10px;font-size:12px;line-height:1.75;}
+.note-card.bad{border:1px solid #F7C1C1;}
+.note-card.good{border:1px solid #9FE1CB;}
+.note-label{font-weight:500;margin-bottom:8px;font-size:13px;}
+.note-label.bad{color:#791F1F;}.note-label.good{color:#085041;}
+.note-card p{color:var(--text-secondary);}
+.upgrades-title{font-size:13px;font-weight:500;margin-bottom:14px;color:var(--text-primary);}
+.upgrade-item{padding:14px;background:var(--bg-secondary);border-radius:10px;border-left:2px solid var(--green);margin-bottom:10px;}
+.upgrade-head{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:5px;}
+.upgrade-desc{font-size:11px;color:var(--text-secondary);line-height:1.65;}
+.cta-note{padding:16px;background:var(--green-light);border-radius:10px;margin-top:6px;}
+.cta-note-title{font-size:12px;font-weight:500;color:var(--green-dark);margin-bottom:5px;}
+.cta-note-body{font-size:11px;color:var(--green-mid);line-height:1.65;}
+.page-footer{max-width:720px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-secondary);font-family:'DM Mono',monospace;}
+.page-footer a{color:var(--green);text-decoration:none;}
+
+@media(max-width:560px){
+  .notes-grid{grid-template-columns:1fr;}
+  .after-stat-row{grid-template-columns:1fr 1fr;}
+  .score-row{flex-wrap:wrap;}
+  body{padding:16px 10px;}
+}
+</style>
+</head>
+<body>
+
+<nav aria-label="Breadcrumb" style="max-width:720px;margin:0 auto 12px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-secondary);">
+  <a href="https://strategicflow.tech/" style="color:var(--text-secondary);text-decoration:none;">Strategic Flow</a>
+  <span> / </span>
+  <a href="https://strategicflow.tech/teardowns.html" style="color:var(--text-secondary);text-decoration:none;">Teardowns</a>
+  <span> / </span>
+  <span style="color:var(--text-primary);">Semrush Newsletter</span>
+</nav>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Semrush — <em>Rebuilt.</em></h1>
+    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">A Strategic Flow newsletter teardown — before &amp; after</div>
+  </div>
+  <div class="page-sub">strategicflow.tech</div>
+</div>
+
+<div class="sf-wrap">
+
+  <!-- SCORE ROW: always visible -->
+  <div class="score-row">
+    <div class="score-box before">
+      <div class="score-num low">5.5<span class="score-of">/10</span></div>
+      <div class="score-label">Original score</div>
+    </div>
+    <div class="score-arrow">→</div>
+    <div class="score-box after">
+      <div class="score-num high">9<span class="score-of">/10</span></div>
+      <div class="score-label">Rebuilt score</div>
+    </div>
+  </div>
+
+  <div class="score-explain">
+    <strong>Why 5.5, not lower:</strong> the subject line ("Search Console just got social") and one internal stat (75% of featured AI SEO case studies lost traffic) are genuinely strong, curiosity-driven and proof-backed. <strong>Why not higher:</strong> the email runs 3 unrelated stories plus a course ad, each with its own competing call to action, so the strongest material never gets to lead. <strong>Why 9 after:</strong> one story leads, one CTA remains, the rest is resequenced into a short linked list, not deleted.
+  </div>
+
+  <div class="toggle-row">
+    <button class="toggle-btn active" onclick="switchPanel('before',this)">Before</button>
+    <button class="toggle-btn" onclick="switchPanel('after',this)">After — Strategic Flow</button>
+    <button class="toggle-btn" onclick="switchPanel('notes',this)">What changed &amp; why</button>
+  </div>
+
+  <div class="email-shell">
+    <div class="email-toolbar">
+      <div class="dot" style="background:#F09595;"></div>
+      <div class="dot" style="background:#FAC775;"></div>
+      <div class="dot" style="background:#C0DD97;"></div>
+      <div style="flex:1;margin-left:8px;">
+        <span id="panel-pill" class="label-pill before-pill">Original Newsletter</span>
+      </div>
+    </div>
+
+    <!-- BEFORE -->
+    <div class="panel active" id="panel-before">
+      <div class="meta-bar">
+        <div class="meta-row"><span>Source:</span> news@team.semrush.com</div>
+        <div class="meta-row"><span>Type:</span> Monthly newsletter digest</div>
+        <div class="meta-row"><span>Date:</span> July 17, 2026</div>
+        <div class="post-title">Search Console just got social</div>
+      </div>
+
+      <div class="bef-header">
+        <div class="bef-logo">SEMRUSH</div>
+        <div class="bef-nav">news.semrush.com · Jul 17</div>
+      </div>
+
+      <div class="bef-hero">
+        <div class="bef-hero-text">Search Console just got social</div>
+      </div>
+
+      <div class="bef-body">
+        <div class="bef-meta">THIS MONTH</div>
+        <div class="bef-h1">[Social] Now in GSC · [AI SEO] Real-life examples · [Video] Google catching spam farms</div>
+        <div class="bef-lead">Your social content just got a Search Console report. Instagram, TikTok, X, and YouTube data can now appear in Google Search Console, so you can track when your social content shows up in search and Discover.</div>
+        <div class="bef-cta-box">
+          <a href="https://engage.semrush.com/dc/9eWUrg0hSgkzWKM9cDUSALP-BCU6lPMwDZVIEJd9C8yhzCM42-9kOhRZPHyYZzRPXXR6laY3nXPNUjp1RptjpdVdETqMzqfF5Qwd_jpFrwwQ-lPtwby1eC_8BEXQ_g1wrVDYfMCHB2vzBC-rklfavpW6FoxpZ-O_ZYumo0J0sMiMQ3b9iJEMIGsQkdjZ8cmWZfxIFykZMMlDkEJpzi1ua4TSXk4cY47eFxnQ-HBgH1Yh2oUJjw9wMJYOuNbuFXWcTtT4zLtDeENGV_NhPz2V0QiiIwDSOhJEhTmO2a1GFuk=/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="bef-cta">Explore the update</a>
+        </div>
+
+        <div class="bef-section-title">AI SEO automation: the real numbers</div>
+        <div class="bef-section-body">AI SEO automation websites are full of impressive success stories. But one recent analysis found that around 75% of their featured customers had significant traffic losses. Brian Dean shares 5 ways he uses AI for SEO.</div>
+        <div class="bef-section-body" style="font-size:11px;color:#888;font-weight:600;">Make AI work for you</div>
+        <div class="bef-cta-box">
+          <a href="https://engage.semrush.com/dc/M9Y3nowLDCcEv8uSbJAkaSGVOWbuZf-fLAbyVKxJ65RDwvVBA5buoEqeESxz6r2sus79g1ddIMJusWA7QqdwJx4vCIxIOTEr6v9_dF2H6D5O9Ns2ChkWTo2RkOex-PsaiguETkgXleUT7xFguPqu8RF4NrCdlNnnrF3t99ZW7JuDU3SCww1ZkURwOTEvcaQXh9oxJ5Wx2TKmB_j2CzkI9tsPpd00qGyRPLW-Nm-SFGU8_KKAytg2vVS5WUbBXgcn/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="bef-cta" style="background:#1D9E75;">✦ Check your site for AI-readiness</a>
+        </div>
+
+        <div class="bef-section-title">Google: new research on catching AI video spam</div>
+        <div class="bef-section-body">One AI video probably won't raise eyebrows. Hundreds might. Google researchers describe a system that detects coordinated networks creating synthetic videos at scale. It's not part of search (as far as we know), but it reveals how Google is approaching AI spam. Original, useful content still wins. Boring? We know. But this is how you win long-term.</div>
+        <div class="bef-cta-box">
+          <a href="https://engage.semrush.com/dc/9eWUrg0hSgkzWKM9cDUSALP-BCU6lPMwDZVIEJd9C8xZWV1cAHqZCzs1DewvqEGyclVdIiFMq2JKfET9GVWBSayMf0ePOIMhDzHldjXnTjWn0eMTuVrlTRnVldoJFKuAHBZ3kZAsq8x2dRNGhjYYLo49Bf9CgrE5IW4xpdBBP10gxE7heQ-fSbCRggwyfgZGcsZAXw015r4ARjeTMLkqL9BUHvPDzTDqLnXIIcbH3rBsh1inm6Sd51qQKWH0vEdKkFrHKKhTxM7aZihk5v7arg==/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="bef-cta">Explore the research</a>
+        </div>
+
+        <div class="bef-section-title" style="margin-top:26px;padding-top:16px;border-top:1px solid #ddd;">Become an AI search leader</div>
+        <div class="bef-section-body">41 lessons | 10 templates | 1 leadership-ready framework</div>
+        <div class="bef-cta-box">
+          <a href="https://engage.semrush.com/dc/9eWUrg0hSgkzWKM9cDUSANVZpnvaEhBrlGB9093dDT6mEw1ZPk-r1z0nmgzs_LYlBu_X9IcfiDZx_vEEZuxnYGpW5siZVZPVLvi5uwZY9AKHOvMthu-1P2PYHLn1G1DKtT1iwG3xx6kkRd9xqb78l5EXrZu5j0axzZVGqvmeuzAmmXNL3siH4fToC-ybKVIAEEY4xOz3MP4F8MzFBk_G53YyxIONlVAMFb_RRpfU0fA_CPJSqmN6eOjQDDfFqxLZ/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="bef-cta" style="background:#8B5CF6;">Enroll for free</a>
+        </div>
+
+        <div class="bef-footer" style="text-align:left;">
+          <div style="margin-bottom:8px;">
+            <a href="#" style="color:#888;text-decoration:none;margin-right:14px;">Semrush Newsroom</a>
+            <a href="#" style="color:#888;text-decoration:none;margin-right:14px;">Become a Semrush Affiliate</a>
+            <a href="#" style="color:#888;text-decoration:none;">Hire an agency</a>
+          </div>
+          <div style="margin-bottom:8px;">LinkedIn · Facebook · G2 · YouTube · Twitter · Instagram</div>
+          <div style="margin-bottom:8px;">Semrush.com reports and tools are used by the world's smartest site owners and online marketers. Semrush Inc., USA, 800 Boylston Street, Suite 2475, Boston, MA 02199</div>
+          <div style="margin-bottom:8px;">Unsubscribe &nbsp;|&nbsp; Update Email Preferences &nbsp;|&nbsp; Privacy Policy &nbsp;|&nbsp; View in Browser</div>
+          <div>© 2026 Semrush Holdings. All rights reserved.</div>
+        </div>
+      </div>
+
+      <div class="before-issues">
+        <div class="issue-item">⚠ Missing Hierarchy — four separate CTAs (Explore the update, Check your site for AI-readiness, Explore the research, Enroll for free), equal visual weight, no priority action</div>
+        <div class="issue-item">⚠ Guest Language CTA — "Explore the update" and "Explore the research" ask nothing specific of the reader</div>
+        <div class="issue-item">⚠ Strongest proof buried — the 75% traffic-loss stat sits mid-digest instead of leading the email</div>
+        <div class="issue-item">⚠ Three unrelated stories plus a course ad compete for the same attention, diluting all four</div>
+      </div>
+    </div>
+
+    <!-- AFTER -->
+    <div class="panel" id="panel-after">
+      <div class="after-header">
+        <div>
+          <div class="after-logo-text">SEMRUSH</div>
+          <div class="after-tagline-sm">Newsletter · Jul 17</div>
+        </div>
+      </div>
+
+      <div class="after-hero-section">
+        <div class="after-kicker">This week's diagnostic</div>
+        <div class="after-h1">75% of <em>"AI SEO success stories"</em> actually lost traffic.</div>
+        <div class="after-lead">A recent analysis checked the featured customers on AI SEO automation sites. About 75% of them had lost significant traffic. Brian Dean breaks down 5 tactics that actually move the needle, and we built a free way to check where your own site stands.</div>
+
+        <div class="after-stat-row">
+          <div class="stat-card">
+            <div class="stat-num">75%</div>
+            <div class="stat-label">of featured AI SEO case studies lost traffic</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">tactics that actually work, from Brian Dean</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">3</div>
+            <div class="stat-label">other updates this week, linked below</div>
+          </div>
+        </div>
+
+        <div class="after-cta-row">
+          <a href="https://engage.semrush.com/dc/M9Y3nowLDCcEv8uSbJAkaSGVOWbuZf-fLAbyVKxJ65RDwvVBA5buoEqeESxz6r2sus79g1ddIMJusWA7QqdwJx4vCIxIOTEr6v9_dF2H6D5O9Ns2ChkWTo2RkOex-PsaiguETkgXleUT7xFguPqu8RF4NrCdlNnnrF3t99ZW7JuDU3SCww1ZkURwOTEvcaQXh9oxJ5Wx2TKmB_j2CzkI9tsPpd00qGyRPLW-Nm-SFGU8_KKAytg2vVS5WUbBXgcn/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="after-cta-primary">Check my site for AI-readiness</a>
+        </div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-label">Also this week</div>
+        <div class="after-section-title">Search Console just got social</div>
+        <div class="after-section-body">Instagram, TikTok, X, and YouTube data can now appear in Search Console, so you can see when your social content shows up in search and Discover. <a href="https://engage.semrush.com/dc/9eWUrg0hSgkzWKM9cDUSALP-BCU6lPMwDZVIEJd9C8yhzCM42-9kOhRZPHyYZzRPXXR6laY3nXPNUjp1RptjpdVdETqMzqfF5Qwd_jpFrwwQ-lPtwby1eC_8BEXQ_g1wrVDYfMCHB2vzBC-rklfavpW6FoxpZ-O_ZYumo0J0sMiMQ3b9iJEMIGsQkdjZ8cmWZfxIFykZMMlDkEJpzi1ua4TSXk4cY47eFxnQ-HBgH1Yh2oUJjw9wMJYOuNbuFXWcTtT4zLtDeENGV_NhPz2V0QiiIwDSOhJEhTmO2a1GFuk=/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="after-section-link">See the update →</a></div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-title">Google is catching AI video spam</div>
+        <div class="after-section-body">Researchers describe a system that detects coordinated networks creating synthetic videos at scale. Not part of Search yet, but a signal of where quality checks are heading. <a href="https://engage.semrush.com/dc/9eWUrg0hSgkzWKM9cDUSALP-BCU6lPMwDZVIEJd9C8xZWV1cAHqZCzs1DewvqEGyclVdIiFMq2JKfET9GVWBSayMf0ePOIMhDzHldjXnTjWn0eMTuVrlTRnVldoJFKuAHBZ3kZAsq8x2dRNGhjYYLo49Bf9CgrE5IW4xpdBBP10gxE7heQ-fSbCRggwyfgZGcsZAXw015r4ARjeTMLkqL9BUHvPDzTDqLnXIIcbH3rBsh1inm6Sd51qQKWH0vEdKkFrHKKhTxM7aZihk5v7arg==/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="after-section-link">Read the research →</a></div>
+      </div>
+
+      <div class="after-section">
+        <div class="after-section-title">Become an AI search leader (free course)</div>
+        <div class="after-section-body">41 lessons, 10 templates, 1 leadership-ready framework, for teams who want to go deeper than one email can cover. <a href="https://engage.semrush.com/dc/9eWUrg0hSgkzWKM9cDUSANVZpnvaEhBrlGB9093dDT6mEw1ZPk-r1z0nmgzs_LYlBu_X9IcfiDZx_vEEZuxnYGpW5siZVZPVLvi5uwZY9AKHOvMthu-1P2PYHLn1G1DKtT1iwG3xx6kkRd9xqb78l5EXrZu5j0axzZVGqvmeuzAmmXNL3siH4fToC-ybKVIAEEY4xOz3MP4F8MzFBk_G53YyxIONlVAMFb_RRpfU0fA_CPJSqmN6eOjQDDfFqxLZ/NTE5LUlJWS04NjkAAAGjDq4q5MlhoXeqX4agPcHRw9B6w3wkddMRFbilRB8la7gstAKsgeyTwPSlhYizsaoKx3hF32M=" class="after-section-link">Enroll for free →</a></div>
+      </div>
+
+      <div class="after-footer">
+        <div class="footer-links">
+          <a href="#" class="footer-link">Semrush Newsletter</a>
+        </div>
+        <div class="footer-note">© Semrush, An Adobe Company</div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="notes-body">
+        <div class="notes-grid">
+          <div class="note-card bad">
+            <div class="note-label bad">❌ Before</div>
+            <p><strong>Title:</strong> Search Console just got social<br><br>A genuinely good subject line, undercut by what comes right after it: a "THIS MONTH" digest box the reader has to parse before any single story delivers value. The best material in the whole email (the 75% stat) is buried two sections down.</p>
+          </div>
+          <div class="note-card good">
+            <div class="note-label good">✅ After</div>
+            <p><strong>Title:</strong> 75% of "AI SEO success stories" actually lost traffic<br><br>Leads with the single most attention-worthy fact in the entire email, immediately, in both subject and hero. Nothing is deleted, the GSC update and the video-spam research still exist, just resequenced under "Also this week."</p>
+          </div>
+        </div>
+
+        <div class="upgrades-title">The 4 upgrades — and why they work</div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">1 · One story leads, not four</div>
+          <div class="upgrade-desc">The 75% statistic becomes the entire hook and hero section instead of a paragraph in the middle of a digest. It is the most specific, most proof-backed claim in the email, so it should be the first thing read, not the third.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">2 · Single CTA</div>
+          <div class="upgrade-desc">"Check my site for AI-readiness" is the only button in the rebuilt version. Four competing CTAs became one, which means the reader has exactly one decision to make instead of four to ignore.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">3 · Ownership language</div>
+          <div class="upgrade-desc">"Check my site" replaces "Explore the update" and "Explore the research." The reader acts on their own asset, not on an abstract invitation to browse content.</div>
+        </div>
+
+        <div class="upgrade-item">
+          <div class="upgrade-head">4 · Secondary stories demoted, not deleted</div>
+          <div class="upgrade-desc">The GSC update and the video-spam research move into a short "Also this week" list with one line and one link each. Nothing gets cut, the hierarchy just finally matches how much attention each story earned.</div>
+        </div>
+
+        <div class="cta-note">
+          <div class="cta-note-title">This is the Strategic Flow method</div>
+          <div class="cta-note-body">Strongest proof leads. One CTA per email. Everything else supports the lead story instead of competing with it. Score: 5.5/10 → 9/10. Visit <a href="https://strategicflow.tech" style="color:var(--green-mid);text-decoration:underline;">strategicflow.tech</a> to audit your last newsletter.</div>
+        </div>
+
+        <div class="upgrades-title" style="margin-top:26px;">Frequently asked</div>
+
+        <div class="upgrade-item" style="border-left-color:var(--text-secondary);">
+          <div class="upgrade-head">Why did Semrush's newsletter score 5.5 out of 10?</div>
+          <div class="upgrade-desc">The subject line and one internal statistic (75% of featured AI SEO case studies lost traffic) are genuinely strong. But the email runs three unrelated stories plus a course ad, each with its own competing call to action, so the strongest material never gets to lead.</div>
+        </div>
+
+        <div class="upgrade-item" style="border-left-color:var(--text-secondary);">
+          <div class="upgrade-head">What is Missing Hierarchy in email architecture?</div>
+          <div class="upgrade-desc">Missing Hierarchy is a structural failure pattern where multiple calls to action carry equal visual weight, so the reader has no signal for which action matters most. In this teardown, four separate CTAs competed for the same click.</div>
+        </div>
+
+        <div class="upgrade-item" style="border-left-color:var(--text-secondary);">
+          <div class="upgrade-head">What is Guest Language CTA?</div>
+          <div class="upgrade-desc">Guest Language CTA is button copy that invites the reader to browse ("Explore", "Learn more") instead of asking them to act on their own asset. Ownership language ("Check my site", "Fix my reporting") converts at a higher rate because the reader pictures their own outcome.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-footer">
+    <span>Strategic Flow © 2026</span>
+    <a href="https://strategicflow.tech">strategicflow.tech</a>
+  </div>
+</div>
+
+<script>
+function switchPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+  var pill=document.getElementById('panel-pill');
+  var map={
+    before:['before-pill','Original Newsletter'],
+    after:['after-pill','Strategic Flow rewrite'],
+    notes:['notes-pill','Analysis']
+  };
+  pill.className='label-pill '+map[id][0];
+  pill.textContent=map[id][1];
+}
+</script>
+<div style="text-align:center;padding:24px;border-top:1px solid rgba(0,0,0,0.08)">
+  <a href="/teardowns.html" style="font-size:12px;color:rgba(0,0,0,0.4);text-decoration:none">← Back to all teardowns</a>
+</div>
+</body>
+</html>
