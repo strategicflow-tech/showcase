@@ -977,7 +977,7 @@
 <nav>
   <a href="#" class="nav-logo">Strategic Flow <span>Architecture</span></a>
   <span class="nav-tag">Enterprise · $2,500/mo</span>
-  <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" onclick="startCheckout(); return false;" class="nav-cta">Start free trial →</a>
+  <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" class="nav-cta" id="sf-arch-nav">Start free trial →</a>
 </nav>
 
 <!-- HERO -->
@@ -1656,7 +1656,7 @@
         <strong>Beamer sends. Strategic Flow Architecture decides what it says.</strong>
       </p>
       <div style="font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:14px;letter-spacing:0.04em;">57 SaaS emails rebuilt. Average score: 3.4 → 9.0.</div>
-      <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" class="pricing-cta">Start rebuilding my emails — free trial</a>
+      <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" class="pricing-cta" id="sf-arch-pricing">Start rebuilding my emails — free trial</a>
       <div style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);margin-top:12px;letter-spacing:0.04em;line-height:1.6;">✓ 3-day free trial included · No charge until day 3<br>Cancel anytime before trial ends · Full access from day one</div>
     </div>
     <div class="pricing-right">
@@ -1814,7 +1814,7 @@
   <h2 class="cta-title">Start with <em>one email.</em><br>Free.</h2>
   <p class="cta-sub">Paste any email your company has sent. Get the full diagnostic in 60 seconds — score, bugs, rebuilt subject line. No card. No call required.</p>
   <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
-    <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" class="btn-primary">Start 3-day free trial →</a>
+    <a href="https://buy.stripe.com/bJefZh03u7NncxD7ph7wA07" class="btn-primary" id="sf-arch-final">Start 3-day free trial →</a>
     <a href="https://strategic-flow-audit.replit.app/demo.html" style="font-family:'DM Mono',monospace;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:2px;">See free demo first →</a>
   </div>
   <div class="cta-note">✓ 3-day free trial · No charge until day 3 · Cancel anytime · Full access from day one</div>
@@ -2103,6 +2103,35 @@ async function submitArchitectureApplication() {
   if(stored==='granted'){grant();}else if(stored!=='denied'){banner.classList.add('visible');}
   document.getElementById('cookie-accept').addEventListener('click',function(){localStorage.setItem(KEY,'granted');grant();banner.classList.remove('visible');});
   document.getElementById('cookie-decline').addEventListener('click',function(){localStorage.setItem(KEY,'denied');banner.classList.remove('visible');});
+})();
+</script>
+<script>
+/* ── Affiliate ref pass-through ─────────────────────────────────────────────
+   Reads ?ref= from the landing URL, validates it, and rewrites all CTA hrefs
+   so attribution is never lost when a visitor arrives via an affiliate link.
+   If no valid ref: every href stays exactly as hardcoded — zero UX change.   */
+(function () {
+  var raw = new URLSearchParams(window.location.search).get('ref') || '';
+  var _pageRef = /^[a-z0-9_-]+$/i.test(raw) ? raw : '';
+  if (!_pageRef) return;
+
+  var enc = encodeURIComponent(_pageRef);
+  var PRO = 'https://strategic-flow-pro.replit.app/packages';
+
+  // Architecture CTAs → /packages?ref=X#architecture (pro app: cookie + auto-Stripe redirect)
+  ['sf-arch-nav', 'sf-arch-pricing', 'sf-arch-final'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.href = PRO + '?ref=' + enc + '#architecture';
+  });
+
+  // Single $49 CTA → /packages?ref=X#single (pro app: scrolls to Single card)
+  document.querySelectorAll('a[href="https://buy.stripe.com/14A14n8A08Rr69fdNF7wA04"]')
+    .forEach(function (a) { a.href = PRO + '?ref=' + enc + '#single'; });
+
+  // demo.html links → demo.html?ref=X (so ref survives the "try demo first" detour)
+  var DEMO = 'https://strategic-flow-audit.replit.app/demo.html';
+  document.querySelectorAll('a[href="' + DEMO + '"]')
+    .forEach(function (a) { a.href = DEMO + '?ref=' + enc; });
 })();
 </script>
 </body>
