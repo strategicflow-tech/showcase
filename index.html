@@ -197,7 +197,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .hero h1 em{font-style:italic;color:var(--green);}
 .hero-one-liner{font-size:19px;color:var(--green);font-family:var(--mono);letter-spacing:.01em;margin-bottom:20px;max-width:580px;}
 .hero-sub{font-size:16px;color:var(--text2);line-height:1.7;max-width:520px;margin-bottom:32px;}
-.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
 .hero-stats{display:flex;gap:36px;flex-wrap:wrap;}
 .stat{border-left:2px solid var(--green);padding-left:14px;}
 .stat-num{font-family:var(--serif);font-size:30px;color:var(--green);}
@@ -389,7 +389,6 @@ footer{padding:40px 48px;border-top:1px solid var(--border);display:flex;gap:40p
     <a href="#pricing" class="nav-link">Pricing</a>
     <a href="https://strategicflow.tech/notes.html" class="nav-link">Notes</a>
     <a href="https://strategicflow.tech/addons.html" class="nav-link">Add-Ons</a>
-    <a href="https://strategicflow.tech/email-architecture-audit.html" class="nav-link">Run the Audit</a>
     <a href="https://strategic-flow-audit.replit.app/why.html" class="nav-cta" target="_blank">Run Free Audit →</a>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -404,7 +403,6 @@ footer{padding:40px 48px;border-top:1px solid var(--border);display:flex;gap:40p
     <div class="mm-label">Work</div>
     <a href="https://strategicflow.tech/teardowns.html" class="mm-item">59 Teardowns <span>Live →</span></a>
     <a href="https://strategicflow.tech/notes.html" class="mm-item">Field Notes <span>→</span></a>
-    <a href="https://strategicflow.tech/email-architecture-audit.html" class="mm-item">Run the Audit <span>→</span></a>
   </div>
   <div class="mm-section">
     <div class="mm-label">Free Audits</div>
@@ -436,8 +434,8 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
     <p class="hero-sub">The Decision Friction Model is a proprietary 7-point framework built from 59 real teardowns. It finds the structural failure, names it precisely, and returns the rebuilt email the same day.</p>
     <div class="hero-ctas">
       <a href="https://strategic-flow-audit.replit.app/why.html" class="btn-p" target="_blank">Run Free Audit →</a>
-      <a href="#teardowns" class="btn-g">See the teardowns →</a>
     </div>
+    <a href="#teardowns" style="font-size:13px;color:var(--text3);text-decoration:none;display:block;margin-bottom:36px;">or see the 59 teardowns first →</a>
     <div class="hero-stats">
       <div class="stat"><div class="stat-num">59</div><div class="stat-label">Teardowns</div></div>
       <div class="stat"><div class="stat-num">3→9</div><div class="stat-label">Score lift</div></div>
