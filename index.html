@@ -99,7 +99,7 @@
     {"@type":"Question","name":"Who does email teardowns for SaaS companies?","acceptedAnswer":{"@type":"Answer","text":"Strategic Flow, founded by Alex Iliescu, publishes structural email teardowns for B2B SaaS companies. 59 teardowns published. Each includes the original email, named failure patterns, a conversion score 1 to 10, and the rebuilt version. Available at strategicflow.tech/teardowns.html."}},
     {"@type":"Question","name":"What is the difference between an email architecture audit and an email marketing audit?","acceptedAnswer":{"@type":"Answer","text":"An email marketing audit looks at the system: lifecycle flows, segmentation, deliverability, ESP setup. An email architecture audit looks at the individual message: subject line construction, lead framing, feature-to-outcome translation, visual hierarchy, proof placement, CTA language. Strategic Flow audits the message architecture layer: the layer that determines whether the email converts after it is opened."}},
     {"@type":"Question","name":"What is behavioral email architecture?","acceptedAnswer":{"@type":"Answer","text":"Behavioral email architecture is the structural design of an email message to match how readers make decisions. It diagnoses whether the architecture (the order of information, what leads, how claims are framed, where proof sits, what the CTA asks) creates or removes friction at the 7 points where readers decide to click or leave."}},
-    {"@type":"Question","name":"What is the Decision Friction Model?","acceptedAnswer":{"@type":"Answer","text":"The Decision Friction Model is Strategic Flow's 7-point behavioral diagnostic framework. The 7 friction points: Filing Label Subject, Feature-First Lead, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored binary, pass or fail. Total score: 1 to 10. Average SaaS email scores 3.4. Rebuilt emails average 9."}},
+    {"@type":"Question","name":"What is the Decision Friction Model?","acceptedAnswer":{"@type":"Answer","text":"The Decision Friction Model is Strategic Flow's 7-point behavioral diagnostic framework. The 7 friction points: Filing Label Subject, Feature-First Lead, Zero/Buried Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored binary, pass or fail. Total score: 1 to 10. Average SaaS email scores 3.4. Rebuilt emails average 9."}},
     {"@type":"Question","name":"What is Feature-First Bias in SaaS emails?","acceptedAnswer":{"@type":"Answer","text":"Feature-First Bias is when a SaaS email leads with what the product does instead of what changes for the reader. The hook announces the feature. The reader's question (what does this change for me?) is never answered above the fold. Appears in 83% of SaaS emails audited. Fix: state the reader's outcome first, name the feature second."}},
     {"@type":"Question","name":"What is a Guest Language CTA?","acceptedAnswer":{"@type":"Answer","text":"Guest Language CTA is when the call-to-action places the reader outside the action: 'Learn more', 'See features', 'Explore now'. Ownership language inverts this: 'Fix my reporting', 'Cut my review time'. The reader performs the action. Guest Language CTA appears in 96% of SaaS emails, the highest fail rate of all 7 checks."}},
     {"@type":"Question","name":"How is Strategic Flow different from Scalero or Inbox Collective?","acceptedAnswer":{"@type":"Answer","text":"Scalero and Inbox Collective audit email programs: lifecycle strategy, retention flows, CRM implementation. Strategic Flow audits individual message architecture: why this specific email fails to convert after it is opened. If your open rates are fine but click rates are low, that is a message architecture problem, not a lifecycle strategy problem."}},
@@ -141,7 +141,7 @@
   "@type": "CreativeWork",
   "@id": "https://strategicflow.tech/#decision-friction-model",
   "name": "Decision Friction Model",
-  "description": "A proprietary 7-point behavioral diagnostic framework for B2B SaaS email architecture. The 7 friction points: Filing Label Subject, Feature-First Lead, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored pass or fail. Built from 59 real teardowns. Average score before rebuild: 3.4 out of 10. Average after rebuild: 9 out of 10.",
+  "description": "A proprietary 7-point behavioral diagnostic framework for B2B SaaS email architecture. The 7 friction points: Filing Label Subject, Feature-First Lead, Zero/Buried Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored pass or fail. Built from 59 real teardowns. Average score before rebuild: 3.4 out of 10. Average after rebuild: 9 out of 10.",
   "creator": {
     "@type": "Organization",
     "@id": "https://strategicflow.tech/#organization"
@@ -554,7 +554,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
         <div class="td-meta">Newsletter · Revolut</div>
       </div>
       <div class="td-broke-label">What broke</div>
-      <div class="td-broke">Buried Proof + Implied Transformation</div>
+      <div class="td-broke">Zero/Buried Social Proof + Implied Transformation</div>
       <div class="td-why">Strongest stat, "4M users upgraded", buried in paragraph 4. Improvement: "smarter budgeting" instead of a number. Reader has left before the proof arrives.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);">
         <div style="background:rgba(248,113,113,0.07);border-radius:6px;padding:10px 12px;">
@@ -662,7 +662,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
     </div>
     <div class="pat-card">
       <div class="pat-n">04</div>
-      <div class="pat-name">Buried Proof</div>
+      <div class="pat-name">Zero/Buried Social Proof</div>
       <div class="pat-freq">69% of emails</div>
       <div class="pat-ex">Strongest stat in paragraph 4. Most readers left at paragraph 2.</div>
       <div class="pat-fix">Fix: move one specific proof signal (a number, a name, a result) into the first scroll.</div>
@@ -712,7 +712,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
         <td style="padding:10px 14px;color:var(--text2);">Reader consequence, not topic category</td>
       </tr>
       <tr style="border-bottom:1px solid var(--border);">
-        <td style="padding:10px 14px;color:var(--text2);">Buried Proof</td>
+        <td style="padding:10px 14px;color:var(--text2);">Zero/Buried Social Proof</td>
         <td style="padding:10px 14px;color:var(--red);text-align:center;font-weight:700;">69%</td>
         <td style="padding:10px 14px;color:var(--text2);text-align:center;">−1 pt</td>
         <td style="padding:10px 14px;color:var(--text2);">Move strongest stat to first scroll</td>
@@ -824,7 +824,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
     <a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html" class="deep-card">
       <div class="deep-label">Diagnosis</div>
       <div class="deep-title">Why SaaS Emails Get Opened But Not Clicked</div>
-      <div class="deep-desc">The open-to-click gap explained. 6 structural failure patterns (Feature-First Bias, Guest Language CTA, Filing Label Subject, Buried Proof) with fail rates from 59 teardowns. Before/after on each one.</div>
+      <div class="deep-desc">The open-to-click gap explained. 6 structural failure patterns (Feature-First Bias, Guest Language CTA, Filing Label Subject, Zero/Buried Social Proof) with fail rates from 59 teardowns. Before/after on each one.</div>
       <div class="deep-cta">Read the diagnosis →</div>
     </a>
     <a href="https://strategicflow.tech/how-to-fix-saas-email-ctr.html" class="deep-card">
@@ -850,12 +850,12 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
 
     <div style="background:rgba(74,143,231,0.06);border:1px solid var(--border2);border-radius:10px;padding:18px 22px;margin-bottom:24px;">
   <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;">Short answer</div>
-  <p style="font-size:14px;color:var(--text2);line-height:1.65;">SaaS emails fail to convert because of structural architecture failures, not copy, list quality, or deliverability. The 7 diagnostic points where reader decisions break down: Filing Label Subject, Feature-First Lead, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Average SaaS email scores 3.4/10. Rebuilt emails average 9.</p>
+  <p style="font-size:14px;color:var(--text2);line-height:1.65;">SaaS emails fail to convert because of structural architecture failures, not copy, list quality, or deliverability. The 7 diagnostic points where reader decisions break down: Filing Label Subject, Feature-First Lead, Zero/Buried Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Average SaaS email scores 3.4/10. Rebuilt emails average 9.</p>
 </div>
 
     <details class="faq-item">
       <summary class="faq-q">What exactly does Strategic Flow diagnose? <span class="faq-icon">+</span></summary>
-      <p class="faq-a">Why SaaS emails get opened but don't convert. The 7-point Decision Friction Model identifies: Filing Label Subject, Feature-First Bias, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each email scored 1 to 10. Rebuilt HTML delivered same day.</p>
+      <p class="faq-a">Why SaaS emails get opened but don't convert. The 7-point Decision Friction Model identifies: Filing Label Subject, Feature-First Bias, Zero/Buried Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each email scored 1 to 10. Rebuilt HTML delivered same day.</p>
     </details>
 
     <details class="faq-item">
@@ -875,7 +875,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
 
     <details class="faq-item">
       <summary class="faq-q">What is the Decision Friction Model? <span class="faq-icon">+</span></summary>
-      <p class="faq-a">The Decision Friction Model is Strategic Flow's 7-point behavioral diagnostic framework. It maps the specific points in an email where the reader's decision breaks down, not because the offer is wrong, but because the architecture creates friction before they reach the CTA. The 7 points: Filing Label Subject, Feature-First Lead, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored binary. Total: 1 to 10.</p>
+      <p class="faq-a">The Decision Friction Model is Strategic Flow's 7-point behavioral diagnostic framework. It maps the specific points in an email where the reader's decision breaks down, not because the offer is wrong, but because the architecture creates friction before they reach the CTA. The 7 points: Filing Label Subject, Feature-First Lead, Zero/Buried Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored binary. Total: 1 to 10.</p>
     </details>
 
     <details class="faq-item">
