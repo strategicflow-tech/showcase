@@ -177,7 +177,7 @@
     <div class="formbox">
       <h3>Get the full deep dive, free.</h3>
       <p>All four layers, worked examples, rule templates, and the exact boundary for what never gets automated.</p>
-      <form id="teaserForm" action="#" method="post">
+      <form id="teaserForm" action="https://strategic-flow-audit.replit.app/architecture-signup" method="post">
         <input type="email" name="email" placeholder="you@company.com" required>
         <button type="submit">Send me the deep dive →</button>
       </form>
@@ -201,9 +201,28 @@
   },{threshold:0.2});
   els.forEach(el=>io.observe(el));
 
-  document.getElementById('teaserForm').addEventListener('submit',function(e){
+  document.getElementById('teaserForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    alert('Wire this form action to your subscribe2 / Replit endpoint.');
+    const email = this.querySelector('input[type="email"]').value.trim();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      const r = await fetch('https://strategic-flow-audit.replit.app/architecture-signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      if (r.ok) {
+        this.innerHTML = '<p style="color:#00d4c8;font-weight:600;margin:0;">Check your inbox.</p>';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Send me the deep dive →';
+      }
+    } catch (_) {
+      btn.disabled = false;
+      btn.textContent = 'Send me the deep dive →';
+    }
   });
 </script>
 
