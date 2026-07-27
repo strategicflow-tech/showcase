@@ -246,8 +246,17 @@
   <section class="hero">
     <div class="eyebrow">Full deep dive · for SaaS founders &amp; growth leads already running AI tools</div>
     <h1>Four layers. One loop.<br><em>Build it once, it runs forever.</em></h1>
-    <p class="lead">The complete walkthrough of the system that turns raw product data into decisions that act on their own, built on the stack you already run. No new tools. No rebuild. Just the wiring most teams never put in.</p>
-    <p class="body" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:var(--muted);">For teams already using AI and automation daily, where activation, churn, or onboarding data exists but nothing acts on it on its own. Not for teams still choosing their first tool.</p>
+    <p class="lead">Turn product data into decisions that act automatically.</p>
+    <p class="body" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:var(--muted);">Written for anyone running a SaaS product where activation, churn, or onboarding data exists but nothing acts on it yet, whether you use AI daily or occasionally.</p>
+    <div class="rule-box" style="margin-top:18px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">In the next 10 minutes you'll learn</div>
+      <div style="font-size:0.9rem;line-height:1.9;color:#C4CEDB;">
+        ✓ Why dashboards don't make decisions<br>
+        ✓ The four-layer architecture<br>
+        ✓ The rule every automation needs<br>
+        ✓ Where most SaaS teams fail
+      </div>
+    </div>
 
     <div class="hero-circuit">
       <svg viewBox="0 0 380 200">
@@ -301,7 +310,7 @@
     </div>
     <div class="cause fadein" data-reveal>
       <div class="tag mono">03 · Growth stalls with no visible cause</div>
-      <p>The tools are fine. The team is fine. The loop that turns a number into an action was never built, so every quarter starts back at zero instead of compounding.</p>
+      <p>The loop that turns a number into an action was never built. Every quarter starts back at zero.</p>
     </div>
     <div class="metric-callout fadein" data-reveal>
       <div class="mk mono">3&times;</div>
@@ -324,6 +333,15 @@
       <div class="loop-arrow">↻ back to Signal</div>
     </div>
     <p class="body fadein" data-reveal>Most teams stop at two layers, usually Signal and a half-built Action, and wonder why the automation "doesn't feel smart." It isn't supposed to feel smart on its own. Decision is where the intelligence lives, and Feedback is what makes that intelligence compound instead of going stale.</p>
+    <div class="loopwrap fadein" data-reveal style="margin-top:8px;">
+      <div class="loop-node"><div class="t"><b>Dashboard</b></div></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node"><div class="t"><b>Rule</b></div></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node"><div class="t"><b>Action</b></div></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node"><div class="t"><b>Revenue</b></div></div>
+    </div>
   </section>
 
   <!-- SIGNAL -->
@@ -341,7 +359,7 @@
       </svg>
     </div>
 
-    <p class="body fadein" data-reveal>Most stacks already collect this data. What's missing is the wiring that turns "the number changed" into "something just happened that needs a decision." That wiring is the whole difference between a metric and a signal.</p>
+    <p class="body fadein" data-reveal>Most stacks already collect this data. What's missing is the wiring that turns "the number changed" into "something just happened."</p>
     <h3 class="sub fadein" data-reveal>Where teams get this wrong</h3>
     <div class="cause fadein" data-reveal>
       <div class="tag mono">Mistake · Signal buried in a dashboard</div>
@@ -381,7 +399,7 @@
       </svg>
     </div>
 
-    <p class="body fadein" data-reveal>This is the layer most teams skip entirely. They go straight from signal to a person's gut feeling, which means the decision changes depending on who's on shift that week, and nobody can explain afterward why one account got outreach and another didn't.</p>
+    <p class="body fadein" data-reveal>This is the layer most teams skip. They go straight from signal to a person's gut feeling, so the decision changes depending on who's on shift that week.</p>
     <h3 class="sub fadein" data-reveal>Before and after</h3>
     <div class="compare fadein" data-reveal>
       <div class="c before"><div class="k">Before</div><p>"If usage looks low, someone should probably reach out."</p></div>
@@ -412,7 +430,7 @@
       </svg>
     </div>
 
-    <p class="body fadein" data-reveal>This is the layer everyone assumes they already have because they own automation tools. Owning the tool and having the action wired to a real decision rule from Layer 2 are two different things, and most "automation" is really just a scheduled task with no rule behind it at all.</p>
+    <p class="body fadein" data-reveal>Everyone assumes they have this because they own automation tools. Owning the tool and wiring it to a real decision rule are two different things.</p>
     <h3 class="sub fadein" data-reveal>The boundary that matters most</h3>
     <div class="boundary fadein" data-reveal>
       <div class="b safe"><div class="k">Safe to automate</div><p>Sending the at-risk alert. Drafting the outreach. Creating the internal task. Reversible, low-stakes, easy to check.</p></div>
@@ -438,7 +456,16 @@
 
     <p class="body fadein" data-reveal>Without this layer, you're running the same broken rule forever and calling every fix a one-off. With it, every cycle is a small experiment: did the account respond, did the ticket get resolved faster, did the sequence convert. The answer adjusts the rule for next time.</p>
     <div class="rule-box fadein" data-reveal>CHECK EVERY CYCLE: did the flagged account respond within the window? If under 30% do, the rule's threshold is wrong, not the outreach copy.</div>
-    <p class="body fadein" data-reveal>This is the layer that compounds. A team that closes the loop for six months has a materially sharper set of rules than a team running the same static automation the whole time, even if they started from the exact same dashboard.</p>
+    <p class="body fadein" data-reveal>This is the layer that compounds. Six months in, a closed loop has sharper rules than a team running the same static automation the whole time.</p>
+    <div class="loopwrap fadein" data-reveal style="margin-top:22px;">
+      <div class="loop-node"><div class="d" style="background:var(--feedback);"></div><div class="t"><b>Signal detected</b></div></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node"><div class="d" style="background:var(--decision);"></div><div class="t"><b>Decision made</b></div></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node"><div class="d" style="background:var(--action);"></div><div class="t"><b>Task created</b></div></div>
+      <div class="loop-arrow">↓</div>
+      <div class="loop-node"><div class="d" style="background:var(--signal);"></div><div class="t"><b>Customer saved</b></div></div>
+    </div>
   </section>
 
   <!-- DIAGNOSTIC -->
@@ -471,7 +498,7 @@
 
   <!-- FINAL CTA -->
   <section class="cta">
-    <h2 class="fadein" data-reveal style="margin-bottom:14px;">Most teams are missing two of the four layers.<br>Now you know which two.</h2>
+    <h2 class="fadein" data-reveal style="margin-bottom:14px;">You now know exactly which layer is missing in your own stack.</h2>
     <p class="body fadein" data-reveal>The tools you already run can carry all four layers. What was missing was the wiring, not the budget. Here's where to see the same architecture thinking applied to something you can check in 90 seconds.</p>
     <div class="ctabox fadein" data-reveal>
       <div class="tag">See the diagnosis in action</div>
