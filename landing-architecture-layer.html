@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Architecture Layer · Free Deep Dive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E16; --bg2:#0E1420;
+    --grid: rgba(150,180,220,0.07);
+    --ink:#DCE4EE; --muted:#8290A6; --line: rgba(150,180,220,0.16);
+    --signal:#FFB74D; --decision:#9B8BE8; --action:#3DDC97; --feedback:#FF6B57;
+    --accent:#DCE4EE; --glow: rgba(220,228,238,0.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.01em;line-height:1.14;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  em{font-style:normal;color:var(--signal);}
+
+  .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(var(--grid) 1px, transparent 1px),linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:42px 42px;
+  }
+  .scan{position:fixed;left:0;right:0;height:200px;z-index:0;pointer-events:none;
+    background:linear-gradient(to bottom, transparent, rgba(255,183,77,0.06) 55%, transparent);
+    animation:scan 10s linear infinite;
+  }
+  @keyframes scan{0%{top:-210px;}100%{top:106vh;}}
+
+  header{position:relative;z-index:5;display:flex;align-items:center;gap:10px;
+    padding:20px 24px;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;
+    letter-spacing:0.16em;text-transform:uppercase;
+  }
+  header i{width:8px;height:8px;background:var(--signal);border-radius:1px;
+    box-shadow:0 0 10px var(--signal);animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+
+  .wrap{max-width:600px;margin:0 auto;padding:0 24px;position:relative;z-index:2;}
+
+  /* HERO */
+  .hero{padding:38px 0 20px;text-align:left;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.16em;
+    text-transform:uppercase;color:var(--signal);margin-bottom:14px;}
+  h1{font-size:clamp(1.9rem,8vw,2.5rem);margin-bottom:16px;}
+  .lead{font-size:1.02rem;color:#C4CEDB;margin-bottom:24px;max-width:52ch;}
+
+  /* LOOP DIAGRAM - animated */
+  .loop-svg-wrap{margin:8px 0 28px;display:flex;justify-content:center;}
+  .loop-svg{width:100%;max-width:340px;height:auto;}
+  .node-label{font-family:'IBM Plex Mono',monospace;font-size:9px;fill:var(--muted);
+    text-transform:uppercase;letter-spacing:0.05em;}
+  .node-circle{fill:#0E1420;stroke-width:2;}
+  .pulse-dot{filter:drop-shadow(0 0 6px currentColor);}
+
+  .statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;}
+  .stat{border:1px solid var(--line);border-radius:2px;padding:12px 8px;text-align:center;
+    background:rgba(255,255,255,0.015);}
+  .stat .n{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.4rem;color:var(--signal);}
+  .stat .l{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;color:var(--muted);
+    letter-spacing:0.05em;text-transform:uppercase;margin-top:3px;}
+
+  /* PROBLEM */
+  .section{padding:34px 0;position:relative;}
+  .section-title{font-size:clamp(1.3rem,5.5vw,1.7rem);margin-bottom:16px;}
+  .row{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;
+    opacity:0;transform:translateY(14px);transition:opacity 600ms ease, transform 600ms ease;}
+  .row.in{opacity:1;transform:translateY(0);}
+  .row .tag{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:var(--feedback);
+    letter-spacing:0.06em;text-transform:uppercase;flex:none;width:64px;padding-top:2px;}
+  .row p{font-size:0.94rem;color:#B4C0D0;}
+
+  /* LAYER STRIP - quick preview, not full slides */
+  .layerstrip{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+  .lchip{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:2px;
+    padding:11px 13px;background:rgba(255,255,255,0.015);
+    opacity:0;transform:translateX(-10px);transition:opacity 550ms ease, transform 550ms ease;}
+  .lchip.in{opacity:1;transform:translateX(0);}
+  .lchip .d{width:8px;height:8px;border-radius:1px;flex:none;}
+  .lchip b{font-family:'Space Grotesk',sans-serif;font-size:0.92rem;font-weight:600;}
+  .lchip span{color:var(--muted);font-size:0.82rem;margin-left:6px;}
+
+  /* CTA */
+  .cta{padding:36px 0 60px;}
+  .formbox{border:1px solid var(--line);border-radius:3px;padding:24px;
+    background:rgba(255,255,255,0.02);box-shadow:0 0 40px rgba(255,183,77,0.05);}
+  .formbox h3{font-size:1.2rem;margin-bottom:8px;}
+  .formbox p{color:var(--muted);font-size:0.88rem;margin-bottom:18px;}
+  form{display:flex;flex-direction:column;gap:10px;}
+  input[type=email]{padding:14px;border-radius:2px;border:1px solid var(--line);
+    background:rgba(6,9,15,0.7);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:0.95rem;}
+  input[type=email]:focus{outline:2px solid var(--signal);outline-offset:1px;}
+  button{padding:14px;border-radius:2px;border:none;cursor:pointer;
+    background:var(--signal);color:#0A0E16;font-weight:600;font-family:'Space Grotesk',sans-serif;font-size:0.98rem;
+    transition:transform 150ms ease;}
+  button:active{transform:scale(0.98);}
+  .fine{font-family:'IBM Plex Mono',monospace;font-size:0.66rem;color:var(--muted);margin-top:12px;}
+
+  footer{border-top:1px solid var(--line);padding:18px 24px 30px;
+    font-family:'IBM Plex Mono',monospace;font-size:0.68rem;color:var(--muted);
+    display:flex;flex-wrap:wrap;gap:8px 14px;position:relative;z-index:2;}
+  footer a{color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scan"></div>
+
+<header><i></i><span>The Architecture Layer</span></header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Free deep dive · advanced SaaS growth</div>
+    <h1>The layer nobody names, <em>until it breaks.</em></h1>
+    <p class="lead">Not the data. Not the tools. The system that decides what your data is allowed to change, automatically, without anyone staring at a dashboard on a Monday.</p>
+
+    <div class="loop-svg-wrap">
+      <svg class="loop-svg" viewBox="0 0 300 300">
+        <path d="M 150 40 A 110 110 0 1 1 149.9 40" fill="none" stroke="rgba(150,180,220,0.18)" stroke-width="1.5"/>
+        <circle class="node-circle" cx="150" cy="40" r="22" stroke="#FFB74D"/>
+        <text class="node-label" x="150" y="44" text-anchor="middle">SIGNAL</text>
+        <circle class="node-circle" cx="260" cy="150" r="22" stroke="#9B8BE8"/>
+        <text class="node-label" x="260" y="154" text-anchor="middle">DECISION</text>
+        <circle class="node-circle" cx="150" cy="260" r="22" stroke="#3DDC97"/>
+        <text class="node-label" x="150" y="264" text-anchor="middle">ACTION</text>
+        <circle class="node-circle" cx="40" cy="150" r="22" stroke="#FF6B57"/>
+        <text class="node-label" x="40" y="154" text-anchor="middle" font-size="8">FEEDBACK</text>
+        <circle class="pulse-dot" r="4" fill="#FFB74D" style="color:#FFB74D;">
+          <animateMotion dur="6s" repeatCount="indefinite"
+            path="M 150 40 A 110 110 0 1 1 149.9 40" />
+          <animate attributeName="fill" values="#FFB74D;#9B8BE8;#3DDC97;#FF6B57;#FFB74D" dur="6s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+
+    <div class="statrow">
+      <div class="stat"><div class="n mono">4</div><div class="l">Layers</div></div>
+      <div class="stat"><div class="n mono">1</div><div class="l">Loop</div></div>
+      <div class="stat"><div class="n mono">0</div><div class="l">New tools</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">You have the dashboard.<br>You don't have the decision.</h2>
+    <div class="row" data-reveal><div class="tag mono">01</div><p>Data sits. Someone reviews it once a week, and the fix happens by hand, days after the signal fired.</p></div>
+    <div class="row" data-reveal><div class="tag mono">02</div><p>The rule lives in one person's head. When they're out, the signal fires and nothing happens.</p></div>
+    <div class="row" data-reveal><div class="tag mono">03</div><p>Growth stalls with no visible cause. The tools are fine. The loop that turns a number into an action was never built.</p></div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">One loop. Four layers.</h2>
+    <p class="lead" style="margin-bottom:18px;">Most SaaS stacks have one or two of these. Almost none have all four wired together.</p>
+    <div class="layerstrip">
+      <div class="lchip" data-reveal><div class="d" style="background:#FFB74D;"></div><b>Signal</b><span>what changed, the moment it changes</span></div>
+      <div class="lchip" data-reveal><div class="d" style="background:#9B8BE8;"></div><b>Decision</b><span>the rule that decides if it matters</span></div>
+      <div class="lchip" data-reveal><div class="d" style="background:#3DDC97;"></div><b>Action</b><span>what happens without you in the room</span></div>
+      <div class="lchip" data-reveal><div class="d" style="background:#FF6B57;"></div><b>Feedback</b><span>did it work, does the rule learn</span></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="formbox">
+      <h3>Get the full deep dive, free.</h3>
+      <p>All four layers, worked examples, rule templates, and the exact boundary for what never gets automated.</p>
+      <form id="teaserForm" action="#" method="post">
+        <input type="email" name="email" placeholder="you@company.com" required>
+        <button type="submit">Send me the deep dive →</button>
+      </form>
+      <div class="fine">Free. No card. Link lands in your inbox in seconds.</div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <a href="https://strategicflow.tech" target="_blank" rel="noopener">strategicflow.tech</a>
+  <span>Made by Alex Iliescu</span>
+  <span>&copy; 2026 Strategic Flow. All rights reserved.</span>
+</footer>
+
+<script>
+  // scroll reveal
+  const els=document.querySelectorAll('[data-reveal]');
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  },{threshold:0.2});
+  els.forEach(el=>io.observe(el));
+
+  document.getElementById('teaserForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    alert('Wire this form action to your subscribe2 / Replit endpoint.');
+  });
+</script>
+
+</body>
+</html>
