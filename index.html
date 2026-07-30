@@ -455,8 +455,9 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
 <div style="background:var(--bg3);border-bottom:1px solid var(--border);padding:32px 48px;text-align:center;" id="free-tool-cta">
   <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px;">Free · 90 seconds · No card required</div>
   <div style="font-family:var(--serif);font-size:clamp(20px,2.5vw,28px);color:#fff;margin-bottom:8px;line-height:1.2;">Find out exactly why your last email didn't convert.</div>
-  <p style="font-size:14px;color:rgba(255,255,255,0.6);max-width:440px;margin:0 auto 20px;line-height:1.65;">Paste any SaaS email and get the structural score, the named failure, and the rebuilt version in 90 seconds.</p>
+  <p style="font-size:14px;color:rgba(255,255,255,0.6);max-width:480px;margin:0 auto 14px;line-height:1.65;">Paste the full email — subject line plus body. E.g.: <em style="color:rgba(255,255,255,.75);">"ElevenLabs v3 is here / Your AI voice just got 3× more expressive..."</em> Plain text works. No HTML or formatting needed.</p>
   <a href="https://strategic-flow-audit.replit.app/" class="btn-p" target="_blank" style="font-size:15px;padding:14px 28px;">Diagnose my first email free →</a>
+  <div style="margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--text3);">Don't have one handy? <a href="https://strategic-flow-audit.replit.app/?sample=1" target="_blank" style="color:var(--green);text-decoration:none;border-bottom:1px solid var(--border2);">Try our sample email →</a></div>
   <p style="font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.35);margin-top:12px;letter-spacing:.03em;">✓ No subscription required &nbsp;·&nbsp; No call required &nbsp;·&nbsp; Result in 90 seconds</p>
 </div>
 
@@ -491,6 +492,18 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
 <div style="max-width:720px;margin:40px auto;padding:24px 32px;background:rgba(74,143,231,0.04);border:1px solid rgba(74,143,231,0.18);border-left:3px solid #00d4c8;">
   <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#00d4c8;margin-bottom:12px;">What Strategic Flow is not</div>
   <p style="font-size:14px;color:rgba(255,255,255,0.62);line-height:1.8;margin:0;">Strategic Flow is not a deliverability tool. It does not fix bounce rates, spam placement, or sender reputation. Strategic Flow is a behavioral email architecture diagnostic service. It diagnoses the structural failures that stop readers from clicking after the email is already opened: subject line construction, lead framing, feature-to-outcome translation, visual hierarchy, proof placement, and CTA language. If your open rate is above 20% but CTR is below 2%, that is the problem Strategic Flow fixes.</p>
+</div>
+
+<!-- SECOND TRY-IT ENTRY POINT -->
+<div style="background:var(--bg3);border-bottom:1px solid var(--border);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+  <div style="flex:1;min-width:220px;">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">Already decided? Run it now</div>
+    <div style="font-size:16px;color:#fff;font-weight:600;line-height:1.35;">Paste your last email.<br>Know what failed in 90 seconds.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
+    <a href="https://strategic-flow-audit.replit.app/" class="btn-p" target="_blank" style="white-space:nowrap;">Diagnose my email free →</a>
+    <span style="font-family:var(--mono);font-size:10px;color:var(--text3);text-align:right;">No card · No subscription · Result in 90s</span>
+  </div>
 </div>
 
 <!-- TEARDOWNS, EVIDENCE FIRST -->
@@ -744,7 +757,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
   </table>
 </div>
   <div style="margin-top:20px;">
-    <a href="https://strategicflow.tech/email-architecture-audit.html" class="btn-g" style="font-size:13px;padding:10px 18px;">See how the framework works →</a>
+    <a href="https://strategicflow.tech/email-architecture-audit.html" class="btn-g" style="font-size:13px;padding:10px 18px;">Show me how the framework diagnoses failures →</a>
   </div>
 </section>
 
@@ -778,7 +791,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
     <div class="tool-card">
       <div class="tool-badge">Free · 90s</div>
       <div class="tool-name">Full Diagnostic Audit</div>
-      <p class="tool-desc">Works on any SaaS email: onboarding sequence, changelog, product update, cold email, or landing page. Paste anything, get the score, named failure patterns, rebuilt copy, and 3 A/B subject line variants.</p>
+      <p class="tool-desc">Paste your last product update, onboarding email, or changelog. You'll walk away knowing the exact structural failure that cost you clicks — not a vague "could be better" — and a rebuilt version with the fix already applied, ready to send today. Works on any SaaS email format: onboarding, changelog, cold email, landing page.</p>
       <div style="margin:14px 0 10px;padding:10px 14px;background:rgba(0,212,200,0.06);border:1px solid rgba(0,212,200,0.18);border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:.02em;min-height:34px;" id="sf-step-display">
         <span style="opacity:.55;margin-right:6px;">◉</span><span id="sf-step-text">Checking 1 of 7: Subject line construction...</span>
       </div>
@@ -787,7 +800,7 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
         <strong style="color:rgba(255,255,255,.8);">Score 7–10:</strong> Your email architecture likely isn't the problem. Check subject lines — run a split test before rewriting the body.<br><br>
         <strong style="color:rgba(255,255,255,.8);">Score below 4:</strong> One fix will move the needle most. The audit names it precisely and returns it rebuilt, ready to replace the original.
       </div>
-      <a href="https://strategic-flow-audit.replit.app/" class="tool-link" target="_blank">Run my free diagnostic →</a>
+      <a href="https://strategic-flow-audit.replit.app/" class="tool-link" target="_blank">Show me exactly why my last email failed →</a>
     </div>
   </div>
 </section>
@@ -795,14 +808,14 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
 <!-- PRICING, 2 options -->
 <section class="section" id="pricing" style="background:var(--bg2);border-bottom:1px solid var(--border);">
   <div class="sec-label">Pricing</div>
-  <div class="sec-title">Start with one email.<br><em>See if it works before committing to anything else.</em></div>
-  <p class="sec-sub">Score, named failure patterns, rebuilt HTML, 3 A/B subject lines. Delivered same day. No subscription required to start.</p>
+  <div class="sec-title">Every unclicked send is pipeline that doesn't come back.<br><em>One email diagnosed first. No subscription until you've seen it work.</em></div>
+  <p class="sec-sub">Walk away knowing exactly which structural failure cost you clicks on your last send — and the rebuilt version ready to paste into your ESP today. Delivered same day. No subscription required to start.</p>
 
   <div style="max-width:480px;margin:0 auto 20px;">
     <div style="background:var(--bg3);border-top:2px solid var(--green);padding:36px 32px;display:flex;flex-direction:column;gap:12px;">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);white-space:nowrap;">Diagnostic Audit</div>
-      <div style="font-family:var(--serif);font-size:44px;color:#fff;line-height:1;">Starting at $49</div>
-      <p style="font-size:14px;color:var(--text2);line-height:1.65;flex:1;">One email. Full 7-point diagnosis. Score 1 to 10, named failure patterns, rebuilt HTML, 3 A/B subject line variants. Delivered the same day. No subscription. No call required.</p>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);white-space:nowrap;">Diagnostic Audit — One Email</div>
+      <div style="font-family:var(--serif);font-size:44px;color:#fff;line-height:1;">$49 <span style="font-size:18px;color:var(--text2);font-family:var(--mono);font-weight:400;">one-time</span></div>
+      <p style="font-size:14px;color:var(--text2);line-height:1.65;flex:1;">You submit one email. You receive the structural diagnosis, the rebuilt version, and 3 subject line variants — the same day, usually within a few hours. No subscription. No call required. Nothing to cancel.</p>
       <div style="background:rgba(0,212,200,0.08);border-radius:8px;padding:14px 16px;margin:4px 0;">
         <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;">What you get</div>
         <div style="font-size:13px;color:var(--text2);line-height:1.9;">
@@ -1047,13 +1060,19 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
 (function(){
   var steps=[
     'Checking 1 of 7: Subject line construction...',
+    '⚠ Check 1 done — Filing label detected. Subject names the release, not the reader's gain. 6 checks left.',
     'Checking 2 of 7: Lead framing (Feature-First Bias)...',
+    '⚠ Check 2 done — Feature-First Bias confirmed. Lead opens with what shipped, not what changed for you. 5 checks left.',
     'Checking 3 of 7: Social proof placement...',
+    '⚠ Check 3 done — Strongest stat buried 4 paragraphs below the fold. 4 checks left.',
     'Checking 4 of 7: Visual hierarchy...',
+    '✓ Check 4 done — Hierarchy acceptable. One dominant claim visible before first scroll. 3 checks left.',
     'Checking 5 of 7: Transformation language...',
+    '⚠ Check 5 done — Implied transformation. Adjectives replace before/after numbers throughout. 2 checks left.',
     'Checking 6 of 7: Consequence vs caveat order...',
+    '⚠ Check 6 done — Caveat leads the sentence before reader benefit in 3 instances. 1 check left.',
     'Checking 7 of 7: CTA ownership language...',
-    'Audit complete. Score ready.'
+    'All 7 checks done — 6 structural failures flagged. Your rebuilt version is ready.'
   ];
   var el=document.getElementById('sf-step-text');
   if(!el)return;
