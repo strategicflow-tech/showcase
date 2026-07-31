@@ -514,13 +514,11 @@ a.gt-pill:hover{border-color:rgba(0,229,255,0.5);color:#fff;}
   var li=document.getElementById('gtTickerListings');
   var brands=['Semrush','HeyGen','Optimizely','Revolut','Medallia','Wrike','Zoho','ElevenLabs','Cato Networks','Userpilot','Xelix','Intercom','HubSpot','Pitch','Miro','Clay','Zapier','ClickUp','Airtable','Calendly','Circle','Webflow','Linear','Perplexity','Booking.com','Figma','Gamma','Landbot','Neon','Spreedly','Lodgify','Weaviate','Seamless','Sequel AI','LeadPages','Limelight','dotCompliance','EasyLlama','SplitMetrics','TripleDart','Confluence','dbt Labs','Qonto','Alt21','Wizzair','Tilled','Rize','SoFi'];
   var platforms=[
-    {n:'G2',u:'https://www.g2.com/products/strategic-flow/reviews'},
-    {n:'Capterra',u:'https://www.capterra.com/p/10050131/Strategic-Flow/'},
+    {n:'Fazier',u:'https://fazier.com'},
     {n:'LaunchBuff',u:'https://launchbuff.com/products/strategic-flow-audit-app-lmtvry'},
     {n:'Product Hunt',u:'https://www.producthunt.com/products/strategic-flow-audit-app'},
-    {n:'LaunchKiwi',u:'https://launchkiwi.com/p/strategic-flow-email-audit'},
-    {n:'LaunchNest',u:'https://launchnest.io/p/strategic-flow-audit-app'},
-    {n:'Fazier',u:'https://fazier.com'}
+    {n:'G2',u:'https://www.g2.com/products/strategic-flow/reviews'},
+    {n:'Capterra',u:'https://www.capterra.com/p/10050131/Strategic-Flow/'}
   ];
   if(br){var b=brands.concat(brands);br.innerHTML=b.map(function(n){return'<span class="gt-pill" aria-hidden="true"><span class="gt-pill-dot"></span>'+n+'</span>';}).join('');}
   if(li){var p=platforms.concat(platforms).concat(platforms).concat(platforms);li.innerHTML=p.map(function(x){return'<a class="gt-pill" href="'+x.u+'" target="_blank" rel="noopener"><span class="gt-pill-dot"></span>'+x.n+'</a>';}).join('');}
