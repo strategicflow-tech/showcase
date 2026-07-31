@@ -479,14 +479,65 @@ mm.querySelectorAll('.mm-item,.mm-cta').forEach(l=>l.addEventListener('click',()
 </div>
 <div style="max-width:720px;margin:0 auto;padding:4px 32px 16px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;font-family:var(--mono);letter-spacing:.01em;">✓ Independent: none of the companies above paid for, requested, or reviewed a teardown before publication.</div>
 
-<!-- LISTED ON — third-party directories -->
-<div style="max-width:720px;margin:0 auto 0;padding:10px 32px 18px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--border);">
-  <span style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);white-space:nowrap;">Listed on</span>
-  <a href="https://www.g2.com/products/strategic-flow/reviews" target="_blank" rel="noopener" style="font-size:13px;color:var(--text2);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--border)'">G2</a>
-  <a href="https://www.capterra.com/p/10050131/Strategic-Flow/" target="_blank" rel="noopener" style="font-size:13px;color:var(--text2);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--border)'">Capterra</a>
-  <a href="https://launchbuff.com/products/strategic-flow-audit-app-lmtvry" target="_blank" rel="noopener" style="font-size:13px;color:var(--text2);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--border)'">LaunchBuff</a>
-  <a href="https://www.producthunt.com/products/strategic-flow-audit-app" target="_blank" rel="noopener" style="font-size:13px;color:var(--text2);text-decoration:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--green)'" onmouseout="this.style.borderColor='var(--border)'">Product Hunt</a>
+<!-- LISTED ON — animated tickers (replaces static pill row) -->
+<style>
+.gt-ticker-wrap{display:flex;align-items:stretch;overflow:hidden;border-top:1px solid rgba(0,229,255,0.10);border-bottom:1px solid rgba(0,229,255,0.10);background:rgba(0,229,255,0.025);}
+.gt-ticker-wrap+.gt-ticker-wrap{border-top:none;}
+.gt-ticker-lbl{flex-shrink:0;display:flex;align-items:center;padding:0 14px 0 20px;border-right:1px solid rgba(0,229,255,0.12);font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,229,255,0.55);white-space:nowrap;min-height:40px;}
+.gt-ticker-vp{flex:1;overflow:hidden;min-width:0;position:relative;}
+.gt-ticker-vp::before,.gt-ticker-vp::after{content:'';position:absolute;top:0;bottom:0;width:32px;z-index:2;pointer-events:none;}
+.gt-ticker-vp::before{left:0;background:linear-gradient(to right,rgba(10,22,40,1),transparent);}
+.gt-ticker-vp::after{right:0;background:linear-gradient(to left,rgba(10,22,40,1),transparent);}
+.gt-ticker-track{display:flex;gap:6px;padding:9px 6px;width:max-content;will-change:transform;animation:gt-scroll 62s linear infinite;}
+.gt-ticker-wrap.gt-fast .gt-ticker-track{animation-duration:32s;}
+.gt-ticker-wrap:hover .gt-ticker-track,.gt-ticker-wrap:focus-within .gt-ticker-track{animation-play-state:paused;}
+.gt-pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-family:var(--mono);color:rgba(255,255,255,0.6);background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.14);border-radius:20px;padding:4px 12px;white-space:nowrap;text-decoration:none;transition:border-color .2s,color .2s;}
+a.gt-pill:hover{border-color:rgba(0,229,255,0.5);color:#fff;}
+.gt-pill-dot{width:5px;height:5px;border-radius:50%;background:rgba(0,229,255,0.55);flex-shrink:0;}
+@keyframes gt-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+</style>
+<div class="gt-ticker-wrap" aria-label="Independently reviewed brands">
+  <span class="gt-ticker-lbl">Independently reviewed</span>
+  <div class="gt-ticker-vp">
+    <div class="gt-ticker-track" id="gtTickerBrands"></div>
+  </div>
 </div>
+<div class="gt-ticker-wrap gt-fast" aria-label="Listed on platforms">
+  <span class="gt-ticker-lbl">Listed on</span>
+  <div class="gt-ticker-vp">
+    <div class="gt-ticker-track" id="gtTickerListings"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var br=document.getElementById('gtTickerBrands');
+  var li=document.getElementById('gtTickerListings');
+  var brands=['Semrush','HeyGen','Optimizely','Revolut','Medallia','Wrike','Zoho','ElevenLabs','Cato Networks','Userpilot','Xelix','Intercom','HubSpot','Pitch','Miro','Clay','Zapier','ClickUp','Airtable','Calendly','Circle','Webflow','Linear','Perplexity','Booking.com','Figma','Gamma','Landbot','Neon','Spreedly','Lodgify','Weaviate','Seamless','Sequel AI','LeadPages','Limelight','dotCompliance','EasyLlama','SplitMetrics','TripleDart','Confluence','dbt Labs','Qonto','Alt21','Wizzair','Tilled','Rize','SoFi'];
+  var platforms=[
+    {n:'G2',u:'https://www.g2.com/products/strategic-flow/reviews'},
+    {n:'Capterra',u:'https://www.capterra.com/p/10050131/Strategic-Flow/'},
+    {n:'LaunchBuff',u:'https://launchbuff.com/products/strategic-flow-audit-app-lmtvry'},
+    {n:'Product Hunt',u:'https://www.producthunt.com/products/strategic-flow-audit-app'},
+    {n:'LaunchKiwi',u:'https://launchkiwi.com/p/strategic-flow-email-audit'},
+    {n:'LaunchNest',u:'https://launchnest.io/p/strategic-flow-audit-app'},
+    {n:'Fazier',u:'https://fazier.com'}
+  ];
+  if(br){var b=brands.concat(brands);br.innerHTML=b.map(function(n){return'<span class="gt-pill" aria-hidden="true"><span class="gt-pill-dot"></span>'+n+'</span>';}).join('');}
+  if(li){var p=platforms.concat(platforms).concat(platforms).concat(platforms);li.innerHTML=p.map(function(x){return'<a class="gt-pill" href="'+x.u+'" target="_blank" rel="noopener"><span class="gt-pill-dot"></span>'+x.n+'</a>';}).join('');}
+  /* Touch pause: tap label/background area to freeze; auto-resumes after 4s */
+  document.querySelectorAll('.gt-ticker-wrap').forEach(function(wrap){
+    var track=wrap.querySelector('.gt-ticker-track');if(!track)return;
+    var tmr;
+    wrap.addEventListener('touchstart',function(e){
+      if(e.target.closest('a[href]'))return;
+      var running=track.style.animationPlayState!=='paused';
+      track.style.animationPlayState=running?'paused':'running';
+      clearTimeout(tmr);
+      if(running)tmr=setTimeout(function(){track.style.animationPlayState='running';},4000);
+    },{passive:true});
+  });
+})();
+</script>
 
 <!-- WHAT STRATEGIC FLOW IS NOT, GEO clarity block -->
 <div style="max-width:720px;margin:40px auto;padding:24px 32px;background:rgba(74,143,231,0.04);border:1px solid rgba(74,143,231,0.18);border-left:3px solid #00d4c8;">
