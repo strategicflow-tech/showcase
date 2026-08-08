@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Most SaaS Directories Are Rigged (And What ToolIndex Does Differently)</title>
+<meta name="description" content="Most launch directories sell rank. ToolIndex doesn't. A structural breakdown of why pay-to-win directories are quietly dying, and what a real vote-based model looks like from the inside.">
+<meta name="keywords" content="SaaS directory, ToolIndex, pay-to-win directory, vote-based directory, SaaS launch, indie founder, directory ranking, domain rating, backlink">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Alex Iliescu, Strategic Flow">
+<link rel="canonical" href="https://strategicflow.tech/blog/toolindex-broken-directory-model.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why Most SaaS Directories Are Rigged (And What ToolIndex Does Differently)">
+<meta property="og:description" content="Most launch directories sell rank. ToolIndex doesn't. A structural breakdown of why pay-to-win directories are quietly dying, and what a real vote-based model looks like from the inside.">
+<meta property="og:url" content="https://strategicflow.tech/blog/toolindex-broken-directory-model.html">
+<meta property="og:site_name" content="Strategic Flow">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why Most SaaS Directories Are Rigged (And What ToolIndex Does Differently)">
+<meta name="twitter:description" content="Most launch directories sell rank. ToolIndex doesn't. A structural breakdown of why pay-to-win directories are quietly dying.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why Most SaaS Directories Are Rigged (And What ToolIndex Does Differently)",
+  "description": "Most launch directories sell rank. ToolIndex doesn't. A structural breakdown of why pay-to-win directories are quietly dying, and what a real vote-based model looks like from the inside.",
+  "datePublished": "2026-08-08",
+  "dateModified": "2026-08-08",
+  "author": {
+    "@type": "Person",
+    "name": "Alex Iliescu",
+    "url": "https://strategicflow.tech",
+    "jobTitle": "Founder, Strategic Flow",
+    "sameAs": ["https://www.linkedin.com/in/strategic-flow-tech"]
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Strategic Flow",
+    "url": "https://strategicflow.tech"
+  },
+  "mainEntityOfPage": "https://strategicflow.tech/blog/toolindex-broken-directory-model.html",
+  "articleSection": "SaaS Tools",
+  "inLanguage": "en",
+  "wordCount": 1200,
+  "keywords": ["SaaS directory", "ToolIndex", "vote-based directory", "launch directory", "pay-to-win", "domain rating", "indie founder"]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Strategic Flow", "item": "https://strategicflow.tech"},
+    {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://strategicflow.tech/blog.html"},
+    {"@type": "ListItem", "position": 3, "name": "Every SaaS Directory Sells You the Same Lie", "item": "https://strategicflow.tech/blog/toolindex-broken-directory-model.html"}
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is ToolIndex actually free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, every listing is free permanently. An optional featured boost exists for extra visibility but doesn't affect ranking."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are Trending and Winner badges calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "From real vote counts within a fixed time window. Trending requires crossing a minimum vote threshold in 24 hours. Winner of Day, Week, Month are calculated automatically and can't be purchased."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a ToolIndex listing help SEO?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the directory has a verified Domain Rating of 86 on Ahrefs, so a free listing carries real backlink weight."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who built ToolIndex?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A solo founder who also runs Strategic Flow, a conversion diagnostics tool for SaaS email, landing pages, and changelogs. Both products follow the same rule: no fake data, no invented urgency."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a1628;--bg2:#0f2035;--bg3:#122440;
+  --green:#00d4c8;--green-mid:#00a89e;
+  --border2:rgba(0,212,200,0.28);
+  --text:#ffffff;--text2:rgba(255,255,255,0.85);--text3:#7a9ab8;
+  --red:#f87171;--border:#1a3050;
+  --sans:'Figtree',sans-serif;--serif:'DM Serif Display',serif;--mono:'DM Mono',monospace;
+}
+html,body{width:100%;background:var(--bg);color:var(--text);font-family:var(--sans);}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,22,40,0.96);backdrop-filter:blur(14px);z-index:100;}
+.nav-logo{font-family:var(--serif);font-size:19px;color:#fff;letter-spacing:-.01em;text-decoration:none;}
+.nav-logo em{color:var(--green);font-style:italic;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-link{font-size:12px;color:var(--text2);text-decoration:none;font-family:var(--mono);letter-spacing:.04em;transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--green);}
+.nav-cta{background:var(--green);color:#07090f;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;transition:opacity .2s;}
+.nav-cta:hover{opacity:.85;}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text2);transition:.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:58px;left:0;right:0;bottom:0;background:rgba(10,22,40,0.98);z-index:99;overflow-y:auto;padding:24px 20px;}
+.mobile-menu.open{display:block;}
+.mm-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);color:var(--text2);text-decoration:none;font-size:14px;}
+.mm-item:hover{color:var(--green);}
+.mm-cta{display:block;background:var(--green);color:#07090f;text-align:center;padding:13px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;margin-top:20px;}
+@media(max-width:768px){.nav-links{display:none;}.hamburger{display:flex;}}
+
+/* ARTICLE LAYOUT */
+.article-header{max-width:720px;margin:0 auto;padding:72px 48px 48px;}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;margin-bottom:28px;flex-wrap:wrap;}
+.breadcrumb a{color:var(--text3);text-decoration:none;}
+.breadcrumb a:hover{color:var(--green);}
+.breadcrumb-sep{color:var(--border);}
+.article-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid var(--border2);padding:4px 12px;border-radius:20px;margin-bottom:20px;}
+.article-h1{font-family:var(--serif);font-size:clamp(32px,4.5vw,52px);line-height:1.1;letter-spacing:-.02em;margin-bottom:16px;}
+.article-h1 em{font-style:italic;color:var(--green);}
+.article-meta-row{display:flex;gap:20px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:32px;flex-wrap:wrap;}
+.article-lede{font-size:19px;color:var(--text2);line-height:1.65;border-left:2px solid var(--green);padding-left:20px;}
+
+.article-body{max-width:720px;margin:0 auto;padding:0 48px 80px;}
+.article-body p{font-size:16px;color:var(--text2);line-height:1.75;margin-bottom:22px;}
+.article-body h2{font-family:var(--serif);font-size:26px;line-height:1.2;margin:52px 0 16px;color:#fff;}
+.article-body h3{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin:32px 0 12px;}
+.article-body strong{color:#fff;font-weight:600;}
+.article-body a{color:var(--green);text-decoration:underline;}
+
+/* TABLE OF CONTENTS */
+.toc{background:rgba(0,212,200,0.03);border:1px solid var(--border2);border-radius:10px;padding:28px 32px;margin:40px 0 48px;}
+.toc-label{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;}
+.toc ol{list-style:none;counter-reset:toc-counter;display:flex;flex-direction:column;gap:10px;}
+.toc ol li{counter-increment:toc-counter;display:flex;align-items:baseline;gap:12px;}
+.toc ol li::before{content:counter(toc-counter,decimal-leading-zero);font-family:var(--mono);font-size:10px;color:var(--green);opacity:.6;flex-shrink:0;}
+.toc ol li a{font-size:14px;color:var(--text2);text-decoration:none;transition:color .15s;line-height:1.5;}
+.toc ol li a:hover{color:var(--green);}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:0;margin:32px 0;}
+.faq-item{border-top:1px solid var(--border);padding:24px 0;}
+.faq-item:last-child{border-bottom:1px solid var(--border);}
+.faq-q{font-family:var(--serif);font-size:18px;line-height:1.3;color:#fff;margin-bottom:12px;}
+.faq-a{font-size:15px;color:var(--text2);line-height:1.7;}
+
+/* CTA BOX */
+.article-cta{background:rgba(0,212,200,0.04);border:1px solid var(--border2);border-radius:10px;padding:32px;margin:48px 0 0;display:flex;flex-direction:column;gap:12px;}
+.article-cta-label{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.14em;text-transform:uppercase;}
+.article-cta-title{font-family:var(--serif);font-size:24px;line-height:1.2;}
+.article-cta-sub{font-size:14px;color:var(--text2);line-height:1.65;}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#07090f;padding:11px 22px;border-radius:7px;font-size:13px;font-weight:600;text-decoration:none;transition:opacity .2s;margin-top:4px;}
+.btn-p:hover{opacity:.85;}
+.article-body .btn-p{color:#07090f !important;text-decoration:none;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 48px;text-align:center;}
+.footer-links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.footer-links a{font-size:12px;color:#1D9E75;text-decoration:none;font-family:var(--mono);}
+.footer-links a:hover{color:#fff;}
+.footer-copy{font-family:var(--mono);font-size:11px;color:#1D9E75;}
+
+/* AFFILIATE BAR */
+#sf-sticky-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:#09111e;border-top:1px solid rgba(255,255,255,0.08);z-index:200;transition:opacity .35s ease,transform .35s ease;opacity:0;transform:translateY(8px);}
+#sf-sticky-bar.visible{opacity:1;transform:translateY(0);}
+.sf-bar-inner{display:flex;align-items:center;gap:16px;padding:12px 24px;max-width:1100px;margin:0 auto;}
+.sf-bar-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.sf-affiliate-tag{font-family:var(--mono);font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.1em;border:1px solid #2a2a2a;padding:2px 7px;border-radius:4px;flex-shrink:0;}
+.sf-badge{font-family:var(--mono);font-size:11px;color:var(--green);font-weight:600;flex-shrink:0;}
+.sf-text{font-size:13px;color:rgba(255,255,255,0.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sf-cta{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#07090f;font-size:12px;font-weight:700;padding:8px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+.sf-cta-arrow{transition:transform .2s;}
+.sf-cta:hover .sf-cta-arrow{transform:translateX(2px);}
+.sf-close{color:#555;font-size:16px;background:none;border:none;cursor:pointer;padding:6px 8px;flex-shrink:0;transition:color .2s;}
+.sf-close:hover{color:#999;}
+@media(max-width:768px){.sf-text{display:none;}.sf-bar-inner{flex-wrap:wrap;padding:10px 16px;gap:8px;}}
+@media(max-width:600px){.article-header,.article-body{padding-left:20px;padding-right:20px;}footer{padding:28px 20px;}}
+
+/* COOKIE BANNER */
+#cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:#09111e;border-top:1px solid rgba(255,255,255,0.08);padding:18px 48px;display:none;}
+#cookie-banner.visible{display:flex;}
+.cookie-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;width:100%;flex-wrap:wrap;}
+.cookie-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;max-width:680px;}
+.cookie-text a{color:#00e5a0;text-decoration:underline;}
+.cookie-actions{display:flex;gap:10px;flex-shrink:0;}
+.cookie-btn{font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:10px 18px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.7);transition:all .2s;}
+.cookie-btn:hover{border-color:#00e5a0;color:#00e5a0;}
+.cookie-btn.accept{background:#00e5a0;color:#07090f;border-color:#00e5a0;}
+.cookie-btn.accept:hover{background:#00c88a;}
+@media(max-width:640px){#cookie-banner{padding:16px 18px;}.cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}.cookie-actions{justify-content:flex-end;}}
+</style>
+</head>
+<body data-sf-bar="content">
+
+<nav aria-label="Main navigation">
+  <a href="https://strategicflow.tech/" class="nav-logo">Strategic<em>Flow</em></a>
+  <div class="nav-links">
+    <a href="https://strategicflow.tech/teardowns.html" class="nav-link">Teardowns</a>
+    <a href="https://strategicflow.tech/glossary.html" class="nav-link">Glossary</a>
+    <a href="/blog.html" class="nav-link active">Blog</a>
+    <a href="https://strategic-flow-audit.replit.app" class="nav-link" target="_blank" rel="noopener">Free Audit</a>
+    <a href="https://strategic-flow-pro.replit.app" class="nav-cta" target="_blank" rel="noopener">Rebuild Yours →</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="https://strategicflow.tech/teardowns.html" class="mm-item">Teardowns</a>
+  <a href="https://strategicflow.tech/glossary.html" class="mm-item">Glossary</a>
+  <a href="/blog.html" class="mm-item" style="color:var(--green);">Blog</a>
+  <a href="https://strategic-flow-audit.replit.app" class="mm-item" target="_blank" rel="noopener">Free Audit</a>
+  <a href="https://strategic-flow-pro.replit.app" class="mm-cta" target="_blank" rel="noopener">Rebuild Yours →</a>
+</div>
+<script>
+(function(){
+  var h=document.getElementById('hamburger'),m=document.getElementById('mobile-menu');
+  if(!h||!m)return;
+  function close(){h.classList.remove('open');m.classList.remove('open');h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',function(e){e.stopPropagation();m.classList.contains('open')?close():(h.classList.add('open'),m.classList.add('open'),h.setAttribute('aria-expanded','true'));});
+  m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+  document.addEventListener('click',function(e){if(!m.contains(e.target)&&!h.contains(e.target))close();});
+})();
+</script>
+
+<header class="article-header">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="https://strategicflow.tech/">Home</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/blog.html">Blog</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>Every SaaS Directory Sells You the Same Lie</span>
+  </nav>
+  <div class="article-tag">SaaS Tools</div>
+  <h1 class="article-h1">Every SaaS Directory Sells You the Same Lie.<br><em>This One Doesn't.</em></h1>
+  <div class="article-meta-row">
+    <span>By Alex Iliescu, founder of Strategic Flow Tech</span>
+    <span>8 Aug 2026</span>
+    <span>8 min read</span>
+  </div>
+  <p class="article-lede">Most launch directories sell rank. ToolIndex doesn't. A structural breakdown of why pay-to-win directories are quietly dying, and what a real vote-based model looks like from the inside.</p>
+</header>
+
+<div class="article-body">
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-label">In this article</div>
+    <ol>
+      <li><a href="#pay-to-win">The pay-to-win pattern nobody names out loud</a></li>
+      <li><a href="#what-featured-means">What "featured" actually means on most directories</a></li>
+      <li><a href="#structural-fix">The structural fix: votes that can't be bought</a></li>
+      <li><a href="#early-advantage">Why early listings carry a permanent advantage</a></li>
+      <li><a href="#next-90-days">What this means if you're launching in the next 90 days</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="pay-to-win">The pay-to-win pattern nobody names out loud</h2>
+
+  <p>Open any launch directory and the pattern is identical. A featured tier sits at the top, paid for, permanent, unmoved by whether anyone actually likes the product underneath it. Below that, a free tier technically exists, but it's buried on page four behind a wall of listings that bought their way past you. Founders don't call this out because everyone's playing the same game. You pay to be seen, or you don't get seen. That's not discovery. That's an auction with a nicer font.</p>
+
+  <h2 id="what-featured-means">What "featured" actually means on most directories</h2>
+
+  <p>Here's the part that doesn't get said in the onboarding email: most trending or hot badges on these platforms are not computed from real usage. They're assigned. A handful of votes from bots, from the founder's own network, from a paid boost, gets rounded up into a badge that implies momentum. The badge is doing marketing work it hasn't earned. That matters because buyers, researchers, and now AI agents scanning these directories for recommendations treat a badge as a real signal. When the signal is fake, everyone downstream inherits a bad decision.</p>
+
+  <h2 id="structural-fix">The structural fix: votes that can't be bought</h2>
+
+  <p>ToolIndex was built on one rule: every badge has to be earned from real vote data, or it doesn't exist. No featured tier that overrides ranking. No inflated trending threshold triggered by two votes. A listing only shows as trending once it crosses a real minimum vote count within 24 hours. Winner of the Day, Week, and Month are calculated automatically, and past winners keep a permanent badge showing exactly when they held the title, not a badge that quietly resets. The directory sits on a domain with a verified Domain Rating of 86 on Ahrefs, so a free listing carries a real backlink, not a placeholder link buried three clicks deep. Optional boosts exist starting at $9, but they buy visibility, not rank. The leaderboard stays untouched by anyone's budget.</p>
+
+  <h2 id="early-advantage">Why early listings carry a permanent advantage</h2>
+
+  <p>This is the part most founders miss until it's too late. In a directory where badges are computed from real data, the vote threshold to win Day, Week, or Month rises as the directory grows. Right now, with a smaller pool of listings competing, the number of real votes needed to take a title is lower than it will be in three months. A listing that claims a Winner badge today keeps that badge permanently on its page, a fixed asset that shows up every time someone visits later. The later you join, the more competition you're up against for the same title. This isn't invented urgency, it's math. More listings means more competition for the same fixed number of vote-based titles.</p>
+
+  <h2 id="next-90-days">What this means if you're launching in the next 90 days</h2>
+
+  <p>If you're choosing where to submit a new SaaS tool, indie project, or AI product, the decision isn't which directory has the biggest audience today. It's which directory's ranking system will still mean something in six months. A pay-to-win board tells you nothing about whether your product is actually good. A vote-based board, on a domain with real SEO weight, does. Claiming a listing takes email verification and a couple of minutes. The badge you might walk away with doesn't.</p>
+
+  <p><a href="https://strategic-flow-audit.replit.app/directory" class="btn-p" target="_blank" rel="noopener">Claim a free listing on ToolIndex →</a></p>
+
+  <h2 id="faq">FAQ</h2>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <p class="faq-q">Is ToolIndex actually free?</p>
+      <p class="faq-a">Yes, every listing is free permanently. An optional featured boost exists for extra visibility but doesn't affect ranking.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">How are Trending and Winner badges calculated?</p>
+      <p class="faq-a">From real vote counts within a fixed time window. Trending requires crossing a minimum vote threshold in 24 hours. Winner of Day, Week, Month are calculated automatically and can't be purchased.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Does a ToolIndex listing help SEO?</p>
+      <p class="faq-a">Yes, the directory has a verified Domain Rating of 86 on Ahrefs, so a free listing carries real backlink weight.</p>
+    </div>
+    <div class="faq-item">
+      <p class="faq-q">Who built ToolIndex?</p>
+      <p class="faq-a">A solo founder who also runs Strategic Flow, a conversion diagnostics tool for SaaS email, landing pages, and changelogs. Both products follow the same rule: no fake data, no invented urgency.</p>
+    </div>
+  </div>
+
+  <div class="article-cta">
+    <div class="article-cta-label">Strategic Flow</div>
+    <div class="article-cta-title">Your SaaS email has the same problem as those directories.</div>
+    <p class="article-cta-sub">Most SaaS emails bury the signal in noise. The Strategic Flow audit scores your email against 7 architecture criteria, names the specific failure, and rebuilds it in 90 seconds — free.</p>
+    <a href="https://strategic-flow-audit.replit.app" class="btn-p" target="_blank" rel="noopener">Run your free audit →</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://strategicflow.tech/">Home</a>
+    <a href="https://strategicflow.tech/teardowns.html">Teardowns</a>
+    <a href="https://strategicflow.tech/glossary.html">Glossary</a>
+    <a href="/blog.html">Blog</a>
+    <a href="https://strategic-flow-audit.replit.app" target="_blank" rel="noopener">Free Audit</a>
+  </div>
+  <div class="footer-copy">© 2026 Strategic Flow. Built without fake urgency.</div>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <div class="cookie-inner">
+    <p class="cookie-text">We use analytics to understand which content helps founders most. No advertising cookies, no third-party tracking. <a href="https://strategicflow.tech/privacy.html">Privacy policy</a>.</p>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+
+<!-- AFFILIATE STICKY BAR -->
+<div id="sf-sticky-bar">
+  <div class="sf-bar-inner">
+    <div class="sf-bar-left">
+      <span class="sf-affiliate-tag">affiliate</span>
+      <span class="sf-badge">40% recurring</span>
+      <span class="sf-text">Know a SaaS with broken email? Refer them and earn 40% every month they stay.</span>
+    </div>
+    <a href="https://strategicflow.tech/strategic-flow-pro.html" class="sf-cta" target="_blank" rel="noopener">Learn more <span class="sf-cta-arrow">→</span></a>
+    <button class="sf-close" id="sf-close" aria-label="Close">×</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Cookie banner
+  var banner=document.getElementById('cookie-banner');
+  if(banner&&!localStorage.getItem('sf_cookie_consent')){banner.classList.add('visible');}
+  var acc=document.getElementById('cookie-accept'),dec=document.getElementById('cookie-decline');
+  if(acc)acc.addEventListener('click',function(){localStorage.setItem('sf_cookie_consent','accepted');banner.classList.remove('visible');gtag('consent','update',{'analytics_storage':'granted'});});
+  if(dec)dec.addEventListener('click',function(){localStorage.setItem('sf_cookie_consent','declined');banner.classList.remove('visible');});
+
+  // Affiliate bar
+  var bar=document.getElementById('sf-sticky-bar'),cls=document.getElementById('sf-close');
+  if(bar&&!sessionStorage.getItem('sf_bar_closed')){
+    setTimeout(function(){bar.style.display='block';setTimeout(function(){bar.classList.add('visible');},50);},4000);
+  }
+  if(cls)cls.addEventListener('click',function(){bar.classList.remove('visible');setTimeout(function(){bar.style.display='none';},400);sessionStorage.setItem('sf_bar_closed','1');});
+})();
+</script>
+
+</body>
+</html>
