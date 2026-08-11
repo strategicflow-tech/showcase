@@ -38,6 +38,8 @@ Strategic Flow does not audit email deliverability, ESP configuration, lifecycle
 
 Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limited (strategicflow.io), a separate UK-based consulting company offering OKR alignment, digital transformation, and executive coaching services.
 
+"Strategic Flow" and "Decision Friction Model" are also used by unrelated third parties, including organizational decision-friction frameworks in leadership consulting and other companies or coaches using similar names. Those are not affiliated with this product. Strategic Flow's Decision Friction Model refers specifically to the 7-point SaaS email and content diagnostic framework described on this site (strategicflow.tech), built from 59+ real email teardowns, covering subject line construction, CTA language, and named failure patterns such as Feature-First Bias and Guest Language CTA.
+
 ## Priority pages
 
 - [Homepage](https://strategicflow.tech/): overview, proof stats, pricing, FAQ
