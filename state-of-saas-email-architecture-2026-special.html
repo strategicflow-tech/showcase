@@ -568,6 +568,114 @@ footer {
   .site-nav { padding: 0 16px; }
   main { padding: 0 16px 64px; }
 }
+
+/* ── Agency section ──────────────────────────────────────────────────── */
+.agency-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 52px 48px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.agency-panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber), var(--cyan), transparent);
+  opacity: 0.7;
+}
+.agency-panel::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 55% 40% at 80% 0%, rgba(74,222,222,0.05), transparent);
+  pointer-events: none;
+}
+.agency-eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 5px 14px;
+  background: rgba(74,222,222,0.07);
+  border: 1px solid rgba(74,222,222,0.2);
+  border-radius: 100px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--cyan);
+  margin-bottom: 28px;
+  position: relative; z-index: 1;
+}
+.agency-headline {
+  font-family: var(--serif);
+  font-size: clamp(26px, 3.5vw, 44px);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+.agency-headline em { color: var(--amber); font-style: italic; }
+.agency-subhead {
+  font-size: 14px; color: var(--text-muted);
+  max-width: 620px;
+  line-height: 1.75;
+  margin-bottom: 44px;
+  position: relative; z-index: 1;
+}
+.agency-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 44px;
+  position: relative; z-index: 1;
+}
+.agency-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(201,162,75,0.12);
+  border-radius: 8px;
+  padding: 26px 22px 24px;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
+  opacity: 0; transform: translateY(18px);
+}
+.agency-card.revealed { opacity: 1; transform: none; }
+.agency-card:nth-child(2) { transition-delay: 0.1s; }
+.agency-card:nth-child(3) { transition-delay: 0.2s; }
+.agency-card:hover {
+  border-color: rgba(201,162,75,0.3);
+  background: rgba(201,162,75,0.04);
+  transform: translateY(-3px);
+}
+.agency-card-icon {
+  font-size: 20px; margin-bottom: 14px; line-height: 1;
+  filter: grayscale(0.2);
+}
+.agency-card-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.agency-card-body {
+  font-size: 13px; color: var(--text-muted);
+  line-height: 1.7;
+}
+.agency-card-body strong { color: var(--text); font-weight: 600; }
+.agency-closing {
+  border-top: 1px solid var(--border);
+  padding-top: 28px;
+  position: relative; z-index: 1;
+}
+.agency-closing-text {
+  font-family: var(--serif);
+  font-size: clamp(15px, 2vw, 18px);
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 720px;
+}
+.agency-closing-text em { color: var(--amber); font-style: normal; }
+@media (max-width: 780px) {
+  .agency-cards { grid-template-columns: 1fr; }
+  .agency-panel { padding: 36px 24px 36px; }
+}
 </style>
 </head>
 <body>
@@ -934,6 +1042,91 @@ footer {
           </svg>
         </span>
       </a>
+    </div>
+  </section>
+
+
+  <!-- ── For Agencies ─────────────────────────────────────────────────── -->
+  <section id="agencies" style="padding-top:96px;">
+    <div class="section-eyebrow" style="color:var(--cyan);">For Agencies</div>
+    <h2 class="section-headline">
+      The upsell already sits inside<br>your <em>current client list.</em>
+    </h2>
+
+    <div class="agency-panel">
+
+      <div class="agency-eyebrow">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+          <circle cx="5" cy="5" r="4" stroke="#4ADEDE" stroke-width="1.5"/>
+          <circle cx="5" cy="5" r="1.5" fill="#4ADEDE"/>
+        </svg>
+        Expansion model — no new business required
+      </div>
+
+      <h3 class="agency-headline">
+        Every retainer client whose emails score below 9<br>
+        is an <em>open conversation</em> waiting to happen.
+      </h3>
+
+      <p class="agency-subhead">
+        Most agencies look for growth in new client acquisition — a longer sales cycle,
+        a colder room, a bigger pitch. The expansion opportunity is the opposite direction:
+        deeper into the relationships you already hold, with clients who already trust your judgment.
+        A structural email audit gives you a concrete, objective reason to open that conversation
+        this week — not in the next QBR, not after a project ends.
+      </p>
+
+      <div class="agency-cards">
+
+        <div class="agency-card" data-reveal>
+          <div class="agency-card-icon">⬡</div>
+          <div class="agency-card-title">One model, every client</div>
+          <p class="agency-card-body">
+            The Decision Friction Model is a single diagnostic framework that applies across
+            your entire roster — SaaS, fintech, e-commerce, PLG, enterprise sales.
+            <strong>Run the audit once per client.</strong> The structural patterns repeat regardless
+            of industry. Your team learns the framework once and applies it everywhere,
+            multiplying the value of a single upskill across every retainer simultaneously.
+          </p>
+        </div>
+
+        <div class="agency-card" data-reveal>
+          <div class="agency-card-icon">◈</div>
+          <div class="agency-card-title">Expansion revenue, not acquisition cost</div>
+          <p class="agency-card-body">
+            Selling into an existing client relationship costs a fraction of new business development —
+            no cold outreach, no credential-building, no trial period.
+            <strong>A structural score is a concrete opening.</strong> "We ran your last product
+            update email through the DFM audit — it scored 3.2. Here's the rebuilt version."
+            That's not a pitch. That's proof. The client already trusts your eye; this gives
+            them a number to anchor the conversation on.
+          </p>
+        </div>
+
+        <div class="agency-card" data-reveal>
+          <div class="agency-card-icon">◇</div>
+          <div class="agency-card-title">You keep the relationship and the price</div>
+          <p class="agency-card-body">
+            Strategic Flow is infrastructure, not a competitor. The rebuilt email is
+            <strong>your deliverable</strong>, carrying your agency's name.
+            You set the price, you own the client relationship, you decide when and how
+            to position it. The diagnostic is the tool behind the work — invisible to
+            the client, owned entirely by you. One retainer expansion at your current
+            rate recovers the cost before the second email is sent.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="agency-closing">
+        <p class="agency-closing-text">
+          Every week a client's emails go undiagnosed, the same structural failure pattern
+          runs again on their next send — and the one after that. The account risk isn't bad work.
+          It's simply that <em>nobody has shown the client what a rebuilt version looks like yet.</em>
+          That's the conversation a score makes possible.
+        </p>
+      </div>
+
     </div>
   </section>
 
