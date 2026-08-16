@@ -7,7 +7,7 @@
 <meta name="description" content="59 live teardowns. Structural failure patterns in SaaS email. Interactive dataset from Strategic Flow.">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:title" content="The State of SaaS Email Architecture 2026">
-<meta property="og:description" content="59 live teardowns reveal 4 structural failure patterns that keep SaaS emails scoring 3.4/10 on average.">
+<meta property="og:description" content="59 live teardowns reveal 6 structural failure patterns found in 69–96% of SaaS emails. Average score before a structural rebuild: 3.4/10.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://strategicflow.tech/state-of-saas-email-architecture-2026-special.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -264,6 +264,8 @@ section { padding: 96px 0 0; }
 .pattern-card:nth-child(2) { transition-delay: 0.08s; }
 .pattern-card:nth-child(3) { transition-delay: 0.14s; }
 .pattern-card:nth-child(4) { transition-delay: 0.20s; }
+.pattern-card:nth-child(5) { transition-delay: 0.26s; }
+.pattern-card:nth-child(6) { transition-delay: 0.32s; }
 
 .pattern-header {
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -600,7 +602,7 @@ footer {
       <span class="accent">Architecture</span> 2026
     </h1>
     <p class="hero-dek">
-      59 real emails audited. 4 structural failure patterns found in 74–96% of them.
+      59 real emails audited. 6 structural failure patterns found in 69–96% of them.
       The average score before a structural rebuild: 3.4/10.
     </p>
 
@@ -628,7 +630,7 @@ footer {
   <section id="patterns">
     <div class="section-eyebrow">Structural failure patterns</div>
     <h2 class="section-headline">
-      The same <em>four bugs</em><br>appear in nearly every email.
+      The same <em>six patterns</em><br>appear in nearly every email.
     </h2>
 
     <div class="patterns-grid">
@@ -641,9 +643,10 @@ footer {
           <div class="progress-fill" data-width="96"></div>
         </div>
         <p class="pattern-desc">
-          The call to action frames the reader as a visitor, not a decision-maker.
+          The CTA frames the reader as a visitor, not a decision-maker.
           "Learn more," "See it in action," "Check it out" — all passive.
           The reader has to generate the reason to click. They don't.
+          <span style="display:block;margin-top:8px;font-size:11px;color:var(--amber);letter-spacing:0.06em;">AVG SCORE IMPACT: −1.5 PTS</span>
         </p>
       </div>
 
@@ -657,8 +660,9 @@ footer {
         </div>
         <p class="pattern-desc">
           The email leads with what the product does, not what the reader gets to fix,
-          avoid, or unlock. Readers skip the mechanism — they want to know
-          whether their situation changes. That line arrives too late, or not at all.
+          avoid, or unlock. Readers skip the mechanism — they want the consequence.
+          That line arrives too late, or not at all. Largest single-pattern score hit in the dataset.
+          <span style="display:block;margin-top:8px;font-size:11px;color:var(--amber);letter-spacing:0.06em;">AVG SCORE IMPACT: −2 PTS · LARGEST HIT</span>
         </p>
       </div>
 
@@ -674,24 +678,71 @@ footer {
           Subjects that categorize instead of compel: "Q3 Product Update,"
           "New Integration Available," "Your Weekly Digest." These label the
           email's contents for archiving — they don't give the reader a reason
-          to open it now.
+          to open now.
+          <span style="display:block;margin-top:8px;font-size:11px;color:var(--amber);letter-spacing:0.06em;">AVG SCORE IMPACT: −1.5 PTS</span>
         </p>
       </div>
 
       <div class="pattern-card" data-reveal>
         <div class="pattern-header">
-          <div class="pattern-name">Caveat Before Consequence</div>
+          <div class="pattern-name">Implied Transformation</div>
           <div class="pattern-pct">74%</div>
         </div>
         <div class="progress-track">
           <div class="progress-fill" data-width="74"></div>
         </div>
         <p class="pattern-desc">
-          The email qualifies itself before stating its claim. "Depending on your
-          use case, you might find…" Readers scan for the consequence first.
-          When consequence is buried after caveats, most readers don't reach it.
+          The email suggests a better outcome without stating it. "Now you can move
+          faster" — faster than what, for whom, by how much? The reader is left to
+          infer the change in their situation. Most don't bother.
+          <span style="display:block;margin-top:8px;font-size:11px;color:var(--amber);letter-spacing:0.06em;">AVG SCORE IMPACT: −1 PT</span>
         </p>
       </div>
+
+      <div class="pattern-card" data-reveal>
+        <div class="pattern-header">
+          <div class="pattern-name">Missing Visual Hierarchy</div>
+          <div class="pattern-pct">71%</div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" data-width="71"></div>
+        </div>
+        <p class="pattern-desc">
+          Every sentence is the same visual weight. No scannable entry point, no
+          anchoring headline, no clear primary element. Readers who scan before
+          they read find nothing to land on — and leave before the CTA.
+          <span style="display:block;margin-top:8px;font-size:11px;color:var(--amber);letter-spacing:0.06em;">AVG SCORE IMPACT: −1 PT</span>
+        </p>
+      </div>
+
+      <div class="pattern-card" data-reveal>
+        <div class="pattern-header">
+          <div class="pattern-name">Zero / Buried Social Proof</div>
+          <div class="pattern-pct">69%</div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" data-width="69"></div>
+        </div>
+        <p class="pattern-desc">
+          Social proof exists — but it appears in the footer, or only on the landing
+          page after the click. The email itself carries no signal that other people
+          made this decision and it was worth making.
+          <span style="display:block;margin-top:8px;font-size:11px;color:var(--amber);letter-spacing:0.06em;">AVG SCORE IMPACT: −1 PT</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Credibility / coverage line ─────────────────────────────────── -->
+    <div style="margin-top:36px;padding:22px 28px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Independently reviewed</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.7;font-family:var(--mono);">
+        Semrush, HeyGen, Optimizely, Revolut, Medallia, Wrike, Zoho, ElevenLabs,
+        Cato Networks, Userpilot, Xelix, <span style="color:var(--text-muted);">+43 more</span>
+      </p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:10px;line-height:1.6;">
+        None of the companies paid for, requested, or reviewed a teardown before publication.
+        Every audit was initiated and published independently.
+      </p>
     </div>
   </section>
 
