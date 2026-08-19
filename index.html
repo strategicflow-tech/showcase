@@ -69,59 +69,68 @@
 
 <script>
 (function(){
-  const toggle = document.getElementById('sf-chat-toggle');
-  const win = document.getElementById('sf-chat-window');
-  const close = document.getElementById('sf-chat-close');
-  const messages = document.getElementById('sf-chat-messages');
-  const input = document.getElementById('sf-chat-input');
-  const send = document.getElementById('sf-chat-send');
+  function initChat(){
+    const toggle = document.getElementById('sf-chat-toggle');
+    const win = document.getElementById('sf-chat-window');
+    const close = document.getElementById('sf-chat-close');
+    const messages = document.getElementById('sf-chat-messages');
+    const input = document.getElementById('sf-chat-input');
+    const send = document.getElementById('sf-chat-send');
+    if (!toggle || !win || !close || !messages || !input || !send) return;
 
-  toggle.onclick = () => { win.style.display = win.style.display === 'none' ? 'flex' : 'none'; };
-  close.onclick = () => { win.style.display = 'none'; };
+    toggle.addEventListener('click', () => {
+      win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+    });
+    close.addEventListener('click', () => { win.style.display = 'none'; });
 
-  function addMsg(text, cls){
-    const d = document.createElement('div');
-    d.className = 'msg ' + cls;
-    d.textContent = text;
-    messages.appendChild(d);
-    messages.scrollTop = messages.scrollHeight;
-  }
-
-  addMsg("Hi! Ask me anything about Strategic Flow, the Decision Friction Model, pricing, or how the audit works.", 'bot');
-
-  const CHAT_API = 'https://strategic-flow-audit.replit.app/api/widget-chat';
-
-  async function handleSend(){
-    const q = input.value.trim();
-    if(!q) return;
-    addMsg(q, 'user');
-    input.value = '';
-    send.disabled = true;
-
-    try {
-      const res = await fetch(CHAT_API, {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ question: q })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || `Chat API request failed (${res.status})`);
-      const answer = typeof data.answer === 'string' ? data.answer.trim() : '';
-      if (!answer) throw new Error('No chat answer returned');
-
-      if(answer.includes("I'll connect you with Alex directly")){
-        addMsg("I'll connect you with Alex directly for this — you can reach him at alex@strategicflow.tech, or leave your question here and he'll follow up.", 'bot');
-      } else {
-        addMsg(answer, 'bot');
-      }
-    } catch(e) {
-      addMsg('Chat is temporarily unavailable. Please try again shortly.', 'bot');
-    } finally {
-      send.disabled = false;
+    function addMsg(text, cls){
+      const d = document.createElement('div');
+      d.className = 'msg ' + cls;
+      d.textContent = text;
+      messages.appendChild(d);
+      messages.scrollTop = messages.scrollHeight;
     }
+
+    addMsg("Hi! Ask me anything about Strategic Flow, the Decision Friction Model, pricing, or how the audit works.", 'bot');
+    const CHAT_API = 'https://strategic-flow-audit.replit.app/api/widget-chat';
+
+    async function handleSend(){
+      const q = input.value.trim();
+      if(!q) return;
+      addMsg(q, 'user');
+      input.value = '';
+      send.disabled = true;
+      try {
+        const res = await fetch(CHAT_API, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ question: q })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `Chat API request failed (${res.status})`);
+        const answer = typeof data.answer === 'string' ? data.answer.trim() : '';
+        if (!answer) throw new Error('No chat answer returned');
+        if(answer.includes("I'll connect you with Alex directly")){
+          addMsg("I'll connect you with Alex directly for this — you can reach him at alex@strategicflow.tech, or leave your question here and he'll follow up.", 'bot');
+        } else {
+          addMsg(answer, 'bot');
+        }
+      } catch(e) {
+        addMsg('Chat is temporarily unavailable. Please try again shortly.', 'bot');
+      } finally {
+        send.disabled = false;
+      }
+    }
+
+    send.addEventListener('click', handleSend);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
   }
-  send.onclick = handleSend;
-  input.addEventListener('keypress', e => { if(e.key === 'Enter') handleSend(); });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initChat);
+  } else {
+    initChat();
+  }
 })();
 </script>
   
