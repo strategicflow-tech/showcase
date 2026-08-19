@@ -89,30 +89,19 @@
 
   addMsg("Hi! Ask me anything about Strategic Flow, the Decision Friction Model, pricing, or how the audit works.", 'bot');
 
-  let failCount = 0;
+  const CHAT_API = 'https://strategic-flow-audit.replit.app/api/widget-chat';
 
   async function handleSend(){
     const q = input.value.trim();
-    if(!q) return;
-    addMsg(q, 'user');
-    input.value = '';
-
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+    if(!q) return;      const res = await fetch(CHAT_API, {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 300,
-          messages: [{
-            role: 'user',
-            content: `You are a helpful assistant for Strategic Flow, a B2B SaaS email architecture audit service founded by Alex Iliescu. It diagnoses why SaaS emails get opened but not clicked, using the Decision Friction Model (7-point framework). Pricing: $49 one-time audit, $299/mo Lite, $499/mo Growth, $899/mo High-Impact. 59 teardowns published for companies like Semrush, HeyGen, Revolut. If you don't know the answer or the question needs a human, say exactly: "I'll connect you with Alex directly for this." Otherwise answer briefly and helpfully in 2-3 sentences.\n\nUser question: ${q}`
-          }]
-        })
+        body: JSON.stringify({ question: q })
       });
-      const data = await res.json();
-      const answer = data.content.find(c => c.type === 'text')?.text || '';
-
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || `Chat API request failed (${res.status})`);
+      const answer = typeof data.answer === 'string' ? data.answer.trim() : '';
+      if (!answer) throw new Error('No chat answer returned');
       if(answer.includes("I'll connect you with Alex directly")){
         failCount++;
         addMsg("I'll connect you with Alex directly for this — you can reach him at alex@strategicflow.tech, or leave your question here and he'll follow up.", 'bot');
