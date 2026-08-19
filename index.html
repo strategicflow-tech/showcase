@@ -93,7 +93,13 @@
 
   async function handleSend(){
     const q = input.value.trim();
-    if(!q) return;      const res = await fetch(CHAT_API, {
+    if(!q) return;
+    addMsg(q, 'user');
+    input.value = '';
+    send.disabled = true;
+
+    try {
+      const res = await fetch(CHAT_API, {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ question: q })
@@ -102,17 +108,18 @@
       if (!res.ok) throw new Error(data.error || `Chat API request failed (${res.status})`);
       const answer = typeof data.answer === 'string' ? data.answer.trim() : '';
       if (!answer) throw new Error('No chat answer returned');
+
       if(answer.includes("I'll connect you with Alex directly")){
-        failCount++;
         addMsg("I'll connect you with Alex directly for this — you can reach him at alex@strategicflow.tech, or leave your question here and he'll follow up.", 'bot');
       } else {
         addMsg(answer, 'bot');
       }
-    } catch(e){
-      addMsg("I'll connect you with Alex directly for this — email alex@strategicflow.tech and he'll get back to you.", 'bot');
+    } catch(e) {
+      addMsg('Chat is temporarily unavailable. Please try again shortly.', 'bot');
+    } finally {
+      send.disabled = false;
     }
   }
-
   send.onclick = handleSend;
   input.addEventListener('keypress', e => { if(e.key === 'Enter') handleSend(); });
 })();
