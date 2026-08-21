@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnostic Report: Generalist World — Strategic Flow</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#05080d; --panel:#0a1420; --panel2:#0d1b2e; --ink:#e7f1fb; --dim:#5d7a99;
+  --line:#152238; --line-soft:#16273d;
+  --signal:#3ff0c7; --signal-dim:#1e7d6c;
+  --alert:#ff4470; --alert-dim:#7a2340;
+  --warn:#ffb648; --warn-dim:#8a611f;
+  --disp:'Rajdhani',sans-serif; --body:'IBM Plex Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--void); color:var(--ink); margin:0; font-family:var(--body);
+  line-height:1.65; font-size:16px; position:relative; overflow-x:hidden;
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(63,240,199,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(63,240,199,0.035) 1px, transparent 1px);
+  background-size:42px 42px;
+  mask-image:radial-gradient(ellipse at 50% 0%, black 0%, transparent 70%);
+}
+.scanline{position:fixed; left:0; right:0; height:120px; z-index:1; pointer-events:none;
+  background:linear-gradient(to bottom, transparent, rgba(63,240,199,0.05), transparent);
+  animation:sweep 7s linear infinite;
+}
+@keyframes sweep{0%{top:-120px}100%{top:100vh}}
+@media (prefers-reduced-motion: reduce){ .scanline{animation:none; display:none} }
+
+a{color:var(--signal)}
+.wrap{max-width:940px; margin:0 auto; padding:0 22px; position:relative; z-index:2}
+
+header.topbar{border-bottom:1px solid var(--line-soft); padding:16px 0; position:sticky; top:0; background:rgba(5,8,13,0.88); backdrop-filter:blur(8px); z-index:20}
+.topbar-inner{max-width:940px; margin:0 auto; padding:0 22px; display:flex; align-items:center; justify-content:space-between}
+.brand{font-family:var(--mono); font-size:12px; letter-spacing:.08em; color:var(--dim)}
+.brand b{color:var(--ink); font-weight:600}
+.live{display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; color:var(--signal); letter-spacing:.1em}
+.live .dot{width:7px; height:7px; border-radius:50%; background:var(--signal); box-shadow:0 0 8px var(--signal); animation:blink 1.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.hero{padding:56px 0 20px}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--signal); margin:0 0 14px; display:flex; align-items:center; gap:10px}
+.eyebrow::before{content:''; width:18px; height:1px; background:var(--signal)}
+h1{font-family:var(--disp); font-size:44px; font-weight:700; line-height:1.06; margin:0 0 16px; letter-spacing:.01em;
+  opacity:0; animation:flicker-in .9s ease forwards .15s}
+@keyframes flicker-in{0%{opacity:0; filter:blur(4px)} 60%{opacity:.6} 100%{opacity:1; filter:blur(0)}}
+@media (prefers-reduced-motion: reduce){ h1{animation:none; opacity:1} }
+h1 span{color:var(--signal)}
+.dek{color:#b9c9dc; max-width:660px; font-size:16px; margin:0 0 26px}
+
+.target-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center; font-family:var(--mono); font-size:12.5px; color:var(--dim); border:1px solid var(--line-soft); background:var(--panel); border-radius:6px; padding:12px 16px; margin-bottom:24px}
+.target-row .t{color:var(--ink)}
+.target-row .sep{color:var(--line-soft)}
+
+.master-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:30px}
+.method{border:1px solid var(--line-soft); background:var(--panel); border-radius:6px; padding:16px 18px; margin-bottom:24px}
+.method-k{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--signal); margin-bottom:8px}
+.method p{color:#b9c9dc; font-size:14px; margin:0 0 10px}
+.method-dims{display:flex; flex-wrap:wrap; gap:8px; font-family:var(--mono); font-size:11px; color:var(--dim)}
+.method-dims span{border:1px solid var(--line-soft); border-radius:14px; padding:4px 11px}
+.master-label{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim)}
+.master-switch{display:inline-flex; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--line-soft); border-radius:20px; overflow:hidden}
+.master-switch button{background:none; border:none; color:var(--dim); padding:8px 20px; cursor:pointer; transition:background .2s, color .2s}
+.master-switch button.on{background:var(--signal); color:#04120e}
+
+.gauge-row{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:42px}
+.gauge-card{flex:1 1 200px; background:var(--panel); border:1px solid var(--line-soft); border-radius:8px; padding:20px; position:relative; overflow:hidden}
+.gauge-card::after{content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, var(--signal), transparent)}
+.gauge-wrap{display:flex; align-items:center; gap:16px}
+.gauge-num{font-family:var(--disp); font-weight:700; font-size:34px; color:var(--signal)}
+.gauge-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); margin-top:2px}
+svg.ring{transform:rotate(-90deg); flex-shrink:0}
+.ring-bg{stroke:var(--line-soft)}
+.ring-fg{stroke:var(--signal); stroke-linecap:round; transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+
+.stat-mini{font-family:var(--disp); font-weight:700; font-size:30px; color:var(--ink)}
+.stat-mini-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); margin-top:4px}
+
+.tabs{display:flex; gap:4px; border-bottom:1px solid var(--line-soft); margin-bottom:30px; position:relative}
+.tab-btn{font-family:var(--mono); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--dim); background:none; border:none; padding:12px 4px; margin-right:26px; cursor:pointer; position:relative}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--signal)}
+.tab-underline{position:absolute; bottom:-1px; height:2px; background:var(--signal); box-shadow:0 0 8px var(--signal); transition:left .35s cubic-bezier(.4,0,.2,1), width .35s cubic-bezier(.4,0,.2,1)}
+
+.panel{display:none}
+.panel.active{display:block; animation:fadein .35s ease}
+@keyframes fadein{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+
+.entry{background:var(--panel); border:1px solid var(--line-soft); border-left:3px solid var(--line-soft); border-radius:6px; padding:20px 22px; margin-bottom:16px; transition:border-color .3s}
+.entry.status-pass{border-left-color:var(--signal-dim)}
+.entry.status-alert{border-left-color:var(--alert-dim)}
+.entry.status-warn{border-left-color:var(--warn-dim)}
+.entry-top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px}
+.entry-title{font-family:var(--disp); font-size:20px; font-weight:600; color:var(--ink)}
+.badge-group{display:flex; align-items:center; gap:8px}
+.badge{font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; padding:4px 10px; border-radius:3px; white-space:nowrap; transition:background .25s, color .25s}
+.badge.pass{background:#0f2b26; color:var(--signal)}
+.badge.alert{background:#2b0f1a; color:var(--alert)}
+.badge.warn{background:#2b220f; color:var(--warn)}
+.score-arrow{font-family:var(--mono); font-size:13px; color:var(--dim)}
+.score-arrow b{color:var(--signal)}
+.entry p{color:#c4d2e2; margin:0 0 10px; font-size:15px}
+.entry p:last-child{margin-bottom:0}
+
+.ba{margin-top:14px; border-top:1px dashed var(--line-soft); padding-top:14px}
+.ba-switch{display:inline-flex; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--line-soft); border-radius:20px; overflow:hidden; margin-bottom:12px}
+.ba-switch button{background:none; border:none; color:var(--dim); padding:6px 16px; cursor:pointer}
+.ba-switch button.on{background:var(--signal); color:#04120e}
+.ba-readout{font-family:var(--mono); font-size:14px; color:var(--ink); min-height:44px; padding:12px 14px; background:var(--void); border:1px solid var(--line-soft); border-radius:5px}
+.ba-readout .cursor{display:inline-block; width:7px; height:14px; background:var(--signal); margin-left:2px; animation:blink 1s step-end infinite; vertical-align:middle}
+.ba-tag{font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); margin-bottom:6px}
+
+table{width:100%; border-collapse:collapse; margin:8px 0 40px; font-size:13.5px}
+th{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--dim); text-align:left; padding:10px 12px; border-bottom:1px solid var(--line-soft)}
+td{padding:12px; border-bottom:1px solid var(--line-soft); color:#c4d2e2}
+td.score-before{font-family:var(--mono); color:var(--dim)}
+td.score-after{font-family:var(--mono); color:var(--signal)}
+tr.total td{font-weight:600; color:var(--ink)}
+tr.total td.score-before{color:var(--ink)}
+tr.total td.score-after{color:var(--signal)}
+
+.console{background:var(--panel2); border:1px solid var(--line-soft); border-radius:8px; padding:24px 26px; margin:0 0 60px; position:relative}
+.console::before{content:'// SUMMARY.LOG'; display:block; font-family:var(--mono); font-size:10.5px; color:var(--dim); letter-spacing:.08em; margin-bottom:12px}
+.console p{color:#c4d2e2; margin:0 0 12px; font-size:15px}
+.console p:last-child{margin-bottom:0}
+
+footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:var(--mono); font-size:11px; color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+
+<header class="topbar"><div class="topbar-inner">
+  <div class="brand"><b>STRATEGIC FLOW</b> // diagnostic module</div>
+  <div class="live"><span class="dot"></span>LIVE SCAN</div>
+</div></header>
+
+<div class="wrap">
+<section class="hero">
+  <div class="eyebrow">Diagnostic Report · 3 Modules Scanned</div>
+  <h1>Generalist World: <span>funnel integrity scan</span></h1>
+  <p class="dek">Same 7-point structural model used across 59 published SaaS teardowns, run against three live surfaces — with the rebuild specified for every friction point found.</p>
+
+  <div class="target-row">
+    <span class="t">generalist.world</span><span class="sep">/</span>
+    <span class="t">generalist.world/community</span><span class="sep">/</span>
+    <span class="t">generalist.lovable.app</span>
+  </div>
+
+  <div class="method">
+    <div class="method-k">Methodology · Decision Friction Model</div>
+    <p>Scores how a reader's attention and trust move through a piece of content, not the words themselves. Built on emails, the same 7-point framework applies to landing pages, pricing pages, posts, changelogs, and product updates alike, since the underlying friction is often about sequencing, not medium. Across 59 published teardowns, the average structural score moves from 3.4 before diagnosis to 9.0 for the proposed rebuild. Each surface below is scored against these dimensions:</p>
+    <p style="font-size:12px;color:var(--dim)">Rebuild scores below are projected: what the structural score would be if the specified rewrite ships, not a measured result after implementation.</p>
+    <div class="method-dims">
+      <span>CTA-to-reality match</span><span>Entry-point clarity</span><span>Decision sequencing</span>
+      <span>Proof placement</span><span>Visual hierarchy</span><span>Objection handling</span><span>Friction at commit point</span>
+    </div>
+  </div>
+
+  <div class="master-row">
+    <span class="master-label">Scan state</span>
+    <div class="master-switch" id="masterSwitch">
+      <button class="on" data-state="before">Before</button>
+      <button data-state="after">Rebuilt</button>
+    </div>
+  </div>
+
+  <div class="gauge-row">
+    <div class="gauge-card">
+      <div class="gauge-wrap">
+        <svg class="ring" width="64" height="64" viewBox="0 0 64 64">
+          <circle class="ring-bg" cx="32" cy="32" r="27" fill="none" stroke-width="6"></circle>
+          <circle class="ring-fg" id="gaugeRing" cx="32" cy="32" r="27" fill="none" stroke-width="6" stroke-dasharray="169.6" stroke-dashoffset="169.6"></circle>
+        </svg>
+        <div>
+          <div class="gauge-num" id="gaugeNum">0.0</div>
+          <div class="gauge-label">Overall / 10</div>
+        </div>
+      </div>
+    </div>
+    <div class="gauge-card">
+      <div class="stat-mini" data-count="3">0</div>
+      <div class="stat-mini-label">Surfaces scanned</div>
+    </div>
+    <div class="gauge-card">
+      <div class="stat-mini" id="frictionStat" data-count="4">0</div>
+      <div class="stat-mini-label" id="frictionLabel">Friction points found</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" data-tab="t1">01 Homepage</button>
+    <button class="tab-btn" data-tab="t2">02 Pricing</button>
+    <button class="tab-btn" data-tab="t3">03 AI Coach</button>
+    <span class="tab-underline" id="tabUnderline"></span>
+  </div>
+</section>
+
+<!-- TAB 1: HOMEPAGE -->
+<div class="panel active" id="t1">
+  <div class="entry status-pass">
+    <div class="entry-top">
+      <div class="entry-title">The Hook</div>
+      <div class="badge-group"><span class="score-arrow">8 → <b>9</b></span><span class="badge pass">Pass</span></div>
+    </div>
+    <p>"You're not scattered. You're multi-dimensional." lands immediately and reframes the reader's self-doubt into an identity — most SaaS homepages open with a feature list instead of a feeling the reader already has. The video testimonial wall right after the hero puts proof early instead of burying it at the bottom.</p>
+  </div>
+
+  <div class="entry status-alert" data-entry>
+    <div class="entry-top">
+      <div class="entry-title">The Entry Point Problem</div>
+      <div class="badge-group"><span class="score-arrow">5 → <b>9</b></span><span class="badge alert" data-badge data-badge-before="alert|Alert" data-badge-after="pass|Resolved">Alert</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P3</span></div>
+    </div>
+    <p>By the time a first-time visitor scrolls past the hero, they've been offered an email signup, a "Start Here" link, a Job Board link, the Positioning Guidebook, the Archetype Quiz, and "Join Community." Nothing tells a new visitor which one is the actual first move — a pattern that shows up repeatedly across the audited SaaS dataset.</p>
+    <p><b style="color:#8fa8c4">Why it matters:</b> with 65,000 warm readers already in the funnel, a diffuse entry point taxes the exact metric this role reports on, new paying members per month, by splitting attention across six paths instead of concentrating it on one.</p>
+    <div class="ba" data-ba>
+      <div class="ba-switch">
+        <button class="on" data-state="before">Before</button>
+        <button data-state="after">Rebuilt</button>
+      </div>
+      <div class="ba-tag" data-ba-tag>Current copy</div>
+      <div class="ba-readout" data-ba-readout
+        data-before="Six competing next steps — signup, Start Here, Job Board, Guidebook, Quiz, Join Community — with no signal for which one fits a first-time visitor."
+        data-after="Hero keeps one primary button: 'Get the free newsletter — join 65,000 readers →'. Job Board, the Archetype Quiz, and Join Community move into a slim secondary row below the fold, reachable but no longer competing with the first move.">Six competing next steps — signup, Start Here, Job Board, Guidebook, Quiz, Join Community — with no signal for which one fits a first-time visitor.<span class="cursor"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: PRICING -->
+<div class="panel" id="t2">
+  <div class="entry status-alert" data-entry>
+    <div class="entry-top">
+      <div class="entry-title">The Promise-Process Gap</div>
+      <div class="badge-group"><span class="score-arrow">3 → <b>10</b></span><span class="badge alert" data-badge data-badge-before="alert|Alert" data-badge-after="pass|Resolved">Alert</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P1</span></div>
+    </div>
+    <p>The primary CTA reads "Join the community." The FAQ directly underneath states members are accepted on a rolling basis and to join the waitlist to apply. Someone clicking "Join" expects to join, not apply and wait — one of the most common failure patterns across the dataset: a CTA that promises one thing while the actual next step delivers another.</p>
+    <p><b style="color:#8fa8c4">Why it matters:</b> warm leads, engaged readers, waitlists, event attendees, are the fastest path to new members this role owns. A CTA that breaks trust at the very last click spends that advantage for nothing.</p>
+    <div class="ba" data-ba>
+      <div class="ba-switch">
+        <button class="on" data-state="before">Before</button>
+        <button data-state="after">Rebuilt</button>
+      </div>
+      <div class="ba-tag" data-ba-tag>Current copy</div>
+      <div class="ba-readout" data-ba-readout
+        data-before="Button reads 'Join the community.' FAQ underneath reveals it's actually a waitlist — apply and wait."
+        data-after="Button rewritten to 'Apply to join — rolling admissions', with one line underneath: 'We review applications weekly. Most people hear back within 7 days.' The promise now matches what happens after the click.">Button reads 'Join the community.' FAQ underneath reveals it's actually a waitlist — apply and wait.<span class="cursor"></span></div>
+    </div>
+  </div>
+
+  <div class="entry status-warn" data-entry>
+    <div class="entry-top">
+      <div class="entry-title">The Pricing Self-Assessment</div>
+      <div class="badge-group"><span class="score-arrow">5 → <b>8</b></span><span class="badge warn" data-badge data-badge-before="warn|Mixed" data-badge-after="pass|Resolved">Mixed</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P4</span></div>
+    </div>
+    <p>The sliding-scale pricing (Full $950 / Parity $500 / Solidarity $250) is a genuinely good equity model. But right at the decision point, the reader is handed a checklist to self-assess their own financial situation before they're allowed to pick a tier — an extra cognitive step inserted exactly where momentum matters most.</p>
+    <p><b style="color:#8fa8c4">Why it matters:</b> a judgment step at the moment of commitment is the highest-leverage point to lose someone who was already going to pay. It's the one moment growth work can least afford to add friction, and the fix touches messaging the team is protective of, so it goes last, not first.</p>
+    <div class="ba" data-ba>
+      <div class="ba-switch">
+        <button class="on" data-state="before">Before</button>
+        <button data-state="after">Rebuilt</button>
+      </div>
+      <div class="ba-tag" data-ba-tag>Current copy</div>
+      <div class="ba-readout" data-ba-readout
+        data-before="A checklist asks readers to judge their own financial situation — do you own property, can you afford discretionary purchases — before they're allowed to pick a tier."
+        data-after="Checklist replaced with one line above the three tiers: 'Choose the tier that reflects your circumstances right now. No questions asked, no proof required.' Same equity model, one decision instead of two.">A checklist asks readers to judge their own financial situation — do you own property, can you afford discretionary purchases — before they're allowed to pick a tier.<span class="cursor"></span></div>
+    </div>
+  </div>
+
+  <div class="entry status-pass">
+    <div class="entry-top">
+      <div class="entry-title">Proof &amp; Guarantee</div>
+      <div class="badge-group"><span class="score-arrow">8 → <b>9</b></span><span class="badge pass">Pass</span></div>
+    </div>
+    <p>The 30-day money-back guarantee sits directly under each tier's CTA, not buried in an FAQ — correct placement. Testimonial density (770+ members, named quotes with specific outcomes) gives real, dated proof rather than vague enthusiasm, well ahead of the median SaaS landing page.</p>
+  </div>
+</div>
+
+<!-- TAB 3: AI COACH -->
+<div class="panel" id="t3">
+  <div class="entry status-warn" data-entry>
+    <div class="entry-top">
+      <div class="entry-title">The Opening Line</div>
+      <div class="badge-group"><span class="score-arrow">5 → <b>9</b></span><span class="badge warn" data-badge data-badge-before="warn|Mixed" data-badge-after="pass|Resolved">Mixed</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P2</span></div>
+    </div>
+    <p>"But I'm not a typical LLM" is the second line of copy, before the reader has expressed any doubt about that. Leading with a defense against skepticism the reader hasn't formed yet is a pattern that recurs across audited AI tools — it plants the doubt instead of pre-empting it. The underlying claim, trained on Generalist World Podcast conversations, is genuinely differentiated.</p>
+    <p><b style="color:#8fa8c4">Why it matters:</b> the Coach is a secondary conversion surface feeding the same funnel. An opener that plants doubt burns trust before the reader ever reaches the membership pitch, and it's a one-paragraph rewrite, no design work required.</p>
+    <div class="ba" data-ba>
+      <div class="ba-switch">
+        <button class="on" data-state="before">Before</button>
+        <button data-state="after">Rebuilt</button>
+      </div>
+      <div class="ba-tag" data-ba-tag>Current copy</div>
+      <div class="ba-readout" data-ba-readout
+        data-before="Opens with 'But I'm not a typical LLM' — a disclaimer against an objection nobody raised yet."
+        data-after="Opens with: 'I've absorbed hundreds of real conversations from the Generalist World podcast — squiggly careers, pivots, portfolio careers — so what you get here comes from people who've actually lived it.' Leads with the differentiated outcome instead of a defense.">Opens with 'But I'm not a typical LLM' — a disclaimer against an objection nobody raised yet.<span class="cursor"></span></div>
+    </div>
+  </div>
+</div>
+
+<div class="eyebrow" style="margin-top:10px;border-top:1px solid var(--line-soft);padding-top:26px">Cross-Module Summary · All 3 Surfaces Combined</div>
+<table>
+<tr><th>Section</th><th>Before</th><th>After</th><th>Finding</th></tr>
+<tr><td>Homepage — Hook</td><td class="score-before">8</td><td class="score-after">9</td><td>Strong identity reframe, good early proof</td></tr>
+<tr><td>Homepage — Entry point</td><td class="score-before">5</td><td class="score-after">9</td><td>Six competing CTAs → one primary action, rest demoted</td></tr>
+<tr><td>Pricing — CTA vs. reality</td><td class="score-before">3</td><td class="score-after">10</td><td>"Join" → "Apply to join," reply-time set</td></tr>
+<tr><td>Pricing — Tier selection</td><td class="score-before">5</td><td class="score-after">8</td><td>Checklist removed, one no-proof-required line</td></tr>
+<tr><td>Pricing — Proof &amp; guarantee</td><td class="score-before">8</td><td class="score-after">9</td><td>Well placed, dated, specific</td></tr>
+<tr><td>AI Coach — Opener</td><td class="score-before">5</td><td class="score-after">9</td><td>Denial → outcome-first opening line</td></tr>
+<tr class="total"><td>Overall average</td><td class="score-before">5.7</td><td class="score-after">9.0</td><td>+3.3 after rebuild</td></tr>
+</table>
+
+<div class="console">
+  <p>5.7/10 before, 9.0/10 projected after rebuild. The proof and community substance here are genuinely strong, stronger than most SaaS landing pages scored against this model. Every fix below is copy and sequencing, not a redesign: a button's promise matching its next step, one assessment step removed, one CTA carrying the homepage instead of six.</p>
+  <p>None of it touches the hero hook, the testimonials, or the pricing model itself — those already work. The rebuild is entirely in the handoffs: what's asked first, what a click actually delivers, and whether proof sits next to the ask. That's the skill that moves a warm audience this size from interested to converted.</p>
+</div>
+
+<div class="console" style="margin-top:-40px">
+  <p style="color:var(--dim);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px">// REBUILD SEQUENCE</p>
+  <p><b style="color:var(--signal)">P1 · Week 1</b> — Rewrite the pricing CTA and subtext so "Join" matches the real next step. Copy-only, no engineering, highest lift for the least effort.</p>
+  <p><b style="color:var(--signal)">P2 · Week 1</b> — Rewrite the AI Coach's opening line to lead with outcome instead of denial. Same reasoning: one paragraph, ships same week.</p>
+  <p><b style="color:var(--signal)">P3 · Weeks 2–3</b> — Restructure the homepage entry point around one primary action. Needs nav and hierarchy work, so it follows the quick copy wins rather than blocking them.</p>
+  <p><b style="color:var(--signal)">P4 · Month 1</b> — Simplify the pricing self-assessment. Touches equity messaging the team is protective of, so it's sequenced last, worked through carefully rather than shipped fast.</p>
+</div>
+</div>
+
+<footer><div class="wrap">By Alex Iliescu, Strategic Flow · 21 Aug 2026 · Structural diagnosis and rebuild spec, not copywriting for hire.</div></footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // tabs
+  var tabs = document.querySelectorAll('.tab-btn');
+  var underline = document.getElementById('tabUnderline');
+  function positionUnderline(btn){
+    underline.style.left = btn.offsetLeft + 'px';
+    underline.style.width = btn.offsetWidth + 'px';
+  }
+  function activateTab(btn){
+    tabs.forEach(function(b){ b.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+    positionUnderline(btn);
+  }
+  tabs.forEach(function(btn){ btn.addEventListener('click', function(){ activateTab(btn); }); });
+  window.addEventListener('resize', function(){ positionUnderline(document.querySelector('.tab-btn.active')); });
+
+  // decode scramble effect
+  var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*/\\';
+  function decodeInto(el, target){
+    clearInterval(el._timer);
+    if(reduce){ el.innerHTML=''; el.textContent = target; var c=document.createElement('span'); c.className='cursor'; el.appendChild(c); return; }
+    var len = target.length, revealed = 0, frame = 0;
+    el._timer = setInterval(function(){
+      frame++;
+      if(frame % 2 === 0 && revealed < len) revealed++;
+      var out = '';
+      for(var i=0;i<len;i++){
+        if(i < revealed) out += target[i];
+        else if(target[i] === ' ') out += ' ';
+        else out += CHARS[Math.floor(Math.random()*CHARS.length)];
+      }
+      el.textContent = out;
+      if(revealed >= len){
+        clearInterval(el._timer);
+        el.textContent = target;
+        var c=document.createElement('span'); c.className='cursor'; el.appendChild(c);
+      }
+    }, 26);
+  }
+
+  function setEntryState(entry, state){
+    var readout = entry.querySelector('[data-ba-readout]');
+    var tag = entry.querySelector('[data-ba-tag]');
+    var buttons = entry.querySelectorAll('.ba-switch button');
+    var badge = entry.querySelector('[data-badge]');
+    buttons.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-state') === state); });
+    decodeInto(readout, readout.getAttribute('data-' + state));
+    if(tag) tag.textContent = state === 'before' ? 'Current copy' : 'Rebuilt copy';
+    if(badge){
+      var pair = badge.getAttribute('data-badge-' + state).split('|');
+      badge.className = 'badge ' + pair[0];
+      badge.textContent = pair[1];
+    }
+  }
+
+  document.querySelectorAll('[data-ba]').forEach(function(block){
+    var entry = block.closest('[data-entry]');
+    block.querySelectorAll('.ba-switch button').forEach(function(btn){
+      btn.addEventListener('click', function(){ setEntryState(entry, btn.getAttribute('data-state')); });
+    });
+  });
+
+  // animated number helper (from current shown value to a target)
+  function animateNumber(el, to, decimals){
+    var fromText = el.textContent.replace(/[^0-9.\-]/g,'');
+    var from = parseFloat(fromText) || 0;
+    if(reduce){ el.textContent = decimals ? to.toFixed(1) : to; return; }
+    var start = null, duration = 900;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var val = from + (to - from) * p;
+      el.textContent = decimals ? val.toFixed(1) : Math.round(val);
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = decimals ? to.toFixed(1) : to;
+    }
+    requestAnimationFrame(step);
+  }
+
+  var ring = document.getElementById('gaugeRing');
+  var circumference = 169.6;
+  function setGauge(score){
+    animateNumber(document.getElementById('gaugeNum'), score, true);
+    var pct = score/10;
+    var offset = circumference * (1 - pct);
+    ring.style.strokeDashoffset = offset;
+  }
+
+  var masterButtons = document.querySelectorAll('#masterSwitch button');
+  function setMaster(state){
+    masterButtons.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-state') === state); });
+    document.querySelectorAll('[data-entry]').forEach(function(entry){ setEntryState(entry, state); });
+    setGauge(state === 'before' ? 5.7 : 9.0);
+    var frictionEl = document.getElementById('frictionStat');
+    var frictionLabel = document.getElementById('frictionLabel');
+    animateNumber(frictionEl, state === 'before' ? 4 : 0, false);
+    frictionLabel.textContent = state === 'before' ? 'Friction points found' : 'Friction points resolved';
+    if(state === 'after'){ setTimeout(function(){ animateNumber(frictionEl, 4, false); }, 60); }
+  }
+  masterButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){ setMaster(btn.getAttribute('data-state')); });
+  });
+
+  window.addEventListener('load', function(){
+    positionUnderline(document.querySelector('.tab-btn.active'));
+    animateNumber(document.querySelector('.gauge-card .stat-mini'), 3, false);
+    setGauge(5.7);
+    var frictionEl = document.getElementById('frictionStat');
+    animateNumber(frictionEl, 4, false);
+  });
+})();
+</script>
+</body>
+</html>
