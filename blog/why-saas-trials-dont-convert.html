@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -141,113 +161,215 @@
 }
 </script>
 
-<style>
-  :root{
-    --ink:#1a1a1a; --ink-soft:#4a4a4a; --accent:#7a2323; --gold:#a5813f;
-    --bg:#fdfbf7; --card:#f7f3ea; --line:#e2dccb;
-  }
-  *{box-sizing:border-box}
-  body{
-    font-family: Georgia, 'Times New Roman', serif;
-    background:var(--bg); color:var(--ink);
-    margin:0; line-height:1.7;
-  }
-  .wrap{max-width:760px; margin:0 auto; padding:0 24px 80px;}
-  nav.breadcrumb{
-    font-family: -apple-system, Arial, sans-serif; font-size:13px; color:var(--ink-soft);
-    padding:18px 0; border-bottom:1px solid var(--line);
-  }
-  nav.breadcrumb a{color:var(--ink-soft); text-decoration:none;}
-  nav.breadcrumb a:hover{text-decoration:underline;}
-  nav.breadcrumb span[aria-hidden]{margin:0 6px; color:#bbb;}
-  header.article-head{padding:40px 0 20px;}
-  .kicker{
-    font-family:-apple-system, Arial, sans-serif; text-transform:uppercase; letter-spacing:1.5px;
-    font-size:12px; color:var(--accent); font-weight:700; margin-bottom:12px;
-  }
-  h1{font-size:36px; line-height:1.25; margin:0 0 16px; color:var(--ink);}
-  .dek{font-size:19px; color:var(--ink-soft); margin:0 0 20px; font-style:italic;}
-  .meta{
-    font-family:-apple-system, Arial, sans-serif; font-size:13px; color:var(--ink-soft);
-    display:flex; gap:16px; flex-wrap:wrap; padding-bottom:24px; border-bottom:1px solid var(--line);
-  }
-  article h2{font-size:26px; margin:40px 0 14px; color:var(--ink);}
-  article h3{font-size:20px; margin:28px 0 10px; color:var(--ink);}
-  article p{font-size:17px; margin:0 0 18px; color:#2a2a2a;}
-  article ul, article ol{font-size:17px; margin:0 0 18px; padding-left:22px;}
-  article li{margin-bottom:8px;}
-  .callout{
-    background:var(--card); border-left:3px solid var(--accent); padding:18px 22px;
-    margin:28px 0; font-size:16px;
-  }
-  .callout strong{color:var(--accent);}
-  .stat-row{
-    display:flex; gap:14px; flex-wrap:wrap; margin:24px 0 32px;
-  }
-  .stat-box{
-    background:var(--card); border:1px solid var(--line); border-radius:6px;
-    padding:16px 20px; flex:1; min-width:140px; text-align:center;
-    font-family:-apple-system, Arial, sans-serif;
-  }
-  .stat-box .num{font-size:26px; font-weight:800; color:var(--accent); display:block;}
-  .stat-box .lab{font-size:12px; color:var(--ink-soft); margin-top:4px; display:block;}
-  table{width:100%; border-collapse:collapse; margin:20px 0 30px; font-size:15px; font-family:-apple-system, Arial, sans-serif;}
-  th{background:var(--ink); color:#fff; text-align:left; padding:10px 12px; font-weight:600;}
-  td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
-  tr:nth-child(even) td{background:var(--card);}
-  .faq-item{border-bottom:1px solid var(--line); padding:18px 0;}
-  .faq-item h3{margin:0 0 8px; font-size:18px;}
-  .faq-item p{margin:0; font-size:16px; color:var(--ink-soft);}
-  .cta-box{
-    background:var(--ink); color:#f7f3ea; border-radius:8px; padding:30px 28px; margin:44px 0;
-    font-family:-apple-system, Arial, sans-serif;
-  }
-  .cta-box h2{color:#fff; font-size:22px; margin:0 0 10px; font-family:Georgia, serif;}
-  .cta-box p{color:#d8d2c2; font-size:15px; margin:0 0 18px;}
-  .cta-box a.btn{
-    display:inline-block; background:var(--accent); color:#fff; text-decoration:none;
-    padding:12px 22px; border-radius:5px; font-weight:700; font-size:14px;
-  }
-  footer.article-foot{
-    font-family:-apple-system, Arial, sans-serif; font-size:13px; color:var(--ink-soft);
-    padding-top:24px; border-top:1px solid var(--line); margin-top:50px;
-  }
-  .toc{
-    background:var(--card); border:1px solid var(--line); border-radius:6px;
-    padding:18px 22px; margin:24px 0; font-family:-apple-system, Arial, sans-serif; font-size:14px;
-  }
-  .toc-title{font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; font-size:12px; color:var(--ink-soft);}
-  .toc ol{margin:0; padding-left:20px;}
-  .toc a{color:var(--ink); text-decoration:none;}
-  .toc a:hover{text-decoration:underline;}
-</style>
 </head>
-<body>
+<style>
 
-<div class="wrap">
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0a1628;--bg2:#0f2035;--bg3:#122440;
+  --green:#00d4c8;--green-mid:#00a89e;
+  --border2:rgba(0,212,200,0.28);
+  --text:#ffffff;--text2:rgba(255,255,255,0.85);--text3:#7a9ab8;
+  --red:#f87171;--border:#1a3050;
+  --sans:'Figtree',sans-serif;--serif:'DM Serif Display',serif;--mono:'DM Mono',monospace;
+}
+html,body{width:100%;background:var(--bg);color:var(--text);font-family:var(--sans);}
 
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,22,40,0.96);backdrop-filter:blur(14px);z-index:100;}
+.nav-logo{font-family:var(--serif);font-size:19px;color:#fff;letter-spacing:-.01em;text-decoration:none;}
+.nav-logo em{color:var(--green);font-style:italic;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-link{font-size:12px;color:var(--text2);text-decoration:none;font-family:var(--mono);letter-spacing:.04em;transition:color .2s;}
+.nav-link:hover,.nav-link.active{color:var(--green);}
+.nav-cta{background:var(--green);color:#07090f;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;transition:opacity .2s;}
+.nav-cta:hover{opacity:.85;}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text2);transition:.3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:58px;left:0;right:0;bottom:0;background:rgba(10,22,40,0.98);z-index:99;overflow-y:auto;padding:24px 20px;}
+.mobile-menu.open{display:block;}
+.mm-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);color:var(--text2);text-decoration:none;font-size:14px;}
+.mm-item:hover{color:var(--green);}
+.mm-cta{display:block;background:var(--green);color:#07090f;text-align:center;padding:13px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;margin-top:20px;}
+@media(max-width:768px){.nav-links{display:none;}.hamburger{display:flex;}}
+
+/* ARTICLE LAYOUT */
+.article-header{max-width:720px;margin:0 auto;padding:72px 48px 48px;}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;margin-bottom:28px;flex-wrap:wrap;}
+.breadcrumb a{color:var(--text3);text-decoration:none;}
+.breadcrumb a:hover{color:var(--green);}
+.breadcrumb-sep{color:var(--border);}
+.article-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid var(--border2);padding:4px 12px;border-radius:20px;margin-bottom:20px;}
+.article-h1{font-family:var(--serif);font-size:clamp(32px,4.5vw,52px);line-height:1.1;letter-spacing:-.02em;margin-bottom:16px;}
+.article-h1 em{font-style:italic;color:var(--green);}
+.article-meta-row{display:flex;gap:20px;align-items:center;font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:32px;}
+.article-lede{font-size:19px;color:var(--text2);line-height:1.65;border-left:2px solid var(--green);padding-left:20px;}
+
+.article-body{max-width:720px;margin:0 auto;padding:0 48px 80px;}
+.article-body p{font-size:16px;color:var(--text2);line-height:1.75;margin-bottom:22px;}
+.article-body h2{font-family:var(--serif);font-size:26px;line-height:1.2;margin:48px 0 16px;color:#fff;}
+.article-body h3{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin:32px 0 12px;}
+.article-body strong{color:#fff;font-weight:600;}
+.article-body a{color:var(--green);text-decoration:underline;}
+
+.data-callout{background:rgba(0,212,200,0.04);border:1px solid var(--border2);border-radius:10px;padding:24px 28px;margin:32px 0;}
+.data-callout-label{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px;}
+.data-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.data-row:last-child{border-bottom:none;}
+.data-pattern{font-size:14px;color:var(--text2);}
+.data-pct{font-family:var(--mono);font-size:16px;color:var(--green);font-weight:500;}
+
+.before-after{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin:28px 0;border-radius:8px;overflow:hidden;}
+.ba-box{padding:18px 20px;}
+.ba-before{background:rgba(248,113,113,0.06);}
+.ba-after{background:rgba(0,212,200,0.04);}
+.ba-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.ba-before .ba-label{color:#f87171;}
+.ba-after .ba-label{color:var(--green);}
+.ba-text{font-size:14px;color:var(--text2);line-height:1.6;}
+@media(max-width:560px){.before-after{grid-template-columns:1fr;}}
+
+.score-bar{display:flex;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid var(--border);}
+.score-bar:first-child{border-top:1px solid var(--border);}
+.score-label{font-size:14px;color:var(--text2);flex:1;}
+.score-num{font-family:var(--serif);font-size:24px;color:var(--green);}
+.score-track{flex:2;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;position:relative;}
+.score-fill{height:100%;border-radius:2px;background:var(--green);}
+
+/* CTA BOX */
+.article-cta{background:rgba(0,212,200,0.04);border:1px solid var(--border2);border-radius:10px;padding:32px;margin:48px 0 0;display:flex;flex-direction:column;gap:12px;}
+.article-cta-label{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.14em;text-transform:uppercase;}
+.article-cta-title{font-family:var(--serif);font-size:24px;line-height:1.2;}
+.article-cta-sub{font-size:14px;color:var(--text2);line-height:1.65;}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#07090f;padding:11px 22px;border-radius:7px;font-size:13px;font-weight:600;text-decoration:none;transition:opacity .2s;margin-top:4px;}
+.btn-p:hover{opacity:.85;}.article-body .btn-p{color:#07090f !important;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 48px;text-align:center;}
+.footer-links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+.footer-links a{font-size:12px;color:#1D9E75;text-decoration:none;font-family:var(--mono);}
+.footer-links a:hover{color:#fff;}
+.footer-copy{font-family:var(--mono);font-size:11px;color:#1D9E75;}
+
+/* AFFILIATE BAR */
+#sf-sticky-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:#09111e;border-top:1px solid rgba(255,255,255,0.08);z-index:200;transition:opacity .35s ease,transform .35s ease;opacity:0;transform:translateY(8px);}
+#sf-sticky-bar.visible{opacity:1;transform:translateY(0);}
+.sf-bar-inner{display:flex;align-items:center;gap:16px;padding:12px 24px;max-width:1100px;margin:0 auto;}
+.sf-bar-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.sf-affiliate-tag{font-family:var(--mono);font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.1em;border:1px solid #2a2a2a;padding:2px 7px;border-radius:4px;flex-shrink:0;}
+.sf-badge{font-family:var(--mono);font-size:11px;color:var(--green);font-weight:600;flex-shrink:0;}
+.sf-text{font-size:13px;color:rgba(255,255,255,0.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sf-cta{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#07090f;font-size:12px;font-weight:700;padding:8px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;flex-shrink:0;}
+.sf-cta-arrow{transition:transform .2s;}
+.sf-cta:hover .sf-cta-arrow{transform:translateX(2px);}
+.sf-close{color:#555;font-size:16px;background:none;border:none;cursor:pointer;padding:6px 8px;flex-shrink:0;transition:color .2s;}
+.sf-close:hover{color:#999;}
+@media(max-width:768px){.sf-text{display:none;}.sf-bar-inner{flex-wrap:wrap;padding:10px 16px;gap:8px;}}
+@media(max-width:600px){.article-header,.article-body{padding-left:20px;padding-right:20px;}footer{padding:28px 20px;}}
+
+/* COOKIE BANNER */
+#cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:#09111e;border-top:1px solid rgba(255,255,255,0.08);padding:18px 48px;display:none;}
+#cookie-banner.visible{display:flex;}
+.cookie-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;width:100%;flex-wrap:wrap;}
+.cookie-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;max-width:680px;}
+.cookie-text a{color:#00e5a0;text-decoration:underline;}
+.cookie-actions{display:flex;gap:10px;flex-shrink:0;}
+.cookie-btn{font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:10px 18px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.7);transition:all .2s;}
+.cookie-btn:hover{border-color:#00e5a0;color:#00e5a0;}
+.cookie-btn.accept{background:#00e5a0;color:#07090f;border-color:#00e5a0;}
+.cookie-btn.accept:hover{background:#00c88a;}
+@media(max-width:640px){#cookie-banner{padding:16px 18px;}.cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}.cookie-actions{justify-content:flex-end;}}
+
+
+/* TRIAL CONVERSION ARTICLE COMPONENTS */
+.article-body .toc{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:24px 28px;margin:0 0 40px;font-family:var(--sans);}
+.article-body .toc-title{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:14px;}
+.article-body .toc ol{margin:0;padding-left:22px;}
+.article-body .toc li{font-size:14px;line-height:1.55;margin:0 0 9px;color:var(--text2);}
+.article-body .toc li:last-child{margin-bottom:0;}
+.article-body .toc a{color:var(--text2);text-decoration:none;}
+.article-body .toc a:hover{color:var(--green);}
+.article-body .callout{background:rgba(0,212,200,.05);border:1px solid var(--border2);border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:20px 24px;margin:32px 0;color:var(--text2);font-size:15px;line-height:1.65;}
+.article-body .callout strong{color:var(--green);}
+.article-body .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:32px 0 40px;}
+.article-body .stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px 14px;text-align:center;font-family:var(--sans);}
+.article-body .stat-box .num{display:block;font-family:var(--serif);font-size:30px;line-height:1;color:var(--green);}
+.article-body .stat-box .lab{display:block;margin-top:10px;color:var(--text3);font-size:11px;line-height:1.45;}
+.article-body .table-wrap{overflow-x:auto;margin:32px 0 40px;}
+.article-body table{min-width:680px;margin:0;border-collapse:collapse;font-size:13px;}
+.article-body th{background:var(--bg3);color:var(--green);font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:13px 14px;border-bottom:1px solid var(--border2);text-align:left;}
+.article-body td{padding:14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;line-height:1.55;}
+.article-body tr:nth-child(even) td{background:rgba(15,32,53,.45);}
+.article-body .faq-item{border-top:1px solid var(--border);border-bottom:0;padding:20px 0;}
+.article-body .faq-item h3{font-family:var(--serif);font-size:19px;line-height:1.3;color:var(--text);margin:0 0 8px;}
+.article-body .faq-item p{margin:0;color:var(--text2);font-size:15px;line-height:1.7;}
+.article-body .cta-box{background:rgba(0,212,200,.05);border:1px solid var(--border2);border-radius:10px;padding:30px;margin:48px 0;display:flex;flex-direction:column;gap:12px;font-family:var(--sans);}
+.article-body .cta-box h2{font-family:var(--serif);font-size:24px;line-height:1.2;color:var(--text);margin:0;}
+.article-body .cta-box p{font-size:14px;line-height:1.65;color:var(--text2);margin:0;}
+.article-body .cta-box a.btn{display:inline-flex;align-items:center;align-self:flex-start;background:var(--green);color:#07090f;padding:11px 22px;border-radius:7px;font-family:var(--sans);font-size:13px;font-weight:600;text-decoration:none;margin-top:4px;}
+.article-body .cta-box a.btn:hover{opacity:.85;}
+@media(max-width:600px){.article-body .stat-row{grid-template-columns:1fr;}.article-body .stat-box{display:flex;align-items:center;gap:14px;text-align:left;padding:16px 18px;}.article-body .stat-box .lab{margin-top:0;}.article-body .toc{padding:20px;}.article-body .callout{padding:17px 18px;}.article-body .cta-box{padding:24px 20px;}}
+</style>
+<body data-sf-bar="content">
+
+
+<nav aria-label="Main navigation">
+  <a href="https://strategicflow.tech/" class="nav-logo">Strategic<em>Flow</em></a>
+  <div class="nav-links">
+    <a href="https://strategicflow.tech/teardowns.html" class="nav-link">Teardowns</a>
+    <a href="https://strategicflow.tech/glossary.html" class="nav-link">Glossary</a>
+    <a href="/blog.html" class="nav-link active">Blog</a>
+    <a href="https://strategic-flow-audit.replit.app" class="nav-link" target="_blank" rel="noopener">Free Audit</a>
+    <a href="https://strategic-flow-pro.replit.app" class="nav-cta" target="_blank" rel="noopener">Rebuild Yours →</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="https://strategicflow.tech/teardowns.html" class="mm-item">Teardowns</a>
+  <a href="https://strategicflow.tech/glossary.html" class="mm-item">Glossary</a>
+  <a href="/blog.html" class="mm-item" style="color:var(--green);">Blog</a>
+  <a href="https://strategic-flow-audit.replit.app" class="mm-item" target="_blank" rel="noopener">Free Audit</a>
+  <a href="https://strategic-flow-pro.replit.app" class="mm-cta" target="_blank" rel="noopener">Rebuild Yours →</a>
+</div>
+<script>
+(function(){
+  var h=document.getElementById('hamburger'),m=document.getElementById('mobile-menu');
+  if(!h||!m)return;
+  function close(){h.classList.remove('open');m.classList.remove('open');h.setAttribute('aria-expanded','false');}
+  h.addEventListener('click',function(e){e.stopPropagation();m.classList.contains('open')?close():(h.classList.add('open'),m.classList.add('open'),h.setAttribute('aria-expanded','true'));});
+  m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+  document.addEventListener('click',function(e){if(!m.contains(e.target)&&!h.contains(e.target))close();});
+})();
+</script>
+
+<header class="article-header">
   <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="https://strategicflow.tech/">Home</a>
-    <span aria-hidden="true">/</span>
-    <a href="https://strategicflow.tech/blog.html">Blog</a>
-    <span aria-hidden="true">/</span>
-    <span aria-current="page">Why SaaS Trials Don't Convert</span>
+    <a href="https://strategicflow.tech/">Strategic Flow</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="/blog.html">Blog</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>Why SaaS Trials Don't Convert</span>
   </nav>
+  <div class="article-tag">Conversion Diagnostics</div>
+  <h1 class="article-h1">Why SaaS Trials Don't Convert: <em>The Structural Failures Behind Trial-to-Paid Drop-Off</em></h1>
+  <div class="article-meta-row">
+    <span>By Strategic Flow</span>
+    <span>·</span>
+    <span>22 Aug 2026</span>
+    <span>·</span>
+    <span>7 min read</span>
+  </div>
+  <p class="article-lede">A low trial-to-paid rate usually gets treated as a pricing problem. In most cases it's a sequencing problem, and the fix is rarely where teams look first.</p>
+</header>
 
-  <header class="article-head">
-    <div class="kicker">Conversion Diagnostics</div>
-    <h1>Why SaaS Trials Don't Convert: The Structural Failures Behind Trial-to-Paid Drop-Off</h1>
-    <p class="dek">A low trial-to-paid rate usually gets treated as a pricing problem. In most cases it's a sequencing problem, and the fix is rarely where teams look first.</p>
-    <div class="meta">
-      <span>By Strategic Flow</span>
-      <span>Published August 22, 2026</span>
-      <span>7 min read</span>
-    </div>
-  </header>
+<article class="article-body">
 
-  <article>
-
-    <div class="toc">
+<div class="toc">
       <div class="toc-title">In this article</div>
       <ol>
         <li><a href="#framing">The framing problem: pricing lever vs. structural failure</a></li>
@@ -318,7 +440,8 @@
 
     <p>This is a comprehension failure at the exact point where the friction cost is highest. The user has already invested time in the trial. They're closer to converting than at any earlier stage. And this is precisely where an unclear pricing structure introduces enough hesitation that many users simply leave the tab open and never come back to finish the decision.</p>
 
-    <table>
+    <div class="table-wrap">
+<table>
       <thead>
         <tr><th>Failure pattern</th><th>What it looks like</th><th>Wrong fix</th><th>Right fix</th></tr>
       </thead>
@@ -349,6 +472,7 @@
         </tr>
       </tbody>
     </table>
+</div>
 
     <h2 id="model">Scoring trial flows the same way we score emails</h2>
 
@@ -409,13 +533,70 @@
       <p>Only if the mismatch is genuinely about time, meaning the use case requires a certain number of days or data points before its value becomes visible. If users are dropping off because the ask (setup, data connection, configuration) arrives before any value is shown, a longer trial window will not fix that. The fix is moving proof earlier, not extending the clock.</p>
     </div>
 
-  </article>
+</article>
 
-  <footer class="article-foot">
-    <p>Strategic Flow diagnoses why SaaS emails, onboarding flows, and trial sequences get opened or started but don't convert. Structural diagnostics, not copywriting, not deliverability infrastructure.</p>
-    <p>&copy; 2026 Strategic Flow. <a href="https://strategicflow.tech/" style="color:inherit;">strategicflow.tech</a></p>
-  </footer>
+<footer>
+  <div class="footer-links">
+    <a href="https://strategicflow.tech/">Strategic Flow</a>
+    <a href="https://strategicflow.tech/teardowns.html">Teardowns</a>
+    <a href="https://strategicflow.tech/glossary.html">Glossary</a>
+    <a href="/blog.html">Blog</a>
+    <a href="https://strategic-flow-audit.replit.app" target="_blank" rel="noopener">Free Audit</a>
+    <a href="https://strategic-flow-pro.replit.app" target="_blank" rel="noopener">Pro Plans</a>
+  </div>
+  <div class="footer-copy">Strategic Flow © 2026 · <a href="https://strategicflow.tech" style="color:#1D9E75;text-decoration:none;">strategicflow.tech</a></div>
+</footer>
 
+<div id="sf-sticky-bar">
+  <div class="sf-bar-inner">
+    <div class="sf-bar-left">
+      <span class="sf-affiliate-tag">affiliate</span>
+      <span class="sf-badge" id="sf-badge-text"></span>
+      <span class="sf-text" id="sf-main-text"></span>
+    </div>
+    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank">
+      <span id="sf-cta-text"></span>
+      <span class="sf-cta-arrow">→</span>
+    </a>
+    <button class="sf-close" id="sf-close-btn">✕</button>
+  </div>
 </div>
+<script>
+(function(){
+  if(sessionStorage.getItem('sf-bar-closed'))return;
+  var bar=document.getElementById('sf-sticky-bar');
+  var badge=document.getElementById('sf-badge-text');
+  var text=document.getElementById('sf-main-text');
+  var ctaText=document.getElementById('sf-cta-text');
+  badge.textContent='10 spots · 40% locked';
+  text.innerHTML='Know a SaaS team with broken emails? <strong>Earn $199–$1,000/mo per referral.</strong>';
+  ctaText.textContent='Join Affiliate Programme';
+  var shown=false;
+  function showBar(){if(shown)return;shown=true;bar.style.display='flex';setTimeout(function(){bar.classList.add('visible');},50);}
+  setTimeout(showBar,15000);
+  window.addEventListener('scroll',function(){if(window.scrollY/(document.body.scrollHeight-window.innerHeight)>=0.4)showBar();},{passive:true});
+  document.getElementById('sf-close-btn').addEventListener('click',function(){bar.classList.remove('visible');setTimeout(function(){bar.style.display='none';},350);sessionStorage.setItem('sf-bar-closed','1');});
+})();
+</script>
+
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">This site uses cookies for analytics (Google Analytics). We do not sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.</div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='sf_consent',stored=localStorage.getItem(KEY),banner=document.getElementById('cookie-banner');
+  function grant(){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}
+  if(stored==='granted'){grant();}else if(stored!=='denied'){banner.classList.add('visible');}
+  document.getElementById('cookie-accept').addEventListener('click',function(){localStorage.setItem(KEY,'granted');grant();banner.classList.remove('visible');});
+  document.getElementById('cookie-decline').addEventListener('click',function(){localStorage.setItem(KEY,'denied');banner.classList.remove('visible');});
+})();
+</script>
+</body>
 </body>
 </html>
