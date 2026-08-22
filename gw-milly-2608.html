@@ -103,6 +103,9 @@ svg.ring{transform:rotate(-90deg); flex-shrink:0}
 .entry.status-warn{border-left-color:var(--warn-dim)}
 .entry-top{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px}
 .entry-title{font-family:var(--disp); font-size:20px; font-weight:600; color:var(--ink)}
+.hook{font-family:var(--body); font-style:italic; font-size:14.5px; color:#8fa8c4; margin:2px 0 12px}
+.signal{margin-top:14px; border-top:1px dashed var(--line-soft); padding-top:12px; font-family:var(--mono); font-size:12px; color:var(--dim)}
+.signal b{color:var(--warn)}
 .badge-group{display:flex; align-items:center; gap:8px}
 .badge{font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; padding:4px 10px; border-radius:3px; white-space:nowrap; transition:background .25s, color .25s}
 .badge.pass{background:#0f2b26; color:var(--signal)}
@@ -151,6 +154,7 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
   <div class="eyebrow">Diagnostic Report · 3 Modules Scanned</div>
   <h1>Generalist World: <span>funnel integrity scan</span></h1>
   <p class="dek">Same 7-point structural model used across 59 published SaaS teardowns, run against three live surfaces — with the rebuild specified for every friction point found.</p>
+  <p class="dek" style="font-size:14.5px;color:var(--dim)">Why this exists: the job is finding and fixing membership growth friction, so instead of just describing the skill, here it is running against your own funnel. Four leaks found, all fixable in copy and sequencing, none of them touching what already works.</p>
 
   <div class="target-row">
     <span class="t">generalist.world</span><span class="sep">/</span>
@@ -214,7 +218,10 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
       <div class="entry-title">The Hook</div>
       <div class="badge-group"><span class="score-arrow">8 → <b>9</b></span><span class="badge pass">Pass</span></div>
     </div>
+    <div class="hook">The line that already works.</div>
     <p>"You're not scattered. You're multi-dimensional." lands immediately and reframes the reader's self-doubt into an identity — most SaaS homepages open with a feature list instead of a feeling the reader already has. The video testimonial wall right after the hero puts proof early instead of burying it at the bottom.</p>
+    <p style="color:#8fa8c4;font-size:14px">This is the sentence that made the site worth auditing properly. Whoever wrote it understands the audience better than most growth hires ever bother to.</p>
+    <div class="signal"><b>Extra signal, unscored:</b> a hook this specific works because it names the exact feeling the reader already has. Worth double-checking it's the literal first thing above the fold, since strong hooks lose half their power buried after even a small scroll.</div>
   </div>
 
   <div class="entry status-alert" data-entry>
@@ -222,8 +229,11 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
       <div class="entry-title">The Entry Point Problem</div>
       <div class="badge-group"><span class="score-arrow">5 → <b>9</b></span><span class="badge alert" data-badge data-badge-before="alert|Alert" data-badge-after="pass|Resolved">Alert</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P3</span></div>
     </div>
+    <div class="hook">Six doors. No sign on any of them.</div>
     <p>By the time a first-time visitor scrolls past the hero, they've been offered an email signup, a "Start Here" link, a Job Board link, the Positioning Guidebook, the Archetype Quiz, and "Join Community." Nothing tells a new visitor which one is the actual first move — a pattern that shows up repeatedly across the audited SaaS dataset.</p>
     <p><b style="color:#8fa8c4">Why it matters:</b> with 65,000 warm readers already in the funnel, a diffuse entry point taxes the exact metric this role reports on, new paying members per month, by splitting attention across six paths instead of concentrating it on one.</p>
+    <p style="color:#8fa8c4;font-size:14px">Picture someone who's read three newsletters and finally feels ready to go deeper. Instead of one obvious next step, they get a menu. A menu is a great way to make an interested person close the tab and decide to "come back later."</p>
+    <div class="signal"><b>Extra signal, unscored:</b> the hiring funnel for this exact role has a similar shape, a LinkedIn apply link, a direct email address, and this Notion page, with no single one marked as the primary path. Not a criticism, just the same pattern showing up a level up, in how the role itself gets filled.</div>
     <div class="ba" data-ba>
       <div class="ba-switch">
         <button class="on" data-state="before">Before</button>
@@ -244,8 +254,11 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
       <div class="entry-title">The Promise-Process Gap</div>
       <div class="badge-group"><span class="score-arrow">3 → <b>10</b></span><span class="badge alert" data-badge data-badge-before="alert|Alert" data-badge-after="pass|Resolved">Alert</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P1</span></div>
     </div>
+    <div class="hook">The button says yes. The FAQ says maybe.</div>
     <p>The primary CTA reads "Join the community." The FAQ directly underneath states members are accepted on a rolling basis and to join the waitlist to apply. Someone clicking "Join" expects to join, not apply and wait — one of the most common failure patterns across the dataset: a CTA that promises one thing while the actual next step delivers another.</p>
     <p><b style="color:#8fa8c4">Why it matters:</b> warm leads, engaged readers, waitlists, event attendees, are the fastest path to new members this role owns. A CTA that breaks trust at the very last click spends that advantage for nothing.</p>
+    <p style="color:#8fa8c4;font-size:14px">It's the digital version of a shop sign that says "Open" when the door's locked. Doesn't matter how good the store is behind it, that first mismatch is what people remember.</p>
+    <div class="signal"><b>Extra signal, unscored:</b> the honest version of the process is right there in the FAQ, directly under the CTA. The information exists, it's just sequenced after the promise instead of before it. Flip the order, state the real process first, and the CTA above it can finally say exactly what it delivers.</div>
     <div class="ba" data-ba>
       <div class="ba-switch">
         <button class="on" data-state="before">Before</button>
@@ -263,8 +276,11 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
       <div class="entry-title">The Pricing Self-Assessment</div>
       <div class="badge-group"><span class="score-arrow">5 → <b>8</b></span><span class="badge warn" data-badge data-badge-before="warn|Mixed" data-badge-after="pass|Resolved">Mixed</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P4</span></div>
     </div>
+    <div class="hook">Two decisions, dressed up as one click.</div>
     <p>The sliding-scale pricing (Full $950 / Parity $500 / Solidarity $250) is a genuinely good equity model. But right at the decision point, the reader is handed a checklist to self-assess their own financial situation before they're allowed to pick a tier — an extra cognitive step inserted exactly where momentum matters most.</p>
     <p><b style="color:#8fa8c4">Why it matters:</b> a judgment step at the moment of commitment is the highest-leverage point to lose someone who was already going to pay. It's the one moment growth work can least afford to add friction, and the fix touches messaging the team is protective of, so it goes last, not first.</p>
+    <p style="color:#8fa8c4;font-size:14px">Nobody has ever filled out a form about their bank balance and felt more excited to hand over money. The equity idea is right, the interrogation before it is the part costing you members.</p>
+    <div class="signal"><b>Extra signal, unscored:</b> the specific questions, do you own property, can you afford discretionary purchases, read as invasive rather than diagnostic. For a pricing model built to be inclusive, how the self-assessment is worded matters as much as the fact that it exists.</div>
     <div class="ba" data-ba>
       <div class="ba-switch">
         <button class="on" data-state="before">Before</button>
@@ -282,7 +298,9 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
       <div class="entry-title">Proof &amp; Guarantee</div>
       <div class="badge-group"><span class="score-arrow">8 → <b>9</b></span><span class="badge pass">Pass</span></div>
     </div>
+    <div class="hook">Receipts, placed right where they matter.</div>
     <p>The 30-day money-back guarantee sits directly under each tier's CTA, not buried in an FAQ — correct placement. Testimonial density (770+ members, named quotes with specific outcomes) gives real, dated proof rather than vague enthusiasm, well ahead of the median SaaS landing page.</p>
+    <div class="signal"><b>Extra signal, unscored:</b> testimonials here cite 770+ members, the role listing elsewhere says 850+. Small gap, but worth a source-of-truth check, since two different numbers for the same metric is its own tiny promise-process gap.</div>
   </div>
 </div>
 
@@ -293,8 +311,11 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
       <div class="entry-title">The Opening Line</div>
       <div class="badge-group"><span class="score-arrow">5 → <b>9</b></span><span class="badge warn" data-badge data-badge-before="warn|Mixed" data-badge-after="pass|Resolved">Mixed</span><span class="badge" style="background:#1a2230;color:#8fa8c4">P2</span></div>
     </div>
+    <div class="hook">Opens with an apology nobody asked for.</div>
     <p>"But I'm not a typical LLM" is the second line of copy, before the reader has expressed any doubt about that. Leading with a defense against skepticism the reader hasn't formed yet is a pattern that recurs across audited AI tools — it plants the doubt instead of pre-empting it. The underlying claim, trained on Generalist World Podcast conversations, is genuinely differentiated.</p>
     <p><b style="color:#8fa8c4">Why it matters:</b> the Coach is a secondary conversion surface feeding the same funnel. An opener that plants doubt burns trust before the reader ever reaches the membership pitch, and it's a one-paragraph rewrite, no design work required.</p>
+    <p style="color:#8fa8c4;font-size:14px">Nobody walks up to a genuinely useful tool worried it might be a typical LLM. Leading with that line is like introducing yourself at a party by explaining why you're not boring.</p>
+    <div class="signal"><b>Extra signal, unscored:</b> the Coach lives on a separate lovable.app domain rather than under generalist.world. Not a functional problem, but a small trust gap, a different domain can read as a different product to a visitor who doesn't know your stack.</div>
     <div class="ba" data-ba>
       <div class="ba-switch">
         <button class="on" data-state="before">Before</button>
@@ -323,6 +344,7 @@ footer{border-top:1px solid var(--line-soft); padding:26px 0 50px; font-family:v
 <div class="console">
   <p>5.7/10 before, 9.0/10 projected after rebuild. The proof and community substance here are genuinely strong, stronger than most SaaS landing pages scored against this model. Every fix below is copy and sequencing, not a redesign: a button's promise matching its next step, one assessment step removed, one CTA carrying the homepage instead of six.</p>
   <p>None of it touches the hero hook, the testimonials, or the pricing model itself — those already work. The rebuild is entirely in the handoffs: what's asked first, what a click actually delivers, and whether proof sits next to the ask. That's the skill that moves a warm audience this size from interested to converted.</p>
+  <p style="font-style:italic;color:#8fa8c4">Nothing here needed a redesign. It needed someone to actually click through as a stranger would, and write down where the story stopped matching the experience.</p>
 </div>
 
 <div class="console" style="margin-top:-40px">
