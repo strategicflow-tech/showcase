@@ -107,8 +107,8 @@
     },
     {
       "@type": "Question",
-      "name": "Why does a sequence audit catch bugs a single-email audit misses?",
-      "acceptedAnswer": { "@type": "Answer", "text": "A single-email audit checks structure inside one message. A sequence audit checks the relationship between messages: silence gaps where no email runs during a critical decision window, repeated CTAs that never escalate, and a consequence introduced in one email that never gets resolved later in the sequence. Five emails can each score well individually and still fail as a system if a six-day gap sits exactly where a trial user is deciding whether to convert." }
+      "name": "Why does a sequence audit catch bugs a Decision Friction Review misses?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A Decision Friction Review checks structure inside one message. A sequence audit checks the relationship between messages: silence gaps where no email runs during a critical decision window, repeated CTAs that never escalate, and a consequence introduced in one email that never gets resolved later in the sequence. Five emails can each score well individually and still fail as a system if a six-day gap sits exactly where a trial user is deciding whether to convert." }
     },
     {
       "@type": "Question",
@@ -371,7 +371,7 @@
   </div>
 
   <div class="metric-box">
-    <div class="m-label">What this catches that a single-email audit misses</div>
+    <div class="m-label">What this catches that a Decision Friction Review misses</div>
     <p>A renewal reminder can score well in isolation, clear subject line, clean layout, and still fail the sequence-level check if it's the first message sent four days before the deadline with no earlier warning. The individual email was fine. The timing was the failure.</p>
   </div>
 </div>
@@ -406,8 +406,8 @@
       <div class="faq-a">Three metrics matter most: whether the renewal consequence is named before the renewal action is requested, how many days before the renewal date the first message arrives, and whether the CTA names a specific account-level outcome instead of a generic call to renew. Sequences that bury the consequence, send the first reminder too close to the deadline, or use guest language CTAs show measurably higher renewal-stage drop-off.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q"><span>Why does a sequence audit catch bugs a single-email audit misses?</span><span class="faq-icon">+</span></div>
-      <div class="faq-a">A single-email audit checks structure inside one message. A sequence audit checks the relationship between messages: silence gaps where no email runs during a critical decision window, repeated CTAs that never escalate, and a consequence introduced in one email that never gets resolved later in the sequence. Five emails can each score well individually and still fail as a system if a six-day gap sits exactly where a trial user is deciding whether to convert.</div>
+      <div class="faq-q"><span>Why does a sequence audit catch bugs a Decision Friction Review misses?</span><span class="faq-icon">+</span></div>
+      <div class="faq-a">A Decision Friction Review checks structure inside one message. A sequence audit checks the relationship between messages: silence gaps where no email runs during a critical decision window, repeated CTAs that never escalate, and a consequence introduced in one email that never gets resolved later in the sequence. Five emails can each score well individually and still fail as a system if a six-day gap sits exactly where a trial user is deciding whether to convert.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q"><span>How long does it take to audit a full email sequence?</span><span class="faq-icon">+</span></div>
