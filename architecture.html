@@ -1418,7 +1418,7 @@
   <div class="section-label">// The retainer logic</div>
   <h2 class="section-title">Why companies keep<br><em>Strategic Flow monthly.</em></h2>
   <p class="section-body" style="max-width:600px;">
-    A single audit finds what's broken today. It doesn't stop what breaks next month. The Architecture retainer exists because <strong>lifecycle communication degrades continuously</strong> — and internal teams stop seeing it.
+    A Decision Friction Review finds what's broken today. It doesn't stop what breaks next month. The Architecture retainer exists because <strong>lifecycle communication degrades continuously</strong> — and internal teams stop seeing it.
   </p>
 
   <!-- WHAT BREAKS -->
@@ -1623,10 +1623,10 @@
     </div>
 
     <div style="background:var(--bg);padding:28px 32px;">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);margin-bottom:10px;">Step 2 — $49</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);margin-bottom:10px;">Step 2 — $149</div>
       <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--white);line-height:1.2;margin-bottom:10px;">One email,<br>rebuilt, yours to keep</div>
       <div style="font-size:13px;color:var(--mid);line-height:1.65;margin-bottom:18px;">Full 7-point diagnosis. Score, named failure patterns, rebuilt HTML, 3 A/B subject lines. Delivered in 24h. No subscription.</div>
-      <a href="https://buy.stripe.com/14A14n8A08Rr69fdNF7wA04" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--signal);text-decoration:none;letter-spacing:.06em;">Get one rebuild — $49 →</a>
+      <a href="https://strategic-flow-pro.replit.app/decision-friction-review/" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--signal);text-decoration:none;letter-spacing:.06em;">Get Decision Friction Review — $149 →</a>
     </div>
 
     <div style="background:var(--bg);padding:28px 32px;border-left:2px solid var(--signal);">
@@ -2117,6 +2117,7 @@ async function submitArchitectureApplication() {
 
   var enc = encodeURIComponent(_pageRef);
   var PRO = 'https://strategic-flow-pro.replit.app/packages';
+  var REVIEW = 'https://strategic-flow-pro.replit.app/decision-friction-review/';
 
   // Architecture CTAs → /packages?ref=X#architecture (pro app: cookie + auto-Stripe redirect)
   ['sf-arch-nav', 'sf-arch-pricing', 'sf-arch-final'].forEach(function (id) {
@@ -2124,9 +2125,9 @@ async function submitArchitectureApplication() {
     if (el) el.href = PRO + '?ref=' + enc + '#architecture';
   });
 
-  // Single $49 CTA → /packages?ref=X#single (pro app: scrolls to Single card)
-  document.querySelectorAll('a[href="https://buy.stripe.com/14A14n8A08Rr69fdNF7wA04"]')
-    .forEach(function (a) { a.href = PRO + '?ref=' + enc + '#single'; });
+  // Decision Friction Review $149 CTA → canonical review page
+  document.querySelectorAll('a[href="https://strategic-flow-pro.replit.app/decision-friction-review/"]')
+    .forEach(function (a) { a.href = REVIEW + '?ref=' + enc; });
 
   // demo.html links → demo.html?ref=X (so ref survives the "try demo first" detour)
   var DEMO = 'https://strategic-flow-audit.replit.app/demo.html';
