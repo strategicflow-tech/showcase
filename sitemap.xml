@@ -784,4 +784,35 @@
   <url><loc>https://strategicflow.tech/saas-email-conversion-audit-software.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://strategicflow.tech/email-conversion-audit-vs-email-deliverability-audit.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://strategicflow.tech/strategic-flow-vs-apollo.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <url>
+    <loc>https://strategicflow.tech/activation-intelligence.html</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://strategicflow.tech/strategic-flow-pro.html</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://strategicflow.tech/web.html</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://strategicflow.tech/landing-architecture-layer.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://strategicflow.tech/course-architecture-layer.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
