@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Field Note: Every Update Looked Equally Important — Missing Visual Hierarchy Explained</title>
+<meta name="description" content="A real audit case where ten product updates in one email all carried identical visual weight, and the one that actually mattered got buried." />
+<meta name="keywords" content="Missing Visual Hierarchy, email architecture field note, SaaS email conversion, Strategic Flow field notes" />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Alex Iliescu — Strategic Flow" />
+<link rel="canonical" href="https://strategicflow.tech/field-note-missing-visual-hierarchy.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Field Note: Every Update Looked Equally Important — Missing Visual Hierarchy Explained" />
+<meta property="og:description" content="A real audit case where ten product updates in one email all carried identical visual weight, and the one that actually mattered got buried." />
+<meta property="og:url" content="https://strategicflow.tech/field-note-missing-visual-hierarchy.html" />
+<meta property="og:site_name" content="Strategic Flow" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Field Note: Every Update Looked Equally Important — Missing Visual Hierarchy Explained" />
+<meta name="twitter:description" content="A real audit case where ten product updates in one email all carried identical visual weight, and the one that actually mattered got buried." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Field Note: Every Update Looked Equally Important — Missing Visual Hierarchy Explained",
+  "author": {
+    "@type": "Person",
+    "name": "Alex Iliescu"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Strategic Flow",
+    "url": "https://strategicflow.tech/"
+  },
+  "datePublished": "2026-08-27",
+  "description": "A real audit case where ten product updates in one email all carried identical visual weight, and the one that actually mattered got buried.",
+  "mainEntityOfPage": "https://strategicflow.tech/field-note-missing-visual-hierarchy.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Field Note: Every Update Looked Equally Important — Missing Visual Hierarchy Explained",
+  "author": {
+    "@type": "Person",
+    "name": "Alex Iliescu",
+    "url": "https://strategicflow.tech/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Strategic Flow",
+    "url": "https://strategicflow.tech/"
+  },
+  "datePublished": "2026-08-27",
+  "description": "A real audit case where ten product updates in one email all carried identical visual weight, and the one that actually mattered got buried.",
+  "mainEntityOfPage": "https://strategicflow.tech/field-note-missing-visual-hierarchy.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://strategicflow.tech/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Glossary",
+      "item": "https://strategicflow.tech/glossary.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Missing Visual Hierarchy",
+      "item": "https://strategicflow.tech/field-note-missing-visual-hierarchy.html"
+    }
+  ]
+}
+</script>
+</head>
+<body data-sf-bar="content">
+
+<nav>
+  <a href="https://strategicflow.tech" class="nav-logo">STRATEGIC FLOW</a>
+  <ul class="nav-links">
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a></li>
+  </ul>
+  <button class="nav-burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="https://strategicflow.tech/email-architecture-audit.html">Audit</a>
+  <a href="https://strategicflow.tech/teardowns.html">Teardowns</a>
+  <a href="https://strategicflow.tech/glossary.html">Glossary</a>
+  <a href="https://strategic-flow-audit.replit.app/demo.html">Demo</a>
+</div>
+<script>
+(function(){
+  var burger=document.getElementById('nav-burger');
+  var menu=document.getElementById('nav-mobile');
+  if(!burger||!menu)return;
+  function closeMenu(){burger.classList.remove('open');menu.classList.remove('open');burger.setAttribute('aria-expanded','false');}
+  burger.addEventListener('click',function(e){e.stopPropagation();menu.classList.contains('open')?closeMenu():(burger.classList.add('open'),menu.classList.add('open'),burger.setAttribute('aria-expanded','true'));});
+  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',closeMenu);});
+  document.addEventListener('click',function(e){if(!menu.contains(e.target)&&!burger.contains(e.target))closeMenu();});
+})();
+</script>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 2v6m0 8v6m-8-10h6m4 0h6"/></svg>Field Note · Strategic Flow</div>
+  <h1>Field Note: Every Update Looked Equally Important</h1>
+  <p class="hero-sub">A composite audit observation about Missing Visual Hierarchy. The pattern was visible in the layout, not in a missing sentence.</p>
+  <div class="cta-row"><a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-primary" target="_blank">Run Free Audit →</a><a href="https://strategicflow.tech/glossary.html" class="btn-ghost">See the glossary →</a></div>
+</div>
+<hr class="divider" />
+<div class="section">
+  <div class="sect-badge">What Happened</div>
+  <h2>The pattern was<br/><span>positioned in plain sight.</span></h2>
+  <p class="sect-sub">Ten items in one product update email. A new AI-powered feature the team had spent two months building sat in position six, same card size as an opacity setting nobody asked to change.</p><p class="sect-sub">Two of the ten had real dates attached, a webinar, a live event, styled identically to the eight evergreen items around them. The team knew internally which item mattered most. That knowledge never made it into the layout.</p><p class="sect-sub">Every block got the same icon, same two lines, same link. A reader skimming had no visual signal for where to spend attention.</p><p class="sect-sub">The fix wasn't rewriting any block. It was deciding, before layout, which one or two items were the actual reason the email existed, and building visual asymmetry around that decision.</p>
+</div>
+<hr class="divider" />
+<div class="section">
+  <div class="sect-badge">The Rebuild</div>
+  <h2>Nothing new.<br/><span>Just the right order.</span></h2>
+  <p class="sect-sub">The rebuild kept the underlying information and made the decision visible earlier. Read the canonical definition for the pattern and the structural fix.</p>
+  <div class="before-after">
+    <div class="ba-box before"><div class="ba-label">Before</div><div class="ba-text">The important evidence or consequence was present, but the reader had to reach it or infer its priority.</div></div>
+    <div class="ba-box after"><div class="ba-label">After</div><div class="ba-text">The reason to keep reading was moved into the position and visual weight where the reader makes the decision.</div></div>
+  </div>
+  <p class="sect-sub"><a href="https://strategicflow.tech/term-missing-visual-hierarchy.html" style="color:var(--teal);">Read the canonical definition of Missing Visual Hierarchy →</a></p>
+</div>
+<hr class="divider" />
+<div class="section">
+  <div class="sect-badge">Related</div>
+  <h2>Keep reading<br/><span>the architecture notes.</span></h2>
+  <div class="related-grid">
+    <a href="https://strategicflow.tech/glossary.html" class="related-card"><div class="related-kicker">Glossary</div><div class="related-title">Behavioral Email Architecture Terms</div><div class="related-desc">Every structural term Strategic Flow uses, defined in one place.</div></a>
+    <a href="https://strategicflow.tech/decision-friction-model.html" class="related-card"><div class="related-kicker">Framework</div><div class="related-title">The Decision Friction Model</div><div class="related-desc">The fixed model behind the audit.</div></a>
+  </div>
+</div>
+<hr class="divider" />
+<div class="cta-sec">
+  <h2>See the failure<br/><span>in your own email.</span></h2>
+  <p>Paste one email. Get the structural diagnosis and a rebuilt version. No signup.</p>
+  <div class="cta-row"><a href="https://strategic-flow-audit.replit.app/demo.html" class="btn-primary" target="_blank">Run Free Audit →</a></div>
+</div>
+
+<footer>
+  <a href="https://strategicflow.tech" class="footer-logo">STRATEGIC FLOW</a>
+  <ul class="footer-links">
+    <li><a href="https://strategicflow.tech">Home</a></li>
+    <li><a href="https://strategicflow.tech/email-architecture-audit.html">Methodology</a></li>
+    <li><a href="https://strategicflow.tech/teardowns.html">Teardowns</a></li>
+    <li><a href="https://strategicflow.tech/glossary.html">Glossary</a></li>
+    <li><a href="https://strategicflow.tech/field-note-guest-language-cta.html">Field Note: Guest Language</a></li>
+    <li><a href="https://strategicflow.tech/why-saas-emails-get-opened-but-not-clicked.html">Why Emails Fail</a></li>
+    <li><a href="https://strategic-flow-pro.replit.app/packages">Pricing</a></li>
+    <li><a href="https://strategicflow.substack.com/">Substack</a></li>
+    <li><a href="https://www.linkedin.com/in/strategic-flow-tech">LinkedIn</a></li>
+    <li><a href="mailto:alex@strategicflow.tech">Contact</a></li>
+  
+  <li><a href="https://strategic-flow-audit.replit.app/directory?utm_source=strategicflow_footer">Also by us: ToolIndex — free SaaS directory, dofollow backlink</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 Strategic Flow · Alex Iliescu · strategicflow.tech</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const item=q.parentElement;
+      const isOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!isOpen)item.classList.add('open');
+    });
+  });
+</script>
+<style>
+#sf-sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #0a0a0a 0%, #111c18 50%, #0a0a0a 100%);
+  border-top: 1px solid rgba(29, 158, 117, 0.3);
+  box-shadow: 0 -4px 24px rgba(29, 158, 117, 0.12);
+  z-index: 9999;
+  display: none;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+#sf-sticky-bar.visible {
+  display: flex;
+  transform: translateY(0);
+}
+.sf-bar-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  gap: 16px;
+}
+.sf-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.sf-badge {
+  background: rgba(29, 158, 117, 0.15);
+  color: #1D9E75;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(29, 158, 117, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+.sf-affiliate-tag {
+  background: rgba(74, 143, 231, 0.1);
+  color: #4A8FE7;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(74, 143, 231, 0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.sf-text {
+  color: #e8e8e8;
+  font-family: 'Figtree', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sf-text strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+.sf-cta {
+  background: #1D9E75;
+  color: #ffffff;
+  font-family: 'Figtree', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.01em;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 16px rgba(29, 158, 117, 0.25);
+}
+.sf-cta:hover {
+  background: #178a63;
+  box-shadow: 0 0 24px rgba(29, 158, 117, 0.4);
+}
+.sf-cta-arrow {
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+.sf-cta:hover .sf-cta-arrow {
+  transform: translateX(2px);
+}
+.sf-close {
+  color: #555;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+.sf-close:hover { color: #999; }
+
+@media (max-width: 768px) {
+  .sf-bar-inner {
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    gap: 8px;
+    align-items: center;
+  }
+  .sf-bar-left {
+    flex: 1;
+    min-width: 0;
+    gap: 8px;
+  }
+  .sf-text { display: none; }
+  .sf-cta {
+    order: 10;
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+  }
+  .sf-close {
+    flex-shrink: 0;
+    padding: 4px 6px;
+  }
+}
+
+#cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:#09111e;border-top:1px solid rgba(255,255,255,0.08);padding:18px 48px;display:none;}
+#cookie-banner.visible{display:flex;}
+.cookie-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;width:100%;flex-wrap:wrap;}
+.cookie-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.6;max-width:680px;}
+.cookie-text a{color:#00e5a0;text-decoration:underline;}
+.cookie-actions{display:flex;gap:10px;flex-shrink:0;}
+.cookie-btn{font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:10px 18px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.7);transition:all .2s;}
+.cookie-btn:hover{border-color:#00e5a0;color:#00e5a0;}
+.cookie-btn.accept{background:#00e5a0;color:#07090f;border-color:#00e5a0;}
+.cookie-btn.accept:hover{background:#00c88a;}
+@media(max-width:640px){#cookie-banner{padding:16px 18px;}.cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}.cookie-actions{justify-content:flex-end;}}
+</style>
+
+<div id="sf-sticky-bar">
+  <div class="sf-bar-inner">
+    <div class="sf-bar-left">
+      <span class="sf-affiliate-tag">affiliate</span>
+      <span class="sf-badge" id="sf-badge-text"></span>
+      <span class="sf-text" id="sf-main-text"></span>
+    </div>
+    <a class="sf-cta" href="https://strategic-flow-pro.replit.app/affiliates/" id="sf-cta-btn" target="_blank">
+      <span id="sf-cta-text"></span>
+      <span class="sf-cta-arrow">→</span>
+    </a>
+    <button class="sf-close" id="sf-close-btn">✕</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (sessionStorage.getItem('sf-bar-closed')) return;
+
+  var bar = document.getElementById('sf-sticky-bar');
+  var badge = document.getElementById('sf-badge-text');
+  var text = document.getElementById('sf-main-text');
+  var ctaText = document.getElementById('sf-cta-text');
+  var type = document.body.getAttribute('data-sf-bar') || 'services';
+
+  if (type === 'content') {
+    badge.textContent = '10 spots · 40% locked';
+    text.innerHTML = 'Know a SaaS team with broken emails? <strong>Earn $199–$1,000/mo per referral.</strong>';
+    ctaText.textContent = 'Join Affiliate Program';
+  } else {
+    badge.textContent = 'First 10 spots · 40% forever';
+    text.innerHTML = 'Refer once. <strong>Get paid every month they stay subscribed.</strong>';
+    ctaText.textContent = 'See How It Works';
+  }
+
+  var shown = false;
+  function showBar() {
+    if (shown) return;
+    shown = true;
+    bar.style.display = 'flex';
+    setTimeout(function() { bar.classList.add('visible'); }, 50);
+  }
+
+  setTimeout(showBar, 15000);
+
+  window.addEventListener('scroll', function() {
+    var scrollPct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    if (scrollPct >= 0.4) showBar();
+  }, { passive: true });
+
+  document.getElementById('sf-close-btn').addEventListener('click', function() {
+    bar.classList.remove('visible');
+    setTimeout(function() { bar.style.display = 'none'; }, 350);
+    sessionStorage.setItem('sf-bar-closed', '1');
+  });
+})();
+</script>
+<!-- INTERNAL LINKS TO NOTES -->
+<section style="padding:40px 48px;border-top:1px solid rgba(255,255,255,0.07);background:#0a0f1a;">
+  <div style="font-family:monospace;font-size:10px;color:#00e5a0;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;">More from Strategic Flow</div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;">
+    <a href="https://strategicflow.tech/notes.html" style="font-size:13px;color:#00e5a0;text-decoration:none;border:1px solid rgba(0,229,160,0.25);padding:9px 16px;border-radius:6px;font-family:monospace;">&#8592; All Field Notes</a>
+    <a href="https://strategicflow.tech/decision-friction-model.html" style="font-size:13px;color:#8899aa;text-decoration:none;border:1px solid rgba(255,255,255,0.08);padding:9px 16px;border-radius:6px;font-family:monospace;">Decision Friction Model &#8594;</a>
+    <a href="https://strategicflow.tech/teardowns.html" style="font-size:13px;color:#8899aa;text-decoration:none;border:1px solid rgba(255,255,255,0.08);padding:9px 16px;border-radius:6px;font-family:monospace;">59 Teardowns &#8594;</a>
+    <a href="https://strategic-flow-audit.replit.app/" target="_blank" rel="noopener" style="font-size:13px;color:#8899aa;text-decoration:none;border:1px solid rgba(255,255,255,0.08);padding:9px 16px;border-radius:6px;font-family:monospace;">Run Free Audit &#8594;</a>
+  </div>
+</section>
+
+<!-- COOKIE CONSENT BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.</div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='sf_consent',stored=localStorage.getItem(KEY),banner=document.getElementById('cookie-banner');
+  function grant(){gtag('consent','update',{'ad_storage':'granted','ad_user_data':'granted','ad_personalization':'granted','analytics_storage':'granted'});}
+  if(stored==='granted'){grant();}else if(stored!=='denied'){banner.classList.add('visible');}
+  document.getElementById('cookie-accept').addEventListener('click',function(){localStorage.setItem(KEY,'granted');grant();banner.classList.remove('visible');});
+  document.getElementById('cookie-decline').addEventListener('click',function(){localStorage.setItem(KEY,'denied');banner.classList.remove('visible');});
+})();
+</script>
+<div data-last-updated="2026-08-27" style="max-width:820px;margin:0 auto;padding:0 24px 24px;font-size:12px;opacity:.58;text-align:center;">Last updated: 2026-08-10</div>
+</body>
+</html>
