@@ -299,6 +299,15 @@ footer a:hover{color:var(--teal)}
 
 <main id="teardowns" class="grid-wrap">
   <div class="grid">
+
+    <a href="figma-newsletter-teardown.html" class="card" data-cat="saas" data-canonical-count="exclude"
+       title="Figma Release Notes Newsletter Teardown — Structural Analysis">
+      <div class="card-arrow">↗</div>
+      <div class="card-brand">Figma Release Notes</div>
+      <div class="card-desc">Release Notes newsletter teardown: ten equally weighted feature blocks, a feature-first lead, zero third-party proof, and two real event deadlines. Score 5.5/10.</div>
+      <div class="card-tags"><span class="tag teal">Design · Product Update</span><span class="tag">Newsletter</span></div>
+    </a>
+
     <div class="no-results" id="no-results">No teardowns found for that search.</div>
 
     <a href="bubble-global-v2-teardown.html" class="card" data-cat="saas nocode community"
@@ -1001,13 +1010,15 @@ function renderCards() {
     btn.style.display = 'inline-block';
     btn.textContent = 'Load more (' + (filtered.length - visibleCount) + ' remaining)';
   }
-  // update filter counts
+  // Keep the canonical portfolio count at 59. The Figma page is visible and searchable,
+  // but is intentionally excluded from the historical count/filter badges.
+  const countable = all.filter(card => card.dataset.canonicalCount !== 'exclude');
   document.querySelectorAll('.filter-btn').forEach(b => {
     const cat = b.dataset.filterCat;
     if (!cat) return;
     const count = cat === 'all'
-      ? all.length
-      : all.filter(c => (c.dataset.cat||'').includes(cat)).length;
+      ? countable.length
+      : countable.filter(c => (c.dataset.cat||'').includes(cat)).length;
     b.querySelector('.filter-count').textContent = count;
   });
   // Show CTA banners only when the preceding card is visible
