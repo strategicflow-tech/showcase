@@ -1,8 +1,9 @@
 {
   "meta": {
-    "total": 51,
-    "last_updated": "2026-05-23",
-    "version": "1.1.0"
+    "total": 59,
+    "last_updated": "2026-09-10",
+    "version": "1.2.0",
+    "catalog_entries": 51
   },
   "teardowns": [
     {
@@ -12,8 +13,12 @@
       "type": "Product Update",
       "score_original": 4,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/heygen-showcase.html",
-      "patterns": ["Feature-First Bias", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/heygen-showcase.html",
+      "patterns": [
+        "Feature-First Bias",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 2,
@@ -22,8 +27,12 @@
       "type": "Welcome Email",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/figma-showcase.html",
-      "patterns": ["Three Identical CTAs", "Feature-First Bias", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/figma-showcase.html",
+      "patterns": [
+        "Three Identical CTAs",
+        "Feature-First Bias",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 3,
@@ -32,8 +41,13 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/dbt_labs_showcase.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA", "Zero Social Proof"]
+      "url": "https://strategicflow.tech/dbt_labs_showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Guest Language CTA",
+        "Zero Social Proof"
+      ]
     },
     {
       "id": 4,
@@ -42,8 +56,13 @@
       "type": "Product Update",
       "score_original": 2,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/elevenlabs-showcase.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Audience Mismatch", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/elevenlabs-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Audience Mismatch",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 5,
@@ -52,8 +71,12 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/lodgify-showcase.html",
-      "patterns": ["Achievement Framing", "Guest Language CTA", "Zero Social Proof"]
+      "url": "https://strategicflow.tech/lodgify-showcase.html",
+      "patterns": [
+        "Achievement Framing",
+        "Guest Language CTA",
+        "Zero Social Proof"
+      ]
     },
     {
       "id": 6,
@@ -62,8 +85,12 @@
       "type": "Product Update",
       "score_original": 4,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/revolut_newsletter_showcase.html",
-      "patterns": ["Consequence-After-Caveat", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/revolut_newsletter_showcase.html",
+      "patterns": [
+        "Consequence-After-Caveat",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 7,
@@ -72,8 +99,13 @@
       "type": "Full Funnel",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/revolut_email_analysis.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA", "Consequence-After-Caveat"]
+      "url": "https://strategicflow.tech/revolut_email_analysis.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Guest Language CTA",
+        "Consequence-After-Caveat"
+      ]
     },
     {
       "id": 8,
@@ -82,8 +114,12 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/qonto_showcase.html",
-      "patterns": ["Feature-First Bias", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/qonto_showcase.html",
+      "patterns": [
+        "Feature-First Bias",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 9,
@@ -92,8 +128,13 @@
       "type": "Thought Leadership",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/cato_networks_showcase.html",
-      "patterns": ["Consequence-After-Caveat", "Zero Social Proof", "Guest Language CTA", "Filing Label Subject"]
+      "url": "https://strategicflow.tech/cato_networks_showcase.html",
+      "patterns": [
+        "Consequence-After-Caveat",
+        "Zero Social Proof",
+        "Guest Language CTA",
+        "Filing Label Subject"
+      ]
     },
     {
       "id": 10,
@@ -102,8 +143,13 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/atlassian_confluence_rovo_showcase.html",
-      "patterns": ["Feature-First Bias", "Audience Mismatch", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/atlassian_confluence_rovo_showcase.html",
+      "patterns": [
+        "Feature-First Bias",
+        "Audience Mismatch",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 11,
@@ -112,8 +158,12 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/lokalise_newsletter_teardown.html",
-      "patterns": ["Audience Mismatch", "Feature-First Bias", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/lokalise_newsletter_teardown.html",
+      "patterns": [
+        "Audience Mismatch",
+        "Feature-First Bias",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 12,
@@ -122,8 +172,13 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/zoho-analytics-q1-2026-showcase.html",
-      "patterns": ["Missing Visual Hierarchy", "Feature-First Bias", "Guest Language CTA", "Zero Social Proof"]
+      "url": "https://strategicflow.tech/zoho-analytics-q1-2026-showcase.html",
+      "patterns": [
+        "Missing Visual Hierarchy",
+        "Feature-First Bias",
+        "Guest Language CTA",
+        "Zero Social Proof"
+      ]
     },
     {
       "id": 13,
@@ -132,8 +187,12 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/notion-34-part2-showcase.html",
-      "patterns": ["Filing Label Subject", "Urgency Without Architecture", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/notion-34-part2-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Urgency Without Architecture",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 14,
@@ -142,8 +201,12 @@
       "type": "Product Update",
       "score_original": 4,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/landbot-ai-agent-showcase.html",
-      "patterns": ["Missing Visual Hierarchy", "Feature-First Bias", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/landbot-ai-agent-showcase.html",
+      "patterns": [
+        "Missing Visual Hierarchy",
+        "Feature-First Bias",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 15,
@@ -152,8 +215,12 @@
       "type": "Thought Leadership",
       "score_original": 4,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/optimizely-ai-agents-showcase.html",
-      "patterns": ["Consequence-After-Caveat", "Feature-First Bias", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/optimizely-ai-agents-showcase.html",
+      "patterns": [
+        "Consequence-After-Caveat",
+        "Feature-First Bias",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 16,
@@ -162,8 +229,13 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/seamless-mcp-teardown.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Zero Social Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/seamless-mcp-teardown.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Zero Social Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 17,
@@ -172,8 +244,12 @@
       "type": "Newsletter",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/decision-lab-teardown.html",
-      "patterns": ["Filing Label Subject", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/decision-lab-teardown.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 18,
@@ -182,8 +258,12 @@
       "type": "Thought Leadership",
       "score_original": 4,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/medallia-cx-stats-showcase.html",
-      "patterns": ["Audience Mismatch", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/medallia-cx-stats-showcase.html",
+      "patterns": [
+        "Audience Mismatch",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 19,
@@ -192,8 +272,12 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/gamma-newsletter-showcase.html",
-      "patterns": ["Feature-First Bias", "Zero Social Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/gamma-newsletter-showcase.html",
+      "patterns": [
+        "Feature-First Bias",
+        "Zero Social Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 20,
@@ -202,8 +286,12 @@
       "type": "Promotional",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/memrise_newsletter_showcase.html",
-      "patterns": ["Urgency Without Architecture", "Guest Language CTA", "Filing Label Subject"]
+      "url": "https://strategicflow.tech/memrise_newsletter_showcase.html",
+      "patterns": [
+        "Urgency Without Architecture",
+        "Guest Language CTA",
+        "Filing Label Subject"
+      ]
     },
     {
       "id": 21,
@@ -212,8 +300,12 @@
       "type": "Newsletter",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/tech_talent_decoded_showcase.html",
-      "patterns": ["Filing Label Subject", "Zero Social Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/tech_talent_decoded_showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Zero Social Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 22,
@@ -222,8 +314,12 @@
       "type": "Promotional",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/uber_newsletter_showcase.html",
-      "patterns": ["Missing Visual Hierarchy", "Three Identical CTAs", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/uber_newsletter_showcase.html",
+      "patterns": [
+        "Missing Visual Hierarchy",
+        "Three Identical CTAs",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 23,
@@ -232,8 +328,12 @@
       "type": "Promotional",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/wizzair_easter_showcase.html",
-      "patterns": ["Urgency Without Architecture", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/wizzair_easter_showcase.html",
+      "patterns": [
+        "Urgency Without Architecture",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 24,
@@ -242,8 +342,12 @@
       "type": "Promotional",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/booking_com_showcase.html",
-      "patterns": ["Feature-First Bias", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/booking_com_showcase.html",
+      "patterns": [
+        "Feature-First Bias",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 25,
@@ -252,8 +356,13 @@
       "type": "Thought Leadership",
       "score_original": 2,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/reversinglabs-vibeware-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Zero Social Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/reversinglabs-vibeware-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Zero Social Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 26,
@@ -262,8 +371,13 @@
       "type": "Product Update",
       "score_original": 2,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/finitestate-ai-unpacking-showcase.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Zero Social Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/finitestate-ai-unpacking-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Zero Social Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 27,
@@ -272,8 +386,13 @@
       "type": "Product Update",
       "score_original": 2,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/wiz-ai-app-showcase.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/wiz-ai-app-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 28,
@@ -282,8 +401,12 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/sequel-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/sequel-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 29,
@@ -292,8 +415,12 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/alt21-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/alt21-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 30,
@@ -302,8 +429,13 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/nilus-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Achievement Framing", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/nilus-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Achievement Framing",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 31,
@@ -312,8 +444,12 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/quickspark-showcase.html",
-      "patterns": ["Filing Label Subject", "Audience Mismatch", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/quickspark-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Audience Mismatch",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 32,
@@ -322,8 +458,13 @@
       "type": "Homepage",
       "score_original": 2,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/confluence-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/confluence-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 33,
@@ -332,8 +473,12 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/timepayment-showcase.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/timepayment-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 34,
@@ -342,8 +487,12 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/cloudcampaign-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/cloudcampaign-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 35,
@@ -352,8 +501,12 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/tripledart-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/tripledart-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 36,
@@ -362,8 +515,12 @@
       "type": "Homepage",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/userpilot-showcase.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/userpilot-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 37,
@@ -372,8 +529,12 @@
       "type": "Welcome Email",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/splitmetrics-showcase.html",
-      "patterns": ["Three Identical CTAs", "Filing Label Subject", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/splitmetrics-showcase.html",
+      "patterns": [
+        "Three Identical CTAs",
+        "Filing Label Subject",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 38,
@@ -382,8 +543,12 @@
       "type": "Blog Post",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/tilled-showcase.html",
-      "patterns": ["Buried Proof", "Filing Label Subject", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/tilled-showcase.html",
+      "patterns": [
+        "Buried Proof",
+        "Filing Label Subject",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 39,
@@ -392,8 +557,12 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/ahrefs-changelog-showcase.html",
-      "patterns": ["Missing Visual Hierarchy", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/ahrefs-changelog-showcase.html",
+      "patterns": [
+        "Missing Visual Hierarchy",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 40,
@@ -402,8 +571,12 @@
       "type": "Long-form Guide",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/spreedly-latam-showcase.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/spreedly-latam-showcase.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 41,
@@ -412,8 +585,12 @@
       "type": "Blog Post",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/easyllama-ai-governance-showcase.html",
-      "patterns": ["Title Reframing Gap", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/easyllama-ai-governance-showcase.html",
+      "patterns": [
+        "Title Reframing Gap",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 42,
@@ -422,8 +599,12 @@
       "type": "Customer Story",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/tuum-prisma-showcase.html",
-      "patterns": ["Achievement Framing", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/tuum-prisma-showcase.html",
+      "patterns": [
+        "Achievement Framing",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 43,
@@ -432,8 +613,12 @@
       "type": "Blog Post",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/dotcompliance-ai-showcase.html",
-      "patterns": ["Title Reframing Gap", "Filing Label Subject", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/dotcompliance-ai-showcase.html",
+      "patterns": [
+        "Title Reframing Gap",
+        "Filing Label Subject",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 44,
@@ -442,8 +627,12 @@
       "type": "Company Announcement",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/tresorit-g2-showcase.html",
-      "patterns": ["Achievement Framing", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/tresorit-g2-showcase.html",
+      "patterns": [
+        "Achievement Framing",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 45,
@@ -452,8 +641,12 @@
       "type": "Product Update",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/seomonitor-content-writer-showcase.html",
-      "patterns": ["Buried Proof", "Filing Label Subject", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/seomonitor-content-writer-showcase.html",
+      "patterns": [
+        "Buried Proof",
+        "Filing Label Subject",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 46,
@@ -462,8 +655,13 @@
       "type": "Blog Announcement",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/wrike-teardown.html",
-      "patterns": ["Title Reframing Gap", "Buried Proof", "Missing Visual Hierarchy", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/wrike-teardown.html",
+      "patterns": [
+        "Title Reframing Gap",
+        "Buried Proof",
+        "Missing Visual Hierarchy",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 47,
@@ -472,8 +670,12 @@
       "type": "Blog Post",
       "score_original": 4,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/semrush-teardown.html",
-      "patterns": ["Filing Label Subject", "Feature-First Bias", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/semrush-teardown.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Feature-First Bias",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 48,
@@ -482,8 +684,12 @@
       "type": "Blog Announcement",
       "score_original": 4,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/cato-networks-teardown.html",
-      "patterns": ["Filing Label Subject", "Buried Proof", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/cato-networks-teardown.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Buried Proof",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 49,
@@ -492,8 +698,12 @@
       "type": "Upgrade Email",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/perplexity-teardown.html",
-      "patterns": ["Three Identical CTAs", "Filing Label Subject", "Guest Language CTA"]
+      "url": "https://strategicflow.tech/perplexity-teardown.html",
+      "patterns": [
+        "Three Identical CTAs",
+        "Filing Label Subject",
+        "Guest Language CTA"
+      ]
     },
     {
       "id": 50,
@@ -502,8 +712,13 @@
       "type": "Blog Article",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/zoho-workplace-teardown.html",
-      "patterns": ["Buried Proof", "Zero Social Proof", "Guest Language CTA", "Filing Label Subject"]
+      "url": "https://strategicflow.tech/zoho-workplace-teardown.html",
+      "patterns": [
+        "Buried Proof",
+        "Zero Social Proof",
+        "Guest Language CTA",
+        "Filing Label Subject"
+      ]
     },
     {
       "id": 51,
@@ -512,8 +727,13 @@
       "type": "Blog Post",
       "score_original": 3,
       "score_rebuilt": 9,
-      "url": "https://strategicflow-tech.github.io/showcase/limelight-teardown.html",
-      "patterns": ["Filing Label Subject", "Consequence-After-Caveat", "Guest Language CTA", "Title Reframing Gap"]
+      "url": "https://strategicflow.tech/limelight-teardown.html",
+      "patterns": [
+        "Filing Label Subject",
+        "Consequence-After-Caveat",
+        "Guest Language CTA",
+        "Title Reframing Gap"
+      ]
     }
   ]
 }
