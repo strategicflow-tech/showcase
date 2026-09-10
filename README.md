@@ -23,7 +23,7 @@ Not a deliverability tool. Not an ESP. Not a copywriting service. This diagnoses
 
 ## Method
 
-59 published teardowns as of this writing. Average original score: 3.4 out of 10. Average rebuilt score: 9.0 out of 10. Full methodology at [decision-friction-model.html](https://strategicflow.tech/decision-friction-model.html).
+67 published teardowns as of this writing. Average original score: 3.4 out of 10. Average rebuilt score: 9.0 out of 10. Full methodology at [decision-friction-model.html](https://strategicflow.tech/decision-friction-model.html).
 
 ## Contact
 
