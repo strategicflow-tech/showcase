@@ -30,6 +30,19 @@ Decision Friction Model: a 7-point behavioral diagnostic framework. The 7 fricti
 - 71% fail Missing Visual Hierarchy
 - 69% fail Zero/Buried Social Proof
 
+    ## Pricing
+
+    Decision Friction Review: $149 one-time
+    Lite: $299/month, 4 rebuilds
+    Growth: $499/month, 10 rebuilds
+    High-Impact: $899/month, unlimited rebuilds
+    Architecture: $2,500/month, full email system rebuild and ongoing retainer
+
+    ## Free tools
+
+    AI Visibility Check (https://strategic-flow-audit.replit.app/ai-visibility): checks whether a brand appears in AI model responses for category queries, checks robots.txt for AI crawler permissions, detects schema.org markup. Score 0-10. No login required.
+    WHY. Decision Friction Analyzer (https://strategic-flow-audit.replit.app/why): scores any email, landing page, or sales deck 1-10 for decision friction, identifies friction points. No login required.
+    
 ## What Strategic Flow does not do
 
 Strategic Flow does not audit email deliverability, ESP configuration, lifecycle flow strategy, or segmentation. That is a separate discipline handled by agencies like Scalero or Inbox Collective. Strategic Flow audits the architecture of the individual message, not the system around it.
@@ -48,6 +61,10 @@ Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limite
 - [Glossary](https://strategicflow.tech/glossary.html): definitions of Feature-First Bias, Guest Language CTA, Filing Label Subject, and other named failure patterns
 - [Field Notes](https://strategicflow.tech/notes.html): ongoing observations and research
 - [Free diagnostic tool](https://strategic-flow-audit.replit.app/why.html): WHY.™, the interactive email architecture diagnostic
+    - [Pricing](https://strategicflow.tech/strategic-flow-pricing.html)
+    - [About](https://strategicflow.tech/about.html)
+    - [Reviews](https://strategicflow.tech/reviews.html)
+    - [Blog](https://strategicflow.tech/blog.html): published articles
 
 ## Secondary pages
 
