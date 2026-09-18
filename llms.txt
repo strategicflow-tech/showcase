@@ -16,7 +16,7 @@ Alex Iliescu, founder of Strategic Flow, based in Tenerife, Canary Islands, Spai
 
 ## Proprietary framework
 
-Decision Friction Model: a behavioral diagnostic framework built around 7 core friction points, with additional named patterns identified through ongoing teardowns. Core 7: Filing Label Subject, Feature-First Bias, Zero Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Additional identified patterns: Generic Urgency Theatre, Ownership Language. Each scored pass or fail. Total score 1 to 10. Full definitions for all patterns: glossary.html.
+Decision Friction Model: a 7-point behavioral diagnostic framework. The 7 friction points: Filing Label Subject, Feature-First Bias, Zero Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored pass or fail. Total score 1 to 10. Full definitions: glossary.html.
 
 ## Verifiable claims
 
