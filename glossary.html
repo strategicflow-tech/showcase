@@ -70,14 +70,20 @@
     },
     {
       "@type": "DefinedTerm",
-      "name": "Consequence-After-Caveat",
-      "description": "An email structure that buries the outcome behind qualifications, context, or disclaimers. The reader encounters the caveat before the consequence, reducing the incentive to continue reading.",
+      "name": "Missing Visual Hierarchy",
+      "description": "An email layout where everything looks equally important. No visual or structural priority forces the reader to decide what matters. Most readers don't.",
       "inDefinedTermSet": "https://strategicflow.tech/glossary.html"
     },
     {
       "@type": "DefinedTerm",
-      "name": "Missing Visual Hierarchy",
-      "description": "An email layout where everything looks equally important. No visual or structural priority forces the reader to decide what matters. Most readers don't.",
+      "name": "Implied Transformation",
+      "description": "Implied Transformation is when improvement claims use adjectives instead of before/after numbers. 'Faster reporting', 'Better visibility', 'Save time' — the transformation is implied but never quantified. Fix: replace adjectives with specific before/after metrics. Appears in 74% of SaaS emails audited.",
+      "inDefinedTermSet": "https://strategicflow.tech/glossary.html"
+    },
+    {
+      "@type": "DefinedTerm",
+      "name": "Consequence-After-Caveat",
+      "description": "An email structure that buries the outcome behind qualifications, context, or disclaimers. The reader encounters the caveat before the consequence, reducing the incentive to continue reading.",
       "inDefinedTermSet": "https://strategicflow.tech/glossary.html"
     },
     {
@@ -667,38 +673,9 @@ footer a:hover{color:var(--teal)}
     <a href="https://strategic-flow-audit.replit.app/why.html" style="display:inline-block;margin-top:14px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal-border);padding-bottom:2px;" target="_blank" rel="noopener">Is this happening in your last email? Check in 90 seconds →</a>
   </article>
 
-  <!-- 4. CONSEQUENCE-AFTER-CAVEAT -->
-  <article id="consequence-after-caveat" class="term-entry">
-    <div class="term-label">Failure Pattern 04</div>
-    <h2 class="term-name">Consequence-After-Caveat</h2>
-    <h3 class="term-question" style="font-size:13px;color:rgba(255,255,255,0.35);font-weight:400;margin-top:6px;margin-bottom:0;font-family:'DM Sans',sans-serif;">What is Consequence-After-Caveat and why does it reduce email click rates?</h3>
-    <div class="freq-badge">Found in 74% of SaaS lifecycle emails</div>
-    <p class="term-definition"><strong>Consequence-After-Caveat is an email structure where the outcome is buried behind qualifications, context, or disclaimers.</strong> The reader encounters the caveat first — "Before I get into it...", "As you may know...", "We've been working on something..." — and the consequence second. Most readers don't make it to the consequence.</p></p>
-    <p class="term-found">Found in teardowns: Revolut, Decision Lab, Zoho Workplace, Lokalise, and most long-form product updates.</p>
-    <div class="ba-grid">
-      <div class="ba-box before">
-        <div class="ba-label">❌ Caveat First</div>
-        <div class="ba-text">"Before I get into it, we have one of our most valuable masterclasses coming up. It's everything you need to know to get recommended by the top LLMs. It's completely free and will be held on the 29th May at 4pm BST."</div>
-      </div>
-      <div class="ba-box after">
-        <div class="ba-label">✅ Consequence First</div>
-        <div class="ba-text">"On May 29th at 4pm BST, I'm running a free live session on exactly this. If AI can't find you, your competitors get cited instead. Register before spots fill: [link]"</div>
-      </div>
-    </div>
-    <div class="fix-block">
-      <div class="fix-label">The Fix</div>
-      <div class="fix-text">State the consequence in line 1. Move context and qualifications to after the consequence is established. The reader needs a reason to keep reading before they'll accept any caveat.</div>
-    </div>
-    <div class="teardown-links">
-      <a href="revolut_email_analysis.html" class="teardown-link">See it fixed: Revolut →</a>
-      <a href="decision-lab-teardown.html" class="teardown-link">See it fixed: Decision Lab →</a>
-    </div>
-    <a href="https://strategic-flow-audit.replit.app/why.html" style="display:inline-block;margin-top:14px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal-border);padding-bottom:2px;" target="_blank" rel="noopener">Is this happening in your last email? Check in 90 seconds →</a>
-  </article>
-
   <!-- 5. MISSING VISUAL HIERARCHY -->
   <article id="missing-hierarchy" class="term-entry">
-    <div class="term-label">Failure Pattern 05</div>
+    <div class="term-label">Failure Pattern 04</div>
     <h2 class="term-name">Missing Visual Hierarchy</h2>
     <h3 class="term-question" style="font-size:13px;color:rgba(255,255,255,0.35);font-weight:400;margin-top:6px;margin-bottom:0;font-family:'DM Sans',sans-serif;">What is Missing Visual Hierarchy in email design?</h3>
     <div class="freq-badge">Found in 71% of product update and changelog emails</div>
@@ -726,9 +703,68 @@ footer a:hover{color:var(--teal)}
     <a href="https://strategic-flow-audit.replit.app/why.html" style="display:inline-block;margin-top:14px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal-border);padding-bottom:2px;" target="_blank" rel="noopener">Is this happening in your last email? Check in 90 seconds →</a>
   </article>
 
+  <!-- 5. IMPLIED TRANSFORMATION -->
+  <article id="implied-transformation" class="term-entry">
+    <div class="term-label">Failure Pattern 05</div>
+    <h2 class="term-name">Implied Transformation</h2>
+    <h3 class="term-question" style="font-size:13px;color:rgba(255,255,255,0.35);font-weight:400;margin-top:6px;margin-bottom:0;font-family:'DM Sans',sans-serif;">What is Implied Transformation in email copy?</h3>
+    <div class="freq-badge">Found in 74% of SaaS emails audited</div>
+    <p class="term-definition"><strong>Implied Transformation is when improvement claims use adjectives instead of before/after numbers.</strong> "Faster reporting," "Better visibility," "Save time" — the transformation is implied but never quantified. Without a baseline and a measured result, the reader cannot judge the size of the improvement or decide whether it matters.</p>
+    <p class="term-found">Found in product updates, onboarding emails, and lifecycle campaigns that describe improvement without establishing a measurable baseline or result.</p>
+    <div class="ba-grid">
+      <div class="ba-box before">
+        <div class="ba-label">❌ Implied Improvement</div>
+        <div class="ba-text">"Faster reporting" / "Better visibility" / "Save time" — positive adjectives, but no baseline and no measured result.</div>
+      </div>
+      <div class="ba-box after">
+        <div class="ba-label">✅ Measured Transformation</div>
+        <div class="ba-text">"Reporting time: [before] → [after]" / "Visibility: [baseline] → [measured result]" / "Time saved: [hours before] → [hours after]"</div>
+      </div>
+    </div>
+    <div class="fix-block">
+      <div class="fix-label">The architectural repair — 3 steps</div>
+      <div class="fix-text">
+        <strong>Step 1:</strong> Find the improvement adjective. Highlight every claim that says "faster," "better," "easier," or "more efficient" without a number.<br><br>
+        <strong>Step 2:</strong> Establish the baseline. State what the reader does or experiences before the change, using the metric that makes the problem real.<br><br>
+        <strong>Step 3:</strong> State the measured result. Put the before and after values together so the reader can see the transformation rather than infer it.<br><br>
+        <strong>Rule:</strong> Show "[before] → [after]" before saying "faster" or "better." If the reader has to infer the size of the gain, the transformation is still implied.
+      </div>
+    </div>
+    <a href="https://strategic-flow-audit.replit.app/why.html" style="display:inline-block;margin-top:14px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal-border);padding-bottom:2px;" target="_blank" rel="noopener">Is this happening in your last email? Check in 90 seconds →</a>
+  </article>
+
+  <!-- 4. CONSEQUENCE-AFTER-CAVEAT -->
+  <article id="consequence-after-caveat" class="term-entry">
+    <div class="term-label">Failure Pattern 06</div>
+    <h2 class="term-name">Consequence-After-Caveat</h2>
+    <h3 class="term-question" style="font-size:13px;color:rgba(255,255,255,0.35);font-weight:400;margin-top:6px;margin-bottom:0;font-family:'DM Sans',sans-serif;">What is Consequence-After-Caveat and why does it reduce email click rates?</h3>
+    <div class="freq-badge">Found in 74% of SaaS lifecycle emails</div>
+    <p class="term-definition"><strong>Consequence-After-Caveat is an email structure where the outcome is buried behind qualifications, context, or disclaimers.</strong> The reader encounters the caveat first — "Before I get into it...", "As you may know...", "We've been working on something..." — and the consequence second. Most readers don't make it to the consequence.</p></p>
+    <p class="term-found">Found in teardowns: Revolut, Decision Lab, Zoho Workplace, Lokalise, and most long-form product updates.</p>
+    <div class="ba-grid">
+      <div class="ba-box before">
+        <div class="ba-label">❌ Caveat First</div>
+        <div class="ba-text">"Before I get into it, we have one of our most valuable masterclasses coming up. It's everything you need to know to get recommended by the top LLMs. It's completely free and will be held on the 29th May at 4pm BST."</div>
+      </div>
+      <div class="ba-box after">
+        <div class="ba-label">✅ Consequence First</div>
+        <div class="ba-text">"On May 29th at 4pm BST, I'm running a free live session on exactly this. If AI can't find you, your competitors get cited instead. Register before spots fill: [link]"</div>
+      </div>
+    </div>
+    <div class="fix-block">
+      <div class="fix-label">The Fix</div>
+      <div class="fix-text">State the consequence in line 1. Move context and qualifications to after the consequence is established. The reader needs a reason to keep reading before they'll accept any caveat.</div>
+    </div>
+    <div class="teardown-links">
+      <a href="revolut_email_analysis.html" class="teardown-link">See it fixed: Revolut →</a>
+      <a href="decision-lab-teardown.html" class="teardown-link">See it fixed: Decision Lab →</a>
+    </div>
+    <a href="https://strategic-flow-audit.replit.app/why.html" style="display:inline-block;margin-top:14px;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--teal);text-decoration:none;border-bottom:1px solid var(--teal-border);padding-bottom:2px;" target="_blank" rel="noopener">Is this happening in your last email? Check in 90 seconds →</a>
+  </article>
+
   <!-- 6. ZERO/BURIED SOCIAL PROOF -->
   <article id="zero-social-proof" class="term-entry">
-    <div class="term-label">Failure Pattern 06</div>
+    <div class="term-label">Failure Pattern 07</div>
     <h2 class="term-name">Zero/Buried Social Proof</h2>
     <h3 class="term-question" style="font-size:13px;color:rgba(255,255,255,0.35);font-weight:400;margin-top:6px;margin-bottom:0;font-family:'DM Sans',sans-serif;">What is Zero/Buried Social Proof and how does it affect email conversion?</h3>
     <div class="freq-badge">Found in 69% of SaaS product update emails</div>
