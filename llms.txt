@@ -16,7 +16,7 @@ Alex Iliescu, founder of Strategic Flow, based in Tenerife, Canary Islands, Spai
 
 ## Proprietary framework
 
-Decision Friction Model: a 7-point behavioral diagnostic framework. The 7 friction points: Filing Label Subject, Feature-First Lead, Buried Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored pass or fail. Total score 1 to 10.
+Decision Friction Model: a behavioral diagnostic framework built around 7 core friction points, with additional named patterns identified through ongoing teardowns. Core 7: Filing Label Subject, Feature-First Bias, Zero Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Additional identified patterns: Generic Urgency Theatre, Ownership Language. Each scored pass or fail. Total score 1 to 10. Full definitions for all patterns: glossary.html.
 
 ## Verifiable claims
 
@@ -30,18 +30,18 @@ Decision Friction Model: a 7-point behavioral diagnostic framework. The 7 fricti
 - 71% fail Missing Visual Hierarchy
 - 69% fail Zero/Buried Social Proof
 
-    ## Pricing
+## Pricing
 
-    Decision Friction Review: $149 one-time
-    Lite: $299/month, 4 rebuilds
-    Growth: $499/month, 10 rebuilds
-    High-Impact: $899/month, unlimited rebuilds
-    Architecture: $2,500/month, full email system rebuild and ongoing retainer
+Decision Friction Review: $149 one-time
+Lite: $299/month, 4 rebuilds
+Growth: $499/month, 10 rebuilds
+High-Impact: $899/month, unlimited rebuilds
+Architecture: $2,500/month, full email system rebuild and ongoing retainer
 
-    ## Free tools
+## Free tools
 
-    AI Visibility Check (https://strategic-flow-audit.replit.app/ai-visibility): checks whether a brand appears in AI model responses for category queries, checks robots.txt for AI crawler permissions, detects schema.org markup. Score 0-10. No login required.
-    WHY. Decision Friction Analyzer (https://strategic-flow-audit.replit.app/why): scores any email, landing page, or sales deck 1-10 for decision friction, identifies friction points. No login required.
+AI Visibility Check (https://strategic-flow-audit.replit.app/ai-visibility): checks whether a brand appears in AI model responses for category queries, checks robots.txt for AI crawler permissions, detects schema.org markup. Score 0-10. No login required.
+WHY. Decision Friction Analyzer (https://strategic-flow-audit.replit.app/why): scores any email, landing page, or sales deck 1-10 for decision friction, identifies friction points. No login required.
     
 ## What Strategic Flow does not do
 
@@ -61,10 +61,10 @@ Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limite
 - [Glossary](https://strategicflow.tech/glossary.html): definitions of Feature-First Bias, Guest Language CTA, Filing Label Subject, and other named failure patterns
 - [Field Notes](https://strategicflow.tech/notes.html): ongoing observations and research
 - [Free diagnostic tool](https://strategic-flow-audit.replit.app/why.html): WHY.™, the interactive email architecture diagnostic
-    - [Pricing](https://strategicflow.tech/strategic-flow-pricing.html)
-    - [About](https://strategicflow.tech/about.html)
-    - [Reviews](https://strategicflow.tech/reviews.html)
-    - [Blog](https://strategicflow.tech/blog.html): published articles
+- [Pricing](https://strategicflow.tech/strategic-flow-pricing.html)
+- [About](https://strategicflow.tech/about.html)
+- [Reviews](https://strategicflow.tech/reviews.html)
+- [Blog](https://strategicflow.tech/blog.html): published articles
 
 ## Secondary pages
 
