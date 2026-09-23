@@ -1,4 +1,4 @@
-modules = ["python-base-3.13"]
+modules = ["python-base-3.13", "nodejs-24"]
 
 [workflows]
 runButton = "Project"
@@ -24,5 +24,9 @@ args = "python3 scripts/validate-blog.py"
 isValidation = true
 
 [deployment]
-deploymentTarget = "static"
-publicDir = "."
+deploymentTarget = "autoscale"
+run = ["npm", "start"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80

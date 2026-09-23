@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolIndex · Outreach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F6F7;
+    --paper:#FFFFFF;
+    --ink:#15222B;
+    --muted:#5C7078;
+    --line:#DFE6E8;
+    --teal:#1F7A6C;
+    --teal-soft:#E4F1EE;
+    --gold:#B9822E;
+    --gold-soft:#F5EAD8;
+    --danger:#B4472F;
+    --green:#15803d;
+    --green-soft:#dcfce7;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:700;margin:0;}
+  ::selection{background:var(--teal-soft);}
+
+  /* ===== HEADER ===== */
+  .head{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:16px 16px 12px;
+  }
+  .head-top{display:flex;align-items:center;gap:14px;}
+  .ring-wrap{position:relative;width:56px;height:56px;flex:none;}
+  .ring-wrap svg{width:56px;height:56px;transform:rotate(-90deg);}
+  .ring-bg{fill:none;stroke:var(--line);stroke-width:5;}
+  .ring-fg{fill:none;stroke:var(--teal);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 400ms ease;}
+  .ring-num{
+    position:absolute;inset:0;display:grid;place-items:center;
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:0.72rem;color:var(--teal);
+  }
+  .head-title{flex:1;min-width:0;}
+  .head-title h1{font-size:1.15rem;line-height:1.2;}
+  .head-title p{margin:2px 0 0;font-size:0.82rem;color:var(--muted);}
+  .head-title p b{color:var(--ink);font-family:'JetBrains Mono',monospace;}
+
+  .batch-btn{
+    flex:none;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:0.82rem;
+    padding:9px 14px;border-radius:10px;border:none;cursor:pointer;
+    background:var(--teal);color:#fff;
+    white-space:nowrap;
+  }
+  .batch-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+  .search{
+    margin-top:12px;position:relative;
+  }
+  .search input{
+    width:100%;padding:10px 14px 10px 36px;border-radius:11px;
+    border:1px solid var(--line);background:var(--bg);
+    font-family:'Inter',sans-serif;font-size:0.95rem;color:var(--ink);
+  }
+  .search input:focus{outline:2px solid var(--teal);outline-offset:1px;}
+  .search::before{
+    content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    color:var(--muted);font-size:1.1rem;pointer-events:none;
+  }
+
+  .chips{display:flex;gap:7px;margin-top:11px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:none;font-family:'Inter',sans-serif;font-weight:600;font-size:0.8rem;
+    padding:7px 13px;border-radius:999px;border:1px solid var(--line);
+    background:var(--paper);color:var(--muted);white-space:nowrap;cursor:pointer;
+  }
+  .chip.on{background:var(--ink);border-color:var(--ink);color:#fff;}
+
+  /* ===== LIST ===== */
+  .list{padding:14px 12px 90px;max-width:640px;margin:0 auto;}
+  .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:0.95rem;}
+  .loading{text-align:center;color:var(--muted);padding:60px 20px;}
+  .loading-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);margin:0 3px;animation:pulse 1.2s ease-in-out infinite;}
+  .loading-dot:nth-child(2){animation-delay:.2s;}
+  .loading-dot:nth-child(3){animation-delay:.4s;}
+  @keyframes pulse{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:14px 15px;margin-bottom:10px;transition:opacity 200ms ease;
+  }
+  .card.done{opacity:0.46;}
+  .card.sent{border-color:#86efac;}
+  .card-top{display:flex;align-items:flex-start;gap:10px;}
+  .card-info{flex:1;min-width:0;}
+  .card-name{font-family:'Fraunces',serif;font-weight:700;font-size:1.02rem;line-height:1.25;}
+  .card-name a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line);}
+  .meta-row{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap;}
+  .badge{
+    font-family:'JetBrains Mono',monospace;font-size:0.68rem;font-weight:700;
+    padding:2px 8px;border-radius:6px;letter-spacing:0.02em;
+  }
+  .badge.cat{background:var(--bg);color:var(--muted);}
+  .badge.both{background:var(--gold-soft);color:var(--gold);}
+  .badge.big{background:#F6E7E2;color:var(--danger);}
+  .badge.sent-badge{background:var(--green-soft);color:var(--green);}
+  .badge.draft-badge{background:#ede9fe;color:#6d28d9;}
+  .badge.claimed-badge{background:var(--green-soft);color:var(--green);}
+  .badge.followup-badge{background:#fef3c7;color:#92400e;}
+
+  .check{
+    flex:none;width:26px;height:26px;border-radius:8px;
+    border:2px solid var(--line);background:var(--paper);
+    display:grid;place-items:center;cursor:pointer;color:transparent;
+    font-size:0.95rem;font-weight:700;
+  }
+  .check.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+
+  .actions{margin-top:11px;display:grid;gap:7px;}
+  .arow{display:flex;gap:7px;}
+  .abtn{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:0.84rem;
+    padding:9px 10px;border-radius:10px;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);text-decoration:none;cursor:pointer;
+  }
+  .abtn.primary{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);}
+  .abtn.resend{background:var(--teal);border-color:var(--teal);color:#fff;}
+  .abtn.resend:disabled{opacity:0.5;cursor:not-allowed;}
+  .abtn.resend.sending{opacity:0.7;cursor:not-allowed;}
+  .abtn.resend.ok{background:var(--green-soft);border-color:#86efac;color:var(--green);cursor:default;}
+  .abtn.copy{flex:0 0 auto;padding:9px 12px;}
+  .abtn.copy.copied{background:var(--teal);color:#fff;border-color:var(--teal);}
+  .abtn svg{width:15px;height:15px;flex:none;}
+
+  .card.nocontact{opacity:0.55;}
+  .nocontact-note{
+    margin-top:10px;font-size:0.82rem;color:var(--muted);
+    font-style:italic;
+  }
+  .contact-line{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--muted);margin-top:6px;word-break:break-all;}
+  .sent-line{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--green);margin-top:6px;}
+
+  .batch-log{
+    max-width:640px;margin:0 auto 14px;padding:12px 15px;
+    background:#f0fdf4;border:1px solid #86efac;border-radius:12px;
+    font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--green);
+    white-space:pre-wrap;display:none;max-height:160px;overflow-y:auto;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card{transition:none;} .ring-fg{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="head-top">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 56 56">
+        <circle class="ring-bg" cx="28" cy="28" r="24"></circle>
+        <circle class="ring-fg" id="ring" cx="28" cy="28" r="24" stroke-dasharray="151" stroke-dashoffset="151"></circle>
+      </svg>
+      <div class="ring-num" id="ringNum">0%</div>
+    </div>
+    <div class="head-title">
+      <h1>ToolIndex Outreach</h1>
+      <p>
+        <span title="Confirmed sent via Resend API — stored in DB">✉ <b id="sentCount">0</b> sent via Resend</span>
+        &nbsp;·&nbsp;
+        <span title="Manually checked off in this browser only — localStorage, not DB" style="color:#94a3b8;">☑ <b id="doneCount">0</b> marked done (local)</span>
+        &nbsp;·&nbsp;
+        <b id="draftCount">0</b> drafts · <b id="claimedCount">0</b> claimed / <b id="totalCount">…</b> total
+      </p>
+    </div>
+    <button class="batch-btn" id="batchBtn" title="Trimite automat la next 25 cu email găsit și netrimis (folosește întreaga coadă, nu doar filtrul activ)">⚡ Trimite 25</button>
+  </div>
+  <div class="search">
+    <input id="q" type="text" placeholder="Caută nume sau categorie…">
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip on" data-f="all">All</button>
+    <button class="chip" data-f="draft">Draft — unclaimed</button>
+    <button class="chip" data-f="claimed">Claimed ✓</button>
+    <button class="chip" data-f="todo">Not contacted</button>
+    <button class="chip" data-f="done">Marked done</button>
+    <button class="chip" data-f="unsent">Unsent Resend</button>
+    <button class="chip" data-f="sent">Sent Resend</button>
+    <button class="chip" data-f="followup">Follow-up sent</button>
+    <button class="chip" data-f="both">Email + LinkedIn</button>
+    <button class="chip" data-f="email">Email only</button>
+    <button class="chip" data-f="li">LinkedIn only</button>
+    <button class="chip" data-f="skipbig">No big co.</button>
+    <button class="chip" data-f="contact">Has contact</button>
+  </div>
+</header>
+
+<div class="batch-log" id="batchLog"></div>
+
+<main class="list" id="list">
+  <div class="loading">
+    <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>
+    <p style="margin-top:14px;">Se încarcă listele…</p>
+  </div>
+</main>
+
+<script>
+(async function(){
+  const list         = document.getElementById('list');
+  const qInput       = document.getElementById('q');
+  const chips        = document.getElementById('chips');
+  const totalCountEl   = document.getElementById('totalCount');
+  const doneCountEl    = document.getElementById('doneCount');
+  const sentCountEl    = document.getElementById('sentCount');
+  const draftCountEl   = document.getElementById('draftCount');
+  const claimedCountEl = document.getElementById('claimedCount');
+  const ring         = document.getElementById('ring');
+  const ringNum      = document.getElementById('ringNum');
+  const batchBtn     = document.getElementById('batchBtn');
+  const batchLog     = document.getElementById('batchLog');
+  const RING_LEN     = 151;
+  const STORAGE_KEY  = 'ti_outreach_contacted_v2';
+
+  let csrfToken = null;
+
+  async function getCsrfToken(){
+    if (csrfToken) return csrfToken;
+    const response = await fetch('/auth/csrf', { credentials: 'same-origin' });
+    if (!response.ok) throw new Error('Este necesară autentificarea admin.');
+    csrfToken = (await response.json()).token;
+    return csrfToken;
+  }
+
+  async function adminPost(path){
+    return fetch(path, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'X-CSRF-Token': await getCsrfToken() }
+    });
+  }
+
+  // ── Fetch data ──
+  // Keep the admin tracker defensive even if an importer returns a blocked
+  // address. The server-side gate remains authoritative for every send.
+  const EXCLUDED_IDS = new Set();
+  const RESTRICTED_ADDRESS_RE = /(?:^|@)datafreak\.net$/i;
+  const isRestrictedOutreachRow = row =>
+    EXCLUDED_IDS.has(String(row?.id || '')) ||
+    RESTRICTED_ADDRESS_RE.test(String(row?.email || '').trim());
+
+  let DATA = [];
+  try {
+    const resp = await fetch('/api/directory/outreach-queue', { credentials: 'same-origin' });
+    if (!resp.ok) {
+      list.innerHTML = '<div class="empty">Eroare la încărcare (' + resp.status + '). Autentifică-te ca administrator și reîncearcă.</div>';
+      return;
+    }
+    DATA = (await resp.json()).filter(row => !isRestrictedOutreachRow(row));
+  } catch(e) {
+    list.innerHTML = '<div class="empty">Nu s-a putut conecta la server. Încearcă din nou.</div>';
+    return;
+  }
+
+  totalCountEl.textContent = DATA.length;
+
+  // ── Manual "contacted" state in localStorage ──
+  let contacted = new Set();
+  function loadContacted(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      contacted = new Set(raw ? JSON.parse(raw) : []);
+    } catch { contacted = new Set(); }
+  }
+  function saveContacted(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...contacted])); } catch {}
+  }
+
+  // ── Helpers ──
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function fmtDate(iso){
+    if(!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString('ro-RO',{day:'2-digit',month:'short',year:'numeric'}) + ' ' + d.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  function emailBody(id, name, page){
+    return `Bună ziua,
+
+Am văzut că ${name} este listat pe ToolIndex — directorul de produse AI și SaaS cu DA 86.
+
+Produsul tău apare la: ${page}
+
+Vrei să-ți crești vizibilitatea? ToolIndex oferă:
+• Dofollow backlink de la un domeniu DA 86
+• Placement în newsletter-ul săptămânal
+• Featured spot în topul categoriei
+
+Mai multe detalii: https://strategic-flow-audit.replit.app/directory
+
+Cu stimă,
+Echipa ToolIndex`;
+  }
+
+  function liMessage(id, name, page){
+    return `Bună!
+
+Am văzut ${name} pe ToolIndex (directorul nostru de produse AI/SaaS, DA 86) — listarea ta e la ${page}.
+
+Vrei să crești vizibilitatea prin featured placement sau backlink prioritar? Mă bucur să-ți explic.`;
+  }
+
+  function copyText(text, btn, labelReset){
+    navigator.clipboard.writeText(text).then(()=>{
+      const old = labelReset || btn.textContent;
+      btn.textContent = 'Copiat ✓';
+      btn.classList.add('copied');
+      setTimeout(()=>{ btn.textContent = old; btn.classList.remove('copied'); }, 1400);
+    }).catch(()=>{
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch {}
+      document.body.removeChild(ta);
+      btn.textContent = 'Copiat ✓'; btn.classList.add('copied');
+      setTimeout(()=>{ btn.textContent = labelReset || btn.textContent; btn.classList.remove('copied'); }, 1400);
+    });
+  }
+
+  // ── Send via Resend (single listing) ──
+  async function sendViaResend(id, btn){
+    btn.disabled = true;
+    btn.classList.add('sending');
+    btn.textContent = '⏳ Se trimite…';
+    try {
+      const r = await adminPost('/admin/send-claim-outreach?id=' + encodeURIComponent(id));
+      const d = await r.json();
+      if(d.ok){
+        // Update local data
+        const item = DATA.find(x => x.id === String(id));
+        if(item) item.emailed_at = d.sent_at;
+        btn.classList.remove('sending');
+        btn.classList.add('ok');
+        btn.textContent = '✓ Trimis';
+        updateStats();
+        // Update sent line on card
+        const card = btn.closest('.card');
+        if(card){
+          let sl = card.querySelector('.sent-line');
+          if(!sl){ sl = document.createElement('div'); sl.className='sent-line'; card.appendChild(sl); }
+          sl.textContent = '✉ trimis via Resend · ' + fmtDate(d.sent_at);
+        }
+      } else if(d.error === 'already_sent'){
+        btn.classList.remove('sending');
+        btn.classList.add('ok');
+        btn.textContent = '✓ Deja trimis';
+      } else {
+        btn.classList.remove('sending');
+        btn.disabled = false;
+        btn.textContent = '⚡ Trimite Resend';
+        alert('Eroare: ' + (d.error || 'unknown'));
+      }
+    } catch(e){
+      btn.classList.remove('sending');
+      btn.disabled = false;
+      btn.textContent = '⚡ Trimite Resend';
+      alert('Eroare de rețea: ' + e.message);
+    }
+  }
+
+  function cardHTML(item){
+    const isDone    = contacted.has(item.id);
+    const hasEmail  = !!item.email;
+    const hasLi     = !!item.li;
+    const noContact = !hasEmail && !hasLi;
+    const hasBoth   = hasEmail && hasLi;
+    const isSent    = !!item.emailed_at;
+    const isDraft   = item.status === 'draft';
+    const isClaimed = !!item.claimed_at;
+    const hasFollowUp = !!item.follow_up_sent_at;
+
+    let contactBadge = '';
+    if(isDraft && !isClaimed) contactBadge += '<span class="badge draft-badge">Draft — awaiting claim</span>';
+    if(isClaimed)             contactBadge += '<span class="badge claimed-badge">✓ Claimed ' + esc(fmtDate(item.claimed_at)) + '</span>';
+    if(hasBoth && !isClaimed) contactBadge += '<span class="badge both">Email + LI</span>';
+    if(isSent && !isClaimed)  contactBadge += '<span class="badge sent-badge">✉ Sent</span>';
+    if(hasFollowUp)           contactBadge += '<span class="badge followup-badge">↩ Follow-up sent ' + esc(fmtDate(item.follow_up_sent_at)) + '</span>';
+
+    let contactActions = '';
+    if(hasEmail){
+      const sentDisabled = isSent ? ' disabled' : '';
+      const sentCls      = isSent ? ' ok' : '';
+      const sentLabel    = isSent ? '✓ Sent' : '⚡ Send Resend';
+      contactActions +=
+        '<div class="arow">' +
+          '<button class="abtn resend' + sentCls + '" data-send="' + esc(item.id) + '"' + sentDisabled + '>' + sentLabel + '</button>' +
+        '</div>' +
+        '<div class="arow">' +
+          '<a class="abtn primary" href="mailto:' + esc(item.email) + '">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>' +
+            'Manual email</a>' +
+          '<button class="abtn copy" data-copy="email" data-id="' + esc(item.id) + '">Copy</button>' +
+        '</div>';
+    }
+    if(hasLi){
+      contactActions +=
+        '<div class="arow">' +
+          '<a class="abtn" href="' + esc(item.li) + '" target="_blank" rel="noopener">' +
+            '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>' +
+            'LinkedIn</a>' +
+          '<button class="abtn copy" data-copy="li" data-id="' + esc(item.id) + '">Copy DM</button>' +
+        '</div>';
+    }
+
+    let contactLine = '';
+    if(hasEmail) contactLine += '<div class="contact-line">✉ ' + esc(item.email) + '</div>';
+    if(hasLi)    contactLine += '<div class="contact-line">in ' + esc(item.li) + '</div>';
+
+    let sentLine = '';
+    if(isSent)    sentLine += '<div class="sent-line">✉ sent via Resend · ' + esc(fmtDate(item.emailed_at)) + '</div>';
+    if(isClaimed) sentLine += '<div class="sent-line" style="color:var(--green);">✓ Claimed · ' + esc(fmtDate(item.claimed_at)) + '</div>';
+
+    // Border left accent for drafts
+    const cardStyle = isDraft && !isClaimed ? ' style="border-left:3px solid #6d28d9;"' : '';
+
+    return '<div class="card' + (isDone?' done':'') + (noContact?' nocontact':'') + (isSent?' sent':'') + '"' + cardStyle + ' data-id="' + esc(item.id) + '">' +
+      '<div class="card-top">' +
+        '<div class="card-info">' +
+          '<div class="card-name"><a href="' + esc(item.page) + '" target="_blank" rel="noopener">' + esc(item.name) + '</a></div>' +
+          '<div class="meta-row">' +
+            '<span class="badge cat">' + esc(item.cat) + '</span>' +
+            (item.big ? '<span class="badge big">Big co.</span>' : '') +
+            contactBadge +
+          '</div>' +
+          contactLine +
+          sentLine +
+        '</div>' +
+        '<button class="check' + (isDone?' on':'') + '" data-toggle="' + esc(item.id) + '" title="Mark as contacted">' +
+          (isDone ? '✓' : '') +
+        '</button>' +
+      '</div>' +
+      (noContact
+        ? '<div class="nocontact-note">No public contact found — check the site manually.</div>'
+        : '<div class="actions">' + contactActions + '</div>'
+      ) +
+    '</div>';
+  }
+
+  let filter = 'all';
+  let query  = '';
+
+  function updateStats(){
+    const sentN    = DATA.filter(d => !!d.emailed_at).length;
+    const draftN   = DATA.filter(d => d.status === 'draft' && !d.claimed_at).length;
+    const claimedN = DATA.filter(d => !!d.claimed_at).length;
+    sentCountEl.textContent    = sentN;
+    draftCountEl.textContent   = draftN;
+    claimedCountEl.textContent = claimedN;
+    if(doneCountEl) doneCountEl.textContent = contacted.size;
+    // Ring tracks total reached (sent OR manually marked)
+    const reached = DATA.filter(d => !!d.emailed_at || contacted.has(d.id)).length;
+    const pct = DATA.length ? reached / DATA.length : 0;
+    ring.style.strokeDashoffset = RING_LEN - pct * RING_LEN;
+    ringNum.textContent = Math.round(pct * 100) + '%';
+  }
+
+  function render(){
+    let filtered = DATA.filter(item => {
+      const has_e   = !!item.email, has_l = !!item.li;
+      const isDone  = contacted.has(item.id);
+      const isSent  = !!item.emailed_at;
+      const isDraft = item.status === 'draft';
+      const isClaimed = !!item.claimed_at;
+      const hasFollowUp = !!item.follow_up_sent_at;
+      if(filter === 'draft'    && (isClaimed || !isDraft)) return false;
+      if(filter === 'claimed'  && !isClaimed) return false;
+      if(filter === 'followup' && !hasFollowUp) return false;
+      if(filter === 'todo'     && (isDone || isSent)) return false;
+      if(filter === 'done'     && !isDone) return false;
+      if(filter === 'unsent'   && (!has_e || isSent)) return false;
+      if(filter === 'sent'     && !isSent) return false;
+      if(filter === 'both'     && !(has_e && has_l)) return false;
+      if(filter === 'email'    && (!has_e || has_l)) return false;
+      if(filter === 'li'       && (!has_l || has_e)) return false;
+      if(filter === 'skipbig'  && item.big) return false;
+      if(filter === 'contact'  && !has_e && !has_l) return false;
+      if(query){
+        const q = query.toLowerCase();
+        if(!(item.name||'').toLowerCase().includes(q) && !(item.cat||'').toLowerCase().includes(q)) return false;
+      }
+      return true;
+    });
+
+    if(!filtered.length){
+      list.innerHTML = '<div class="empty">Nimic nu se potrivește. Încearcă alt filtru sau altă căutare.</div>';
+    } else {
+      list.innerHTML = filtered.map(cardHTML).join('');
+    }
+    updateStats();
+  }
+
+  // ── Click handler (toggle, copy, send) ──
+  list.addEventListener('click', async (e)=>{
+    // Toggle manual contacted
+    const toggleEl = e.target.closest('[data-toggle]');
+    if(toggleEl){
+      const id = toggleEl.getAttribute('data-toggle');
+      if(contacted.has(id)) contacted.delete(id); else contacted.add(id);
+      saveContacted();
+      render();
+      return;
+    }
+    // Copy
+    const copyBtn = e.target.closest('[data-copy]');
+    if(copyBtn){
+      const id   = copyBtn.getAttribute('data-id');
+      const item = DATA.find(d => d.id === id);
+      if(!item) return;
+      const kind = copyBtn.getAttribute('data-copy');
+      const text = kind === 'email' ? emailBody(item.id, item.name, item.page) : liMessage(item.id, item.name, item.page);
+      copyText(text, copyBtn, kind === 'email' ? 'Copiază' : 'Copiază DM');
+      return;
+    }
+    // Send via Resend
+    const sendBtn = e.target.closest('[data-send]');
+    if(sendBtn && !sendBtn.disabled){
+      const id = sendBtn.getAttribute('data-send');
+      await sendViaResend(id, sendBtn);
+    }
+  });
+
+  // ── Batch send (25 at a time) ──
+  // ALWAYS queues from full DATA — never from the currently visible filtered subset
+  batchBtn.addEventListener('click', async ()=>{
+    // Use full DATA regardless of active tab/filter/search
+    // Exclude claimed listings — owner already knows about ToolIndex
+    const fullQueue = DATA.filter(d => d.email && !d.emailed_at && !d.claimed_at);
+    if(!fullQueue.length){
+      alert('Coada reală e goală — nicio listare cu email nerămasă de trimis în întregul dataset.');
+      return;
+    }
+    const batch = fullQueue.slice(0, 25);
+    batchBtn.disabled = true;
+    batchLog.style.display = 'block';
+    batchLog.textContent = `Trimit ${batch.length} emailuri (${fullQueue.length} totale în coadă)…\n`;
+
+    let ok = 0, fail = 0, quotaHit = false;
+    for(const item of batch){
+      try {
+        const r = await adminPost('/admin/send-claim-outreach?id=' + encodeURIComponent(item.id));
+        const d = await r.json();
+        if(d.ok || d.error === 'already_sent'){
+          item.emailed_at = d.sent_at || new Date().toISOString();
+          ok++;
+          batchLog.textContent += `✓ ${item.name} → ${item.email}\n`;
+        } else if(r.status === 429 || d.error === 'quota_exceeded'){
+          // Resend daily quota reached — stop immediately, only mark confirmed sends
+          quotaHit = true;
+          const remaining = fullQueue.length - ok;
+          batchLog.textContent += `\n⚠ Resend quota atinsă după ${ok} trimise.\n`;
+          batchLog.textContent += `   Mesaj Resend: ${d.message || 'daily limit reached'}\n`;
+          batchLog.textContent += `   ${remaining} emailuri rămân pentru mâine.\n`;
+          break;
+        } else {
+          fail++;
+          batchLog.textContent += `✗ ${item.name} — ${d.error}\n`;
+        }
+      } catch(e){
+        fail++;
+        batchLog.textContent += `✗ ${item.name} — eroare rețea\n`;
+      }
+      batchLog.scrollTop = batchLog.scrollHeight;
+      await new Promise(r => setTimeout(r, 300));
+    }
+
+    if(!quotaHit){
+      const stillPending = DATA.filter(d => d.email && !d.emailed_at).length;
+      batchLog.textContent += `\nGata: ${ok} trimise, ${fail} erori. ${stillPending} rămase în coadă.`;
+    }
+    batchBtn.disabled = false;
+    render();
+  });
+
+  // ── Filter chips ──
+  chips.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.chip');
+    if(!btn) return;
+    filter = btn.getAttribute('data-f');
+    Array.from(chips.children).forEach(c=>c.classList.toggle('on', c===btn));
+    render();
+  });
+
+  // ── Search ──
+  let qTimer;
+  qInput.addEventListener('input', ()=>{
+    clearTimeout(qTimer);
+    qTimer = setTimeout(()=>{ query = qInput.value; render(); }, 120);
+  });
+
+  loadContacted();
+  render();
+})();
+</script>
+</body>
+</html>

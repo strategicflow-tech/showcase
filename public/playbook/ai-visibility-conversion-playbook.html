@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Visibility & Conversion Playbook — Strategic Flow</title>
+<style>
+  :root{
+    --bg:#050608;
+    --bg-panel:#0e1119;
+    --line:#242832;
+    --white:#ffffff;
+    --gray:#c7cbd4;
+    --gray-dim:#8a90a0;
+    --amber:#ffb238;
+    --teal:#2be6d0;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--white);
+    font-family:'Georgia', 'Times New Roman', serif;
+    line-height:1.75; font-size:18px; position:relative;
+  }
+  .mono{font-family:'Courier New', monospace;}
+  a{color:var(--teal);}
+  .wrap{max-width:780px; margin:0 auto; padding:0 28px; position:relative; z-index:2;}
+
+  .bg-grid{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:46px 46px; opacity:.28;
+    animation:gridDrift 26s linear infinite;
+  }
+  @keyframes gridDrift{ 0%{background-position:0 0;} 100%{background-position:46px 92px;} }
+  .scan-line{
+    position:fixed; left:0; right:0; height:2px; z-index:1; pointer-events:none;
+    background:linear-gradient(90deg, transparent, var(--teal), transparent);
+    opacity:.55; box-shadow:0 0 18px 2px var(--teal);
+    animation:scanMove 7s linear infinite;
+  }
+  @keyframes scanMove{ 0%{top:-2%;opacity:0;} 5%{opacity:.55;} 95%{opacity:.55;} 100%{top:102%;opacity:0;} }
+
+  .noise-particles{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .particle{ position:absolute; width:2px; height:2px; background:var(--teal); border-radius:50%;
+    opacity:0; animation:floatUp linear infinite; box-shadow:0 0 6px 1px var(--teal); }
+  @keyframes floatUp{
+    0%{ transform:translateY(0); opacity:0; }
+    10%{ opacity:.6; }
+    90%{ opacity:.3; }
+    100%{ transform:translateY(-100vh); opacity:0; }
+  }
+
+  .cover{
+    min-height:96vh; display:flex; flex-direction:column; justify-content:center;
+    border-bottom:1px solid var(--line); position:relative; overflow:hidden;
+  }
+  .cover-inner{position:relative; z-index:2;}
+  .boot-lines{ font-family:'Courier New',monospace; font-size:12px; color:var(--teal); opacity:.7;
+    margin-bottom:22px; min-height:60px; }
+  .boot-lines div{ opacity:0; animation:fadeUp .4s ease forwards; white-space:pre; }
+  .boot-lines div:nth-child(1){ animation-delay:.05s; }
+  .boot-lines div:nth-child(2){ animation-delay:.25s; }
+  .boot-lines div:nth-child(3){ animation-delay:.45s; }
+  .boot-lines div:nth-child(4){ animation-delay:.65s; }
+  .eyebrow{
+    font-family:'Courier New',monospace; letter-spacing:.18em; font-size:13px;
+    color:var(--amber); text-transform:uppercase; margin-bottom:18px;
+    opacity:0; animation:fadeUp .8s ease forwards .85s;
+  }
+  .cover h1{
+    font-family:'Georgia',serif; font-weight:700; font-size:clamp(38px,6vw,64px);
+    line-height:1.08; margin:0 0 22px 0; letter-spacing:-.01em; color:var(--white);
+    opacity:0; animation:fadeUp .8s ease forwards 1.05s;
+  }
+  .cover h1 em{ color:var(--teal); font-style:normal; text-shadow:0 0 24px rgba(43,230,208,.5);
+    position:relative; }
+  .cover h1 em::after{ content:""; position:absolute; left:0; right:0; bottom:6px; height:10px;
+    background:radial-gradient(ellipse, rgba(43,230,208,.35), transparent 70%); z-index:-1;
+    animation:pulseGlow 2.4s ease-in-out infinite; }
+  @keyframes pulseGlow{ 0%,100%{opacity:.4;} 50%{opacity:1;} }
+  .cover .sub{ font-size:20px; color:var(--gray); max-width:600px; margin-bottom:36px;
+    opacity:0; animation:fadeUp .8s ease forwards 1.25s; }
+  .cover .meta{ font-family:'Courier New',monospace; font-size:14px; color:var(--gray-dim);
+    opacity:0; animation:fadeUp .8s ease forwards 1.4s; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+
+  .stat-row{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap;
+    opacity:0; animation:fadeUp .8s ease forwards 1.55s; }
+  .stat{ font-family:'Courier New',monospace; position:relative; }
+  .stat .n{ font-size:34px; color:var(--amber); display:block; text-shadow:0 0 20px rgba(255,178,56,.35); }
+  .stat .l{ font-size:12px; color:var(--gray-dim); text-transform:uppercase; letter-spacing:.08em; }
+  .stat .ring{ position:absolute; top:-8px; right:-14px; width:6px; height:6px; border-radius:50%;
+    background:var(--teal); box-shadow:0 0 8px 2px var(--teal); animation:blink 1.8s ease-in-out infinite; }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.2;} }
+
+  .pdf-btn{
+    display:inline-flex; align-items:center; gap:10px; margin-top:40px;
+    padding:14px 26px; border:1px solid var(--teal); border-radius:3px;
+    color:var(--teal); text-decoration:none; font-family:'Courier New',monospace;
+    font-size:14px; letter-spacing:.05em; text-transform:uppercase;
+    opacity:0; animation:fadeUp .8s ease forwards 1.7s; transition:all .2s; position:relative;
+    overflow:hidden;
+  }
+  .pdf-btn::before{ content:""; position:absolute; top:0; left:-100%; width:100%; height:100%;
+    background:linear-gradient(90deg, transparent, rgba(43,230,208,.3), transparent);
+    animation:sweep 3s ease-in-out infinite; }
+  @keyframes sweep{ 0%{left:-100%;} 50%,100%{left:100%;} }
+  .pdf-btn:hover{ background:var(--teal); color:#050608; box-shadow:0 0 22px rgba(43,230,208,.4); }
+
+  .toc{ padding:70px 0; border-bottom:1px solid var(--line); }
+  .toc h2{ font-family:'Courier New',monospace; text-transform:uppercase; letter-spacing:.12em;
+    font-size:14px; color:var(--gray-dim); margin-bottom:28px; }
+  .toc-part{ margin-bottom:26px; }
+  .toc-part-label{ color:var(--teal); font-family:'Courier New',monospace; font-size:13px;
+    letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+  .toc-item{ display:flex; gap:14px; padding:8px 0; border-bottom:1px dotted var(--line); }
+  .toc-item .num{ font-family:'Courier New',monospace; color:var(--gray-dim); min-width:26px; }
+  .toc-item a{ color:var(--white); text-decoration:none; }
+  .toc-item a:hover{ color:var(--amber); }
+
+  .chapter{ padding:64px 0; border-bottom:1px solid var(--line); opacity:0; transform:translateY(24px);
+    transition:opacity .7s ease, transform .7s ease; }
+  .chapter.in-view{ opacity:1; transform:translateY(0); }
+  .chapter-eyebrow{ font-family:'Courier New',monospace; color:var(--teal); font-size:13px;
+    letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
+  .chapter-eyebrow::before{ content:"◆ "; color:var(--amber); }
+  .chapter h2{ font-size:clamp(28px,4vw,38px); margin:0 0 26px 0; line-height:1.2; color:var(--white); }
+  .chapter p{ color:var(--gray); margin:0 0 20px 0; }
+  .chapter strong{ color:var(--white); }
+  .pull{
+    border-left:3px solid var(--amber); padding:6px 0 6px 22px; margin:32px 0;
+    font-size:21px; color:var(--white); font-style:italic; position:relative;
+  }
+  .callout{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:4px;
+    padding:22px 26px; margin:28px 0; font-family:'Courier New',monospace; font-size:15px;
+    color:var(--gray); position:relative; overflow:hidden;
+  }
+  .callout::before{ content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--teal), var(--amber)); }
+  .callout .label{ color:var(--teal); text-transform:uppercase; letter-spacing:.08em; font-size:12px;
+    margin-bottom:10px; }
+  ul.plain{ padding-left:0; list-style:none; margin:20px 0; }
+  ul.plain li{ padding:9px 0 9px 26px; border-bottom:1px solid var(--line); position:relative; color:var(--gray); }
+  ul.plain li::before{ content:"→"; position:absolute; left:0; color:var(--amber); font-family:monospace; }
+  .data-table{ width:100%; border-collapse:collapse; margin:26px 0; font-family:'Courier New',monospace; font-size:13.5px; }
+  .data-table th{ text-align:left; color:var(--gray-dim); font-weight:400; text-transform:uppercase;
+    letter-spacing:.06em; font-size:11.5px; padding:10px 10px; border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:var(--bg); }
+  .data-table td{ padding:9px 10px; border-bottom:1px solid var(--line); color:var(--gray); }
+  .score-amber{ color:var(--amber); font-weight:bold; }
+  .score-teal{ color:var(--teal); font-weight:bold; }
+  .table-scroll{ max-height:560px; overflow-y:auto; border:1px solid var(--line); border-radius:6px;
+    margin:26px 0; box-shadow:inset 0 0 30px rgba(0,0,0,.4); }
+  .table-scroll .data-table{ margin:0; }
+  .table-scroll::-webkit-scrollbar{ width:8px; }
+  .table-scroll::-webkit-scrollbar-track{ background:var(--bg-panel); }
+  .table-scroll::-webkit-scrollbar-thumb{ background:var(--teal); border-radius:4px; }
+
+  .score-bars{ display:flex; align-items:flex-end; gap:6px; height:70px; margin:34px 0; }
+  .score-bars .bar{ flex:1; background:linear-gradient(180deg, var(--teal), var(--amber));
+    border-radius:2px 2px 0 0; transform:scaleY(0); transform-origin:bottom; opacity:.85;
+    transition:transform .8s cubic-bezier(.2,.8,.3,1); box-shadow:0 0 10px rgba(43,230,208,.3); }
+  .chapter.in-view .score-bars .bar{ transform:scaleY(1); }
+
+  .freq-bar-row{ display:flex; align-items:center; gap:14px; margin:14px 0; }
+  .freq-bar-label{ width:210px; font-family:'Courier New',monospace; font-size:13px; color:var(--gray);
+    flex-shrink:0; }
+  .freq-bar-track{ flex:1; height:22px; background:var(--bg-panel); border-radius:3px; overflow:hidden;
+    position:relative; border:1px solid var(--line); }
+  .freq-bar-fill{ height:100%; background:linear-gradient(90deg, var(--teal), var(--amber));
+    width:0; transition:width 1.1s cubic-bezier(.2,.8,.3,1); box-shadow:0 0 10px rgba(43,230,208,.4); }
+  .chapter.in-view .freq-bar-fill{ }
+  .freq-bar-pct{ width:56px; text-align:right; font-family:'Courier New',monospace; font-size:13px;
+    color:var(--amber); flex-shrink:0; }
+
+  .tier-grid{ display:grid; grid-template-columns:1fr; gap:14px; margin:28px 0; }
+  .tier-row{ display:flex; justify-content:space-between; align-items:center; padding:16px 20px;
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:6px; }
+  .tier-row .tname{ font-weight:bold; color:var(--white); }
+  .tier-row .tdesc{ font-size:14px; color:var(--gray-dim); margin-top:4px; }
+  .tier-row .tcount{ font-family:'Courier New',monospace; font-size:24px; color:var(--amber);
+    text-align:right; }
+  .tier-row .tpct{ font-family:'Courier New',monospace; font-size:12px; color:var(--gray-dim); }
+
+  .case-grid{ display:grid; grid-template-columns:1fr; gap:18px; margin:28px 0; }
+  .case-card{ border:1px solid var(--line); border-radius:6px; padding:22px 24px; background:var(--bg-panel); }
+  .case-card .co{ font-family:'Courier New',monospace; color:var(--amber); font-size:13px;
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+  .case-card p{ margin:0; color:var(--gray); font-size:16px; }
+
+  .appendix{ background:var(--bg-panel); }
+
+  /* Final CTA chapter */
+  .cta-chapter{ background:radial-gradient(ellipse at 50% 0%, rgba(43,230,208,.08), var(--bg) 70%);
+    position:relative; }
+  .cta-box{ border:1px solid var(--teal); border-radius:10px; padding:40px 36px; margin:32px 0;
+    background:var(--bg-panel); position:relative; overflow:hidden; }
+  .cta-box::before{ content:""; position:absolute; top:-2px; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--teal), var(--amber), var(--teal));
+    background-size:200% 100%; animation:gradientMove 3s linear infinite; }
+  @keyframes gradientMove{ 0%{background-position:0% 0;} 100%{background-position:200% 0;} }
+  .cta-price{ font-family:'Courier New',monospace; font-size:52px; color:var(--amber);
+    text-shadow:0 0 30px rgba(255,178,56,.4); margin:6px 0 18px; }
+  .cta-price span{ font-size:20px; color:var(--gray-dim); }
+  .cta-list{ list-style:none; padding:0; margin:22px 0; }
+  .cta-list li{ padding:8px 0 8px 28px; position:relative; color:var(--gray); font-size:15px; }
+  .cta-list li::before{ content:"✓"; position:absolute; left:0; color:var(--teal); font-weight:bold; }
+  .cta-button{ display:inline-block; margin-top:20px; padding:16px 34px; background:var(--teal);
+    color:#050608; font-weight:bold; text-decoration:none; border-radius:4px; font-size:16px;
+    box-shadow:0 0 24px rgba(43,230,208,.35); transition:all .2s; }
+  .cta-button:hover{ background:var(--amber); box-shadow:0 0 24px rgba(255,178,56,.4); transform:translateY(-2px); }
+  .cta-note{ font-family:'Courier New',monospace; font-size:12.5px; color:var(--gray-dim); margin-top:16px; }
+
+  footer{ padding:60px 0 90px; text-align:center; color:var(--gray-dim); font-family:'Courier New',monospace; font-size:13px; position:relative; z-index:2; }
+  footer a{ color:var(--gray); }
+
+  @media(max-width:600px){ body{font-size:16.5px;} .stat-row{gap:24px;} .freq-bar-label{width:130px; font-size:11px;} }
+  @media print{
+    .bg-grid, .scan-line, .pdf-btn, .noise-particles{ display:none !important; }
+    .chapter{ opacity:1 !important; transform:none !important; }
+    .score-bars .bar, .freq-bar-fill{ transform:scaleY(1) !important; width:auto !important; }
+    body{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="scan-line"></div>
+<div class="noise-particles" id="particles"></div>
+
+<section class="cover">
+  <div class="wrap cover-inner">
+    <div class="boot-lines">
+      <div>[SYS] Loading Decision Friction Model v2.7 ...</div>
+      <div>[SYS] 140 companies indexed. 2 datasets merged.</div>
+      <div>[SYS] Compiling structural failure patterns ...</div>
+      <div>[SYS] Ready.</div>
+    </div>
+    <div class="eyebrow">A Field Guide for SaaS Founders · 2026</div>
+    <h1>The AI Visibility<br>&amp; Conversion <em>Playbook</em></h1>
+    <div class="sub">How SaaS companies get mentioned by AI models when buyers ask category questions, and how they convert once someone actually reads what they sent. Built on real scores from 140 SaaS companies, not theory.</div>
+    <div class="meta">By Alex Iliescu, Strategic Flow · First Edition · 2026</div>
+    <div class="stat-row">
+      <div class="stat"><span class="ring"></span><span class="n" data-count="140">0</span><span class="l">Companies Scored</span></div>
+      <div class="stat"><span class="n" data-count="7.7" data-decimal="1">0</span><span class="l">Avg. AI Visibility</span></div>
+      <div class="stat"><span class="n" data-count="3.9" data-decimal="1">0</span><span class="l">Avg. Decision Friction</span></div>
+      <div class="stat"><span class="n" data-count="21">0</span><span class="l">Chapters</span></div>
+    </div>
+    <a href="ai-visibility-conversion-playbook.html" class="pdf-btn" download>⬇ Download this playbook (HTML)</a>
+  </div>
+</section>
+
+<section class="toc">
+  <div class="wrap">
+    <h2>Contents</h2>
+
+    <div class="toc-part">
+      <div class="toc-part-label">Part I — Two Different Games</div>
+      <div class="toc-item"><span class="num mono">01</span><a href="#ch1">Getting Found vs. Getting Read</a></div>
+      <div class="toc-item"><span class="num mono">02</span><a href="#ch2">What 73 SaaS Companies Taught Us About AI Visibility</a></div>
+      <div class="toc-item"><span class="num mono">03</span><a href="#ch3">How AI Models Actually Decide Who to Mention</a></div>
+    </div>
+
+    <div class="toc-part">
+      <div class="toc-part-label">Part II — Getting Found</div>
+      <div class="toc-item"><span class="num mono">04</span><a href="#ch4">The Five Signals AI Models Score You On</a></div>
+      <div class="toc-item"><span class="num mono">05</span><a href="#ch5">Structure, Schema, and Things a Model Can Cite</a></div>
+      <div class="toc-item"><span class="num mono">06</span><a href="#ch6">Why Good Websites Still Score Low</a></div>
+      <div class="toc-item"><span class="num mono">07</span><a href="#ch7">Building Your Own Visibility Baseline</a></div>
+      <div class="toc-item"><span class="num mono">08</span><a href="#ch8">The Visibility Distribution: Where Companies Actually Land</a></div>
+    </div>
+
+    <div class="toc-part">
+      <div class="toc-part-label">Part III — Getting Read</div>
+      <div class="toc-item"><span class="num mono">09</span><a href="#ch9">The Decision Friction Model: Six Named Failure Patterns</a></div>
+      <div class="toc-item"><span class="num mono">10</span><a href="#ch10">Feature-First Bias: When the Product Arrives Before the Reason to Care</a></div>
+      <div class="toc-item"><span class="num mono">11</span><a href="#ch11">Missing Visual Hierarchy &amp; Buried Social Proof</a></div>
+      <div class="toc-item"><span class="num mono">12</span><a href="#ch12">Filing Label Subject: Why Subject Lines Fail</a></div>
+      <div class="toc-item"><span class="num mono">13</span><a href="#ch13">Consequence-After-Caveat: Burying the Point</a></div>
+      <div class="toc-item"><span class="num mono">14</span><a href="#ch14">The Pattern Frequency Breakdown: All 67, Ranked</a></div>
+    </div>
+
+    <div class="toc-part">
+      <div class="toc-part-label">Part IV — Advanced Signals</div>
+      <div class="toc-item"><span class="num mono">15</span><a href="#ch15">Multi-Model Divergence: When Claude and GPT Disagree About You</a></div>
+      <div class="toc-item"><span class="num mono">16</span><a href="#ch16">The Cost of Being Almost Right</a></div>
+      <div class="toc-item"><span class="num mono">17</span><a href="#ch17">Three Companies, Three Fixes: Worked Examples</a></div>
+    </div>
+
+    <div class="toc-part">
+      <div class="toc-part-label">Part V — Putting It Together</div>
+      <div class="toc-item"><span class="num mono">18</span><a href="#ch18">The 15-Minute Weekly Audit Loop</a></div>
+      <div class="toc-item"><span class="num mono">19</span><a href="#ch19">Your First 30 Days: A Combined Roadmap</a></div>
+      <div class="toc-item"><span class="num mono">20</span><a href="#ch20">What to Do When You Can't Fix It Yourself</a></div>
+    </div>
+
+    <div class="toc-part">
+      <div class="toc-part-label">Part VI — Work With Me</div>
+      <div class="toc-item"><span class="num mono">21</span><a href="#ch21">Get Your Own Decision Friction Review</a></div>
+    </div>
+
+    <div class="toc-part">
+      <div class="toc-part-label">Appendices</div>
+      <div class="toc-item"><span class="num mono">A</span><a href="#appA">The Complete AI Visibility Index (All 73)</a></div>
+      <div class="toc-item"><span class="num mono">B</span><a href="#appB">The Complete Decision Friction Index (All 67)</a></div>
+      <div class="toc-item"><span class="num mono">C</span><a href="#appC">Your Own Case Study Template</a></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch1">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part I · Chapter 01</div>
+    <h2>Getting Found vs. Getting Read</h2>
+    <p>Most SaaS founders treat "visibility" as one problem. It isn't. It's two, and they fail independently.</p>
+    <p>The first problem is whether anyone finds you at all. Not on Google, on <strong>Claude, GPT, Perplexity, and Gemini</strong>, the four places a growing share of buyers now ask "what's the best tool for X" instead of typing a brand name into a search bar. A company can rank first on Google and still not exist inside an AI-generated answer. That's a visibility problem.</p>
+    <p>The second problem starts after you've been found. Someone opens your email, reads your changelog, lands on your pricing page, and decides in the first few seconds whether to keep reading or bounce. Most of that decision isn't about your product. It's about whether the thing in front of them is structured in a way a human brain can process quickly. That's a friction problem.</p>
+    <p>We built two live indexes to measure both, separately, across real companies: the <strong>AI Visibility Index</strong> (73 SaaS companies, scored on whether AI models mention and accurately describe them) and the <strong>Decision Friction Index</strong> (67 SaaS companies, scored on structural conversion quality across emails, changelogs, and landing pages). The overlap between the two lists is smaller than you'd expect. Companies that score a perfect 10 on AI Visibility routinely score under 5 on Decision Friction, and vice versa. Being found and being read are different skills, tested by different judges.</p>
+    <div class="pull">Being found and being read are different skills, and most companies have only ever practiced one of them.</div>
+    <p>There's a third, quieter reason these two problems get treated as one: they both show up on the same dashboard-shaped blind spot. Nothing in Google Analytics tells you a model skipped your name entirely, and nothing in your email platform tells you a reader's eyes bounced off your subject line before they ever opened it. Both failures are silent by default. That's exactly why they need a deliberate, recurring check rather than a reaction to a metric that dropped.</p>
+    <p>This playbook treats them as two halves of the same funnel. Part II is about getting found. Part III is about getting read once you are. Part IV covers advanced signals most companies never think to check. Part V is the maintenance loop that keeps both from decaying. Part VI is where you go if you'd rather have someone else run the diagnosis on your own content.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch2">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part I · Chapter 02</div>
+    <h2>What 73 SaaS Companies Taught Us About AI Visibility</h2>
+    <p>We asked Claude, GPT, Perplexity, and Gemini five buyer-intent questions per company, the kind a real prospect types when they don't already know your name: "what's a good tool for X," "alternatives to Y," "how do teams handle Z." Then we scored each company 1-10 on five signals: whether it's mentioned at all, where it lands in the answer, how accurately it's described, which competitors show up next to it, and whether the model cites something specific rather than a generic label.</p>
+    <p>The average across 73 companies was <strong>7.7 out of 10</strong>. That number looks reassuring until you notice the shape of the distribution: 29 companies scored a full 10, and the bottom 12 scored under 5, six of them a flat <strong>0</strong>. In this sample, there was surprisingly little middle ground. Companies either had enough structured, citable information for a model to describe them confidently, or they had almost nothing and were skipped entirely. There wasn't much of a "partial credit" zone.</p>
+    <div class="score-bars">
+      <div class="bar" style="height:96%"></div>
+      <div class="bar" style="height:88%"></div>
+      <div class="bar" style="height:79%"></div>
+      <div class="bar" style="height:71%"></div>
+      <div class="bar" style="height:60%"></div>
+      <div class="bar" style="height:52%"></div>
+      <div class="bar" style="height:41%"></div>
+      <div class="bar" style="height:30%"></div>
+      <div class="bar" style="height:18%"></div>
+      <div class="bar" style="height:6%"></div>
+    </div>
+    <div class="callout">
+      <div class="label mono">Pattern observed</div>
+      Companies with a perfect score share one trait almost universally: a specific, third-party-citable detail exists somewhere online, a review site quote, a comparison post, a community thread, not just their own homepage copy. Companies at 0 have only ever described themselves, in their own words, on their own domain.
+    </div>
+    <p>The zero-scorers weren't small or obscure by accident. Several had real products, real customers, and reasonably designed websites. What they lacked was any source outside their own control that a model could retrieve and cite. If the only place your category, your differentiators, and your use cases exist is your own marketing copy, a model has nothing independent to confirm it with, so it plays it safe and says nothing.</p>
+    <p>There's a second, less obvious tier worth naming: the "partial" scorers, companies mentioned by some models and not others, or described accurately by one and generically by another. That inconsistency is its own signal, and it's the subject of Chapter 15.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch3">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part I · Chapter 03</div>
+    <h2>How AI Models Actually Decide Who to Mention</h2>
+    <p>It helps to stop thinking of AI visibility as SEO with a different scoreboard. SEO measures whether Google's crawler and ranking algorithm reward a specific page. AI visibility measures something upstream of that: whether a model has absorbed enough accurate, corroborated information, through training data or live retrieval, to represent your company correctly inside a generated answer, without a human correcting it afterward.</p>
+    <p>That distinction matters because the two are optimized differently. A page can be perfectly optimized for Google, fast, well-linked, keyword-matched, and still be functionally invisible to a model, because the model isn't crawling for keywords. It's trying to answer a question accurately, and it reaches for whatever sources let it do that with the least risk of being wrong.</p>
+    <ul class="plain">
+      <li>In our sample, companies with structured, machine-parseable claims (schema, defined categories, specific numbers) scored consistently higher than those relying on persuasive prose alone.</li>
+      <li>In our sample, claims that appeared in more than one independent place correlated with higher scores than claims that only existed on the company's own site.</li>
+      <li>In our sample, specific, checkable details ("processes payments in 135 currencies") were retained by models far more often than vague positioning ("the future of payments").</li>
+      <li>We observed no active penalty for any company, low-scoring companies were simply omitted when the confidence bar wasn't met. There's no visible error message telling you why you were skipped.</li>
+    </ul>
+    <p>That last point is the uncomfortable one. Unlike a broken sitemap or a 404 error, a low AI Visibility score produces no alert. Your traffic doesn't crash. You simply stop existing in a growing number of buyer conversations, silently, while every other metric on your dashboard looks unchanged.</p>
+    <p>It's worth sitting with why models default to omission rather than a best guess. A wrong answer damages the model's credibility with the person asking; an omitted company just quietly loses a chance to be considered. From the model's perspective, that's the safer failure mode. From yours, it's the more dangerous one, because it never shows up as an error you can debug.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch4">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part II · Chapter 04</div>
+    <h2>The Five Signals AI Models Score You On</h2>
+    <p>Every company in the AI Visibility Index is scored across the same five dimensions. Understanding each one tells you exactly where your own gap is likely to be, instead of guessing.</p>
+    <ul class="plain">
+      <li><strong>Mentioned at all.</strong> The baseline. If a model never surfaces your name across five buyer-intent questions, nothing else matters yet.</li>
+      <li><strong>Position within the answer.</strong> Being mentioned eighth in a wall of names is worth far less than being one of the first three the model reaches for.</li>
+      <li><strong>Description accuracy.</strong> Does the model describe what you actually do, or a dated, generic, or slightly wrong version of it?</li>
+      <li><strong>Competitor context.</strong> Who else appears alongside you tells you which category the model has filed you under, sometimes the wrong one.</li>
+      <li><strong>Specific citation vs. generic label.</strong> "A project management tool" is a generic label. "A kanban-style board with automated recurring workflows for agencies" is a citation. The second kind is what separates a 10 from a 7.</li>
+    </ul>
+    <p>Most companies chasing AI visibility only work on the first signal, getting mentioned somewhere, anywhere. But a company mentioned last, described generically, in the wrong category, has a visibility problem that looks solved on the surface and isn't.</p>
+    <p>Treat these five signals as a diagnostic checklist, not a single score to chase. A company can improve signal one (getting mentioned) while making no progress on signal five (specific citation), and the two improvements feel identical from the inside, you notice you're finally showing up, without noticing you're still being described in a sentence a competitor could paste over their own name.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch5">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part II · Chapter 05</div>
+    <h2>Structure, Schema, and Things a Model Can Cite</h2>
+    <p>If the previous chapter told you what gets scored, this one tells you what to actually build. Three concrete moves account for most of the gap between a 10 and a 0 in our index.</p>
+    <p><strong>1. Structured data that names what you do.</strong> Schema markup (Organization, Product, FAQPage) gives a model a machine-readable answer to "what is this" that doesn't require interpreting marketing prose. Companies without any schema at all were disproportionately represented in the bottom third of the index.</p>
+    <p><strong>2. Third-party sources a model can retrieve.</strong> Your own homepage is a primary source a model has to weigh skeptically. A review site, a comparison article, a community thread where real users describe you in their own words, these are corroborating sources. Every company scoring a full 10 in our index had at least one of these beyond their own domain.</p>
+    <p><strong>3. Specific, quotable facts.</strong> "Processes payments in 135 currencies" survives being paraphrased by a model. "Powerful, flexible payment infrastructure" does not, it gets compressed into nothing or dropped entirely, because there's nothing concrete inside it to retain.</p>
+    <div class="callout">
+      <div class="label mono">Quick self-check</div>
+      Open your own homepage and count the concrete, checkable facts, numbers, named capabilities, specific use cases, versus adjectives. If adjectives outnumber facts by more than 3 to 1, that's very likely your visibility gap.
+    </div>
+    <p>None of these three moves require a rebuild. Schema is a markup addition, not a redesign. A single well-placed review or comparison mention can outweigh months of homepage copywriting. And replacing five adjectives with two specific numbers is an afternoon's work, not a quarter's roadmap item.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch6">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part II · Chapter 06</div>
+    <h2>Why Good Websites Still Score Low</h2>
+    <p>Several companies in our index have genuinely well-designed, fast, modern websites and still score under 5. This confuses founders who've spent real money on design, because design quality and AI visibility are almost unrelated variables.</p>
+    <p>A beautifully designed page with no schema markup, no third-party corroboration, and marketing copy written entirely in adjectives is invisible to a model in exactly the same way a poorly designed one is. Visual polish is a signal built for human eyes scrolling a page. It carries almost no weight for a model retrieving structured facts to answer a question it was asked somewhere else entirely.</p>
+    <p>This is good news framed as bad news: fixing a low AI Visibility score rarely requires a redesign. It requires adding structure and getting a handful of specific, checkable facts about your product onto pages, and into sources, a model can actually retrieve.</p>
+    <p>The founders who struggle most with this chapter are the ones who've already invested heavily in brand and design, because the instinct is to assume more of the same investment will eventually move the score. It won't. A visibility score responds to structure and corroboration, not craft.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch7">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part II · Chapter 07</div>
+    <h2>Building Your Own Visibility Baseline</h2>
+    <p>Before fixing anything, measure it. Ask each of the four major models the same buyer-intent question you'd expect a real prospect to type, not your brand name, the problem your brand solves. Do this for all four models, and write down, verbatim, whether you're mentioned, where, how accurately, and who else shows up around you.</p>
+    <p>Repeat monthly. AI Visibility isn't static, models update how they describe companies as new sources appear or disappear, which means a fix that works today can quietly decay in three months if nothing reinforces it. Treat the baseline as a recurring habit, not a one-time audit.</p>
+    <p>Keep the raw answers, not just the score. When a model's description of you changes, the exact wording tells you which source it likely pulled from, which is far more useful for diagnosing what to fix next than a number alone.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch8">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part II · Chapter 08</div>
+    <h2>The Visibility Distribution: Where Companies Actually Land</h2>
+    <p>Averages hide shape. A 7.7 average sounds like most companies cluster somewhere in the "pretty good" range. They don't. Breaking the 73 companies into five tiers shows a distribution that looks more like a cliff than a curve.</p>
+    <div class="tier-grid">
+      <div class="tier-row">
+        <div><div class="tname">Perfect (10.0)</div><div class="tdesc">Mentioned accurately, first-position, across all four models every time.</div></div>
+        <div><div class="tcount">29</div><div class="tpct">39.7% of sample</div></div>
+      </div>
+      <div class="tier-row">
+        <div><div class="tname">Strong (7.0 – 9.9)</div><div class="tdesc">Mentioned reliably, mostly accurate, occasional generic description.</div></div>
+        <div><div class="tcount">24</div><div class="tpct">32.9% of sample</div></div>
+      </div>
+      <div class="tier-row">
+        <div><div class="tname">Moderate (4.0 – 6.9)</div><div class="tdesc">Mentioned inconsistently across models, description often generic.</div></div>
+        <div><div class="tcount">11</div><div class="tpct">15.1% of sample</div></div>
+      </div>
+      <div class="tier-row">
+        <div><div class="tname">Weak (0.1 – 3.9)</div><div class="tdesc">Rarely mentioned, when present the description is thin or wrong.</div></div>
+        <div><div class="tcount">3</div><div class="tpct">4.1% of sample</div></div>
+      </div>
+      <div class="tier-row">
+        <div><div class="tname">Invisible (0.0)</div><div class="tdesc">Never mentioned across all five questions on any of the four models.</div></div>
+        <div><div class="tcount">6</div><div class="tpct">8.2% of sample</div></div>
+      </div>
+    </div>
+    <p>Two things stand out. First, the "Perfect" and "Strong" tiers together hold nearly three-quarters of the sample, real companies with real products cluster at the top once they clear the structural bar described in Chapter 5. Second, the gap between "Moderate" and "Invisible" is a cliff, not a slope: there is almost no company that's a little bit visible. You either clear the bar convincingly across most models, or you fall to near-zero. The middle tiers exist, but they're thin, most companies that start climbing keep climbing once the underlying fixes are in place.</p>
+    <p>If you don't know your own tier yet, Chapter 7's baseline exercise will tell you in about fifteen minutes.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch9">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part III · Chapter 09</div>
+    <h2>The Decision Friction Model: Six Named Failure Patterns</h2>
+    <p>Getting found solves half the funnel. The other half starts the moment a human actually opens what you sent them, an email, a changelog entry, a landing page, and decides in seconds whether to keep going.</p>
+    <p>We built the Decision Friction Model to score exactly that decision point, structurally, across 67 real pieces of SaaS content: emails, product updates, changelogs, landing pages, onboarding flows, newsletters, and blog articles. The average score across all 67 was <strong>3.9 out of 10</strong>, meaningfully lower than the AI Visibility average, which tells you something on its own: most companies that succeed at getting found still lose people the moment they're actually read.</p>
+    <p>Six named failure patterns account for the recurring structural failures in the index. The next four chapters cover the most common ones in depth, but here's the full named pattern set so you can recognize them at a glance. The model itself is evaluated through 7 diagnostic checks; these six labels are not a seventh set of checks.</p>
+    <ul class="plain">
+      <li><strong>Filing Label Subject</strong> — the single most common pattern in the sample (35.8% of all 67), subject lines and headers that describe the internal category instead of the outcome.</li>
+      <li><strong>Missing Visual Hierarchy</strong> — no clear path for the eye, every line competing for equal attention (26.9%).</li>
+      <li><strong>Feature-First Bias</strong> — leading with what the product does before saying why the reader should care (23.9%).</li>
+      <li><strong>Zero/Buried Social Proof</strong> — no evidence anyone else trusted this, or evidence buried past the point most readers ever reach (11.9%).</li>
+      <li><strong>Consequence-After-Caveat</strong> — the actual point arrives only after paragraphs of qualifications and setup (1.5%, the rarest but often the most damaging when present).</li>
+    </ul>
+    <p>Chapter 14 breaks these five down company by company, with the full ranked frequency table. For now, notice the order: it's inverted from what most founders assume. Feature-First Bias gets talked about the most in marketing advice, but in this sample it's only the third most common failure. Filing Label Subject, the boring, unglamorous habit of naming things by category instead of outcome, is the one actually costing the most opens.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch10">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part III · Chapter 10</div>
+    <h2>Feature-First Bias: When the Product Arrives Before the Reason to Care</h2>
+    <p>Feature-First Bias shows up when a piece of content opens by describing what was built, "we added X," "introducing Y," before ever establishing why the reader should care that it exists.</p>
+    <p>The fix isn't to hide features, it's to reorder the sentence. Instead of "We've added bulk export," lead with the friction the feature removes: "You can now pull a year of data out in one click instead of copying it row by row." The feature is still there. The reader just isn't asked to do the work of translating "what was built" into "why it matters to me" themselves, most won't bother, and they'll close the tab instead.</p>
+    <div class="pull">Nobody reads a changelog to admire your engineering. They read it to find out if their life just got easier.</div>
+    <p>This pattern is easy to spot once you know to look for it: read only the first sentence of your last five sent emails. If most of them start with "we," "our," or a product name as the grammatical subject, that's Feature-First Bias in its most common form.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch11">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part III · Chapter 11</div>
+    <h2>Missing Visual Hierarchy &amp; Buried Social Proof</h2>
+    <p>These two patterns travel together often enough to cover in one chapter. Missing Visual Hierarchy means every paragraph, heading, and bullet carries roughly the same visual weight, so a skimming reader (which is nearly everyone, nearly always) has no cue about what actually matters versus what's supporting detail.</p>
+    <p>The fix is almost entirely typographic: one clear headline stating the outcome, one supporting line of context, then detail, in that visual order, with size and weight doing the signaling so the reader doesn't have to read every word to know where to look first.</p>
+    <p>Zero or Buried Social Proof is different but related: evidence that someone else trusted this thing, exists, but it's placed after the point where most readers have already decided to leave, or it doesn't exist on the page at all. Trust signals work as friction removers, not decorations, and they only work if they're positioned before the moment of doubt, not after it.</p>
+    <p>A useful test: print your own landing page and hold it at arm's length until the text blurs. What still stands out at that distance is your actual visual hierarchy, regardless of what you intended it to be.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch12">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part III · Chapter 12</div>
+    <h2>Filing Label Subject: Why Subject Lines Fail</h2>
+    <p>"Filing Label Subject" describes a subject line or header that names the internal category of the content rather than its outcome for the reader: "Product Update," "October Newsletter," "Changelog #47." These labels tell the reader how the sender organizes their own content calendar. They tell the reader nothing about whether opening the email is worth their next fifteen seconds.</p>
+    <p>A filing label answers "what kind of thing is this." An outcome-led subject answers "what happens if I open it." The second one is what earns the open. This single pattern shows up disproportionately often in the highest-volume content types, changelogs and product updates, precisely because they're the easiest to default into a template and never revisit. It's also, as Chapter 14 shows, the single most common failure pattern in the entire dataset by a wide margin.</p>
+    <p>Test it against your own inbox habits: you almost certainly skip "Newsletter #14" without a second thought, and open something specific enough to promise an outcome. Your own recipients aren't different.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch13">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part III · Chapter 13</div>
+    <h2>Consequence-After-Caveat: Burying the Point</h2>
+    <p>This pattern is the structural cousin of Feature-First Bias, and it shows up most often in landing pages and longer-form content. The actual point, the consequence the reader should walk away with, only arrives after several sentences of setup, qualification, and context-setting.</p>
+    <p>By the time the real point lands, a meaningful share of readers have already stopped reading. The fix is a discipline more than a technique: state the consequence first, then earn it with the caveats and context that follow. Readers extend far more patience to detail that arrives after they already know why it matters than to detail that arrives before.</p>
+    <p>This is the rarest pattern in the dataset, present as the top issue in only 1.5% of the 67 samples, but don't read rarity as harmlessness. When it is the dominant pattern, it tends to sit on high-stakes pages, pricing, onboarding, upgrade prompts, where the cost of losing a reader mid-sentence is highest.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch14">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part III · Chapter 14</div>
+    <h2>The Pattern Frequency Breakdown: All 67, Ranked</h2>
+    <p>Every one of the 67 companies in the Decision Friction Index was tagged with its single dominant failure pattern, the one structural issue doing the most damage to that piece of content. Counting across all 67 gives a ranked frequency table that's more useful than any individual score, because it tells you where to spend your fifteen minutes first if you only have time to check one thing.</p>
+    <div class="freq-bar-row">
+      <div class="freq-bar-label">Filing Label Subject</div>
+      <div class="freq-bar-track"><div class="freq-bar-fill" style="width:35.8%"></div></div>
+      <div class="freq-bar-pct">24 · 35.8%</div>
+    </div>
+    <div class="freq-bar-row">
+      <div class="freq-bar-label">Missing Visual Hierarchy</div>
+      <div class="freq-bar-track"><div class="freq-bar-fill" style="width:26.9%"></div></div>
+      <div class="freq-bar-pct">18 · 26.9%</div>
+    </div>
+    <div class="freq-bar-row">
+      <div class="freq-bar-label">Feature-First Bias</div>
+      <div class="freq-bar-track"><div class="freq-bar-fill" style="width:23.9%"></div></div>
+      <div class="freq-bar-pct">16 · 23.9%</div>
+    </div>
+    <div class="freq-bar-row">
+      <div class="freq-bar-label">Zero/Buried Social Proof</div>
+      <div class="freq-bar-track"><div class="freq-bar-fill" style="width:11.9%"></div></div>
+      <div class="freq-bar-pct">8 · 11.9%</div>
+    </div>
+    <div class="freq-bar-row">
+      <div class="freq-bar-label">Consequence-After-Caveat</div>
+      <div class="freq-bar-track"><div class="freq-bar-fill" style="width:1.5%"></div></div>
+      <div class="freq-bar-pct">1 · 1.5%</div>
+    </div>
+    <div class="callout">
+      <div class="label mono">Reading this table</div>
+      Filing Label Subject and Missing Visual Hierarchy together account for nearly two-thirds of every dominant failure pattern found across the sample (62.7%). If you fix only two things this quarter, these two patterns have the highest odds of being the ones actually costing you opens and reads.
+    </div>
+    <p>Notice also which content types keep showing up next to Filing Label Subject in Appendix B: changelogs, product updates, and transactional emails, the high-volume, low-attention content types every SaaS team ships constantly and revisits rarely. That combination, high frequency plus low revision, is exactly the condition that lets a filing-label habit calcify into a company-wide default.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch15">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part IV · Chapter 15</div>
+    <h2>Multi-Model Divergence: When Claude and GPT Disagree About You</h2>
+    <p>One pattern the AI Visibility Index surfaces that most founders never think to check: the four models don't always agree. A company can score a clean 10 on Claude and Gemini while scoring 4 on GPT and Perplexity, described accurately by two models and generically, or not at all, by the other two.</p>
+    <p>This divergence usually traces back to which sources each model weighs most heavily and how recently each has updated its picture of you. A company that recently earned a strong review-site mention might see that reflected quickly in models with live retrieval (Perplexity, and increasingly GPT) while a model relying more on training data lags behind until its next update cycle.</p>
+    <div class="callout">
+      <div class="label mono">Why this matters</div>
+      Optimizing for a single model is optimizing for a shrinking share of your actual buyers. Someone on your sales team's next lead might be asking Gemini the exact question a competitor already owns on Claude.
+    </div>
+    <p>The practical takeaway: run your baseline check (Chapter 7) across all four models every time, not just your favorite one, and note the divergence itself as a signal. A wide gap between models often points to a source that only one of them has indexed yet, which is usually your highest-leverage next fix.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch16">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part IV · Chapter 16</div>
+    <h2>The Cost of Being Almost Right</h2>
+    <p>A score of 7 looks like a solid pass. In practice, "almost right" can be more costly than being invisible, because a model that mentions you with a slightly wrong description isn't a missed opportunity, it's an active misrepresentation shaping a buyer's first impression before they ever visit your site.</p>
+    <p>In our index, several companies scoring in the 6-8 range were described using outdated positioning, a pivot the model's sources hadn't caught up with, or a feature set from an earlier version of the product. The buyer reading that answer doesn't know it's outdated. They just form an inaccurate mental model of what you do, and carry that into the sales conversation, if there is one, already anchored to the wrong thing.</p>
+    <p>This is why description accuracy (Chapter 4's third signal) deserves as much attention as the binary "mentioned or not." Being found with the wrong description can require more correction, in a sales call, in an onboarding email, than not being found at all.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch17">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part IV · Chapter 17</div>
+    <h2>Three Companies, Three Fixes: Worked Examples</h2>
+    <p>Composite examples below, built from patterns that repeat across the index, not any single company's exact story, to make the fixes concrete.</p>
+    <div class="callout">
+      <div class="label mono">Illustrative composite</div>
+      Each case below shows how the measurement method plays out, not a reported client result. Numbers and timeframes (four weeks, two update cycles) illustrate a typical re-scan interval, not a documented outcome tied to a named company.
+    </div>
+    <div class="case-grid">
+      <div class="case-card">
+        <div class="co mono">Case 01 · Zero AI Visibility</div>
+        <p>A well-funded B2B tool with a polished site scored 0 across all four models. The only description of its category existed on its own homepage, written entirely in positioning language ("the modern way to manage X"). Fix: one comparison-style guest post on an independent site, plus three specific, numeric claims added to the homepage. Re-scan four weeks later showed mentions on two of four models.</p>
+      </div>
+      <div class="case-card">
+        <div class="co mono">Case 02 · High Visibility, High Friction</div>
+        <p>A company scoring 10 on AI Visibility was still converting poorly on its own emails, changelog entries opened with "We shipped..." nearly every time (Feature-First Bias), with social proof present but placed in a footer nobody scrolled to. Fix: reordered the first sentence of each send to lead with the reader's outcome, moved one customer quote above the fold. No visibility work needed, the problem was entirely on the "getting read" side.</p>
+      </div>
+      <div class="case-card">
+        <div class="co mono">Case 03 · Divergent Across Models</div>
+        <p>Accurately described on Perplexity and GPT, generic and outdated on Claude and Gemini. The company had earned a recent, specific mention on a review site that live-retrieval models picked up fast; the training-data-leaning models were still describing an earlier version of the product. Fix: none needed beyond patience and a recurring baseline check, the gap closed on its own within two update cycles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch18">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part V · Chapter 18</div>
+    <h2>The 15-Minute Weekly Audit Loop</h2>
+    <p>Neither visibility nor friction stays fixed once you fix it. Both decay quietly, so both need a recurring, lightweight check rather than a one-time project. Fifteen minutes a week is enough if you're consistent about it.</p>
+    <ul class="plain">
+      <li>Pick one piece of content you sent this week, an email, a changelog entry, one page.</li>
+      <li>Read only the subject line or headline. Does it state an outcome, or a filing label?</li>
+      <li>Read only the first two sentences. Does the consequence for the reader appear before any caveat does?</li>
+      <li>Scan the visual hierarchy at arm's length, blurred if you can manage it. Is there one obvious place to look first?</li>
+      <li>Once a month, run the AI Visibility check across all four models and note what changed since last time.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="chapter" id="ch19">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part V · Chapter 19</div>
+    <h2>Your First 30 Days: A Combined Roadmap</h2>
+    <p><strong>Week 1 — Baseline.</strong> Run the AI Visibility check across all four models. Score your last five sent emails or updates against the five friction patterns. Write both numbers down.</p>
+    <p><strong>Week 2 — Structure.</strong> Add or fix schema markup on your core pages. Rewrite your three most-opened recurring subject lines from filing labels to outcomes, this alone addresses the single most common pattern in the entire dataset.</p>
+    <p><strong>Week 3 — Proof.</strong> Find or create one third-party source a model could retrieve, a review, a comparison mention, a community thread. Move your strongest piece of social proof above the fold on your highest-traffic page.</p>
+    <p><strong>Week 4 — Reorder.</strong> Rewrite your next changelog or update leading with consequence, not feature. Re-run the AI Visibility check and compare against Week 1.</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch20">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part V · Chapter 20</div>
+    <h2>What to Do When You Can't Fix It Yourself</h2>
+    <p>Everything in this playbook is designed to be doable without an agency or a specialist, in the same spirit as the founder-first approach that inspired it. But there's a real difference between knowing the five friction patterns exist and being able to see them in your own writing, most people are too close to their own copy to spot Feature-First Bias in it, the same way a writer can't proofread their own typos.</p>
+    <p>You've just gone through nearly the entire system this playbook is built on. The next natural step isn't another chapter, it's seeing where your own funnel actually breaks, and strategic-flow-audit.replit.app is where both live diagnostics from this book run in the open, on your own content, for free.</p>
+    <div class="callout">
+      <div class="label mono">Two free entry points, same live app</div>
+      <strong>Run the WHY. diagnostic</strong> on one of your own emails or pages: <a href="https://strategic-flow-audit.replit.app/why">strategic-flow-audit.replit.app/why</a><br><br>
+      <strong>Check your own AI Visibility score</strong> across Claude, GPT, Perplexity, and Gemini: <a href="https://strategic-flow-audit.replit.app/ai-visibility-index">strategic-flow-audit.replit.app/ai-visibility-index</a>
+    </div>
+    <p>Both are self-serve and free. If either one turns up something you'd rather have rebuilt for you than fix alone, that's exactly what the next chapter is for.</p>
+  </div>
+</section>
+
+<section class="chapter cta-chapter" id="ch21">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Part VI · Chapter 21</div>
+    <h2>Get Your Own Decision Friction Review</h2>
+    <p>The two free tools in the previous chapter give you a fast, self-serve read on strategic-flow-audit.replit.app. If you'd rather hand one real email to someone who lives in this dataset every day and get back a full structural rebuild, not just a score, that's the Decision Friction Review.</p>
+    <p>The review applies seven structural checks that operationalize the five recurring failure patterns found across the Decision Friction Index, applied to one email of yours specifically, with a fully rewritten version delivered alongside the diagnosis.</p>
+    <div class="cta-box">
+      <div class="chapter-eyebrow" style="margin-bottom:4px;">Decision Friction Review</div>
+      <div class="cta-price">$149<span> · one-time, no subscription</span></div>
+      <p style="margin:0 0 8px;">One SaaS email. Seven structural checks. Three highest-friction points. Full rebuild. No discovery call.</p>
+      <ul class="cta-list">
+        <li>One SaaS email or lifecycle sequence</li>
+        <li>Full 7-point structural diagnosis (first-sentence friction, CTA clarity, value-prop cognitive cost, trust signal placement, urgency integrity, sequence logic, mobile hierarchy)</li>
+        <li>Decision Friction Score from 0 to 10</li>
+        <li>Top 3 conversion blockers identified with specific evidence</li>
+        <li>Fully rebuilt version of your email</li>
+        <li>20-minute written review with reasoning</li>
+        <li>Delivery within 5 hours</li>
+      </ul>
+      <a href="https://strategic-flow-pro.replit.app/decision-friction-review/" class="cta-button">Get your Decision Friction Review — $149 →</a>
+      <div class="cta-note">Applied to emails from Semrush, HeyGen, Optimizely, Revolut, Medallia, Wrike, Zoho, ElevenLabs, and 51 others across the 2026 dataset.</div>
+    </div>
+    <p>You've read the full model this review is built on. The only thing left is running it against your own words instead of someone else's teardown.</p>
+  </div>
+</section>
+
+<section class="chapter appendix" id="appA">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Appendix A</div>
+    <h2>The Complete AI Visibility Index — All 73</h2>
+    <p>73 SaaS companies, scored on whether Claude, GPT, Perplexity, and Gemini mention and accurately describe them. Average: 7.7/10. Scroll to see the full ranked list.</p>
+    <div class="table-scroll">
+    <table class="data-table">
+      <tr><th>#</th><th>Company</th><th>Score</th><th>Category</th></tr>
+      <tr><td>1</td><td>Ahrefs</td><td class="score-amber">10.0</td><td>SEO and backlink analysis tool</td></tr>
+      <tr><td>2</td><td>Airtable</td><td class="score-amber">10.0</td><td>Collaborative database and spreadsheet-hybrid tool</td></tr>
+      <tr><td>3</td><td>Asana</td><td class="score-amber">10.0</td><td>Work and project management software</td></tr>
+      <tr><td>4</td><td>Booking.com</td><td class="score-amber">10.0</td><td>Online travel and accommodation booking platform</td></tr>
+      <tr><td>5</td><td>Calendly</td><td class="score-amber">10.0</td><td>Meeting scheduling automation software</td></tr>
+      <tr><td>6</td><td>Canva</td><td class="score-amber">10.0</td><td>Online graphic design and visual content platform</td></tr>
+      <tr><td>7</td><td>ClickUp</td><td class="score-amber">10.0</td><td>All-in-one productivity and project management platform</td></tr>
+      <tr><td>8</td><td>Figma</td><td class="score-amber">10.0</td><td>Collaborative interface design tool</td></tr>
+      <tr><td>9</td><td>Grammarly</td><td class="score-amber">10.0</td><td>AI writing assistant and grammar checker</td></tr>
+      <tr><td>10</td><td>HubSpot</td><td class="score-amber">10.0</td><td>CRM and inbound marketing platform</td></tr>
+      <tr><td>11</td><td>Kajabi</td><td class="score-amber">10.0</td><td>Online course and knowledge business platform</td></tr>
+      <tr><td>12</td><td>Klaviyo</td><td class="score-amber">10.0</td><td>Email and SMS marketing platform for e-commerce</td></tr>
+      <tr><td>13</td><td>Linear</td><td class="score-amber">10.0</td><td>Issue tracking and project management for software teams</td></tr>
+      <tr><td>14</td><td>Loom</td><td class="score-amber">10.0</td><td>Async video messaging and screen recording tool</td></tr>
+      <tr><td>15</td><td>Miro</td><td class="score-amber">10.0</td><td>Online collaborative whiteboard platform</td></tr>
+      <tr><td>16</td><td>Mixpanel</td><td class="score-amber">10.0</td><td>Product analytics and user behavior tracking</td></tr>
+      <tr><td>17</td><td>Notion</td><td class="score-amber">10.0</td><td>All-in-one workspace and documentation tool</td></tr>
+      <tr><td>18</td><td>Semrush</td><td class="score-amber">10.0</td><td>SEO and digital marketing analytics suite</td></tr>
+      <tr><td>19</td><td>Slack</td><td class="score-amber">10.0</td><td>Team messaging and workplace communication</td></tr>
+      <tr><td>20</td><td>SplitMetrics</td><td class="score-amber">10.0</td><td>App store optimization and mobile growth platform</td></tr>
+      <tr><td>21</td><td>Stripe</td><td class="score-amber">10.0</td><td>Online payment processing infrastructure</td></tr>
+      <tr><td>22</td><td>Substack</td><td class="score-amber">10.0</td><td>Independent newsletter and subscription publishing</td></tr>
+      <tr><td>23</td><td>Trello</td><td class="score-amber">10.0</td><td>Kanban-style task and project boards</td></tr>
+      <tr><td>24</td><td>Typeform</td><td class="score-amber">10.0</td><td>Conversational online form and survey builder</td></tr>
+      <tr><td>25</td><td>Uber</td><td class="score-amber">10.0</td><td>Ride-hailing and mobility platform</td></tr>
+      <tr><td>26</td><td>Userpilot</td><td class="score-amber">10.0</td><td>Product adoption and onboarding platform</td></tr>
+      <tr><td>27</td><td>Webflow</td><td class="score-amber">10.0</td><td>Visual website builder and CMS</td></tr>
+      <tr><td>28</td><td>Zapier</td><td class="score-amber">10.0</td><td>Workflow automation and app integration platform</td></tr>
+      <tr><td>29</td><td>dbt Labs</td><td class="score-amber">10.0</td><td>Data transformation and analytics engineering tool</td></tr>
+      <tr><td>30</td><td>Duolingo</td><td class="score-amber">9.5</td><td>Language learning app</td></tr>
+      <tr><td>31</td><td>Optimizely</td><td class="score-amber">9.5</td><td>Digital experience and A/B testing platform</td></tr>
+      <tr><td>32</td><td>Lodgify</td><td class="score-amber">9.3</td><td>Vacation rental property management software</td></tr>
+      <tr><td>33</td><td>Lokalise</td><td class="score-amber">9.3</td><td>Software localization and translation management platform</td></tr>
+      <tr><td>34</td><td>Wizz Air</td><td class="score-amber">9.3</td><td>Low-cost airline</td></tr>
+      <tr><td>35</td><td>Amplitude</td><td class="score-amber">9.0</td><td>Product analytics for digital teams</td></tr>
+      <tr><td>36</td><td>Beehiiv</td><td class="score-amber">9.0</td><td>Newsletter publishing platform</td></tr>
+      <tr><td>37</td><td>Customer.io</td><td class="score-amber">9.0</td><td>Customer messaging and lifecycle marketing platform</td></tr>
+      <tr><td>38</td><td>Framer</td><td class="score-amber">9.0</td><td>No-code website builder for designers</td></tr>
+      <tr><td>39</td><td>Pitch</td><td class="score-amber">9.0</td><td>Collaborative presentation software</td></tr>
+      <tr><td>40</td><td>Revolut</td><td class="score-amber">8.7</td><td>Digital banking and financial services app</td></tr>
+      <tr><td>41</td><td>Circle</td><td class="score-amber">8.5</td><td>Online community platform for creators and brands</td></tr>
+      <tr><td>42</td><td>Monday.com</td><td class="score-amber">8.5</td><td>Work management and project tracking platform</td></tr>
+      <tr><td>43</td><td>Dropbox</td><td class="score-teal">8.0</td><td>Cloud file storage and sharing platform</td></tr>
+      <tr><td>44</td><td>Landbot</td><td class="score-teal">8.0</td><td>No-code chatbot builder</td></tr>
+      <tr><td>45</td><td>Memrise</td><td class="score-teal">8.0</td><td>Language learning app</td></tr>
+      <tr><td>46</td><td>Wrike</td><td class="score-teal">8.0</td><td>Project management and work collaboration platform</td></tr>
+      <tr><td>47</td><td>Cal.com</td><td class="score-teal">7.5</td><td>Open-source meeting scheduling infrastructure</td></tr>
+      <tr><td>48</td><td>Gamma</td><td class="score-teal">7.5</td><td>AI presentation and document builder</td></tr>
+      <tr><td>49</td><td>HeyGen</td><td class="score-teal">7.5</td><td>AI video generation platform</td></tr>
+      <tr><td>50</td><td>Atlassian</td><td class="score-teal">7.3</td><td>Team collaboration and software development tools</td></tr>
+      <tr><td>51</td><td>Lemlist</td><td class="score-teal">7.3</td><td>Cold email and sales outreach automation</td></tr>
+      <tr><td>52</td><td>Medallia</td><td class="score-teal">7.3</td><td>Customer experience management platform</td></tr>
+      <tr><td>53</td><td>Zoho Workplace</td><td class="score-teal">7.3</td><td>Productivity and collaboration suite</td></tr>
+      <tr><td>54</td><td>ElevenLabs</td><td class="score-teal">6.7</td><td>AI voice generation and text-to-speech platform</td></tr>
+      <tr><td>55</td><td>Chowly</td><td class="score-teal">6.5</td><td>Restaurant online ordering integration platform</td></tr>
+      <tr><td>56</td><td>Clay</td><td class="score-teal">6.5</td><td>Sales prospecting and data enrichment platform</td></tr>
+      <tr><td>57</td><td>Zoho Analytics</td><td class="score-teal">6.5</td><td>Business intelligence and analytics platform</td></tr>
+      <tr><td>58</td><td>Attio</td><td class="">6.0</td><td>CRM for modern startups</td></tr>
+      <tr><td>59</td><td>ReversingLabs</td><td class="">6.0</td><td>Software supply chain security platform</td></tr>
+      <tr><td>60</td><td>EasyLlama</td><td class="">5.3</td><td>Online compliance training platform</td></tr>
+      <tr><td>61</td><td>Qonto</td><td class="">5.3</td><td>Business banking platform for SMEs</td></tr>
+      <tr><td>62</td><td>Dot Compliance</td><td class="">4.7</td><td>Quality management software for life sciences</td></tr>
+      <tr><td>63</td><td>Finite State</td><td class="">4.7</td><td>IoT and firmware security platform</td></tr>
+      <tr><td>64</td><td>SEOmonitor</td><td class="">4.0</td><td>SEO forecasting and rank tracking tool</td></tr>
+      <tr><td>65</td><td>Tilled</td><td class="">2.7</td><td>Embedded payments platform for software companies</td></tr>
+      <tr><td>66</td><td>Seamless.ai</td><td class="">2.5</td><td>B2B sales lead generation platform</td></tr>
+      <tr><td>67</td><td>Cloud Campaign</td><td class="">1.5</td><td>Social media marketing automation tool</td></tr>
+      <tr><td>68</td><td>Alt21</td><td class="">0.0</td><td>Foreign exchange and payments platform</td></tr>
+      <tr><td>69</td><td>Limelight</td><td class="">0.0</td><td>Subscription and recurring billing platform</td></tr>
+      <tr><td>70</td><td>Nilus</td><td class="">0.0</td><td>Treasury and cash management platform</td></tr>
+      <tr><td>71</td><td>QuickSpark</td><td class="">0.0</td><td>Sales enablement and outreach platform</td></tr>
+      <tr><td>72</td><td>Sequel.io</td><td class="">0.0</td><td>Live shopping and video commerce platform</td></tr>
+      <tr><td>73</td><td>TripleDart</td><td class="">0.0</td><td>B2B growth marketing agency</td></tr>
+    </table>
+    </div>
+    <p><a href="https://strategic-flow-audit.replit.app/ai-visibility-index">See the live, continuously updated index and methodology →</a></p>
+  </div>
+</section>
+
+<section class="chapter appendix" id="appB">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Appendix B</div>
+    <h2>The Complete Decision Friction Index — All 67</h2>
+    <p>67 SaaS companies, scored on structural conversion quality across emails, changelogs, and landing pages. Average: 3.9/10, where a higher score means stronger structural quality (less friction). Scroll to see the full ranked list with each company's dominant failure pattern and content type.</p>
+    <div class="table-scroll">
+    <table class="data-table">
+      <tr><th>#</th><th>Company</th><th>Score</th><th>Top Pattern</th><th>Type</th></tr>
+      <tr><td>1</td><td>Chowly</td><td class="score-amber">7.8</td><td>Missing Visual Hierarchy</td><td>Landing Page</td></tr>
+      <tr><td>2</td><td>Semrush</td><td class="score-teal">6.0</td><td>Feature-First Bias</td><td>Blog Article</td></tr>
+      <tr><td>3</td><td>Lemlist</td><td class="score-teal">5.5</td><td>Zero/Buried Social Proof</td><td>Product Update</td></tr>
+      <tr><td>4</td><td>Duolingo</td><td class="score-teal">5.5</td><td>Zero/Buried Social Proof</td><td>Blog Article</td></tr>
+      <tr><td>5</td><td>Amplitude</td><td class="score-teal">5.4</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>6</td><td>Mixpanel</td><td class="score-teal">5.4</td><td>Filing Label Subject</td><td>Changelog</td></tr>
+      <tr><td>7</td><td>Typeform</td><td class="score-teal">5.3</td><td>Zero/Buried Social Proof</td><td>Product Update</td></tr>
+      <tr><td>8</td><td>Loom</td><td class="score-teal">5.2</td><td>Feature-First Bias</td><td>Changelog</td></tr>
+      <tr><td>9</td><td>Notion</td><td class="score-teal">5.1</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>10</td><td>Circle</td><td class="score-teal">5.0</td><td>Missing Visual Hierarchy</td><td>Blog Article</td></tr>
+      <tr><td>11</td><td>Buffer</td><td class="score-teal">5.0</td><td>Zero/Buried Social Proof</td><td>Newsletter</td></tr>
+      <tr><td>12</td><td>Klaviyo</td><td class="score-teal">4.9</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>13</td><td>Linear</td><td class="score-teal">4.8</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>14</td><td>Dropbox</td><td class="score-teal">4.8</td><td>Consequence-After-Caveat</td><td>Landing Page</td></tr>
+      <tr><td>15</td><td>Substack</td><td class="score-teal">4.8</td><td>Missing Visual Hierarchy</td><td>Product Update</td></tr>
+      <tr><td>16</td><td>Pitch</td><td class="score-teal">4.7</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>17</td><td>Intercom</td><td class="score-teal">4.6</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>18</td><td>Attio</td><td class="score-teal">4.5</td><td>Zero/Buried Social Proof</td><td>Changelog</td></tr>
+      <tr><td>19</td><td>Cal.com</td><td class="score-teal">4.5</td><td>Feature-First Bias</td><td>Changelog</td></tr>
+      <tr><td>20</td><td>Grammarly</td><td class="score-teal">4.5</td><td>Missing Visual Hierarchy</td><td>Landing Page</td></tr>
+      <tr><td>21</td><td>Customer.io</td><td class="">4.4</td><td>Missing Visual Hierarchy</td><td>Product Update</td></tr>
+      <tr><td>22</td><td>Trello</td><td class="">4.3</td><td>Filing Label Subject</td><td>Landing Page</td></tr>
+      <tr><td>23</td><td>Stripe</td><td class="">4.3</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>24</td><td>Framer</td><td class="">4.3</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>25</td><td>Kajabi</td><td class="">4.3</td><td>Missing Visual Hierarchy</td><td>Landing Page</td></tr>
+      <tr><td>26</td><td>Beehiiv</td><td class="">4.2</td><td>Feature-First Bias</td><td>Landing Page</td></tr>
+      <tr><td>27</td><td>Monday.com</td><td class="">4.2</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>28</td><td>Figma</td><td class="">4.2</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>29</td><td>Miro</td><td class="">4.2</td><td>Filing Label Subject</td><td>Changelog</td></tr>
+      <tr><td>30</td><td>Zapier</td><td class="">4.0</td><td>Filing Label Subject</td><td>Changelog</td></tr>
+      <tr><td>31</td><td>Airtable</td><td class="">3.9</td><td>Missing Visual Hierarchy</td><td>Product Update</td></tr>
+      <tr><td>32</td><td>Slack</td><td class="">3.9</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>33</td><td>Leadpages</td><td class="">3.8</td><td>Zero/Buried Social Proof</td><td>Email</td></tr>
+      <tr><td>34</td><td>Atlassian</td><td class="">3.8</td><td>Feature-First Bias</td><td>Email</td></tr>
+      <tr><td>35</td><td>Tuum</td><td class="">3.6</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>36</td><td>Calendly</td><td class="">3.6</td><td>Zero/Buried Social Proof</td><td>Product Update</td></tr>
+      <tr><td>37</td><td>Sequel</td><td class="">3.6</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>38</td><td>Cato Networks</td><td class="">3.5</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>39</td><td>Webflow</td><td class="">3.5</td><td>Filing Label Subject</td><td>Blog Article</td></tr>
+      <tr><td>40</td><td>Easyllama</td><td class="">3.5</td><td>Missing Visual Hierarchy</td><td>Product Update</td></tr>
+      <tr><td>41</td><td>HubSpot</td><td class="">3.5</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>42</td><td>Asana</td><td class="">3.5</td><td>Missing Visual Hierarchy</td><td>Product Update</td></tr>
+      <tr><td>43</td><td>ClickUp</td><td class="">3.4</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>44</td><td>Clay</td><td class="">3.3</td><td>Missing Visual Hierarchy</td><td>Changelog</td></tr>
+      <tr><td>45</td><td>Ahrefs</td><td class="">3.2</td><td>Filing Label Subject</td><td>Changelog</td></tr>
+      <tr><td>46</td><td>Spreedly</td><td class="">3.2</td><td>Filing Label Subject</td><td>Email</td></tr>
+      <tr><td>47</td><td>Bubble</td><td class="">3.2</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>48</td><td>Seomonitor</td><td class="">3.2</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>49</td><td>The Decision Lab</td><td class="">3.2</td><td>Zero/Buried Social Proof</td><td>Email</td></tr>
+      <tr><td>50</td><td>Dot Compliance</td><td class="">3.2</td><td>Feature-First Bias</td><td>Product Update</td></tr>
+      <tr><td>51</td><td>Cato Networks</td><td class="">2.8</td><td>Filing Label Subject</td><td>Email</td></tr>
+      <tr><td>52</td><td>Eleven Labs</td><td class="">2.8</td><td>Filing Label Subject</td><td>Email</td></tr>
+      <tr><td>53</td><td>Uber</td><td class="">2.8</td><td>Feature-First Bias</td><td>Email</td></tr>
+      <tr><td>54</td><td>Booking</td><td class="">2.8</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>55</td><td>Limelight</td><td class="">2.8</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>56</td><td>Wizzair</td><td class="">2.8</td><td>Filing Label Subject</td><td>Email</td></tr>
+      <tr><td>57</td><td>Perplexity</td><td class="">2.8</td><td>Feature-First Bias</td><td>Email</td></tr>
+      <tr><td>58</td><td>HeyGen</td><td class="">2.8</td><td>Filing Label Subject</td><td>Email</td></tr>
+      <tr><td>59</td><td>Lodgify</td><td class="">2.8</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>60</td><td>Zoho</td><td class="">2.8</td><td>Filing Label Subject</td><td>Email</td></tr>
+      <tr><td>61</td><td>weaviate</td><td class="">2.6</td><td>Filing Label Subject</td><td>Newsletter</td></tr>
+      <tr><td>62</td><td>Gamma</td><td class="">2.6</td><td>Feature-First Bias</td><td>Email</td></tr>
+      <tr><td>63</td><td>Wrike</td><td class="">2.5</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>64</td><td>Easymiles</td><td class="">2.5</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+      <tr><td>65</td><td>HubSpot</td><td class="">2.3</td><td>Filing Label Subject</td><td>Changelog</td></tr>
+      <tr><td>66</td><td>Neon</td><td class="">2.3</td><td>Filing Label Subject</td><td>Changelog</td></tr>
+      <tr><td>67</td><td>Snoika</td><td class="">2.3</td><td>Filing Label Subject</td><td>Product Update</td></tr>
+    </table>
+    </div>
+    <p><a href="https://strategic-flow-audit.replit.app/friction-index">See the live, continuously updated index and methodology →</a></p>
+  </div>
+</section>
+
+<section class="chapter" id="appC">
+  <div class="wrap">
+    <div class="chapter-eyebrow">Appendix C</div>
+    <h2>Your Own Case Study Template</h2>
+    <p>Use this to run your own before/after, the same way every worked example in this playbook was built.</p>
+    <div class="callout">
+      <div class="label mono">Before</div>
+      Subject / headline: ______________________<br>
+      First sentence: ______________________<br>
+      Friction pattern present: ______________________<br>
+      AI Visibility score (if applicable): ___ / 10
+    </div>
+    <div class="callout">
+      <div class="label mono">After</div>
+      Subject / headline: ______________________<br>
+      First sentence: ______________________<br>
+      Fix applied: ______________________<br>
+      Re-score: ___ / 10
+    </div>
+    <p>Run this once a month on one real piece of content. After six months you'll have six data points, which is enough to see whether you're trending up or just fixing the same thing twice. Or skip the six months and get the Decision Friction Review (Chapter 21) done on the first one this week.</p>
+  </div>
+</section>
+
+<footer>
+  Published by Strategic Flow — behavioral email architecture and AI visibility diagnostics for B2B SaaS.<br>
+  <a href="https://strategicflow.tech">strategicflow.tech</a> ·
+  <a href="https://strategic-flow-audit.replit.app/why">WHY. Diagnostic</a> ·
+  <a href="https://strategic-flow-audit.replit.app/ai-visibility-index">AI Visibility Index</a> ·
+  <a href="https://strategic-flow-audit.replit.app/friction-index">Decision Friction Index</a> ·
+  <a href="https://strategic-flow-pro.replit.app/decision-friction-review/">Decision Friction Review ($149)</a><br><br>
+  © 2026 Strategic Flow
+</footer>
+
+<script>
+  // scroll reveal
+  const chapters = document.querySelectorAll('.chapter');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in-view'); } });
+  }, { threshold: 0.1 });
+  chapters.forEach(c => io.observe(c));
+
+  // animated counters
+  function animateCount(el){
+    const target = parseFloat(el.getAttribute('data-count'));
+    const decimals = parseInt(el.getAttribute('data-decimal') || '0');
+    const dur = 1400;
+    const start = performance.now();
+    function tick(now){
+      const p = Math.min((now-start)/dur, 1);
+      const eased = 1 - Math.pow(1-p, 3);
+      const val = target*eased;
+      el.textContent = decimals ? val.toFixed(decimals) : Math.round(val);
+      if(p<1) requestAnimationFrame(tick);
+      else el.textContent = decimals ? target.toFixed(decimals) : target;
+    }
+    requestAnimationFrame(tick);
+  }
+  document.querySelectorAll('[data-count]').forEach(el => setTimeout(()=>animateCount(el), 1600));
+
+  // floating particles
+  const pcontainer = document.getElementById('particles');
+  for(let i=0;i<24;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100+'vw';
+    p.style.animationDuration = (8+Math.random()*14)+'s';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    pcontainer.appendChild(p);
+  }
+</script>
+
+</body>
+</html>

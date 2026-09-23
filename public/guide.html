@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — User Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #080f1e;
+  --bg2:     #0d1628;
+  --surface: #111e34;
+  --border:  #1c2e4a;
+  --teal:    #00d4c8;
+  --gold:    #f59e0b;
+  --text:    #eef1f7;
+  --text2:   #c4cedf;
+  --muted:   #7a8ba8;
+  --font:    'Inter', sans-serif;
+  --mono:    'DM Mono', monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 60px 28px 100px;
+}
+
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,212,200,0.08);
+  border: 1px solid rgba(0,212,200,0.22);
+  border-radius: 100px;
+  padding: 7px 18px;
+  margin-bottom: 22px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-family: var(--mono);
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+h1 {
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+h1 span { color: var(--teal); }
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ── SECTIONS ── */
+.section {
+  margin-bottom: 48px;
+}
+.section-label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-family: var(--mono);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--teal);
+  margin: 24px 0 8px;
+}
+p {
+  font-size: 14px;
+  color: var(--text2);
+  margin-bottom: 14px;
+}
+
+/* ── TABLE ── */
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead {
+  background: var(--surface);
+}
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 12px 16px;
+  color: var(--text2);
+  border-bottom: 1px solid rgba(28,46,74,0.6);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+td:first-child { color: var(--text); font-weight: 600; }
+td strong { color: var(--teal); font-weight: 600; }
+
+/* ── STEPS ── */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0;
+}
+.steps li {
+  counter-increment: step;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 14px;
+  color: var(--text2);
+  padding: 12px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  line-height: 1.6;
+}
+.steps li::before {
+  content: counter(step);
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--teal);
+  color: #080f1e;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  margin-top: 1px;
+}
+.steps li strong { color: var(--text); }
+
+/* ── FIELD TABLE ── */
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+.field-row-guide {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+}
+.field-name {
+  color: var(--teal);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding-top: 1px;
+}
+.field-desc { color: var(--text2); line-height: 1.6; }
+.tier-tag {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+.tag-growth { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.tag-hi     { background: rgba(245,158,11,0.12); color: var(--gold); }
+
+/* ── CALLOUT ── */
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+.callout.gold { border-left-color: var(--gold); }
+.callout strong { color: var(--text); }
+
+/* ── TIPS ── */
+.tips {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0;
+}
+.tip {
+  display: flex;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+.tip-icon {
+  flex-shrink: 0;
+  font-size: 15px;
+  margin-top: 1px;
+}
+.tip strong { color: var(--text); }
+
+/* ── OUTPUT GRID ── */
+.output-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+.output-item {
+  padding: 14px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.output-item .label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 5px;
+}
+.output-item .label.gold-label { color: var(--gold); }
+.output-item p { color: var(--text2); margin: 0; font-size: 13px; }
+
+/* ── TABLE OF CONTENTS ── */
+.toc-wrap {
+  margin-bottom: 52px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.toc-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: var(--surface);
+  cursor: pointer;
+  user-select: none;
+  gap: 12px;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+.toc-toggle:hover { background: #162033; }
+.toc-toggle-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.toc-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+.toc-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 600;
+}
+.toc-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+.toc-chevron {
+  color: var(--muted);
+  font-size: 12px;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.toc-chevron.open { transform: rotate(180deg); }
+.toc-body {
+  display: none;
+  padding: 6px 0 10px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+.toc-body.open { display: block; }
+.toc-group {
+  padding: 14px 22px 4px;
+}
+.toc-group-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 0;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+.toc-item:hover .toc-item-title { color: var(--teal); }
+.toc-item-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  flex-shrink: 0;
+  width: 18px;
+  text-align: right;
+}
+.toc-item-title {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+.toc-item-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #00E5CC;
+  background: rgba(0,229,204,0.08);
+  border: 1px solid rgba(0,229,204,0.2);
+  border-radius: 4px;
+  padding: 1px 6px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* ── FAQ ACCORDION ── */
+.faq-section-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-family: var(--mono);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.faq-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.faq-group-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  margin-top: 32px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.faq-group-label:first-of-type { margin-top: 0; }
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.faq-item:last-child { border-bottom: none; }
+.faq-question {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  cursor: pointer;
+  user-select: none;
+}
+.faq-question:hover .faq-q-text { color: var(--text); }
+.faq-q-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+  transition: color 0.15s;
+}
+.faq-toggle {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--teal);
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+  transition: transform 0.2s;
+}
+.faq-toggle.open { transform: rotate(45deg); }
+.faq-answer {
+  display: none;
+  padding: 0 0 18px;
+  font-size: 14px;
+  color: rgba(238,241,247,0.7);
+  line-height: 1.8;
+}
+.faq-answer.open { display: block; }
+.faq-answer strong { color: var(--text); }
+.faq-answer ol { padding-left: 20px; margin-top: 8px; }
+.faq-answer ol li { margin-bottom: 6px; }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--mono);
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+}
+.footer a { color: var(--teal); text-decoration: none; }
+
+/* COOKIE CONSENT */
+#cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:var(--bg3, #161614);border-top:1px solid var(--border, rgba(255,255,255,0.1));padding:18px 48px;display:none;}
+#cookie-banner.visible{display:flex;}
+.cookie-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;width:100%;flex-wrap:wrap;}
+.cookie-text{font-size:13px;color:var(--text2, #ddddd8);line-height:1.6;max-width:680px;}
+.cookie-text a{color:var(--green, #4A8FE7);text-decoration:underline;}
+.cookie-actions{display:flex;gap:10px;flex-shrink:0;}
+.cookie-btn{font-family:var(--mono, 'DM Mono', monospace);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:10px 18px;border-radius:6px;cursor:pointer;border:1px solid var(--border, rgba(255,255,255,0.1));background:transparent;color:var(--text2, #ddddd8);transition:all .2s;}
+.cookie-btn:hover{border-color:var(--green, #4A8FE7);color:var(--green, #4A8FE7);}
+.cookie-btn.accept{background:var(--green, #4A8FE7);color:#fff;border-color:var(--green, #4A8FE7);}
+.cookie-btn.accept:hover{background:var(--green-mid, #2D6BE4);}
+@media(max-width:640px){
+  #cookie-banner{padding:16px 18px;}
+  .cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}
+  .cookie-actions{justify-content:flex-end;}
+}
+</style>
+<meta name="description" content="How to use the Strategic Flow email audit. Step-by-step guide to the Decision Friction Model — subject line, lead, CTA, hierarchy, social proof diagnosis.">
+<link rel="canonical" href="https://strategic-flow-audit.replit.app/guide.html">
+<meta property="og:title" content="How to Use the Strategic Flow Audit — Guide">
+<meta property="og:description" content="Step-by-step guide to diagnosing SaaS email architecture with the Decision Friction Model.">
+<meta property="og:url" content="https://strategic-flow-audit.replit.app/guide.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://strategic-flow-audit.replit.app/#organization",
+      "name": "Strategic Flow",
+      "url": "https://strategicflow.tech",
+      "founder": { "@id": "https://strategic-flow-audit.replit.app/#alex-iliescu" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://strategic-flow-audit.replit.app/#alex-iliescu",
+      "name": "Alex Iliescu",
+      "url": "https://strategicflow.tech",
+      "worksFor": { "@id": "https://strategic-flow-audit.replit.app/#organization" }
+    },
+    {
+      "@type": "Article",
+      "@id": "https://strategic-flow-audit.replit.app/guide.html#article",
+      "headline": "How to Use the Strategic Flow Audit",
+      "description": "Step-by-step guide to diagnosing SaaS email architecture with the Decision Friction Model.",
+      "author": { "@id": "https://strategic-flow-audit.replit.app/#alex-iliescu" },
+      "publisher": { "@id": "https://strategic-flow-audit.replit.app/#organization" },
+      "mainEntityOfPage": { "@id": "https://strategic-flow-audit.replit.app/guide.html#webpage" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://strategic-flow-audit.replit.app/guide.html#webpage",
+      "name": "Strategic Flow — User Guide",
+      "url": "https://strategic-flow-audit.replit.app/guide.html",
+      "isPartOf": { "@id": "https://strategic-flow-audit.replit.app/#website" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Strategic Flow Audit", "item": "https://strategic-flow-audit.replit.app/" },
+        { "@type": "ListItem", "position": 2, "name": "User Guide", "item": "https://strategic-flow-audit.replit.app/guide.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge"><span class="badge-dot"></span> User Guide</div>
+    <h1>How to Use <span>Strategic Flow</span></h1>
+    <p class="subtitle">A step-by-step walkthrough from first visit to downloaded HTML — every field, every output, every tier.</p>
+  </div>
+
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-wrap">
+    <button class="toc-toggle" onclick="toggleTOC()" id="tocToggleBtn" aria-expanded="false">
+      <div class="toc-toggle-left">
+        <span class="toc-icon">☰</span>
+        <span class="toc-title">Contents</span>
+        <span class="toc-count">13 sections</span>
+      </div>
+      <span class="toc-chevron" id="tocChevron">▼</span>
+    </button>
+    <div class="toc-body" id="tocBody">
+
+      <div class="toc-group">
+        <div class="toc-group-label">User Guide</div>
+        <a href="#getting-started" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">01</span>
+          <span class="toc-item-title">Getting Started — First Rebuild is Free</span>
+        </a>
+        <a href="#choosing-a-plan" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">02</span>
+          <span class="toc-item-title">Choosing a Plan to Continue</span>
+        </a>
+        <a href="#rebuild-form" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">03</span>
+          <span class="toc-item-title">The Rebuild Form — Every Field Explained</span>
+        </a>
+        <a href="#brand-dna" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">04</span>
+          <span class="toc-item-title">Extracting Brand DNA</span>
+        </a>
+        <a href="#running-rebuild" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">05</span>
+          <span class="toc-item-title">Running the Rebuild</span>
+        </a>
+        <a href="#understanding-output" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">06</span>
+          <span class="toc-item-title">Understanding the Output</span>
+        </a>
+        <a href="#recommended-workflow" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">07</span>
+          <span class="toc-item-title">Recommended Workflow</span>
+        </a>
+        <a href="#tips-gotchas" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">08</span>
+          <span class="toc-item-title">Things Worth Knowing</span>
+        </a>
+      </div>
+
+      <div class="toc-group">
+        <div class="toc-group-label">Architecture Plan — Tools</div>
+        <a href="#architecture-plan" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">09</span>
+          <span class="toc-item-title">Architecture Plan — Full Suite Overview</span>
+        </a>
+        <a href="#tool-15" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">10</span>
+          <span class="toc-item-title">Tool 15 — Email Fatigue Detector</span>
+          <span class="toc-item-badge">Live</span>
+        </a>
+        <a href="#tool-16" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">11</span>
+          <span class="toc-item-title">Tool 16 — Audience Mirror</span>
+          <span class="toc-item-badge">Live</span>
+        </a>
+        <a href="#tool-17" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">12</span>
+          <span class="toc-item-title">Tool 17 — Dead Email Resurrector</span>
+          <span class="toc-item-badge">Live</span>
+        </a>
+        <a href="#tool-19" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">13</span>
+          <span class="toc-item-title">Tool 19 — Sequence Gap Finder</span>
+          <span class="toc-item-badge">Live</span>
+        </a>
+      </div>
+
+      <div class="toc-group">
+        <div class="toc-group-label">Activation Intelligence</div>
+        <a href="#activation-intelligence" class="toc-item" onclick="closeTOC()">
+          <span class="toc-item-num">14</span>
+          <span class="toc-item-title">Activation Intelligence — Onboarding Diagnostic</span>
+          <span class="toc-item-badge">New</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- SECTION 1: Getting Started -->
+  <div class="section" id="getting-started">
+    <div class="section-label">Step 1</div>
+    <h2>Getting Started — First Rebuild is Free</h2>
+    <p>Go to <strong style="color:var(--teal)">strategic-flow-audit.replit.app</strong>. You see a single email input in the center of the screen. Enter your email address and press <strong style="color:var(--text)">Continue</strong>.</p>
+    <div class="callout">
+      <strong>First time?</strong> You go directly to the rebuild form. No payment, no setup — your first rebuild is completely free.<br><br>
+      <strong>Already used your free rebuild?</strong> You are taken to the pricing table. Your email is already linked, so activation after payment takes seconds.<br><br>
+      <strong>Existing subscriber?</strong> You go straight to the rebuild form with your tier badge and usage counter already showing.
+    </div>
+  </div>
+
+
+  <!-- SECTION 2: Plans -->
+  <div class="section" id="choosing-a-plan">
+    <div class="section-label">Step 2 — After Your Free Rebuild</div>
+    <h2>Choosing a Plan to Continue</h2>
+    <p>After your free rebuild you will see an upgrade prompt in the results and, on your next visit, the pricing table. Pick the plan that fits your volume.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Price</th>
+            <th>Monthly Rebuilds</th>
+            <th>Key Extras</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Free Trial</td>
+            <td>Free</td>
+            <td>1 total</td>
+            <td>Full Strategic Flow rebuild + downloadable HTML — no card required</td>
+          </tr>
+          <tr>
+            <td>Decision Friction Review</td>
+            <td>$149 one-time</td>
+            <td>1 total</td>
+            <td>Same as free trial — use this to buy a one-off second rebuild</td>
+          </tr>
+          <tr>
+            <td>Lite</td>
+            <td>$299 / month</td>
+            <td>4</td>
+            <td>A/B subjects, conversion scores, before/after panel, human review</td>
+          </tr>
+          <tr>
+            <td>Growth</td>
+            <td>$499 / month</td>
+            <td>8</td>
+            <td>Brand DNA extraction, audience segments, 3-email content calendar</td>
+          </tr>
+          <tr>
+            <td><strong>High-Impact</strong></td>
+            <td>$899 / month</td>
+            <td>Unlimited</td>
+            <td>Full-funnel cohesion check, email type detection, VIP priority support</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Click the button under your chosen plan. You are taken to Stripe to pay. After payment, come back to the site and click <strong style="color:var(--text)">Already purchased? Activate here</strong>. Enter the same email you used at checkout, select your tier, and click Activate. You are taken directly to the rebuild form.</p>
+  </div>
+
+
+  <!-- SECTION 3: The Form -->
+  <div class="section" id="rebuild-form">
+    <div class="section-label">Step 3</div>
+    <h2>The Rebuild Form — Every Field Explained</h2>
+    <p>Your tier badge and usage counter appear at the top of the form. Fields visible to you depend on your tier.</p>
+
+    <div class="fields">
+      <div class="field-row-guide">
+        <div class="field-name">Company Name</div>
+        <div class="field-desc">The company whose email you are rebuilding. Used to personalize the output and to auto-detect brand colors when no website URL is provided.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Your Name</div>
+        <div class="field-desc">Optional. Used to personalize the audit where relevant.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Website URL</div>
+        <div class="field-desc">
+          <span class="tier-tag tag-growth">Growth +</span><br>
+          Your company's homepage (e.g. https://yourcompany.com). Enter this before clicking Extract DNA. Leaving it blank is fine — the system still infers brand signals automatically from the email content.
+        </div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Newsletter Goal</div>
+        <div class="field-desc">Pick the one thing this email is trying to accomplish. This is the most important structural input — "Drive trial signups" and "Reactivate dormant users" produce very different rebuilds even from identical copy.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Email Type</div>
+        <div class="field-desc">
+          <span class="tier-tag tag-hi">High-Impact</span><br>
+          Tell the system what kind of email this is (product update, retention campaign, onboarding, etc.) or leave it on Auto-detect. The system reads the content and decides automatically.
+        </div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Original Subject Line</div>
+        <div class="field-desc">Paste the exact subject line, word for word. Do not clean it up — the system needs to see what is actually weak.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Original Email Body</div>
+        <div class="field-desc">Paste the full body. Include greetings, CTAs, footers, everything. The more the system sees, the more precisely it diagnoses what is not working.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Landing Page URL</div>
+        <div class="field-desc">Optional. Instead of pasting a body, you can paste the URL of any webpage — a product page, blog post, pricing page, campaign landing page. The system fetches the page server-side, strips navigation and scripts, and uses the extracted text as the email body. You can also provide both: paste a body <em>and</em> a URL to give the rebuild more context.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Roadmap Teaser</div>
+        <div class="field-desc">
+          <span class="tier-tag tag-growth">Growth +</span><br>
+          Optional. If you want the rebuilt email to hint at something coming soon, describe it here. Example: "We're launching AI-powered scheduling next month."
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SECTION 4: Brand DNA -->
+  <div class="section" id="brand-dna">
+    <div class="section-label">Step 4 — Growth and High-Impact</div>
+    <h2>Extracting Brand DNA</h2>
+    <p>Brand DNA extraction is a separate step that runs before the rebuild. It pulls your actual brand signals from your website so the rebuild sounds like you — and the HTML output uses your real colors.</p>
+    <ol class="steps">
+      <li>Type your website URL into the <strong>Website URL</strong> field.</li>
+      <li>Click <strong>Extract DNA</strong>. The button changes to "Extracting…" while it works.</li>
+      <li>Wait 60–90 seconds. A panel appears below the URL field when it finishes.</li>
+      <li>Review what was found — then proceed to fill in the rest of the form.</li>
+    </ol>
+    <p>The panel shows:</p>
+    <div class="fields">
+      <div class="field-row-guide">
+        <div class="field-name">Colors</div>
+        <div class="field-desc">Small color swatches pulled from your actual CSS stylesheets. These become the header, heading, CTA button, and background colors in the downloaded HTML.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Industry</div>
+        <div class="field-desc">What sector the system detected from your site content.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Audience</div>
+        <div class="field-desc">The target customer profile inferred from your homepage copy.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Formality</div>
+        <div class="field-desc">How formal or casual your brand sounds, on a scale from "conversational" to "executive."</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">Brand Tone</div>
+        <div class="field-desc">A short description of your voice — feeds directly into how Claude writes the rebuilt email.</div>
+      </div>
+      <div class="field-row-guide">
+        <div class="field-name">CTA Verbs</div>
+        <div class="field-desc">The action words your brand naturally uses on-site (e.g. "Explore," "Get started," "See how"). The rebuild uses these instead of generic CTAs.</div>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Skipping the URL field entirely is fine.</strong> The system will auto-guess your company homepage from the name you typed, and if that does not resolve, it reads the email subject and body to infer appropriate colors and tone. You never get a blank or generic-looking output — the fallback runs silently in the background.
+    </div>
+  </div>
+
+
+  <!-- SECTION 5: Generating -->
+  <div class="section" id="running-rebuild">
+    <div class="section-label">Step 5</div>
+    <h2>Running the Rebuild</h2>
+    <p>Once the form is filled, click <strong style="color:var(--text)">Rebuild with Strategic Flow</strong>. The screen switches to a loading view showing four steps animating in sequence:</p>
+    <ol class="steps">
+      <li><strong>Analyzing email structure</strong> — reads the original subject and body (or fetches the landing page URL if provided).</li>
+      <li><strong>Scoring original email</strong> — rates it 0–10 across five criteria before writing a single word of the rebuild. This score determines which rebuild path runs.</li>
+      <li><strong>Applying Strategic Flow Method</strong> — maps weaknesses to the rebuild framework, or applies targeted micro-improvements if the email scores highly.</li>
+      <li><strong>Generating rebuild</strong> — writes the new subject, body, and audit notes.</li>
+      <li><strong>Running tier features</strong> — fires parallel calls for scores, segments, calendar, cohesion (depending on tier).</li>
+    </ol>
+    <div class="callout">
+      <strong>Decision Friction Review and Lite:</strong> typically 20–40 seconds.<br>
+      <strong>Growth and High-Impact:</strong> typically 45–70 seconds — additional analysis runs in parallel.
+    </div>
+    <div class="callout gold">
+      <strong>Two rebuild paths:</strong> If your original email scores 70% or higher (7/10+), the system takes a <em>preserved</em> path — it keeps your structure and applies only targeted fixes (subject sharpening, CTA verb, hook, cliché removal). A banner at the top of results confirms this. Below 70%, the full Strategic Flow rebuild runs.
+    </div>
+  </div>
+
+
+  <!-- SECTION 6: Outputs -->
+  <div class="section" id="understanding-output">
+    <div class="section-label">Step 6</div>
+    <h2>Understanding the Output</h2>
+    <p>Results appear in panels based on your tier. Every tier receives the core rebuild. Higher tiers see additional panels below it.</p>
+
+    <h3>Every Tier</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Email Score Breakdown</div>
+        <p>Shown above the rebuilt email. Your original email is rated 0–10 across five criteria: Subject Line, Hook, Structure, Call to Action, and Brand Voice. Each criterion shows its score out of 2, a one-sentence note explaining the rating, and a color-coded indicator (green = strong, amber = adequate, red = weak). The overall percentage bar tells you at a glance where your email stood before the rebuild — and on the preserved path, which specific items were targeted for improvement.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Rebuilt Subject Line</div>
+        <p>Displayed prominently at the top. Usually shorter, more specific, and outcome-driven compared to your original. On the preserved path, the subject is only changed if it scored 0 or 1 out of 2.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Rebuilt Body</div>
+        <p>The full rewritten email. On the full-rebuild path: generic greetings are stripped, a hook leads the copy, social proof is structured in, and the CTA is rewritten to be ownership-focused. On the preserved path: only the weakest elements identified in the score are adjusted — the overall structure and sequence remain intact.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">What Changed and Why</div>
+        <p>A bullet-by-bullet breakdown of every structural decision. This is the audit — it explains the Strategic Flow reasoning behind each change. On the preserved path, the list is shorter and more surgical. Read this carefully; it teaches you the framework.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Conversion Hook</div>
+        <p>A one-sentence explanation of the psychological mechanism the rebuilt email uses and why it drives action.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Download HTML</div>
+        <p>A fully formatted, brand-colored HTML email file ready to upload into Mailchimp, Klaviyo, HubSpot, or any platform that accepts HTML. Table-based layout, inline styles — no cleanup needed. The HTML includes dynamic feature boxes drawn from the actual benefits mentioned in the email body — not generic placeholders. <strong>Footer:</strong> on free and Decision Friction Review tier the footer shows Strategic Flow branding. On Lite, Growth, and High-Impact the footer uses your company name, website URL, and address extracted from the original email — Strategic Flow branding does not appear.</p>
+      </div>
+    </div>
+
+    <h3>Lite Tier — Additional Panels</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Before / After Comparison</div>
+        <p>Your original subject and body side-by-side with the rebuilt version in a split panel. Good for sharing with a team or presenting to a client.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Conversion Score</div>
+        <p>A score out of 10 for both the original and the rebuilt email, with a short explanation of what is holding the original back and what makes the rebuild stronger.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">A/B Subject Lines</div>
+        <p>Three additional subject line variants you can split-test, each built around a different psychological angle.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Request Human Review</div>
+        <p>One-click — sends the rebuilt email to the Strategic Flow team for an expert human pass. No form to fill out. Check your registered inbox for the response.</p>
+      </div>
+    </div>
+
+    <h3>Growth Tier — Additional Panels</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Brand DNA Applied</div>
+        <p>Confirms which brand signals were used in the rebuild — colors, tone, and voice profile.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Audience Segments</div>
+        <p>Two or three distinct reader segments identified from the email content, with notes on how to tailor follow-up messaging for each group.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Content Calendar — 3 Follow-Up Emails</div>
+        <p>A suggested sequence of three follow-up emails to send after this one, with subject lines and core angles for each.</p>
+      </div>
+    </div>
+
+    <h3>High-Impact Tier — Additional Panel</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label gold-label">Full-Funnel Cohesion Check</div>
+        <p>A score out of 10 assessing whether the email's promise, CTA, and implied landing page experience are aligned. Flags specific gaps between what the email says and what the reader expects after they click. A score below 7 almost always means the CTA is promising something the landing page does not deliver — that gap is where conversion dies.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SECTION 7: Recommended Workflow -->
+  <div class="section" id="recommended-workflow">
+    <div class="section-label">Best Practice</div>
+    <h2>Recommended Workflow</h2>
+
+    <h3>With a website URL (Growth / High-Impact)</h3>
+    <ol class="steps">
+      <li>Enter your email → form loads.</li>
+      <li>Fill in <strong>Company Name</strong>, <strong>Your Name</strong>, and <strong>Goal</strong>.</li>
+      <li>Paste the website URL and click <strong>Extract DNA</strong>. Wait for it to finish before continuing.</li>
+      <li>Paste your <strong>Subject Line</strong> and <strong>Body</strong>.</li>
+      <li>Set <strong>Email Type</strong> if you know it, or leave Auto-detect.</li>
+      <li>Click <strong>Rebuild with Strategic Flow</strong>.</li>
+      <li>Read <em>What Changed and Why</em> carefully — this is the learning, not just the output.</li>
+      <li>Download the HTML, or copy the rebuilt subject and body into your email platform.</li>
+    </ol>
+
+    <h3>Without a website URL (Decision Friction Review / Lite, or when skipping DNA)</h3>
+    <ol class="steps">
+      <li>Enter your email → form loads.</li>
+      <li>Fill in <strong>Company Name</strong> and <strong>Goal</strong>.</li>
+      <li>Paste your <strong>Subject Line</strong> and <strong>Body</strong>. That is all that is required.</li>
+      <li>Click <strong>Rebuild with Strategic Flow</strong>.</li>
+      <li>Brand colors are inferred automatically from the company name and email content — the HTML download is never blank or generic.</li>
+    </ol>
+  </div>
+
+
+  <!-- SECTION 8: Tips -->
+  <div class="section" id="tips-gotchas">
+    <div class="section-label">Tips and Gotchas</div>
+    <h2>Things Worth Knowing</h2>
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-icon">📋</div>
+        <div><strong>Paste the real email, not a draft.</strong> The system identifies weaknesses in what you have actually sent. A rough draft will produce a rebuild that addresses imaginary problems.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🎯</div>
+        <div><strong>The Goal dropdown matters more than it seems.</strong> "Drive trial signups" and "Reactivate dormant users" produce structurally different rebuilds from identical copy. Pick the one closest to the actual intent of the email.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🧬</div>
+        <div><strong>Extract DNA before you generate, not after.</strong> The brand colors and voice profile feed into the audit prompt itself — they affect the words Claude chooses, not just the HTML template colors. Running DNA after the rebuild gains you nothing for that session.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📧</div>
+        <div><strong>The HTML download is email-client-ready.</strong> It uses table-based layout and inline styles. Upload it directly to Mailchimp, Klaviyo, HubSpot, or any platform that accepts HTML uploads. No cleanup or coding required.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔄</div>
+        <div><strong>Usage resets on the 1st of each month</strong> for Lite, Growth, and High-Impact plans. Decision Friction Review is a one-time lifetime credit — it does not reset.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🌐</div>
+        <div><strong>If the website URL fails,</strong> the DNA panel will say so. Just close it and proceed — content-based inference kicks in automatically and the rebuild still runs with appropriate brand colors. Nothing is blocked.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">👤</div>
+        <div><strong>Human Review (Lite+)</strong> is a one-click send — you do not fill out a form. Once sent, check the inbox you registered with. The review comes back there.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">⚡</div>
+        <div><strong>The Cohesion Score (High-Impact)</strong> is the most actionable output for teams running full campaign sequences. A score below 7 means the email's promise and the post-click experience are misaligned — that is almost always where conversion is being lost.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📊</div>
+        <div><strong>Read the score breakdown before reading the rebuild.</strong> The five-criterion scorecard tells you exactly what the system found weak. If you disagree with a rating, you can reframe the goal or body and rebuild again — the score changes the rebuild path, so input quality directly determines what kind of output you get.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔗</div>
+        <div><strong>The landing page URL field is useful when you don't have the email body yet.</strong> You can point it at your product page or a blog post and let the system draft a campaign from that content. Useful for planning email campaigns around new content before the actual email is written.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🏠</div>
+        <div><strong>The HTML footer respects your brand.</strong> Lite, Growth, and High-Impact users get their own company name, website, and address in the email footer — the downloaded HTML has no Strategic Flow branding whatsoever. Free and Decision Friction Review tier users see Strategic Flow in the footer instead.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <hr class="divider">
+
+
+  <!-- SECTION: Architecture Plan -->
+  <div class="section" id="architecture-plan">
+    <div class="section-label">Architecture Plan</div>
+    <h2>Architecture Plan — Full Suite Overview</h2>
+    <p>A dedicated diagnostic and rebuild suite for SaaS teams and founders who send recurring email and need complete coverage — from single-email assessment through sequence audits, subject testing, changelog communication, and monthly performance tracking.</p>
+
+    <h3>What's Included</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">19 Tools Active</div>
+        <p>Email Assessment, Email Rebuild, Batch Assessment, A/B Tracker, Content Calendar, Competitor Benchmark, Changelog Audit, Onboarding Audit, LinkedIn Audit, Open Rate Predictor, Pattern Intelligence, Monthly Report, Release Note System, Email Fatigue Detector, Audience Mirror, Dead Email Resurrector, Best Send Window, and Sequence Gap Finder — all available from your dashboard with no monthly cap.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Unlimited Monthly Cap</div>
+        <p>No rebuild limits, no usage counter. Run as many assessments and rebuilds as your workflow requires each month.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">0 Tools Coming Soon</div>
+        <p>All 19 tools are live. The suite covers single-email assessment, sequence gap detection, changelog communication, subject testing, fatigue analysis, and monthly performance tracking.</p>
+      </div>
+    </div>
+
+    <h3>Who It's For</h3>
+    <div class="callout">
+      SaaS teams and founders who send recurring email — product updates, onboarding sequences, retention campaigns, changelogs, and announcements — and need full diagnostic and rebuild coverage rather than one-off fixes. The suite is built around the complete email lifecycle, not individual emails in isolation.
+    </div>
+
+    <h3>How to Use the Suite</h3>
+    <ol class="steps">
+      <li><strong>Start with Email Assessment (Tool 01).</strong> Run your most recent send through the full diagnostic before touching anything else. The score breakdown tells you exactly where structural weakness sits across subject, hook, structure, CTA, and brand voice.</li>
+      <li><strong>Use Changelog Audit (Tool 07) for product update emails.</strong> Changelog and release emails are structurally different from campaigns — they fail for different reasons. Run them through the dedicated audit, not the general rebuild.</li>
+      <li><strong>Use Onboarding Audit (Tool 08) for multi-email flows.</strong> Onboarding sequences need sequence-level analysis — gap detection, drop-off diagnosis, and flow coherence — not just email-by-email scoring.</li>
+      <li><strong>Use Release Note System (Tool 14) for changelog communication.</strong> Converts raw release notes or feature lists into structured email-ready announcements with subject lines, hierarchy, and CTAs built in.</li>
+      <li><strong>Use Subject Line Lab / A/B Tracker (Tool 04) for subject testing.</strong> Generate and track variant subject lines. Run tests before committing to a send, not after.</li>
+    </ol>
+
+    <h3>Monthly Workflow Recommendation</h3>
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-icon">📅</div>
+        <div><strong>Week 1–4: Audit one email per week.</strong> Pick one send from your recent history — ideally from different email types across the month (one product update, one retention email, one onboarding step, one announcement).</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔁</div>
+        <div><strong>Rebuild the lowest scorer.</strong> After four audits, rebuild whichever email scored lowest. Apply the rebuilt version to your next equivalent send rather than retroactively.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📊</div>
+        <div><strong>Track score delta.</strong> Note the before and after conversion scores from the assessment. Over time, the gap between your original scores and rebuilt scores narrows — that is the learning signal that the framework is being internalized, not just applied.</div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📋</div>
+        <div><strong>Run Monthly Report (Tool 12) at the end of each month.</strong> It surfaces patterns across your sends — recurring structural weaknesses, subject line habits, CTA patterns — so each month's audit cycle is more targeted than the last.</div>
+      </div>
+    </div>
+
+    <h3>Support</h3>
+    <div class="callout">
+      Reply directly to any email you receive from Strategic Flow, or contact <a href="mailto:strategicflow@proton.me" style="color:var(--teal);text-decoration:none;">strategicflow@proton.me</a>. Architecture plan users receive priority response.
+    </div>
+  </div>
+
+  <!-- SECTION: Activation Intelligence -->
+  <div class="section" id="activation-intelligence">
+    <div class="section-label">Activation Intelligence</div>
+    <h2>Activation Intelligence — Onboarding Diagnostic</h2>
+
+    <h3>What It Is</h3>
+    <p>A separate product for SaaS teams losing users in the first 7–14 days. While Architecture covers recurring email, Activation Intelligence analyzes your onboarding sequence as a system — from signup to first value moment.</p>
+    <div class="callout">
+      Access it at: <a href="https://strategic-flow-activation.replit.app" target="_blank" style="color:var(--teal);text-decoration:none;">https://strategic-flow-activation.replit.app</a>
+    </div>
+
+    <h3>Who It Is For</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Roles</div>
+        <p>Head of Growth, VP Product, Customer Success leads who own the activation funnel and need an end-to-end diagnostic.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Situation</div>
+        <p>SaaS teams with trial-to-paid conversion below 25%, or any team whose onboarding sequence was built by multiple people over time and never audited end-to-end.</p>
+      </div>
+    </div>
+
+    <h3>What It Diagnoses</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Activation Gaps</div>
+        <p>Missing emails between key moments — the silence between Day 1 and Day 7 that causes users to quietly disengage.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Feature-First Bias</div>
+        <p>Day 1 messaging that describes what the product does instead of what changes for the user.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">CTA Fatigue</div>
+        <p>Repeated verbs and actions across the sequence that train users to ignore every email.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Missing Consequence Language</div>
+        <p>Emails that never name the cost of inaction — the most common reason users don't move to the next step.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">User Psychology Friction</div>
+        <p>What the user is thinking, resisting, and objecting to at Day 1, Day 3, and Day 7 — mapped against your current sequence.</p>
+      </div>
+    </div>
+
+    <h3>What It Delivers</h3>
+    <div class="output-grid">
+      <div class="output-item"><div class="label">Activation Gap Report</div><p>Every gap in the sequence with severity rating and a missing email brief including 3 subject line variants.</p></div>
+      <div class="output-item"><div class="label">Full Email Sequence Rebuild</div><p>Every email rebuilt with outcome-first subjects, stronger hooks, and ownership CTAs.</p></div>
+      <div class="output-item"><div class="label">In-App Message Audit</div><p>Review of in-product prompts and tooltips that block or accelerate the activation moment.</p></div>
+      <div class="output-item"><div class="label">Day 1 / Day 3 / Day 7 Rebuild</div><p>The three most critical onboarding moments rebuilt with reader-state-aware copy.</p></div>
+      <div class="output-item"><div class="label">User Psychology Map</div><p>What users are thinking and objecting to at each day — mapped with friction and fix per moment.</p></div>
+      <div class="output-item"><div class="label">Activation Benchmark</div><p>Your sequence compared against 3 competitors — structure, timing, and messaging patterns.</p></div>
+      <div class="output-item"><div class="label">Subject Line Lab</div><p>5 A/B subject variants per email tested against 7 failure patterns.</p></div>
+      <div class="output-item"><div class="label">30-Day Activation Playbook</div><p>A prioritised fix sequence — what to change first and why, with implementation notes.</p></div>
+    </div>
+
+    <h3>How To Use It</h3>
+    <div class="callout">
+      <strong>Step 1</strong> — Go to <a href="https://strategic-flow-activation.replit.app/login.html" target="_blank" style="color:var(--teal);text-decoration:none;">https://strategic-flow-activation.replit.app/login.html</a><br><br>
+      <strong>Step 2</strong> — Enter your email and click the magic link sent to your inbox<br><br>
+      <strong>Step 3</strong> — Upload your onboarding sequence — paste emails one by one, separated by <code style="background:rgba(255,255,255,0.07);padding:2px 6px;font-size:12px;">---</code> (three dashes). Include subject line and body for each email.<br><br>
+      <strong>Step 4</strong> — Results in 30–60 seconds: gap report, failure patterns, rebuilt emails, psychology map<br><br>
+      <strong>Step 5</strong> — Copy rebuilt emails and paste directly into your ESP
+    </div>
+
+    <h3>Pricing</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">$3,500 one-time</div>
+        <p>Full audit across all 8 deliverables, delivered in 5 business days. Includes one strategy call to walk through the findings.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">$1,500/month retainer</div>
+        <p>Ongoing coverage — weekly activation score, 48-hour rebuilds on any sequence change, Slack access to Alex.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      Learn more: <a href="https://strategicflow.tech/activation-intelligence.html" target="_blank" style="color:var(--teal);text-decoration:none;">strategicflow.tech/activation-intelligence.html</a>
+    </div>
+  </div>
+
+
+  <!-- SECTION: Tool 15 — Email Fatigue Detector -->
+  <div class="section" id="tool-15">
+    <div class="section-label">Tool 15 — Email Fatigue Detector</div>
+    <h2>Email Fatigue Detector</h2>
+    <p>Most lifecycle sequences are built by multiple people over months. Nobody reads them end-to-end. Nobody knows where the reader drops off — until the unsubscribe spike happens. This tool reads your entire sequence as one unit and finds the structural problems invisible in per-email metrics.</p>
+
+    <h3>Four Things It Catches That Your ESP Never Will</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">CTA Fatigue</div>
+        <p>When the same action verb appears in 3+ consecutive emails, click intent drops by ~40%. The tool maps every CTA across the sequence and flags the exact repetition pattern.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Narrative Drift</div>
+        <p>When email 5 talks about something email 1 never set up, the reader feels lost without knowing why. The tool identifies the email where the narrative breaks from the original promise.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Hook Recycling</div>
+        <p>Opening with a similar structure in multiple emails trains readers to skip the first lines. The tool detects recycled hook patterns across the sequence.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Cadence Risk</div>
+        <p>Email density and content overlap combine into predictable fatigue. The tool rates your sequence LOW / MEDIUM / HIGH / CRITICAL and tells you exactly which gap to add or which email to cut.</p>
+      </div>
+    </div>
+
+    <h3>How to Use</h3>
+    <ol class="steps">
+      <li><strong>Paste your emails in sequence order.</strong> Each block needs a subject line and body text. Minimum 3 emails, maximum 12. Paste them in the order a new subscriber receives them — the analysis depends on sequence position, not just content.</li>
+      <li><strong>Click "Analyze Sequence →"</strong> Results generate in 60–90 seconds. The tool sends the entire sequence to Claude as a single unit, not as individual emails.</li>
+      <li><strong>Read the Sequence Health Score first.</strong> Below 6/10 means structural work is needed before optimizing individual emails. The four sub-scores — Narrative Coherence, CTA Variety, Hook Diversity, Cadence Risk — tell you where to focus.</li>
+      <li><strong>Fix in priority order.</strong> Start with CTA Fatigue — it is the fastest to fix and has the most direct impact on click rate. Then Narrative Drift. Then Hook Recycling and Cadence Risk.</li>
+    </ol>
+
+    <h3>Who This Is For</h3>
+    <div class="callout">
+      Any team sending a lifecycle sequence of 3 or more emails: onboarding flows, trial nurture, post-purchase sequences, re-engagement campaigns, product update series. Especially useful if the sequence was built by more than one person, has not been audited end-to-end in over 6 months, open rates are stable but activation is below benchmark, or you are about to redesign the sequence and want to know what is broken before rewriting everything.
+    </div>
+
+    <h3>Access</h3>
+    <div class="callout">
+      Available at <a href="/fatigue-detector" style="color:var(--teal);text-decoration:none;">/fatigue-detector</a>. Architecture plan only. No monthly cap.
+    </div>
+  </div>
+
+  <!-- SECTION: Tool 16 — Audience Mirror -->
+  <div class="section" id="tool-16">
+    <div class="section-label">Tool 16 — Audience Mirror</div>
+    <h2>Audience Mirror</h2>
+    <p>Most email copy is written from the inside out — using the company's language, not the customer's. Audience Mirror reverses this. Paste raw customer language and the tool extracts exactly how your audience describes their problem, what words carry the most emotional weight, and which marketing terms your team uses that customers never do.</p>
+
+    <h3>Output in 90 Seconds</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Exact Language Map</div>
+        <p>The specific words and phrases customers use to describe the problem. Not paraphrased — extracted verbatim from their text, ranked by frequency.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Pain Hierarchy</div>
+        <p>Top 3 pains detected and ranked by frequency, emotional intensity, and specificity. Each pain includes the exact quote that best represents it.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Before / After Vocabulary</div>
+        <p>Two columns of exact phrases: how customers describe life with the problem (goes in the hook) and life after solving it (goes in the CTA).</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Words to Avoid</div>
+        <p>Marketing language from your product description that never appears in customer text. "Your team says X. Your customers never do."</p>
+      </div>
+      <div class="output-item">
+        <div class="label">5 Ready-to-Use Hooks</div>
+        <p>Subject line hooks generated directly from customer language — not from marketing copy. Each tagged: curiosity gap, consequence-first, or social proof.</p>
+      </div>
+    </div>
+
+    <h3>Best Input Sources</h3>
+    <div class="callout">
+      In order of quality: replies to your own emails, G2 / Capterra / App Store reviews, LinkedIn comments on your posts, support tickets with direct quotes, onboarding survey open-text answers, sales call notes. Avoid paraphrased summaries and closed survey data — those are your words, not theirs. Minimum 5 inputs. Sweet spot: 10–15.
+    </div>
+
+    <h3>How to Use</h3>
+    <ol class="steps">
+      <li><strong>Paste raw customer language.</strong> One input per line or separated by blank lines. Copy directly from the source — do not clean up or paraphrase.</li>
+      <li><strong>Add one optional sentence describing what your product does.</strong> This lets the tool flag the gap between your language and theirs. If omitted, the Words to Avoid section is skipped.</li>
+      <li><strong>Read the Exact Language Map first.</strong> These words belong in your subject line and lead. Not your words — their words. Copy them directly into your next draft.</li>
+      <li><strong>Use Before vocabulary in your hook.</strong> Use After vocabulary in your CTA. The distinction maps directly onto the email structure.</li>
+      <li><strong>Check Words to Avoid before sending.</strong> If your current subject line contains any flagged words, rewrite it before the send.</li>
+    </ol>
+
+    <h3>Who This Is For</h3>
+    <div class="callout">
+      Copywriters and lifecycle marketers at companies with an existing customer base. Especially useful when rewriting an onboarding sequence from scratch, subject line performance is declining, A/B tests keep returning inconclusive results, or the team is writing from personas rather than from real customer language.
+    </div>
+
+    <h3>Access</h3>
+    <div class="callout">
+      Available at <a href="/audience-mirror" style="color:var(--teal);text-decoration:none;">/audience-mirror</a>. Architecture plan only. No monthly cap.
+    </div>
+  </div>
+
+  <!-- SECTION: Tool 17 — Dead Email Resurrector -->
+  <div class="section" id="tool-17">
+    <div class="section-label">Tool 17 — Dead Email Resurrector</div>
+    <h2>Dead Email Resurrector</h2>
+    <p>Every lifecycle team has 3–5 emails sitting in the archive with open rates under 15% and no one has time to fix them. Dead Email Resurrector diagnoses exactly why each email failed and delivers the complete rebuilt version ready to send — not a report, a new email.</p>
+
+    <h3>Two Outputs in One Step</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Cause of Death</div>
+        <p>Which failure pattern killed the email, which exact line from the original triggered it, and a severity rating: CRITICAL, MAJOR, or MINOR. Specific to this email — not a generic checklist.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">The Rebuilt Email</div>
+        <p>New subject line, preview text, lead, body, and CTA — ready to paste into any ESP. Copy with one click. No placeholders, no gaps to fill in.</p>
+      </div>
+    </div>
+
+    <h3>Best Candidates for Resurrection</h3>
+    <div class="callout">
+      Open rate below 15% on a non-cold list · Click rate below 1.5% · Onboarding emails where activation dropped · Re-engagement emails that got no response · Product update emails with low click-through.
+    </div>
+
+    <h3>How to Use</h3>
+    <ol class="steps">
+      <li><strong>Paste the original subject line and full email body.</strong> The more complete the original, the more accurate the diagnosis. Include the greeting, body, CTA, and footer.</li>
+      <li><strong>Add open rate and click rate if available.</strong> A 6% open rate is a different problem than a 14% open rate with 0.3% clicks. The tool calibrates severity accordingly.</li>
+      <li><strong>Add the email goal (optional).</strong> Activate / convert / re-engage / inform. This shapes the rebuilt CTA language and the lead structure.</li>
+      <li><strong>Read Cause of Death first.</strong> Understand what killed it before reading the rebuild. You will be able to apply the same diagnosis pattern to other emails independently.</li>
+      <li><strong>Copy the rebuilt email with one click.</strong> Paste directly into your ESP. Subject line, preview text, and body are all included in the clipboard copy.</li>
+      <li><strong>Use What Changed and Why to brief your team</strong> or document the fix in your email standards library.</li>
+    </ol>
+
+    <h3>Who This Is For</h3>
+    <div class="callout">
+      Lifecycle managers and copywriters at companies with an existing email archive. Especially useful when preparing a sequence audit and need quick wins, re-launching a dormant nurture flow, a campaign underperformed and you need to understand why before the next send, or you want to build internal email standards from real before/after examples.
+    </div>
+
+    <h3>Access</h3>
+    <div class="callout">
+      Available at <a href="/dead-email-resurrector" style="color:var(--teal);text-decoration:none;">/dead-email-resurrector</a>. Architecture plan only. No monthly cap.
+    </div>
+  </div>
+
+  <!-- SECTION: Tool 19 — Sequence Gap Finder -->
+  <div class="section" id="tool-19">
+    <div class="section-label">Tool 19 — Sequence Gap Finder</div>
+    <h2>Sequence Gap Finder</h2>
+    <p>Low activation rates are usually blamed on copy. The real cause is usually a missing email — a transition that was never written because nobody mapped the journey end-to-end.</p>
+    <p>Sequence Gap Finder maps your entire lifecycle sequence the way a new subscriber experiences it and identifies the exact moment they lose momentum.</p>
+
+    <h3>Output in One Analysis</h3>
+    <div class="output-grid">
+      <div class="output-item">
+        <div class="label">Activation Journey Map</div>
+        <p>Every email in the sequence color-coded green, amber, or red based on where the reader is mentally after receiving it. Red is where momentum breaks.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Gap Detection</div>
+        <p>Every missing transition identified with severity rating (CRITICAL / MAJOR / MINOR), exact position in sequence, and the email recommended to fill it.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Transition Audit</div>
+        <p>Every email-to-email handoff rated: Strong (sets up next email), Weak (disconnected topic), or Broken (contradicts prior promise).</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Missing Email Briefs</div>
+        <p>A complete brief for every CRITICAL and MAJOR gap — three subject line variants, goal, hook direction, CTA language, and the activation impact of adding this email.</p>
+      </div>
+      <div class="output-item">
+        <div class="label">Sequence Health Score</div>
+        <p>Overall score /10 with breakdown across narrative coherence, transition strength, and activation clarity — plus an improvement potential estimate if critical gaps are filled.</p>
+      </div>
+    </div>
+
+    <h3>Inputs Needed</h3>
+    <div class="callout">
+      Subject line and goal for each email in the sequence · Overall activation goal · Sequence duration in days · Minimum 2 emails, maximum 15.
+    </div>
+
+    <h3>How to Use</h3>
+    <ol class="steps">
+      <li><strong>Enter the sequence in order.</strong> Start with Email 1. Add every email a new subscriber receives in sequence. The goal field per email is critical — without it the tool cannot detect narrative gaps.</li>
+      <li><strong>Set the activation goal.</strong> Be specific: "User creates first workflow" not "user engages." The more specific the goal, the more accurate the gap detection.</li>
+      <li><strong>Read the Activation Journey Map first.</strong> Red nodes are where momentum breaks. These are your priority gaps — fix them before rewriting anything else.</li>
+      <li><strong>Check gap severity.</strong> CRITICAL gaps are where activation stalls. Fix these before rewriting any existing email. One new email in the right place outperforms rewriting three existing ones.</li>
+      <li><strong>Use the Missing Email Briefs.</strong> Each brief is ready to hand to a copywriter or use directly in Email Rebuild (Tool 02). Subject line variants are pre-written.</li>
+      <li><strong>Track the score delta.</strong> Run again after adding missing emails. The Health Score should move from below 6 to above 8 after critical gaps are filled.</li>
+    </ol>
+
+    <h3>Who This Is For</h3>
+    <div class="callout">
+      Lifecycle managers and product marketers responsible for onboarding and activation sequences. Especially useful when activation rate is below benchmark and copy rewrites haven't moved the number, the sequence was built incrementally by multiple people, you are auditing a sequence before a full redesign, or a new product feature needs to be inserted into an existing flow.
+      <br><br>
+      At scale (100K+ list): one email added at a CRITICAL gap is estimated to move activation by 6–12 percentage points.
+    </div>
+
+    <h3>Access</h3>
+    <div class="callout">
+      Available at <a href="/sequence-gap-finder" style="color:var(--teal);text-decoration:none;">/sequence-gap-finder</a>. Architecture plan only. No monthly cap.
+    </div>
+  </div>
+
+  <!-- SECTION: Common Questions -->
+  <div class="section" id="faq">
+    <div class="faq-section-label">Common Questions</div>
+
+    <div class="faq-group-label">General</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How long does a full rebuild take to deliver?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">60–90 seconds for the diagnostic. The rebuilt HTML is ready immediately after. On paid plans, complex sequence rebuilds are delivered within 4–48 hours depending on plan tier.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do you audit emails in languages other than English?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">The diagnostic framework applies to any language. The failure patterns — Filing Label Subject, Feature-First Bias, Missing Hierarchy — are structural, not linguistic. Rebuilt versions are delivered in the same language as the original.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can I request a specific failure pattern to focus on?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Yes. In any tool input, add a note specifying which pattern to prioritise. The engine will weight that pattern in the diagnosis and lead the rebuild with the corresponding fix.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What happens to my email data after the audit?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Email content submitted for analysis is used solely to generate the audit output. It is not stored, shared, or used to train any model. Contact <strong>strategicflow@proton.me</strong> for data handling specifics on enterprise plans.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do you work with email templates or only plain text?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Both. Paste plain text or full HTML. The tool reads the structural and copy layer regardless of format. Visual hierarchy diagnostics are more accurate with HTML input.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can I cancel a monthly plan at any time?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Yes. Monthly plans cancel before the next billing cycle. Everything delivered stays with you.</div>
+    </div>
+
+    <div class="faq-group-label">Architecture Plan</div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What is the Architecture plan and who is it for?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Architecture is the full Communication Intelligence Suite — 19 tools covering every layer of email performance, from subject line to sequence gap detection. It is built for lifecycle managers, copywriters, and email teams at companies sending recurring email at volume. If email is a core revenue channel for your business, Architecture is the plan.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How is Architecture different from the other plans?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Lite and Growth give you audits and rebuilds on individual emails. Architecture gives you the full system — sequence analysis, competitor benchmarking, audience language extraction, fatigue detection, gap finding, send time optimisation, and monthly performance reporting. Not per email. The entire communication architecture.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can my whole team use the Architecture dashboard?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Yes. Architecture supports unlimited users. Every team member with access can run any tool independently. Contact <strong>strategicflow@proton.me</strong> to add team members to your account.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What are the tools included in Architecture?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">19 tools across 4 categories:<br><br>
+        <strong>Core Email Tools:</strong> Email Assessment, Email Rebuild, Batch Assessment, A/B Tracker, Content Calendar, Competitor Benchmark.<br><br>
+        <strong>Specialised Audits:</strong> Changelog Audit, Onboarding Audit, LinkedIn Audit.<br><br>
+        <strong>Intelligence Tools:</strong> Open Rate Predictor, Pattern Intelligence, Monthly Report, Release Note System, Email Fatigue Detector, Audience Mirror, Dead Email Resurrector, Best Send Window, Sequence Gap Finder.<br><br>
+        <strong>Admin:</strong> Platform Stats and Users, Platform Guide.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Is Architecture a platform, a service, or both?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Both by design. The 19 tools are the platform — self-serve, available 24/7, no human in the loop. The service layer is available on request: sequence rebuilds, strategy calls, and Slack access on High-Impact tier. Use the platform independently or combine it with the service layer when you need a thinking partner.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">We are a team of 5 lifecycle managers. Can we all have access?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Yes. Architecture has no per-seat limit. One plan covers the full team. Each member logs in with their own email via magic link — no passwords, no IT involvement.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How do the tools connect to each other?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Recommended workflow for new users:<br><br>
+        <strong>Week 1</strong> — Run Email Assessment on your 3 most important emails. Identify the dominant failure pattern across all three.<br>
+        <strong>Week 2</strong> — Run Sequence Gap Finder on your onboarding flow. Fix critical gaps before rewriting existing emails.<br>
+        <strong>Week 3</strong> — Run Competitor Benchmark against your closest competitor. Identify where you lead and where you lag.<br>
+        <strong>Week 4</strong> — Run Email Fatigue Detector on any sequence over 5 emails.<br><br>
+        The tools are independent but build on each other. Assessment finds the bug. Rebuild fixes it. Monthly Report tracks if it stayed fixed.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can I use Architecture tools without running a full audit first?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Yes. Every tool is fully independent. You can start with Best Send Window, Audience Mirror, or Sequence Gap Finder without having run an Email Assessment. No prerequisite workflow required.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What is the recommended workflow for a new Architecture user in week one?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Start with Email Assessment on your last product update email. It takes 90 seconds and immediately shows you which failure pattern is most present in your current email architecture. That single result tells you which other tools to prioritise in week two.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span class="faq-q-text">We already have an internal email review process. How does Architecture fit alongside it?</span>
+        <span class="faq-toggle">+</span>
+      </div>
+      <div class="faq-answer">Architecture does not replace your process — it runs before it. The tools deliver the structural diagnostic in 90 seconds so your team reviews an email that has already been checked against 7 failure criteria. Your editors focus on brand voice and specifics. Architecture handles the architecture. No workflow changes, no new dependencies, no engineering involvement.</div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <div class="footer">
+    Strategic Flow &copy; 2026 &nbsp;·&nbsp; <a href="https://strategic-flow-audit.replit.app">strategic-flow-audit.replit.app</a> &nbsp;·&nbsp; <a href="https://strategicflow.tech/#terms">Terms</a>
+  </div>
+
+</div>
+
+<script>
+function toggleTOC() {
+  var body = document.getElementById('tocBody');
+  var chevron = document.getElementById('tocChevron');
+  var btn = document.getElementById('tocToggleBtn');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+}
+function closeTOC() {
+  var body = document.getElementById('tocBody');
+  var chevron = document.getElementById('tocChevron');
+  var btn = document.getElementById('tocToggleBtn');
+  body.classList.remove('open');
+  chevron.classList.remove('open');
+  btn.setAttribute('aria-expanded', 'false');
+}
+function toggleFaq(questionEl) {
+  var answer = questionEl.nextElementSibling;
+  var toggle = questionEl.querySelector('.faq-toggle');
+  var isOpen = answer.classList.contains('open');
+  answer.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+  toggle.textContent = isOpen ? '+' : '×';
+}
+</script>
+
+<footer style="margin-top:64px;padding:32px 24px;border-top:1px solid rgba(255,255,255,0.12);text-align:center;font-family:inherit;">
+  <div style="margin-bottom:16px;">
+    <a href="https://strategicflow.tech" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">Strategic Flow</a>
+    <a href="https://strategicflow.tech/teardowns.html" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">57 Teardowns</a>
+    <a href="https://strategicflow.tech/glossary.html" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">Glossary</a>
+    <a href="https://strategicflow.tech/addons.html" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">Add-Ons</a>
+    <a href="https://strategicflowtech.gumroad.com/l/koczgh" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">$47 Pack</a>
+  </div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.4);">Strategic Flow © 2026 · Built by Alex Iliescu · <a href="https://strategicflow.tech" style="color:rgba(255,255,255,0.4);">strategicflow.tech</a></div>
+</footer>
+<!-- COOKIE CONSENT BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  var STORAGE_KEY = 'sf_consent';
+  var stored = localStorage.getItem(STORAGE_KEY);
+  var banner = document.getElementById('cookie-banner');
+
+  function grant() {
+    gtag('consent', 'update', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted'
+    });
+  }
+
+  if (stored === 'granted') {
+    grant();
+  } else if (stored !== 'denied') {
+    banner.classList.add('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  }
+
+  document.getElementById('cookie-accept').addEventListener('click', function() {
+    localStorage.setItem(STORAGE_KEY, 'granted');
+    grant();
+    banner.classList.remove('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  });
+
+  document.getElementById('cookie-decline').addEventListener('click', function() {
+    localStorage.setItem(STORAGE_KEY, 'denied');
+    banner.classList.remove('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  });
+})();
+</script>
+</body>
+</html>

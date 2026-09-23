@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Become a Sponsor — ToolIndex</title>
+<meta name="description" content="Sponsor a ToolIndex category and get your brand in front of founders browsing 566+ SaaS tools. Three sidebar slots per category. DR 86 dofollow link included."/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--teal:#00d4c8;--teal-dim:rgba(0,212,200,.1);--bg:#0a1628;--card:#0f2035;--border:rgba(255,255,255,.08);--muted:#7a9ab8;--text:#e2e8f0;--sub:#a0b4c8;--mono:'DM Mono',monospace}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline}
+/* Nav */
+nav{position:sticky;top:0;height:56px;display:flex;align-items:center;padding:0 32px;background:rgba(10,22,40,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:20;gap:0}
+.nav-logo{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-right:auto;display:flex;align-items:center;gap:6px;text-decoration:none}
+.nav-logo::before{content:'●';font-size:8px}
+.nav-back{font-size:12px;font-family:var(--mono);color:var(--muted);margin-right:16px}
+.nav-back:hover{color:var(--text)}
+.nav-cta{font-size:11px;font-family:var(--mono);padding:7px 14px;background:var(--teal);color:#0a1628;border-radius:6px;font-weight:700;white-space:nowrap}
+.nav-cta:hover{text-decoration:none;opacity:.9}
+/* Page */
+.page{max-width:780px;margin:0 auto;padding:48px 24px 80px}
+/* Success banner */
+.success-banner{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);border-radius:10px;padding:14px 20px;margin-bottom:32px;font-size:14px;color:#10b981;display:none;align-items:center;gap:10px}
+.success-banner.show{display:flex}
+/* Hero */
+.hero-tag{font-size:10px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+h1{font-size:38px;font-weight:800;line-height:1.15;margin-bottom:16px}
+h1 span{color:var(--teal)}
+.hero-sub{font-size:16px;color:var(--sub);line-height:1.65;max-width:560px;margin-bottom:32px}
+/* Slot counter */
+.slot-counter{display:inline-flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:30px;padding:10px 20px;font-size:13px;font-family:var(--mono);margin-bottom:48px}
+.slot-dot{width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;animation:pulse 2s infinite}
+.slot-dot.warn{background:#f59e0b}
+.slot-dot.full{background:#ef4444;animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* Benefits */
+.benefits{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:48px}
+.benefits-title{font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.benefits-list{display:flex;flex-direction:column;gap:10px}
+.benefit-item{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--sub);line-height:1.5}
+.benefit-check{color:var(--teal);font-weight:700;flex-shrink:0;margin-top:1px}
+/* Form */
+.form-section{margin-bottom:48px}
+.form-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.form-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.field input,.field textarea{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+.field input:focus,.field textarea:focus{border-color:var(--teal)}
+.field input::placeholder,.field textarea::placeholder{color:rgba(122,154,184,.5)}
+.field textarea{resize:vertical;min-height:72px}
+.field select{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s;appearance:auto}
+.field select:focus{border-color:var(--teal)}
+/* Pricing */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:640px){.pricing-grid{grid-template-columns:1fr}}
+.pricing-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:12px;position:relative;transition:border-color .2s}
+.pricing-card:hover{border-color:rgba(0,212,200,.3)}
+.pricing-card.best{border-color:rgba(0,212,200,.4)}
+.best-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--teal);color:#0a1628;font-size:10px;font-family:var(--mono);font-weight:700;letter-spacing:.08em;padding:3px 12px;border-radius:20px;white-space:nowrap}
+.tier-label{font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tier-price{font-size:32px;font-weight:800;color:var(--text);line-height:1}
+.tier-price span{font-size:16px;font-weight:400;color:var(--muted)}
+.tier-period{font-size:12px;color:var(--muted);margin-top:-4px}
+.tier-btn{margin-top:auto;width:100%;padding:12px;background:var(--teal);color:#0a1628;border:none;border-radius:8px;font-size:13px;font-weight:700;font-family:var(--mono);cursor:pointer;transition:opacity .2s;letter-spacing:.02em}
+.tier-btn:hover{opacity:.88}
+.tier-btn:disabled{opacity:.4;cursor:not-allowed}
+/* Error */
+.form-err{font-size:13px;color:#ef4444;margin-top:12px;display:none}
+/* Active sponsors */
+.sponsors-section{margin-top:64px;border-top:1px solid var(--border);padding-top:40px}
+.sponsors-title{font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.sponsors-grid{display:flex;flex-direction:column;gap:12px}
+.sponsor-card{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.sponsor-logo-box{position:relative;width:40px;height:40px;border-radius:10px;background:#1a3050;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sponsor-logo-init{font-size:14px;font-weight:800;color:#fff;font-family:var(--mono);position:absolute;z-index:1}
+.sponsor-logo-box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;z-index:2}
+.sponsor-card-name{font-size:14px;font-weight:600;color:var(--text)}
+.sponsor-card-tag{font-size:12px;color:var(--muted);margin-top:2px}
+.sponsor-card-link{font-size:11px;font-family:var(--mono);color:var(--teal);margin-left:auto;white-space:nowrap}
+.sponsors-empty{font-size:14px;color:var(--muted);font-style:italic;padding:12px 0}
+/* Footer note */
+.footer-note{margin-top:48px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
+.footer-note a{color:var(--muted)}
+.footer-note a:hover{color:var(--teal)}
+/* Manage section (Task #37) */
+.manage-section{margin-top:64px;border-top:1px solid var(--border);padding-top:40px}
+.manage-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.manage-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.manage-step{display:none}
+.manage-step.active{display:block}
+.manage-row{display:flex;gap:10px;flex-wrap:wrap}
+.manage-row .field{flex:1;min-width:200px}
+.manage-msg{font-size:13px;margin-top:10px;display:none}
+.manage-msg.ok{color:#10b981;display:block}
+.manage-msg.err{color:#ef4444;display:block}
+.manage-save-btn{margin-top:16px;padding:11px 24px;background:var(--teal);color:#0a1628;border:none;border-radius:8px;font-size:13px;font-weight:700;font-family:var(--mono);cursor:pointer;transition:opacity .2s}
+.manage-save-btn:hover{opacity:.88}
+.manage-save-btn:disabled{opacity:.4;cursor:not-allowed}
+.manage-send-btn{padding:10px 20px;background:transparent;border:1px solid var(--teal);color:var(--teal);border-radius:8px;font-size:13px;font-weight:600;font-family:var(--mono);cursor:pointer;transition:all .2s;white-space:nowrap}
+.manage-send-btn:hover{background:var(--teal-dim)}
+.manage-send-btn:disabled{opacity:.4;cursor:not-allowed}
+.manage-verified-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-family:var(--mono);color:#10b981;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:20px;padding:4px 12px;margin-bottom:20px}
+/* Slot warning (Task #38) */
+.slot-warn{font-size:11px;font-family:var(--mono);color:#f59e0b;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);border-radius:6px;padding:6px 14px;margin-top:8px;display:none}
+.slot-warn.show{display:inline-block}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/directory" class="nav-logo">ToolIndex</a>
+  <a href="/directory" class="nav-back">← Directory</a>
+  <a href="/directory#submit" class="nav-cta">Get your free backlink →</a>
+</nav>
+
+<div class="page">
+
+  <!-- SUCCESS BANNER -->
+  <div class="success-banner" id="successBanner">
+    <span>✓</span>
+    <span>Payment confirmed — your sponsorship is now live! Your brand will appear in the sidebar across every ToolIndex page.</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-tag">🎯 Sponsorship</div>
+  <h1>Reach founders browsing <span>566+ SaaS tools</span></h1>
+  <p class="hero-sub">
+    Your brand sits in the sidebar beside the ToolIndex category you choose — the directory with a DR 86 dofollow link.
+    <span id="heroSlotsCopy">Three slots per category</span>. No scripts, no tracking pixel, no middleman. Just a clean logo, name, and link.
+  </p>
+
+  <!-- SLOT COUNTER -->
+  <div class="slot-counter" id="slotCounter">
+    <span class="slot-dot" id="slotDot"></span>
+    <span id="slotText">Loading…</span>
+  </div>
+  <div class="slot-warn" id="slotWarn"></div>
+
+  <!-- BENEFITS -->
+  <div class="benefits">
+    <div class="benefits-title">What you get</div>
+    <div class="benefits-list">
+      <div class="benefit-item"><span class="benefit-check">✓</span><span>Featured in the sidebar on the main directory page — visible on every scroll</span></div>
+      <div class="benefit-item"><span class="benefit-check">✓</span><span>Displayed on individual product pages in your selected category</span></div>
+      <div class="benefit-item"><span class="benefit-check">✓</span><span>Direct dofollow link from DR 86 domain — genuine SEO value</span></div>
+      <div class="benefit-item"><span class="benefit-check">✓</span><span>Audience of founders and makers actively evaluating tools</span></div>
+      <div class="benefit-item"><span class="benefit-check">✓</span><span>Instant activation — live as soon as payment clears, no approval queue</span></div>
+      <div class="benefit-item"><span class="benefit-check">✓</span><span>Maximum 3 sponsors per category — no ad saturation</span></div>
+    </div>
+  </div>
+
+  <!-- SPONSOR INFO FORM -->
+  <div class="form-section">
+    <div class="form-title">Your sponsor details</div>
+    <div class="form-sub">Fill in your info once, then choose a duration below. You'll be taken to Stripe to pay.</div>
+
+    <div class="form-grid">
+      <div class="field full">
+        <label>Directory category *</label>
+        <select id="fCategory" required>
+          <option value="">Loading categories…</option>
+        </select>
+        <span style="font-size:11px;color:var(--muted);line-height:1.4;">Your placement appears on listing pages in this category. Each category has its own three-slot limit.</span>
+      </div>
+      <div class="field">
+        <label>Company name *</label>
+        <input type="text" id="fName" placeholder="Acme Corp" maxlength="80" required/>
+      </div>
+      <div class="field">
+        <label>Website URL *</label>
+        <input type="url" id="fUrl" placeholder="https://acme.com" required/>
+      </div>
+      <div class="field">
+        <label>Logo URL <span style="color:var(--muted);font-size:10px">(optional)</span></label>
+        <input type="url" id="fLogo" placeholder="https://acme.com/logo.png"/>
+      </div>
+      <div class="field">
+        <label>Email (for receipt)</label>
+        <input type="email" id="fEmail" placeholder="you@acme.com"/>
+      </div>
+      <div class="field full">
+        <label>One-line tagline <span style="color:var(--muted);font-size:10px">(optional, shown under your name)</span></label>
+        <input type="text" id="fTagline" placeholder="The fastest way to…" maxlength="140"/>
+      </div>
+    </div>
+
+    <!-- PRICING CARDS -->
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="tier-label">1 Month</div>
+        <div class="tier-price">$29<span>/mo</span></div>
+        <div class="tier-period">30 days · one-time</div>
+        <button class="tier-btn" onclick="startCheckout('1mo',this)">Buy 1 Month →</button>
+      </div>
+
+      <div class="pricing-card best">
+        <div class="best-badge">BEST VALUE</div>
+        <div class="tier-label">3 Months</div>
+        <div class="tier-price">$59</div>
+        <div class="tier-period">90 days · $19.67/mo</div>
+        <button class="tier-btn" onclick="startCheckout('3mo',this)">Buy 3 Months →</button>
+      </div>
+
+      <div class="pricing-card">
+        <div class="tier-label">12 Months</div>
+        <div class="tier-price">$199</div>
+        <div class="tier-period">365 days · $16.58/mo</div>
+        <button class="tier-btn" onclick="startCheckout('12mo',this)">Buy 12 Months →</button>
+      </div>
+    </div>
+
+    <div class="form-err" id="formErr"></div>
+  </div>
+
+  <!-- ACTIVE SPONSORS -->
+  <div class="sponsors-section">
+    <div class="sponsors-title">Current sponsors by category</div>
+    <div class="sponsors-grid" id="sponsorsList">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- MANAGE MY SPONSORSHIP (Task #37) -->
+  <div class="manage-section">
+    <div class="manage-title">Manage my sponsorship</div>
+    <div class="manage-sub">Already a sponsor? Update your logo, tagline, or website URL — no need to repurchase.</div>
+
+    <!-- Step 1: email + send OTP -->
+    <div class="manage-step active" id="mStep1">
+      <div class="manage-row">
+        <div class="field" style="flex:2">
+          <label>Payer email</label>
+          <input type="email" id="mEmail" placeholder="you@acme.com"/>
+        </div>
+        <div class="field" style="flex:0;align-self:flex-end">
+          <button class="manage-send-btn" id="mSendBtn" onclick="manageSendOtp()">Send code →</button>
+        </div>
+      </div>
+      <div class="manage-msg" id="mStep1Msg"></div>
+    </div>
+
+    <!-- Step 2: OTP verify -->
+    <div class="manage-step" id="mStep2">
+      <p style="font-size:14px;color:var(--sub);margin-bottom:16px">Enter the 6-digit code sent to your email:</p>
+      <div class="manage-row">
+        <div class="field">
+          <label>Verification code</label>
+          <input type="text" id="mOtp" placeholder="123456" maxlength="6" style="letter-spacing:6px;font-size:20px;font-family:var(--mono);text-align:center"/>
+        </div>
+        <div class="field" style="flex:0;align-self:flex-end">
+          <button class="manage-send-btn" id="mVerifyBtn" onclick="manageVerify()">Verify →</button>
+        </div>
+      </div>
+      <div class="manage-msg" id="mStep2Msg"></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px">
+        <a href="#" onclick="document.getElementById('mStep1').classList.add('active');document.getElementById('mStep2').classList.remove('active');return false">← Use a different email</a>
+      </p>
+    </div>
+
+    <!-- Step 3: edit fields -->
+    <div class="manage-step" id="mStep3">
+      <div class="manage-verified-tag">✓ Verified — editing <span id="mSponsorName" style="font-weight:700;margin-left:4px"></span></div>
+      <div class="form-grid" style="margin-bottom:0">
+        <div class="field">
+          <label>Website URL</label>
+          <input type="url" id="mUrl" placeholder="https://acme.com"/>
+        </div>
+        <div class="field">
+          <label>Logo URL <span style="color:var(--muted);font-size:10px">(optional)</span></label>
+          <input type="url" id="mLogo" placeholder="https://acme.com/logo.png"/>
+        </div>
+        <div class="field full">
+          <label>Tagline <span style="color:var(--muted);font-size:10px">(optional)</span></label>
+          <input type="text" id="mTagline" placeholder="The fastest way to…" maxlength="140"/>
+        </div>
+      </div>
+      <button class="manage-save-btn" id="mSaveBtn" onclick="manageSave()">Save changes →</button>
+      <div class="manage-msg" id="mStep3Msg"></div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    Questions? Email <a href="mailto:alex@strategicflow.tech">alex@strategicflow.tech</a> ·
+    <a href="/directory">ToolIndex directory</a> ·
+    <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a>
+  </div>
+
+</div>
+
+<script>
+// ── SSR data (injected server-side) ────────────────────────────────────────────
+var SSR_SPONSORS  = window.__SSR_SPONSORS__  || [];
+var SSR_SLOTS     = window.__SSR_SLOTS__ !== undefined ? window.__SSR_SLOTS__ : null;
+var SSR_CATEGORIES = window.__SSR_CATEGORIES__ || [];
+var SSR_CATEGORY  = window.__SSR_CATEGORY__ || '';
+var MAX_SLOTS     = 3;
+var selectedCategory = SSR_CATEGORY;
+
+function renderCategories(rows) {
+  var select = document.getElementById('fCategory');
+  if (!select) return;
+  var categories = (rows || []).map(function(row){ return typeof row === 'string' ? row : row.category; }).filter(Boolean);
+  if (!categories.length) {
+    select.innerHTML = '<option value="">No categories available</option>';
+    return;
+  }
+  if (!selectedCategory || categories.indexOf(selectedCategory) === -1) selectedCategory = categories[0];
+  select.innerHTML = '<option value="">Choose a category…</option>' + categories.map(function(category) {
+    return '<option value="'+esc(category)+'"'+(category===selectedCategory?' selected':'')+'>'+esc(category)+'</option>';
+  }).join('');
+  select.value = selectedCategory;
+  select.addEventListener('change', function(){
+    selectedCategory = this.value;
+    refreshSlots();
+  });
+}
+
+// ── Slot counter ───────────────────────────────────────────────────────────────
+function renderSlotCounter(slotsAvailable) {
+  var dot  = document.getElementById('slotDot');
+  var text = document.getElementById('slotText');
+  var heroCopy = document.getElementById('heroSlotsCopy');
+  var category = selectedCategory ? ' in '+selectedCategory : '';
+  document.querySelectorAll('.tier-btn').forEach(function(b){ b.disabled = false; });
+  if (slotsAvailable === 0) {
+    dot.className = 'slot-dot full';
+    text.textContent = 'All 3 slots taken'+category+' — check back when one opens';
+    if (heroCopy) heroCopy.textContent = 'All 3 slots taken'+category;
+    document.querySelectorAll('.tier-btn').forEach(function(b){ b.disabled = true; });
+  } else if (slotsAvailable === 1) {
+    dot.className = 'slot-dot warn';
+    text.textContent = '1 of 3 slots available'+category;
+    if (heroCopy) heroCopy.textContent = 'Only 1 slot left'+category;
+  } else {
+    dot.className = 'slot-dot';
+    text.textContent = slotsAvailable + ' of 3 slots available' + category;
+    if (heroCopy) heroCopy.textContent = 'Only ' + slotsAvailable + ' slots available' + category;
+  }
+}
+
+// ── Sponsors list ─────────────────────────────────────────────────────────────
+function renderSponsors(sponsors) {
+  var el = document.getElementById('sponsorsList');
+  if (!sponsors.length) {
+    el.innerHTML = '<div class="sponsors-empty">No active sponsors yet — be the first.</div>';
+    return;
+  }
+  el.innerHTML = sponsors.map(function(s) {
+    var domain = '';
+    try { domain = new URL(s.sponsor_url).hostname.replace(/^www\./,''); } catch(e){}
+    var logo = s.sponsor_logo || (domain ? 'https://www.google.com/s2/favicons?domain='+domain+'&sz=128' : '');
+    var init = (s.sponsor_name||'?').replace(/[^a-zA-Z0-9 ]/g,'').split(/\s+/).filter(Boolean)
+                .slice(0,2).map(function(w){return w[0].toUpperCase();}).join('')||'?';
+    return '<div class="sponsor-card">'
+      + '<div class="sponsor-logo-box"><span class="sponsor-logo-init">'+esc(init)+'</span>'
+      + (logo ? '<img src="'+esc(logo)+'" alt="" onerror="this.style.display=\'none\'"/>' : '')
+      + '</div>'
+      + '<div><div class="sponsor-card-name">'+esc(s.sponsor_name)+'</div>'
+      + (s.sponsor_tagline ? '<div class="sponsor-card-tag">'+esc(s.sponsor_tagline)+'</div>' : '')
+      + (s.sponsor_category ? '<div class="sponsor-card-tag" style="color:#f59e0b">'+esc(s.sponsor_category)+' sponsor</div>' : '')
+      + '</div>'
+      + '<a href="'+esc(s.sponsor_url)+'" class="sponsor-card-link" target="_blank" rel="noopener sponsored">'
+      + esc(domain)+' →</a>'
+      + '</div>';
+  }).join('');
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Initialise from SSR data ───────────────────────────────────────────────────
+renderCategories(SSR_CATEGORIES);
+if (SSR_SLOTS !== null) renderSlotCounter(SSR_SLOTS);
+renderSponsors(SSR_SPONSORS);
+
+// ── Refresh from API + poll every 30s (Task #38) ──────────────────────────────
+function refreshSlots() {
+  if (!selectedCategory) return;
+  fetch('/api/sponsor/active?category='+encodeURIComponent(selectedCategory)).then(function(r){return r.json();}).then(function(d){
+    renderSlotCounter(d.slots_available);
+    renderSponsors(d.sponsors);
+    // Show urgency warning when only 1 slot left
+    var warn = document.getElementById('slotWarn');
+    if (warn) {
+      if (d.slots_available === 1) { warn.textContent = '⚡ Only 1 slot left in '+selectedCategory+' — act fast.'; warn.classList.add('show'); }
+      else warn.classList.remove('show');
+    }
+  }).catch(function(){});
+}
+if (!SSR_CATEGORIES.length) {
+  fetch('/api/sponsor/categories').then(function(r){return r.json();}).then(function(d){
+    renderCategories(d.categories || []);
+    refreshSlots();
+  }).catch(function(){});
+} else {
+  refreshSlots();
+}
+setInterval(refreshSlots, 30000);
+
+// ── Success banner ─────────────────────────────────────────────────────────────
+(function(){
+  var p = new URLSearchParams(location.search);
+  if (p.get('success') === '1') {
+    document.getElementById('successBanner').classList.add('show');
+    history.replaceState({}, '', '/sponsor');
+  }
+})();
+
+// ── Checkout form submission ───────────────────────────────────────────────────
+async function startCheckout(tier, btn) {
+  var name    = document.getElementById('fName').value.trim();
+  var category = document.getElementById('fCategory').value.trim();
+  var url     = document.getElementById('fUrl').value.trim();
+  var logo    = document.getElementById('fLogo').value.trim();
+  var tagline = document.getElementById('fTagline').value.trim();
+  var email   = document.getElementById('fEmail').value.trim();
+  var err     = document.getElementById('formErr');
+
+  err.style.display = 'none';
+  if (!category) { err.textContent = 'Please choose a directory category.'; err.style.display='block'; return; }
+  if (!name) { err.textContent = 'Please enter your company name.'; err.style.display='block'; return; }
+  if (!url || !/^https?:\/\//i.test(url)) {
+    err.textContent = 'Please enter a valid website URL (starting with https://).';
+    err.style.display='block'; return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Redirecting…';
+  try {
+    var res = await fetch('/api/sponsor/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier, sponsor_name:name, sponsor_url:url,
+                             sponsor_logo:logo, sponsor_tagline:tagline, sponsor_category:category, email }),
+    });
+    var d = await res.json();
+    if (d.url) {
+      location.href = d.url;
+    } else if (d.error === 'no_slots_available') {
+      err.textContent = 'Sorry, all 3 slots in '+category+' are taken right now. Choose another category or check back soon.';
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Buy ' + (tier==='1mo'?'1 Month':tier==='3mo'?'3 Months':'12 Months') + ' →';
+    } else {
+      throw new Error(d.error || 'unknown');
+    }
+  } catch(e) {
+    err.textContent = 'Something went wrong — please try again or email alex@strategicflow.tech.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Buy ' + (tier==='1mo'?'1 Month':tier==='3mo'?'3 Months':'12 Months') + ' →';
+  }
+}
+
+// ── Manage: sponsor self-serve (Task #37) ─────────────────────────────────────
+var _manageId    = null;
+var _manageEmail = null;
+
+function manageSendOtp() {
+  var email = document.getElementById('mEmail').value.trim();
+  var btn   = document.getElementById('mSendBtn');
+  var msg   = document.getElementById('mStep1Msg');
+  msg.className = 'manage-msg';
+  if (!email.includes('@')) { msg.textContent = 'Enter a valid email.'; msg.className='manage-msg err'; return; }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  fetch('/api/sponsor/manage/send-otp', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email })
+  }).then(function(r){return r.json();}).then(function(d){
+    if (d.ok) {
+      _manageEmail = email;
+      document.getElementById('mStep1').classList.remove('active');
+      document.getElementById('mStep2').classList.add('active');
+    } else if (d.error === 'no_active_sponsor_for_email') {
+      msg.textContent = 'No active sponsorship found for that email.';
+      msg.className = 'manage-msg err';
+      btn.disabled = false; btn.textContent = 'Send code →';
+    } else {
+      throw new Error(d.error);
+    }
+  }).catch(function(e){
+    msg.textContent = 'Error sending code — try again.';
+    msg.className = 'manage-msg err';
+    btn.disabled = false; btn.textContent = 'Send code →';
+  });
+}
+
+function manageVerify() {
+  var otp  = document.getElementById('mOtp').value.trim();
+  var btn  = document.getElementById('mVerifyBtn');
+  var msg  = document.getElementById('mStep2Msg');
+  msg.className = 'manage-msg';
+  if (otp.length !== 6) { msg.textContent = 'Enter the 6-digit code.'; msg.className='manage-msg err'; return; }
+  btn.disabled = true; btn.textContent = 'Verifying…';
+  fetch('/api/sponsor/manage/verify', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email: _manageEmail, otp })
+  }).then(function(r){return r.json();}).then(function(d){
+    if (d.ok) {
+      _manageId = d.id;
+      document.getElementById('mSponsorName').textContent = d.sponsor_name;
+      document.getElementById('mUrl').value     = d.sponsor_url     || '';
+      document.getElementById('mLogo').value    = d.sponsor_logo    || '';
+      document.getElementById('mTagline').value = d.sponsor_tagline || '';
+      document.getElementById('mStep2').classList.remove('active');
+      document.getElementById('mStep3').classList.add('active');
+    } else if (d.error === 'wrong_code') {
+      msg.textContent = 'Incorrect code — try again.'; msg.className='manage-msg err';
+      btn.disabled = false; btn.textContent = 'Verify →';
+    } else if (d.error === 'code_expired') {
+      msg.textContent = 'Code expired — go back and request a new one.'; msg.className='manage-msg err';
+      btn.disabled = false; btn.textContent = 'Verify →';
+    } else { throw new Error(d.error); }
+  }).catch(function(){
+    msg.textContent = 'Error verifying — try again.'; msg.className='manage-msg err';
+    btn.disabled = false; btn.textContent = 'Verify →';
+  });
+}
+
+async function manageSave() {
+  var btn = document.getElementById('mSaveBtn');
+  var msg = document.getElementById('mStep3Msg');
+  var url = document.getElementById('mUrl').value.trim();
+  msg.className = 'manage-msg';
+  if (!url || !/^https?:\/\//i.test(url)) {
+    msg.textContent = 'Enter a valid URL starting with https://.'; msg.className='manage-msg err'; return;
+  }
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    var r = await fetch('/api/sponsor/manage/update', {
+      method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        id: _manageId, email: _manageEmail,
+        sponsor_url:     url,
+        sponsor_logo:    document.getElementById('mLogo').value.trim(),
+        sponsor_tagline: document.getElementById('mTagline').value.trim(),
+      })
+    });
+    var d = await r.json();
+    if (d.ok) {
+      msg.textContent = '✓ Changes saved — visible in the sidebar within seconds.'; msg.className='manage-msg ok';
+      refreshSlots();
+    } else { throw new Error(d.error); }
+  } catch(e) {
+    msg.textContent = 'Error saving — try again or contact alex@strategicflow.tech.'; msg.className='manage-msg err';
+  }
+  btn.disabled = false; btn.textContent = 'Save changes →';
+}
+</script>
+</body>
+</html>

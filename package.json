@@ -1,0 +1,30 @@
+{
+  "name": "strategic-flow-audit",
+  "version": "1.0.0",
+  "description": "Strategic Flow Email Audit Tool",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test:agency-outreach": "node --test scripts/test-agency-outreach-send.js",
+    "test:toolindex-outreach-policy": "node --test scripts/test-toolindex-outreach-policy.js",
+    "test:resend-webhook": "node scripts/test-resend-webhook.js",
+    "test:founder-pack": "node scripts/test-founder-pack.js",
+    "test:email-send-preflight": "node --test scripts/test-email-send-preflight.js",
+    "test:directory-submit": "node --test scripts/test-directory-submit.js",
+    "test:ai-visibility-questions": "node --test scripts/test-ai-visibility-question-engine.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.86.1",
+    "@google-analytics/data": "^6.1.0",
+    "@replit/object-storage": "^1.0.0",
+    "connect-pg-simple": "^10.0.0",
+    "express": "^4.22.1",
+    "express-session": "^1.19.0",
+    "multer": "^2.2.0",
+    "node-cron": "^4.2.1",
+    "node-fetch": "^2.7.0",
+    "pg": "^8.20.0",
+    "resend": "^6.10.0",
+    "stripe": "^22.1.0"
+  }
+}

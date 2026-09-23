@@ -1,0 +1,3154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WHY.™ — Find the friction in your content</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --surface2: #1E1E1E;
+    --border: #2A2A2A;
+    --red: #FF4422;
+    --white: #FFFFFF;
+    --muted: #AAAAAA;
+    --dim: #666666;
+    --green: #22CC88;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle grid background — drifts diagonally like an active radar */
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: -60px; /* oversized so drift doesn't expose edges */
+    background-image:
+      linear-gradient(rgba(255,68,34,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,68,34,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    animation: gridDrift 50s linear infinite;
+  }
+
+  @keyframes gridDrift {
+    0%   { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+  }
+
+  /* Glow behind WHY */
+  #hero::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,68,34,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-why {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(80px, 18vw, 180px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+  }
+
+  .hero-why .dot {
+    color: var(--red);
+    display: inline-block;
+    animation: dotPulse 3.5s ease-in-out infinite;
+  }
+
+  @keyframes dotPulse {
+    0%, 100% { text-shadow: 0 0 4px rgba(255,68,34,0.3); }
+    50%       { text-shadow: 0 0 18px rgba(255,68,34,0.75), 0 0 32px rgba(255,68,34,0.3); }
+  }
+
+  .hero-why .tm {
+    font-size: 0.28em;
+    vertical-align: super;
+    color: var(--muted);
+    letter-spacing: 0;
+    font-weight: 400;
+    opacity: 0;
+    transition: opacity 0.4s ease 1.2s;
+  }
+
+  .hero-why.animate .tm { opacity: 1; }
+
+  /* ===== STATUS BADGE ===== */
+  .hero-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid rgba(255,68,34,0.35);
+    background: rgba(255,68,34,0.04);
+    padding: 4px 12px;
+    margin-top: 20px;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.5s ease;
+    animation: none;
+  }
+
+  .hero-status.visible {
+    opacity: 1;
+    animation: statusPulse 3.8s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+
+  @keyframes statusPulse {
+    0%, 100% { opacity: 0.55; }
+    50%       { opacity: 1; }
+  }
+
+  .hero-byline {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 10px;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.5s ease 1.4s;
+  }
+
+  .hero-byline.visible { opacity: 1; }
+
+  .footer-tm {
+    font-size: 0.75em;
+    vertical-align: super;
+    color: var(--dim);
+  }
+
+  .hero-why.animate {
+    animation: whyReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes whyReveal {
+    0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .hero-tagline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(16px, 3vw, 22px);
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 20px;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.6s ease 0.9s;
+  }
+
+  .hero-tagline.visible { opacity: 1; }
+
+  .hero-tagline span {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.6s ease 1.6s;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .hero-scroll-hint.visible { opacity: 1; }
+
+  .hero-scroll-hint span {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* ===== APP SECTION ===== */
+  #app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+
+  .app-header {
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .app-header.visible { opacity: 1; transform: translateY(0); }
+
+  .app-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .app-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .app-sub {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ===== HIGHEST LEVERAGE INSIGHT ===== */
+  .hli-block {
+    border-left: 3px solid var(--red);
+    padding: 24px 28px;
+    background: rgba(255,68,34,0.04);
+    margin-bottom: 32px;
+  }
+
+  .hli-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 14px;
+  }
+
+  .hli-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 1.65;
+  }
+
+  .hli-text strong {
+    font-weight: 700;
+    color: #FFFFFF;
+  }
+
+  /* ===== HOW IT WORKS ===== */
+  .how-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .how-toggle:hover { border-color: var(--red); color: var(--white); }
+  .how-toggle.open { border-color: var(--red); color: var(--white); }
+
+  .how-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 13px;
+  }
+
+  .how-toggle.open .how-arrow { transform: rotate(180deg); }
+
+  .how-section {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;
+    margin-bottom: 0;
+  }
+
+  .how-section.open {
+    max-height: 1000px;
+    opacity: 1;
+    margin-bottom: 40px;
+  }
+
+  .how-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-top: 16px;
+  }
+
+  .how-step {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .how-step:last-child { border-bottom: none; }
+
+  .how-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    padding: 20px 12px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 22px;
+  }
+
+  .how-content {
+    padding: 18px 20px;
+  }
+
+  .how-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .how-desc {
+    font-size: 13px;
+    color: #AAAAAA;
+    line-height: 1.65;
+  }
+
+  .how-footer {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #666666;
+    font-family: 'Space Mono', monospace;
+    line-height: 1.6;
+  }
+
+  .how-footer strong { color: #AAAAAA; }
+  .how-footer a { color: var(--red); text-decoration: none; }
+  .how-footer a:hover { text-decoration: underline; }
+
+  /* ===== INPUT AREA ===== */
+  .input-wrap {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
+  }
+
+  .input-wrap.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── TYPE SELECTOR GRID ─────────────────────────────────── */
+  .type-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .type-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .type-group-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,68,34,0.85);
+    padding-left: 1px;
+    user-select: none;
+  }
+
+  .type-group-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  @keyframes type-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(255,68,34,0.9), 0 0 10px rgba(255,68,34,0.4); transform: scale(0.96); }
+    35%  { box-shadow: 0 0 0 7px rgba(255,68,34,0), 0 0 28px rgba(255,68,34,0.85); transform: scale(1.04); }
+    100% { box-shadow: 0 0 20px rgba(255,68,34,0.55), inset 0 0 10px rgba(255,68,34,0.07); transform: scale(1); }
+  }
+
+  .type-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid rgba(255,68,34,0.75);
+    color: #e8e8e8;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, box-shadow 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+
+  .type-btn:hover {
+    border-color: #FF4422;
+    color: #ffffff;
+    background: rgba(255,68,34,0.07);
+    box-shadow: 0 0 6px rgba(255,68,34,0.3);
+  }
+
+  .type-btn.active {
+    background: rgba(255,68,34,0.12);
+    border: 1.5px solid #FF4422;
+    color: #FF4422;
+    box-shadow: 0 0 8px rgba(255,68,34,0.4);
+    text-shadow: 0 0 4px rgba(255,68,34,0.4);
+  }
+
+  .type-btn.pulse {
+    animation: type-pulse 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .textarea-wrap {
+    position: relative;
+  }
+
+  /* HUD corner-bracket accents */
+  .textarea-wrap::before,
+  .textarea-wrap::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Top-left + bottom-right corners */
+  .textarea-wrap::before {
+    inset: -1px;
+    background:
+      linear-gradient(var(--red), var(--red)) 0    0    / 14px 1px  no-repeat,
+      linear-gradient(var(--red), var(--red)) 0    0    / 1px  14px no-repeat,
+      linear-gradient(var(--red), var(--red)) 100% 100% / 14px 1px  no-repeat,
+      linear-gradient(var(--red), var(--red)) 100% 100% / 1px  14px no-repeat;
+    opacity: 0.45;
+  }
+
+  /* Top-right + bottom-left corners */
+  .textarea-wrap::after {
+    inset: -1px;
+    background:
+      linear-gradient(var(--red), var(--red)) 100% 0    / 14px 1px  no-repeat,
+      linear-gradient(var(--red), var(--red)) 100% 0    / 1px  14px no-repeat,
+      linear-gradient(var(--red), var(--red)) 0    100% / 14px 1px  no-repeat,
+      linear-gradient(var(--red), var(--red)) 0    100% / 1px  14px no-repeat;
+    opacity: 0.45;
+  }
+
+  #content-input {
+    width: 100%;
+    min-height: 240px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 20px 24px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+    caret-color: var(--red);
+  }
+
+  #content-input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(255,68,34,0.08), 0 0 20px rgba(255,68,34,0.15);
+  }
+
+  #content-input::placeholder { color: var(--dim); }
+
+  .input-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .char-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  #analyze-btn {
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 32px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #analyze-btn:hover { opacity: 0.9; box-shadow: 0 0 20px rgba(255,68,34,0.35); }
+  #analyze-btn:active { transform: scale(0.98); }
+  #analyze-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+
+  #analyze-btn:hover .btn-arrow { transform: translateX(4px); }
+
+  /* ===== LOADING ===== */
+  #loading {
+    display: none;
+    padding: 60px 0;
+    text-align: center;
+  }
+
+  .loading-ring {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--surface2);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0;
+  }
+
+  .loading-ring-wrap {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 24px;
+  }
+
+  .load-pct {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0;
+    color: var(--red);
+    pointer-events: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .loading-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+    align-items: center;
+  }
+
+  .loading-step {
+    font-size: 12px;
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    opacity: 0;
+    transition: opacity 0.4s, color 0.4s;
+  }
+
+  .loading-step.active { opacity: 1; color: var(--red); }
+  .loading-step.done { opacity: 0.5; color: var(--green); }
+
+  /* ===== FIX-CONTENT SCAN BEAM ===== */
+  .fix-beam {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--red);
+    box-shadow: 0 0 10px rgba(255,68,34,0.4),
+                0 -8px 20px rgba(255,68,34,0.12),
+                0  8px 20px rgba(255,68,34,0.12);
+    pointer-events: none;
+    top: 0;
+    z-index: 2;
+    transition: top 0.52s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  }
+
+  /* ===== FIX-CONTENT PROGRESSIVE CHUNK REVEAL ===== */
+  .fix-chunk {
+    opacity: 0;
+    transform: translateY(5px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    white-space: pre-wrap;
+  }
+  .fix-chunk.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== ASSESSMENT STATUS HEADER ===== */
+  .assess-status {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    text-align: center;
+    padding: 12px 0 0;
+    display: none;
+  }
+  .assess-status.running {
+    display: block;
+    animation: assessPulse 2.8s ease-in-out infinite;
+  }
+  .assess-status.complete {
+    display: block;
+    animation: none;
+    opacity: 1;
+    padding-bottom: 16px;
+  }
+  @keyframes assessPulse {
+    0%, 100% { opacity: 0.4; }
+    50%       { opacity: 1; }
+  }
+
+  /* ===== SCANNING TAGS ===== */
+  .scan-tags {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    height: 36px;
+    overflow: hidden;
+  }
+  .scan-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid rgba(255,68,34,0.5);
+    background: rgba(255,68,34,0.05);
+    padding: 4px 10px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .scan-tag.visible { opacity: 1; transform: translateY(0); }
+  .scan-tag.dimmed  { opacity: 0.28; }
+
+  /* ===== STAT REVEAL ===== */
+  .stat-reveal {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 24px;
+  }
+  .stat-card-diag {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+  .stat-card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 10px;
+  }
+  .stat-card-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--red);
+  }
+  .stat-card-number.green { color: var(--green); }
+  @media (max-width: 500px) {
+    .stat-reveal { flex-direction: column; }
+  }
+
+  /* ===== OUTPUT ===== */
+  #output {
+    display: none;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  #output.visible { opacity: 1; transform: translateY(0); }
+
+  /* Score card */
+  .score-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    padding: 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .score-number-wrap {
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .score-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--red);
+    display: block;
+  }
+
+  .score-denom {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .score-info { flex: 1; min-width: 200px; }
+
+  .score-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .score-verdict {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .score-summary {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Friction bar */
+  .friction-bar-wrap {
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .friction-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .friction-bar-track {
+    height: 6px;
+    background: var(--surface2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .friction-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--green), var(--red));
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Sections */
+  .output-section {
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .output-section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  .section-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .section-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .section-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 0;
+  }
+
+  /* Friction items */
+  .friction-item {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    align-items: stretch;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .friction-item:last-child { border-bottom: none; }
+  .friction-item.visible { opacity: 1; transform: translateX(0); }
+  .friction-item:hover { background: rgba(255,68,34,0.03); }
+
+  .friction-rank {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 8px;
+    border-right: 1px solid var(--border);
+  }
+
+  .friction-content {
+    padding: 16px 20px;
+  }
+
+  .friction-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .friction-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .friction-impact {
+    padding: 16px 16px 16px 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .impact-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+
+  .impact-high { background: rgba(255,68,34,0.15); color: var(--red); }
+  .impact-mid { background: rgba(255,180,0,0.12); color: #FFB400; }
+  .impact-low { background: rgba(100,100,100,0.15); color: var(--muted); }
+
+  /* Question items */
+  .question-item {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .question-item:last-child { border-bottom: none; }
+  .question-item.visible { opacity: 1; transform: translateX(0); }
+  .question-item:hover { background: rgba(255,255,255,0.02); }
+
+  .q-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    text-align: center;
+    padding: 16px 6px;
+    border-right: 1px solid var(--border);
+    align-self: stretch;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 18px;
+  }
+
+  .q-body {
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .q-text {
+    font-size: 13px;
+    color: #DDDDDD;
+    line-height: 1.55;
+  }
+
+  .q-answer {
+    font-size: 12px;
+    color: #AAAAAA;
+    line-height: 1.6;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: rgba(255,68,34,0.04);
+    border-left: 2px solid var(--red);
+  }
+
+  /* Reset / Try again */
+  .output-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.8s;
+  }
+
+  .output-actions.visible { opacity: 1; }
+
+  .action-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 11px 22px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .action-btn:hover { border-color: var(--white); color: var(--white); }
+
+  .action-btn.primary {
+    background: var(--surface);
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .action-btn.primary:hover { background: var(--red); color: var(--white); }
+
+  .action-btn.fix-btn {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+    font-weight: 700;
+  }
+  .action-btn.fix-btn:hover { opacity: 0.88; color: var(--white); border-color: var(--red); }
+  .action-btn.fix-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .sf-btn-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .sf-powered {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555555;
+    padding-left: 2px;
+  }
+
+  .action-btn.share-btn {
+    background: transparent;
+    border-color: #444444;
+    color: #DDDDDD;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .action-btn.share-btn:hover { border-color: var(--white); color: var(--white); }
+
+  .sf-btn {
+    background: transparent;
+    border-color: var(--white);
+    color: var(--white);
+    font-weight: 600;
+  }
+  .action-btn.sf-btn:hover { background: var(--white); color: var(--bg); border-color: var(--white); }
+
+  /* Next Step */
+  .next-step-block {
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    background: var(--surface);
+  }
+
+  .next-step-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 32px;
+  }
+
+  .next-step-check {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    color: var(--red);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .next-step-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .next-step-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .next-step-cta {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--red);
+    padding: 11px 24px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
+  }
+
+  .next-step-cta:hover { opacity: 0.88; }
+
+  /* Fix preview lock overlay */
+  .fix-preview-locked {
+    position: relative;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(255,68,34,0.04);
+    border: 1px solid rgba(255,68,34,0.18);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .fix-preview-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,68,34,0.55);
+    margin-bottom: 6px;
+  }
+  .fix-preview-blurred {
+    font-size: 13px;
+    color: rgba(255,255,255,0.15);
+    font-style: italic;
+    filter: blur(4px);
+    user-select: none;
+    pointer-events: none;
+  }
+  .fix-preview-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    background: rgba(10,10,10,0.25);
+  }
+  .fix-lock-icon { font-size: 13px; }
+  .fix-lock-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+  }
+  /* Question answer locked */
+  .q-answer-locked {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .q-a-preview {
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    filter: blur(2.5px);
+    user-select: none;
+    pointer-events: none;
+  }
+  .q-a-lock {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,68,34,0.65);
+    letter-spacing: 0.05em;
+  }
+  /* Upgrade CTA block (free-tier post-diagnostic) */
+  .free-upgrade-cta {
+    margin-top: 32px;
+    padding: 28px 28px 24px;
+    border: 1px solid rgba(255,68,34,0.35);
+    border-left: 4px solid var(--red);
+    background: rgba(255,68,34,0.03);
+  }
+  .free-upgrade-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+  .free-upgrade-headline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+  .free-upgrade-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #888888;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .free-upgrade-btn {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #0a0a0a;
+    background: var(--red);
+    padding: 11px 22px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
+  }
+  .free-upgrade-btn:hover { opacity: 0.88; }
+
+  /* Footer */
+  .page-footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    color: #1D9E75;
+  }
+
+  .page-footer a { color: #1D9E75; text-decoration: none; }
+  .page-footer a:hover { color: var(--red); }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .score-card { flex-direction: column; gap: 20px; }
+    .friction-item { grid-template-columns: 36px 1fr; }
+    .friction-impact { display: none; }
+    .input-footer { flex-direction: column; align-items: stretch; }
+    #analyze-btn { justify-content: center; }
+  }
+
+  /* ===== FAQ ===== */
+  .faq-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+    border-top: 1px solid var(--border);
+  }
+  .faq-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+  .faq-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 40px;
+    line-height: 1.2;
+  }
+  .faq-item {
+    border-top: 1px solid var(--border);
+  }
+  .faq-item:last-child { border-bottom: 1px solid var(--border); }
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    padding: 20px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+  .faq-q:hover { color: var(--red); }
+  .faq-icon {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--red);
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: transform 0.2s;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    display: none;
+    padding: 0 0 24px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-family: 'Inter', sans-serif;
+  }
+  .faq-a strong { color: var(--white); font-weight: 600; }
+  .faq-a a { color: var(--red); text-decoration: none; }
+  .faq-a a:hover { text-decoration: underline; }
+  .faq-item.open .faq-a { display: block; }
+
+  /* Error */
+  .error-box {
+    background: rgba(255,68,34,0.08);
+    border: 1px solid rgba(255,68,34,0.3);
+    padding: 20px 24px;
+    font-size: 14px;
+    color: #FF8866;
+    line-height: 1.6;
+    display: none;
+  }
+  .author-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #666666;
+    border-bottom: 1px solid #1A1A1A;
+    background: #0D0D0D;
+  }
+  .author-strip a { color: #AAAAAA; text-decoration: none; }
+  .author-strip a:hover { color: #FF4422; }
+  .author-strip .sep { color: #333; }
+  .last-updated {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #444;
+    letter-spacing: 0.05em;
+    margin-top: 8px;
+  }
+</style>
+<meta name="description" content="WHY.™ diagnoses content friction. Paste an email, landing page, or proposal for a 1–10 score and one clear insight before unlocking the full report. Simplified 5-point version of the Decision Friction Model (7-point diagnostic framework by Strategic Flow).">
+<meta name="author" content="Alex Iliescu, Strategic Flow">
+<link rel="canonical" href="https://strategic-flow-audit.replit.app/why.html">
+<link rel="alternate" hreflang="en-us" href="https://strategic-flow-audit.replit.app/why.html">
+<link rel="alternate" hreflang="x-default" href="https://strategic-flow-audit.replit.app/why.html">
+<meta property="og:title" content="WHY.™ — Find the Friction in Anything">
+<meta property="og:description" content="Paste any email, landing page, or proposal. WHY.™ gives a friction score and one actionable insight before the full report.">
+<meta property="og:url" content="https://strategic-flow-audit.replit.app/why">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Strategic Flow">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WHY.™ — Find the Friction in Anything">
+<meta name="twitter:description" content="Paste your content for a friction score and one actionable insight. Unlock the full diagnosis and rebuild after the preview.">
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Strategic Flow","url":"https://strategicflow.tech","founder":{"@type":"Person","name":"Alex Iliescu","url":"https://strategicflow.tech","jobTitle":"Founder, Strategic Flow","sameAs":["https://www.linkedin.com/in/strategic-flow-tech"]},"description":"Strategic Flow builds the Decision Friction Model for SaaS email conversion, based on 59 real email teardowns. WHY.™ is the simplified 5-point version of the Decision Friction Model (7-point diagnostic framework by Strategic Flow).","areaServed":"US","address":{"@type":"PostalAddress","addressLocality":"Tenerife","addressCountry":"ES"}}</script>
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"WHY.™ — Content Friction Diagnostic","url":"https://strategic-flow-audit.replit.app/why","applicationCategory":"BusinessApplication","operatingSystem":"Any","description":"Paste any email, landing page, or proposal. WHY.™ scores content friction 1–10, identifies named failure patterns, predicts 15 reader questions, and returns a rebuilt version in 90 seconds. Built on the Decision Friction Model. Simplified 5-point version of the Decision Friction Model (7-point diagnostic framework by Strategic Flow).","author":{"@type":"Person","name":"Alex Iliescu","url":"https://strategicflow.tech","sameAs":["https://www.linkedin.com/in/strategic-flow-tech"]},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First analysis free"},"dateModified":"2026-08-05"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is content friction and why does it kill conversions?","acceptedAnswer":{"@type":"Answer","text":"Content friction is any point in an email, landing page, or document where the reader pauses, doubts, or disengages before taking the intended action. WHY.™ surfaces the structural source of that hesitation before you rewrite."}},{"@type":"Question","name":"Can an AI tool diagnose why a landing page is not converting?","acceptedAnswer":{"@type":"Answer","text":"WHY.™ applies a friction-first diagnostic to produce a 1–10 score, ranked friction points, predicted reader questions, and a rebuilt version after the preview unlock."}},{"@type":"Question","name":"What appears before the full report?","acceptedAnswer":{"@type":"Answer","text":"Visitors see the friction score and one clear insight first. An email is requested only when they choose to unlock the full friction map, rebuild, or other output actions."}},{"@type":"Question","name":"Who is WHY.™ built for?","acceptedAnswer":{"@type":"Answer","text":"WHY.™ is built for SaaS founders, B2B marketers, consultants, and growth teams whose content needs to produce a specific action."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://strategicflow.tech"},{"@type":"ListItem","position":2,"name":"WHY.™ — Friction Diagnostic","item":"https://strategic-flow-audit.replit.app/why"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"WHY.™ — Content Friction Diagnostic","url":"https://strategic-flow-audit.replit.app/why","speakable":{"@type":"SpeakableSpecification","cssSelector":[".faq-section","h1","h2",".faq-heading"]}}</script>
+</head>
+<body>
+
+<!-- AUTHOR BYLINE STRIP -->
+<div class="author-strip">
+  <span>Built by</span>
+  <a href="https://strategicflow.tech" target="_blank" rel="noopener author"><strong>Alex Iliescu</strong> — Founder, Strategic Flow</a>
+  <span class="sep">·</span>
+  <span>59 published SaaS email teardowns</span>
+  <span class="sep">·</span>
+  <a href="https://www.linkedin.com/in/strategic-flow-tech" target="_blank" rel="noopener">LinkedIn →</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <h1 class="hero-why" id="hero-why">WHY<span class="dot">.</span><span class="tm">™</span></h1>
+  <div class="hero-status" id="hero-status">// SYSTEM READY — AWAITING INPUT</div>
+  <div class="hero-byline" id="hero-byline">Powered by the Decision Friction Model™</div>
+  <p class="hero-tagline" id="hero-tagline">
+    Paste <span>anything</span>. Find out <span>why it didn't work</span>.
+  </p>
+  <div class="hero-scroll-hint" id="hero-scroll" onclick="scrollToApp()">
+    <span>Paste & analyze</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- APP -->
+<section id="app">
+
+  <div class="app-header" id="app-header">
+    <div class="app-label">Friction Diagnostic</div>
+    <h2 class="app-title">What type of content are you analyzing?</h2>
+    <p class="app-sub">Paste your email, landing page, proposal, brief, or any document. WHY. finds the friction and predicts the questions your audience will ask. This diagnostic is also available as an MCP (Model Context Protocol) server, so an AI agent can run it directly: <a href="https://mcp.strategicflow.tech">mcp.strategicflow.tech</a>.</p>
+    <button class="how-toggle" id="how-toggle" onclick="toggleHow()">
+      <span id="how-toggle-label">How does this work?</span>
+      <span class="how-arrow" id="how-arrow">↓</span>
+    </button>
+  </div>
+
+  <div class="how-section" id="how-section">
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <div class="how-content">
+          <div class="how-title">Pick your content type</div>
+          <div class="how-desc">Select what you're analyzing — email, cold email, landing page, sales deck, case study, pricing page, or anything else. WHY. adjusts the diagnostic criteria based on the format.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <div class="how-content">
+          <div class="how-title">Paste the full content</div>
+          <div class="how-desc">Copy everything — subject line, body, CTA, headline, all of it. The more context you give, the more precise the diagnosis. Minimum 50 characters. No URL scraping — paste the raw text.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <div class="how-content">
+          <div class="how-title">Read the Friction Score</div>
+          <div class="how-desc">WHY. scores your content from 1 to 10. Low score means low friction — readers move through it without resistance. High score means structural problems are stopping action before the CTA.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">04</div>
+        <div class="how-content">
+          <div class="how-title">Review the friction points</div>
+          <div class="how-desc">Each point is named, explained, and rated HIGH / MID / LOW. They reference your actual content — not generic advice. Start with the HIGH ones.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">05</div>
+        <div class="how-content">
+          <div class="how-title">Read the 15 predicted questions</div>
+          <div class="how-desc">These are the exact questions your reader will ask — and didn't get answered. Each one comes with a direct answer: what's missing and what you need to add. This is where most rewrites start.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">06</div>
+        <div class="how-content">
+          <div class="how-title">Hit "Fix this" for a rebuild</div>
+          <div class="how-desc">WHY. rewrites your content with every friction point resolved. Consequence-first structure, unanswered questions addressed, CTA reframed around outcome. Paste the rebuilt version directly into your tool.</div>
+        </div>
+      </div>
+    </div>
+    <div class="how-footer">
+      Built on the <strong>Decision Friction Model</strong> — the same diagnostic framework used in <a href="https://strategicflow.tech/teardowns.html">59 published teardowns</a> across SaaS, fintech, and B2B. <a href="https://strategic-flow-audit.replit.app/glossary">See the failure pattern glossary</a>.
+    </div>
+  </div>
+
+  <div class="input-wrap" id="input-wrap">
+    <div class="type-grid">
+      <div class="type-group">
+        <div class="type-group-label">// Direct Response</div>
+        <div class="type-group-row">
+          <button class="type-btn active" onclick="setType(this, 'Email')">Email</button>
+          <button class="type-btn" onclick="setType(this, 'Cold email')">Cold email</button>
+          <button class="type-btn" onclick="setType(this, 'Landing page')">Landing page</button>
+        </div>
+      </div>
+      <div class="type-group">
+        <div class="type-group-label">// Sales · Business</div>
+        <div class="type-group-row">
+          <button class="type-btn" onclick="setType(this, 'Pricing page')">Pricing page</button>
+          <button class="type-btn" onclick="setType(this, 'Sales deck')">Sales deck</button>
+          <button class="type-btn" onclick="setType(this, 'Proposal')">Proposal</button>
+          <button class="type-btn" onclick="setType(this, 'Case study')">Case study</button>
+        </div>
+      </div>
+      <div class="type-group">
+        <div class="type-group-label">// Content · Marketing</div>
+        <div class="type-group-row">
+          <button class="type-btn" onclick="setType(this, 'Product update')">Product update</button>
+          <button class="type-btn" onclick="setType(this, 'LinkedIn post')">LinkedIn post</button>
+          <button class="type-btn" onclick="setType(this, 'Blog post')">Blog post</button>
+          <button class="type-btn" onclick="setType(this, 'Ad copy')">Ad copy</button>
+        </div>
+      </div>
+      <div class="type-group">
+        <div class="type-group-label">// Documents · Other</div>
+        <div class="type-group-row">
+          <button class="type-btn" onclick="setType(this, 'Brief')">Brief</button>
+          <button class="type-btn" onclick="setType(this, 'Onboarding email')">Onboarding email</button>
+          <button class="type-btn" onclick="setType(this, 'Job posting')">Job posting</button>
+          <button class="type-btn" onclick="setType(this, 'Investor update')">Investor update</button>
+          <button class="type-btn" onclick="setType(this, 'Document')">Other</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="textarea-wrap">
+      <textarea
+        id="content-input"
+        placeholder="Paste the full content here — e.g.:
+
+Subject: New in v2.4 — export speed improved
+
+Hi team, we shipped background exports this week. Your reports no longer freeze the browser.
+
+[CTA: See what's new →]
+
+Or paste a cold email, landing page, proposal — anything with a reader who needs to decide. The more text, the more precise the diagnosis."
+        oninput="updateCharCount()"
+      ></textarea>
+    </div>
+
+    <div class="input-footer">
+      <span class="char-count" id="char-count">0 characters</span>
+      <button id="analyze-btn" onclick="runAnalysis()">
+        Diagnose <span class="btn-arrow">→</span>
+      </button>
+    </div>
+
+    <div class="error-box" id="error-box"></div>
+    <div style="font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.06em;text-align:center;margin-top:10px;font-family:'Space Mono',monospace;">NO CARD REQUIRED · NO SUBSCRIPTION · RESULT IN ~30 SECONDS</div>
+  </div>
+
+  <div class="assess-status" id="assess-status"></div>
+
+  <!-- LOADING -->
+  <div id="loading">
+    <div class="loading-ring-wrap">
+      <div class="loading-ring"></div>
+      <div id="load-pct" class="load-pct">0%</div>
+    </div>
+    <div class="loading-text">Analyzing friction...</div>
+    <div class="loading-steps">
+      <div class="loading-step" id="step-1">↳ Feature-First Bias</div>
+      <div class="loading-step" id="step-2">↳ Guest Language CTA</div>
+      <div class="loading-step" id="step-3">↳ Filing Label Subject</div>
+      <div class="loading-step" id="step-4">↳ Consequence-After-Caveat</div>
+      <div class="loading-step" id="step-5">↳ Missing Visual Hierarchy</div>
+      <div class="loading-step" id="step-6">↳ Zero Social Proof</div>
+      <div class="loading-step" id="step-7">↳ Unanswered Question Load</div>
+    </div>
+    <div class="scan-tags" id="scan-tags"></div>
+  </div>
+
+  <!-- OUTPUT -->
+  <div id="output">
+
+    <!-- Stat reveal -->
+    <div class="stat-reveal" id="stat-reveal" style="display:none;"></div>
+
+    <!-- Score card -->
+    <div class="score-card" id="score-card">
+      <div class="score-number-wrap">
+        <span class="score-number" id="score-num">—</span>
+        <div class="score-denom">Friction Score /10</div>
+        <div class="friction-bar-wrap">
+          <div class="friction-bar-label">
+            <span>Low friction</span>
+            <span>High friction</span>
+          </div>
+          <div class="friction-bar-track">
+            <div class="friction-bar-fill" id="friction-bar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="score-info">
+        <div class="score-label">Diagnosis</div>
+        <div class="score-verdict" id="score-verdict">—</div>
+        <div class="score-summary" id="score-summary">—</div>
+      </div>
+    </div>
+
+    <div id="whyUnlockBlock" style="display:none;margin:24px 0 32px;padding:24px;border:1px solid rgba(255,68,34,.45);background:rgba(255,68,34,.05);">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#FF4422;margin-bottom:10px;">Free preview complete</div>
+      <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">See the full friction map</div>
+      <p id="whyPreviewInsight" style="font-size:14px;line-height:1.7;color:#D0D0D0;margin:0 0 18px;"></p>
+      <p style="font-size:13px;line-height:1.6;color:#AAAAAA;margin:0 0 14px;">Enter your email to unlock the named friction points, predicted reader questions, rebuild, and downloadable output. We ask only after showing your score.</p>
+      <input type="email" id="whyUnlockEmail" placeholder="you@company.com" style="max-width:420px;margin-bottom:10px;">
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#AAAAAA;line-height:1.55;margin-bottom:12px;cursor:pointer;">
+        <input type="checkbox" id="whyUnlockTerms" style="margin-top:2px;accent-color:#FF4422;">
+        <span>I agree to the <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank" style="color:#FF8066;">Terms of Use</a> and consent to this assessment.</span>
+      </label>
+      <button class="action-btn fix-btn" onclick="unlockWhyFullReport()">Unlock full report →</button>
+      <div id="whyUnlockError" style="font-family:'Space Mono',monospace;font-size:11px;color:#FF4422;margin-top:10px;display:none;"></div>
+    </div>
+
+    <!-- Friction reasons -->
+    <div class="output-section" id="section-why">
+      <div class="section-header">
+        <div class="section-icon">✕</div>
+        <div class="section-title">Why it didn't work</div>
+         <div class="section-count" id="why-count">Friction points</div>
+      </div>
+      <div class="section-body" id="why-list"></div>
+    </div>
+
+    <!-- Questions -->
+    <div class="output-section" id="section-questions">
+      <div class="section-header">
+        <div class="section-icon">?</div>
+        <div class="section-title">Questions your reader will ask</div>
+        <div class="section-count" id="q-count">15 predicted questions</div>
+      </div>
+      <div class="section-body" id="q-list"></div>
+    </div>
+
+    <!-- Highest Leverage Insight -->
+    <div class="hli-block" id="hli-block" style="display:none; opacity:0; transform:translateY(12px); transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s; margin-bottom:32px;">
+      <div class="hli-label">If you remember one thing</div>
+      <div class="hli-text" id="hli-text"></div>
+    </div>
+
+    <div class="output-actions" id="output-actions">
+      <button class="action-btn primary" onclick="resetApp()">← Analyze something else</button>
+      <button class="action-btn fix-btn" id="fix-btn" onclick="runFix()">Rebuild with WHY.</button>
+      <div class="sf-btn-wrap">
+        <button class="action-btn sf-btn" onclick="goToSF()">Run Full Architecture Audit</button>
+        <div class="sf-powered">powered by Strategic Flow</div>
+      </div>
+      <button class="action-btn share-btn" id="why-share-btn" onclick="shareDiagnosis()">Share diagnosis →</button>
+      <button class="action-btn" id="why-copy-btn" onclick="copyResults()">Copy results</button>
+    </div>
+
+    <!-- Fix output -->
+    <div id="fix-section" style="display:none; margin-top:32px; opacity:0; transform:translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease;">
+      <div class="section-header">
+        <div class="section-icon">✓</div>
+        <div class="section-title">Fixed version</div>
+        <div class="section-count" id="fix-label">Rebuilt with friction removed</div>
+      </div>
+      <div class="section-body" style="padding:0;">
+        <div id="fix-loading" style="display:none; padding:32px; text-align:center;">
+          <div class="loading-ring"></div>
+          <div class="loading-text">Rebuilding...</div>
+          <div class="loading-steps">
+            <div class="loading-step" id="fix-step-1">↳ Rewriting structure</div>
+            <div class="loading-step" id="fix-step-2">↳ Resolving friction points</div>
+            <div class="loading-step" id="fix-step-3">↳ Answering predicted questions</div>
+            <div class="loading-step" id="fix-step-4">↳ Finalizing rebuild</div>
+          </div>
+        </div>
+        <div id="fix-content" style="position:relative; overflow:hidden; padding:24px; font-size:14px; color:#DDDDDD; line-height:1.8; font-family:'Inter',sans-serif;"></div>
+      </div>
+      <div style="padding:12px 16px; border-top:1px solid var(--border); display:flex; justify-content:flex-end;">
+        <button class="action-btn" onclick="copyFix()">Copy fixed version</button>
+      </div>
+      <div style="padding:24px; border-top:1px solid var(--border); background:rgba(255,68,34,0.03);">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#FF4422;margin-bottom:16px;">Take this further</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div id="history-link-wrap" style="display:none;">
+            <a href="/why/history" style="display:flex;align-items:flex-start;gap:14px;text-decoration:none;padding:14px 16px;border:1px solid #FF4422;background:#1A0A08;">
+              <div style="flex-shrink:0;width:32px;height:32px;background:#FF4422;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:14px;color:#fff;font-weight:700;">↑</div>
+              <div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;margin-bottom:3px;">View my history →</div>
+                <div style="font-family:'Space Mono',monospace;font-size:10px;color:#888888;line-height:1.5;">All your past analyses — scores, friction points, rebuilt versions.</div>
+              </div>
+            </a>
+          </div>
+          <a href="https://strategic-flow-pro.replit.app/packages" style="display:flex;align-items:flex-start;gap:14px;text-decoration:none;padding:14px 16px;border:1px solid #2A2A2A;background:#141414;">
+            <div style="flex-shrink:0;width:32px;height:32px;background:#FF4422;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;color:#fff;font-weight:700;">01</div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;margin-bottom:3px;">Run a full Strategic Flow Audit</div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666666;line-height:1.5;">Your rebuild scored higher. Your next email should too — before it ships to your list.</div>
+            </div>
+          </a>
+          <a href="https://strategicflowtech.gumroad.com/l/koczgh" style="display:flex;align-items:flex-start;gap:14px;text-decoration:none;padding:14px 16px;border:1px solid #2A2A2A;background:#141414;">
+            <div style="flex-shrink:0;width:32px;height:32px;background:#1A1A1A;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;color:#AAAAAA;font-weight:700;">02</div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;margin-bottom:3px;">SaaS Email Architecture Pack — $47</div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666666;line-height:1.5;">5 interactive tools. 59 real teardowns. The exact system behind every rebuild. One-time, lifetime access.</div>
+            </div>
+          </a>
+          <a href="https://strategic-flow-audit.replit.app/subscribe" style="display:flex;align-items:flex-start;gap:14px;text-decoration:none;padding:14px 16px;border:1px solid #2A2A2A;background:#141414;">
+            <div style="flex-shrink:0;width:32px;height:32px;background:#1A1A1A;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;color:#AAAAAA;font-weight:700;">03</div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;margin-bottom:3px;">Free Email Audit Checklist</div>
+               <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666666;line-height:1.5;">The diagnostic checklist used on every Strategic Flow teardown. Run it before every send. Free.</div>
+            </div>
+          </a>
+          <a href="/ai-visibility" style="display:flex;align-items:flex-start;gap:14px;text-decoration:none;padding:14px 16px;border:1px solid #2A2A2A;background:#141414;">
+            <div style="flex-shrink:0;width:32px;height:32px;background:#1A1A1A;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;color:#AAAAAA;font-weight:700;">04</div>
+            <div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#FFFFFF;margin-bottom:3px;">Check your AI Visibility Score →</div>
+              <div style="font-family:'Space Mono',monospace;font-size:10px;color:#666666;line-height:1.5;">Is your brand visible when AI tools answer queries in your category? Score 0–10, free, 30 seconds.</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  <!-- Next Step -->
+  <div class="next-step-block" id="next-step-block" style="display:none; margin-top:40px; opacity:0; transform:translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <div class="next-step-inner">
+      <div class="next-step-check">✓</div>
+      <div class="next-step-content">
+        <div class="next-step-label">You've found the friction.</div>
+        <div class="next-step-text">Now remove it.<br><span style="font-size:13px;color:#AAAAAA;font-weight:400;">Run it through Strategic Flow's full Architecture Audit.</span></div>
+        <a href="https://strategic-flow-audit.replit.app" class="next-step-cta" target="_blank">Continue to Strategic Flow →</a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+</section>
+
+<section class="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+  <div class="faq-label">FAQ</div>
+  <h2 class="faq-heading">Why does content fail — and how does WHY.™ find it?</h2>
+
+  <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <button class="faq-q" onclick="toggleFaq(this)" itemprop="name">
+      What is content friction and why does it kill conversions?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        <strong>Content friction</strong> is any point in your email, landing page, or document where the reader's brain pauses, doubts, or disengages — before taking the action you want. It includes unanswered questions, vague CTAs, missing social proof, and structural logic gaps. Research on decision-making shows that unresolved friction is the primary reason high-quality offers get ignored. WHY.™ surfaces every friction point before you rewrite, so you fix the right things instead of guessing.
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <button class="faq-q" onclick="toggleFaq(this)" itemprop="name">
+      Why do my emails have low open rates and even lower click-through rates?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        Low open rates are usually a <strong>subject line friction</strong> problem: the subject doesn't create enough consequence or curiosity to justify opening. Low click-through rates are a <strong>body friction</strong> problem: the email doesn't answer "what do I get?" clearly enough before the CTA. WHY.™ diagnoses both layers separately — it scores your friction, identifies which specific phrases cause hesitation, and generates a rebuilt version that leads with outcome rather than feature.
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <button class="faq-q" onclick="toggleFaq(this)" itemprop="name">
+      Can an AI tool accurately diagnose why a landing page isn't converting?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        Yes — when the AI is trained on the right diagnostic framework, not just general writing quality. WHY.™ applies the <strong>Decision Friction Model</strong>, which maps the 15 questions a reader will ask before converting and checks whether your content answers them. Unlike general-purpose AI writing tools, WHY.™ is not trying to make your content "sound better" — it's finding the structural gaps that prevent a decision. The output is a friction score (1–10), ranked friction points, and 15 predicted reader questions with blunt assessments of whether your content answers them.
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <button class="faq-q" onclick="toggleFaq(this)" itemprop="name">
+      How is WHY.™ different from a standard content audit or AI writing assistant?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        A standard <strong>content audit</strong> checks for SEO coverage, word count, and readability scores. An AI writing assistant rewrites for tone or grammar. WHY.™ does neither. It works backwards from the reader's decision process: what questions would a real person ask before clicking, buying, or replying — and does your content answer them? This friction-first diagnostic approach surfaces problems that readability scores and keyword audits completely miss, particularly in B2B emails, SaaS onboarding sequences, and high-stakes proposals where one unanswered question loses the deal.
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <button class="faq-q" onclick="toggleFaq(this)" itemprop="name">
+      Who is WHY.™ built for?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        WHY.™ is built for <strong>SaaS founders, B2B marketers, consultants, and growth teams</strong> who write content that needs to produce a specific action — a trial signup, a reply, a purchase, a meeting booked. It works on emails, cold outreach, landing pages, pricing pages, proposals, investor updates, job postings, onboarding sequences, and ad copy. If the content has a reader who needs to make a decision, WHY.™ can diagnose why they're not making it. For teams running the full Strategic Flow Method, see the <a href="https://strategic-flow-pro.replit.app/packages">Strategic Flow Audit →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <button class="faq-q" onclick="toggleFaq(this)" itemprop="name">
+      How do I get a human expert to review my rebuilt email?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        Human review is available on request — not automatic. Email <a href="mailto:alex@strategicflow.tech">alex@strategicflow.tech</a> with your rebuilt content and a Strategic Flow strategist will flag any remaining blind spots. For deeper work — full email architecture audits, multi-email sequence design, or brand voice calibration — explore the <a href="https://strategic-flow-pro.replit.app/packages">full Strategic Flow packages →</a>
+      </div>
+    </div>
+  </div>
+  <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <button class="faq-q" onclick="toggleFaq(this)" itemprop="name">
+      Is Strategic Flow's Decision Friction Model related to organizational decision-friction frameworks or other consulting firms named Strategic Flow?
+      <span class="faq-icon">+</span>
+    </button>
+    <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        No. Strategic Flow's Decision Friction Model is a diagnostic framework for SaaS email and content architecture, built by Alex Iliescu from 59+ real email teardowns. WHY.™ is the simplified version for the free diagnostic. It is not related to organizational decision-friction models used in leadership or operations consulting, and it is not affiliated with another company or coach using the name Strategic Flow.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section style="padding:56px 24px 72px;max-width:860px;margin:0 auto;">
+  <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:#FF4422;margin-bottom:10px;">How WHY.™ is different</div>
+  <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,3.5vw,26px);font-weight:700;margin-bottom:8px;">WHY.™ vs. the alternatives</h2>
+  <p style="color:#AAAAAA;font-size:14px;margin-bottom:28px;max-width:560px;">Most tools fix the writing. WHY.™ finds why the writing isn't working — before you rewrite a single word.</p>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+  <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:540px;">
+    <thead>
+      <tr style="border-bottom:1px solid #2A2A2A;">
+        <th style="text-align:left;padding:12px 16px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#666;font-weight:400;"></th>
+        <th style="text-align:center;padding:12px 16px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#FF4422;font-weight:700;">WHY.™</th>
+        <th style="text-align:center;padding:12px 16px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#666;font-weight:400;">Grammarly</th>
+        <th style="text-align:center;padding:12px 16px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#666;font-weight:400;">Jasper / AI writer</th>
+        <th style="text-align:center;padding:12px 16px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#666;font-weight:400;">Manual review</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #1A1A1A;">
+        <td style="padding:13px 16px;color:#AAAAAA;">Diagnoses why content isn't converting</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Depends</td>
+      </tr>
+      <tr style="border-bottom:1px solid #1A1A1A;background:#0D0D0D;">
+        <td style="padding:13px 16px;color:#AAAAAA;">Friction score 1–10</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+      </tr>
+      <tr style="border-bottom:1px solid #1A1A1A;">
+        <td style="padding:13px 16px;color:#AAAAAA;">Named failure patterns (not generic advice)</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Depends</td>
+      </tr>
+      <tr style="border-bottom:1px solid #1A1A1A;background:#0D0D0D;">
+        <td style="padding:13px 16px;color:#AAAAAA;">15 predicted reader questions</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+        <td style="padding:13px 16px;text-align:center;color:#555;">✗</td>
+      </tr>
+      <tr style="border-bottom:1px solid #1A1A1A;">
+        <td style="padding:13px 16px;color:#AAAAAA;">Rebuilt version included</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Suggestions only</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Rewrites, not fixes</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Depends</td>
+      </tr>
+      <tr style="border-bottom:1px solid #1A1A1A;background:#0D0D0D;">
+        <td style="padding:13px 16px;color:#AAAAAA;">Works on any content type</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;">✓</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;">✓</td>
+      </tr>
+      <tr style="border-bottom:1px solid #1A1A1A;">
+        <td style="padding:13px 16px;color:#AAAAAA;">Time to result</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">90 seconds</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Instant</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Minutes</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Days</td>
+      </tr>
+      <tr style="background:#0D0D0D;">
+        <td style="padding:13px 16px;color:#AAAAAA;">Free to start</td>
+        <td style="padding:13px 16px;text-align:center;color:#22CC88;font-weight:700;">✓ Free</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Freemium</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Paid</td>
+        <td style="padding:13px 16px;text-align:center;color:#888;">Paid</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <div style="max-width:640px;margin:0 auto 56px;display:flex;flex-direction:column;gap:10px;">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:#FF4422;margin-bottom:4px;">Take this further</div>
+    <a href="https://strategic-flow-pro.replit.app/packages" style="display:flex;align-items:center;justify-content:space-between;text-decoration:none;padding:13px 16px;border:1px solid #2A2A2A;">
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#FFFFFF;">Run a full Strategic Flow Audit</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;color:#FF4422;">→</span>
+    </a>
+    <a href="https://strategicflowtech.gumroad.com/l/koczgh" style="display:flex;align-items:center;justify-content:space-between;text-decoration:none;padding:13px 16px;border:1px solid #2A2A2A;">
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#FFFFFF;">SaaS Email Architecture Pack — $47</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;color:#AAAAAA;">→</span>
+    </a>
+    <a href="https://strategic-flow-audit.replit.app/subscribe" style="display:flex;align-items:center;justify-content:space-between;text-decoration:none;padding:13px 16px;border:1px solid #2A2A2A;">
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#FFFFFF;">Free Email Audit Checklist</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;color:#AAAAAA;">→</span>
+    </a>
+    <a href="https://strategicflow.tech/structural-vs-deliverability-audit.html" style="display:flex;align-items:center;justify-content:space-between;text-decoration:none;padding:13px 16px;border:1px solid #2A2A2A;">
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#FFFFFF;">The difference between structural and deliverability audits</span>
+      <span style="font-family:'Space Mono',monospace;font-size:10px;color:#AAAAAA;">→</span>
+    </a>
+  </div>
+  WHY.<span class="footer-tm">™</span> &nbsp;&nbsp; A <a href="https://strategicflow.tech" target="_blank" rel="noopener" style="color:#AAAAAA;text-decoration:none;">Strategic Flow</a> product by <a href="https://www.linkedin.com/in/strategic-flow-tech" target="_blank" rel="noopener" style="color:#AAAAAA;text-decoration:none;">Alex Iliescu</a>. &nbsp;&nbsp;
+  <div class="last-updated" id="lastUpdatedWhy">// last updated: 2026-08-05</div>
+  <style>
+  .why-ticker-wrap{display:flex;align-items:stretch;overflow:hidden;border-top:1px solid rgba(29,158,117,0.15);border-bottom:1px solid rgba(29,158,117,0.15);background:rgba(29,158,117,0.03);margin:14px 0 0;}
+  .why-ticker-lbl{flex-shrink:0;display:flex;align-items:center;padding:0 13px 0 18px;border-right:1px solid rgba(29,158,117,0.15);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(29,158,117,0.65);white-space:nowrap;min-height:40px;}
+  .why-ticker-vp{flex:1;overflow:hidden;min-width:0;position:relative;}
+  .why-ticker-vp::before,.why-ticker-vp::after{content:'';position:absolute;top:0;bottom:0;width:28px;z-index:2;pointer-events:none;}
+  .why-ticker-vp::before{left:0;background:linear-gradient(to right,#0a0a0a,transparent);}
+  .why-ticker-vp::after{right:0;background:linear-gradient(to left,#0a0a0a,transparent);}
+  .why-ticker-track{display:flex;gap:6px;padding:9px 6px;width:max-content;will-change:transform;animation:why-scroll 62s linear infinite;}
+  .why-ticker-wrap.why-fast .why-ticker-track{animation-duration:32s;}
+  .why-ticker-wrap:hover .why-ticker-track,.why-ticker-wrap:focus-within .why-ticker-track{animation-play-state:paused;}
+  .why-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 11px;border:1px solid rgba(29,158,117,0.22);border-radius:20px;font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.62);white-space:nowrap;line-height:1.5;transition:border-color .15s,color .15s,background .15s;cursor:default;text-decoration:none;}
+  .why-pill:hover{border-color:rgba(29,158,117,0.60);color:rgba(255,255,255,.92);background:rgba(29,158,117,0.08);}
+  .why-pill-dot{width:5px;height:5px;border-radius:50%;background:rgba(29,158,117,0.70);flex-shrink:0;display:inline-block;}
+  @keyframes why-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes why-scroll-rtl{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+  .why-ticker-track-rtl{display:flex;gap:6px;padding:9px 6px;width:max-content;will-change:transform;animation:why-scroll-rtl 22s linear infinite;}
+  .why-ticker-wrap.why-two-row{flex-direction:column;}
+  .why-ticker-row-inner{display:flex;align-items:stretch;overflow:hidden;min-height:76px;}
+  .why-ticker-lbl-spacer{flex-shrink:0;width:78px;border-right:1px solid rgba(29,158,117,0.18);}
+  .why-ticker-wrap:hover .why-ticker-track,.why-ticker-wrap:hover .why-ticker-track-rtl{animation-play-state:paused;}
+  </style>
+
+  <div class="why-ticker-wrap" aria-label="Independently reviewed brands">
+    <span class="why-ticker-lbl">Independently reviewed</span>
+    <div class="why-ticker-vp">
+      <div class="why-ticker-track" id="whyTickerBrands"></div>
+    </div>
+  </div>
+  <div class="why-ticker-wrap why-two-row" aria-label="Listed on platforms" style="border-top:none;">
+    <div class="why-ticker-row-inner">
+      <span class="why-ticker-lbl">Listed<br/>on</span>
+      <div class="why-ticker-vp">
+        <div class="why-ticker-track" id="whyTickerListings" style="align-items:center;"><a href="https://strategic-flow-audit.replit.app/directory" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://strategic-flow-audit.replit.app/api/directory/badge/dark.svg" alt="Listed on ToolIndex" height="44" style="max-height:44px;width:auto;display:block;" loading="lazy" /></a><a href="https://fazier.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=light" alt="Launched on Fazier" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://fazier.com/launches/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://fazier.com/api/v1/public/badges/embed_image.svg?launch_id=10408&badge_type=daily&theme=light" alt="Fazier Daily Badge" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://launchnest.io/p/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://launchnest.io/badge/why.svg" alt="WHY.™ on LaunchNest" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://launchkiwi.com/p/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://launchkiwi.com/badge-dark.svg" alt="Featured on LaunchKiwi" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://turbo0.com/item/why-tm" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://img.turbo0.com/badge-listed-dark.svg" alt="Listed on Turbo0" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://strategic-flow-audit.replit.app/directory" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://strategic-flow-audit.replit.app/api/directory/badge/dark.svg" alt="Listed on ToolIndex" height="44" style="max-height:44px;width:auto;display:block;" loading="lazy" /></a><a href="https://fazier.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=launched&theme=light" alt="Launched on Fazier" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://fazier.com/launches/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://fazier.com/api/v1/public/badges/embed_image.svg?launch_id=10408&badge_type=daily&theme=light" alt="Fazier Daily Badge" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://launchnest.io/p/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://launchnest.io/badge/why.svg" alt="WHY.™ on LaunchNest" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://launchkiwi.com/p/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://launchkiwi.com/badge-dark.svg" alt="Featured on LaunchKiwi" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://turbo0.com/item/why-tm" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://img.turbo0.com/badge-listed-dark.svg" alt="Listed on Turbo0" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a></div>
+      </div>
+    </div>
+    <div class="why-ticker-row-inner" style="border-top:1px solid rgba(29,158,117,0.10);">
+      <div class="why-ticker-lbl-spacer"></div>
+      <div class="why-ticker-vp">
+        <div class="why-ticker-track-rtl" style="align-items:center;"><a href="https://twelve.tools" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://twelve.tools/badge0-dark.svg" alt="Featured on Twelve Tools" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://wired.business" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://wired.business/badge0-dark.svg" alt="Featured on Wired Business" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://findly.tools/why?utm_source=why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://findly.tools/badges/findly-tools-badge-dark.svg" alt="Featured on Findly.tools" height="55" style="max-height:55px;width:auto;display:block;" loading="lazy" /></a><a href="https://smolsaas.com/projects/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://r2.direasy-multi-tenant.focusapps.app/uploads/616d0b1a-3979-4b8c-94d1-b4f1fedd3ead/1783046766775/sjxeszczb3i/top1-dark.svg" alt="Smol Saas Top 1 Daily Winner" width="195" style="width:195px;height:auto;display:block;" loading="lazy" /></a><a href="https://lookingfortools.com/projects/why?utm_source=badge" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://r2.direasy-multi-tenant.focusapps.app/uploads/616d0b1a-3979-4b8c-94d1-b4f1fedd3ead/1783232960041/17rsshdhmati/featured-on-dark.svg" alt="Featured on Looking For Tools" height="44" style="max-height:44px;width:auto;display:block;" loading="lazy" /></a><a href="https://saasfame.com/item/why-tm" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://saasfame.com/badge-dark.svg" alt="Featured on saasfame.com" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://twelve.tools" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://twelve.tools/badge0-dark.svg" alt="Featured on Twelve Tools" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://wired.business" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://wired.business/badge0-dark.svg" alt="Featured on Wired Business" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a><a href="https://findly.tools/why?utm_source=why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://findly.tools/badges/findly-tools-badge-dark.svg" alt="Featured on Findly.tools" height="55" style="max-height:55px;width:auto;display:block;" loading="lazy" /></a><a href="https://smolsaas.com/projects/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://r2.direasy-multi-tenant.focusapps.app/uploads/616d0b1a-3979-4b8c-94d1-b4f1fedd3ead/1783046766775/sjxeszczb3i/top1-dark.svg" alt="Smol Saas Top 1 Daily Winner" width="195" style="width:195px;height:auto;display:block;" loading="lazy" /></a><a href="https://lookingfortools.com/projects/why?utm_source=badge" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://r2.direasy-multi-tenant.focusapps.app/uploads/616d0b1a-3979-4b8c-94d1-b4f1fedd3ead/1783232960041/17rsshdhmati/featured-on-dark.svg" alt="Featured on Looking For Tools" height="44" style="max-height:44px;width:auto;display:block;" loading="lazy" /></a><a href="https://saasfame.com/item/why-tm" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://saasfame.com/badge-dark.svg" alt="Featured on saasfame.com" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a></div>
+      </div>
+    </div>
+  </div>
+  <script>
+  // Add the PeerPush badge to the same seamless platform ticker as the other listings.
+  (function(){
+    var track = document.querySelector('.why-ticker-track-rtl');
+    if(!track || track.querySelector('[data-peerpush-badge]')) return;
+    var peer = '<a data-peerpush-badge href="https://peerpush.com/p/why" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;flex-shrink:0;margin:0 16px;"><img src="https://peerpush.com/p/why/badge.png" alt="WHY. on PeerPush" height="54" style="max-height:54px;width:auto;display:block;" loading="lazy" /></a>';
+    var items = Array.prototype.slice.call(track.querySelectorAll(':scope > a'));
+    if(items.length && items.length % 2 === 0){
+      track.insertAdjacentHTML('beforeend', peer);
+      track.insertBefore(track.lastElementChild, items[items.length / 2]);
+      track.insertAdjacentHTML('beforeend', peer);
+    }
+  })();
+  </script>
+  <script>
+  (function(){
+    var br=document.getElementById('whyTickerBrands');
+    var brands=['Semrush','HeyGen','Optimizely','Revolut','Medallia','Wrike','Zoho','ElevenLabs','Cato Networks','Userpilot','Xelix','Intercom','HubSpot','Pitch','Miro','Clay','Zapier','ClickUp','Airtable','Calendly','Circle','Webflow','Linear','Perplexity','Booking.com','Figma','Gamma','Landbot','Neon','Spreedly','Lodgify','Weaviate','Seamless','Sequel AI','LeadPages','Limelight','dotCompliance','EasyLlama','SplitMetrics','TripleDart','Confluence','dbt Labs','Qonto','Alt21','Wizzair','Tilled','Rize','SoFi'];
+    if(br){var b=brands.concat(brands);br.innerHTML=b.map(function(n){return'<span class="why-pill" aria-hidden="true"><span class="why-pill-dot"></span>'+n+'</span>';}).join('');}
+  })();
+  </script>
+  <script>
+  /* Touch pause — pause on first tap; links navigate on the second tap */
+  (function(){
+    var wraps=document.querySelectorAll('.why-ticker-wrap');
+    if(!wraps.length)return;
+    function getLink(target){
+      if(target&&target.nodeType!==1)target=target.parentElement;
+      return target&&target.closest?target.closest('a[href]'):null;
+    }
+    function setPaused(wrap, paused){
+      wrap.querySelectorAll('.why-ticker-track,.why-ticker-track-rtl').forEach(function(track){
+        track.style.animationPlayState=paused?'paused':'running';
+      });
+      wrap._whyTouchPaused=paused;
+      if(!paused)wrap._whyTouchPendingLink=null;
+    }
+    wraps.forEach(function(wrap){
+      var tracks=wrap.querySelectorAll('.why-ticker-track,.why-ticker-track-rtl');
+      if(!tracks.length)return;
+      wrap._whyTouchPaused=false;
+      wrap._whyTouchPendingLink=null;
+      wrap.addEventListener('touchstart',function(e){
+        var link=getLink(e.target);
+        if(link){
+          if(wrap._whyTouchPendingLink===link&&wrap._whyTouchPaused){
+            setPaused(wrap,false);
+            return;
+          }
+          if(!wrap._whyTouchPaused)setPaused(wrap,true);
+          wrap._whyTouchPendingLink=link;
+          e.preventDefault();
+          return;
+        }
+        var paused=wrap._whyTouchPaused;
+        wrap._whyTouchPendingLink=null;
+        setPaused(wrap,!paused);
+      },{passive:false});
+    });
+    document.addEventListener('touchstart',function(e){
+      var inside=e.target&&e.target.closest?e.target.closest('.why-ticker-wrap'):null;
+      wraps.forEach(function(wrap){
+        if(wrap!==inside&&wrap._whyTouchPaused)setPaused(wrap,false);
+      });
+    },{passive:true});
+  })();
+  </script>
+  <a href="mailto:alex@strategicflow.tech" style="color:#FF4422;font-family:'Space Mono',monospace;font-size:12px;text-decoration:none;">alex@strategicflow.tech</a><br>
+  <span style="color:#FFFFFF;">Built to explain why content fails — before you rewrite it.</span>
+  <div style="margin-top:28px;text-align:center;">
+    <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#666;margin-bottom:10px;">Listed on Tool<span style="font-size:13px;font-weight:700;color:#fff;letter-spacing:.06em;vertical-align:baseline;">I</span>ndex</div>
+    <a href="https://strategic-flow-audit.replit.app/directory" target="_blank" rel="noopener">
+      <img src="https://strategic-flow-audit.replit.app/api/directory/badge/203/dark.svg" alt="Listed on Strategic Flow" width="200" height="44" style="display:block;margin:0 auto;" />
+    </a>
+  </div>
+</footer>
+
+<script>
+// ===== STATE =====
+let contentType = 'Email';
+let contentTypeContext = '';
+let outputData = null;
+let rebuildInFlight = false;
+
+const CONTENT_TYPE_CONTEXTS = {
+  'Onboarding email': 'Focus on activation friction and sequence gaps: Does the email define a concrete "first win" the reader can achieve? Is the next step specific and low-effort, or does it demand too much too soon? Are there missing moments of reassurance that reduce new-user anxiety? Does the email assume too much prior knowledge?',
+  'Blog post': 'Focus on why readers leave before the payoff: Is the hook strong enough to justify reading past the first paragraph? Is the thesis buried or unclear? Does the argument build logically or does it meander? Is there a clear takeaway or does it end without resolution? Does it make a specific claim or hedge everything?',
+  'Job posting': 'Focus on why qualified candidates don\'t apply: Are requirements vague or inflated beyond what the role actually needs? Is compensation missing or hidden? Does the culture language have any concrete evidence or is it all generic claims? Is the actual day-to-day work described, or just abstract responsibilities? Would a strong candidate feel this role is worth their time?',
+  'Investor update': 'Focus on why investors don\'t re-engage or respond: Is there a clear momentum signal (growth, retention, partnerships)? Are key metrics buried or presented without context? Is there a specific ask with a deadline, or is the update passive? Does the narrative explain WHY things happened, or just WHAT happened? Would an investor feel urgency to reply?',
+  'Ad copy': 'Focus on hook-offer mismatch and claim credibility: Does the hook match what the ad is actually selling? Are claims specific and provable, or vague and generic? Is there a reason to act now, or does the CTA feel optional? Is the audience specific enough to feel personally addressed? Does the copy describe a transformation or just a product feature?'
+};
+
+// ===== BLINK TEST CREDITS =====
+(function() {
+  const p = new URLSearchParams(window.location.search).get('blink_email');
+  if (p) sessionStorage.setItem('blink_email', p.toLowerCase().trim());
+})();
+
+// ===== HERO ANIMATION =====
+window.isWhyPro = false;
+
+// Check Pro session status on load
+fetch('/api/why-status').then(r => r.json()).then(d => {
+  if (!d.isPro) return;
+  window.isWhyPro = true;
+  const hl = document.getElementById('history-link-wrap');
+  if (hl) hl.style.display = 'block';
+  // Inject Pro badge into app-header
+  const appHeader = document.getElementById('app-header');
+  if (appHeader && !document.getElementById('pro-badge')) {
+    const badge = document.createElement('div');
+    badge.id = 'pro-badge';
+    badge.innerHTML = `<span style="display:inline-flex;align-items:center;gap:6px;background:#1A0A08;border:1px solid #FF4422;padding:5px 12px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#FF4422;">
+      <span style="width:6px;height:6px;background:#FF4422;border-radius:50%;display:inline-block;"></span>WHY<span style="color:#FF4422;">.</span>™ Pro
+    </span>
+    <a href="/why/history" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#FF4422;text-decoration:none;margin-left:14px;border-bottom:1px solid #FF442240;padding-bottom:1px;">View history →</a>
+    <a href="/why/login" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;color:#FF4422;text-decoration:none;margin-left:10px;" title="Logged in as Pro">Sign out</a>`;
+    badge.style.cssText = 'margin-bottom:18px;';
+    appHeader.insertBefore(badge, appHeader.firstChild);
+  }
+  // Change fix button label to indicate it runs automatically
+  const fixBtn = document.getElementById('fix-btn');
+  if (fixBtn) fixBtn.textContent = 'Rebuild with WHY. ✓ Pro';
+}).catch(() => {});
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Credits purchase return detection
+  const _cp = new URLSearchParams(window.location.search);
+  if (_cp.get('credits') === 'success') {
+    history.replaceState(null, '', window.location.pathname);
+    const _bn = document.createElement('div');
+    _bn.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#141414;border:1px solid rgba(255,68,34,0.5);border-left:3px solid #FF4422;padding:12px 24px;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#FF4422;z-index:9999;white-space:nowrap;';
+    _bn.textContent = '20 credits added — try your rebuild again.';
+    document.body.appendChild(_bn);
+    setTimeout(() => _bn.remove(), 6000);
+  } else if (_cp.get('credits') === 'cancelled') {
+    history.replaceState(null, '', window.location.pathname);
+  }
+
+  const why = document.getElementById('hero-why');
+  const tagline = document.getElementById('hero-tagline');
+  const scroll = document.getElementById('hero-scroll');
+
+  const byline = document.getElementById('hero-byline');
+
+  setTimeout(() => why.classList.add('animate'), 200);
+  setTimeout(() => { const s = document.getElementById('hero-status'); if (s) s.classList.add('visible'); }, 1100);
+  setTimeout(() => { if (byline) byline.classList.add('visible'); }, 1400);
+  setTimeout(() => tagline.classList.add('visible'), 1700);
+  setTimeout(() => scroll.classList.add('visible'), 2200);
+
+  // App section animation on scroll
+  const appObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.getElementById('app-header').classList.add('visible');
+        setTimeout(() => document.getElementById('input-wrap').classList.add('visible'), 150);
+        appObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  appObs.observe(document.getElementById('app'));
+
+  // Resume pending job after tab kill / OS discard
+  try {
+    const raw = localStorage.getItem(WHY_JOB_KEY);
+    if (raw) {
+      const job = JSON.parse(raw);
+      const age = Date.now() - (job.startedAt || 0);
+      if (job.id && age < 120000) {
+        if (job.type === 'analyze') {
+          showLoading();
+          const loadTitle = document.querySelector('.loading-title');
+          if (loadTitle) loadTitle.textContent = 'Analyzing... this can take up to 40 seconds';
+          pollWhyJob(
+            job.id,
+            job.token || '',
+            (result) => { outputData = result; hideLoading(); renderOutput(result); },
+            (errMsg) => { hideLoading(); resetLoadingSteps(); showError('Analysis failed: ' + errMsg); }
+          );
+        } else if (job.type === 'rebuild') {
+          const fixSection = document.getElementById('fix-section');
+          const fixLoading = document.getElementById('fix-loading');
+          const fixContent = document.getElementById('fix-content');
+          const fixBtn    = document.getElementById('fix-btn');
+          if (fixSection && fixLoading && fixContent && fixBtn) {
+            fixSection.style.display   = 'block';
+            fixSection.style.opacity   = '1';
+            fixSection.style.transform = 'translateY(0)';
+            resetFixSteps();
+            fixLoading.style.display   = 'block';
+            fixContent.innerHTML       = '';
+            fixBtn.disabled            = true;
+            fixBtn.textContent         = 'Resuming rebuild...';
+            const resumeFixInterval = animateFixSteps();
+            pollWhyJob(
+              job.id,
+              job.token || '',
+              (result) => {
+                clearInterval(resumeFixInterval);
+                resetFixSteps();
+                fixLoading.style.display = 'none';
+                fixBtn.textContent       = 'Rebuild with WHY.';
+                fixBtn.disabled          = false;
+                revealFixContent(result.text || '');
+                fixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              },
+              (errMsg) => {
+                clearInterval(resumeFixInterval);
+                resetFixSteps();
+                fixLoading.style.display = 'none';
+                fixBtn.textContent       = 'Rebuild with WHY.';
+                fixBtn.disabled          = false;
+                fixContent.textContent   = 'Rebuild failed: ' + errMsg;
+              }
+            );
+          }
+        }
+      } else {
+        clearPendingJob();
+      }
+    }
+  } catch (_) {}
+});
+
+function toggleHow() {
+  const section = document.getElementById('how-section');
+  const toggle = document.getElementById('how-toggle');
+  const label = document.getElementById('how-toggle-label');
+  const isOpen = section.classList.contains('open');
+  section.classList.toggle('open');
+  toggle.classList.toggle('open');
+  label.textContent = isOpen ? 'How does this work?' : 'Hide';
+}
+
+function scrollToApp() {
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== FAQ ACCORDION =====
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// ===== TYPE SELECTOR =====
+function setType(btn, type) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // glow pulse on press
+  btn.classList.remove('pulse');
+  void btn.offsetWidth; // force reflow to restart animation
+  btn.classList.add('pulse');
+  contentType = type;
+  contentTypeContext = CONTENT_TYPE_CONTEXTS[type] || '';
+}
+
+// ===== CHAR COUNT =====
+function updateCharCount() {
+  const len = document.getElementById('content-input').value.length;
+  document.getElementById('char-count').textContent = len.toLocaleString() + ' characters';
+}
+
+// ===== LOADING STEPS =====
+function animateLoadingSteps() {
+  const steps = ['step-1','step-2','step-3','step-4','step-5','step-6','step-7'];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i > 0) { document.getElementById(steps[i - 1]).classList.remove('active'); document.getElementById(steps[i - 1]).classList.add('done'); }
+    if (i < steps.length) { document.getElementById(steps[i]).classList.add('active'); i++; }
+    else { clearInterval(interval); }
+  }, 500);
+  return interval;
+}
+
+function resetLoadingSteps() {
+  ['step-1','step-2','step-3','step-4','step-5','step-6','step-7'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active', 'done');
+  });
+}
+
+// ===== SCANNING TAGS =====
+const DFM_CHECKS = [
+  'Feature-First Bias',
+  'Guest Language CTA',
+  'Filing Label Subject',
+  'Consequence-After-Caveat',
+  'Missing Visual Hierarchy',
+  'Zero Social Proof',
+  'Unanswered Question Load',
+];
+let scanTagInterval = null;
+
+function startScanTags() {
+  const container = document.getElementById('scan-tags');
+  if (!container) return;
+  container.innerHTML = '';
+  let idx = 0;
+  scanTagInterval = setInterval(() => {
+    // Dim all existing tags
+    container.querySelectorAll('.scan-tag').forEach(t => {
+      t.classList.remove('visible');
+      t.classList.add('dimmed');
+    });
+    // Add new tag
+    const tag = document.createElement('div');
+    tag.className = 'scan-tag';
+    tag.textContent = DFM_CHECKS[idx % DFM_CHECKS.length];
+    container.appendChild(tag);
+    requestAnimationFrame(() => requestAnimationFrame(() => tag.classList.add('visible')));
+    // Remove oldest if container exceeds 3 tags
+    while (container.children.length > 3) {
+      container.removeChild(container.firstChild);
+    }
+    idx++;
+  }, 840);
+}
+
+function stopScanTags() {
+  if (scanTagInterval) { clearInterval(scanTagInterval); scanTagInterval = null; }
+  const container = document.getElementById('scan-tags');
+  if (container) container.innerHTML = '';
+}
+
+// ===== ESTIMATED PROGRESS =====
+let progressPct = 0;
+let progressInterval = null;
+
+function startProgress() {
+  const el = document.getElementById('load-pct');
+  if (!el) return;
+  progressPct = 0;
+  el.textContent = '0%';
+  progressInterval = setInterval(() => {
+    // Decelerate: increment by 4% of remaining gap to 99, minimum 0.3
+    const remaining = 99 - progressPct;
+    progressPct = Math.min(99, progressPct + Math.max(0.3, remaining * 0.04));
+    el.textContent = Math.floor(progressPct) + '%';
+  }, 250);
+}
+
+function stopProgress() {
+  if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+  const el = document.getElementById('load-pct');
+  if (el) el.textContent = '0%';
+}
+
+// ===== STAT REVEAL =====
+function showStatReveal(data) {
+  const score = data.friction_score;
+  const fpLen = data.friction_points.length;
+  const el    = document.getElementById('stat-reveal');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="stat-card-diag">
+      <div class="stat-card-label">Friction Score</div>
+      <div class="stat-card-number${score >= 6 ? '' : ' green'}" id="sr-score">0/10</div>
+    </div>
+    <div class="stat-card-diag">
+      <div class="stat-card-label">Friction Points Found</div>
+      <div class="stat-card-number" id="sr-fp">0/5</div>
+    </div>`;
+  el.style.display = 'flex';
+  const t0 = performance.now();
+  function tick(ts) {
+    const p = Math.min((ts - t0) / 720, 1);
+    const srScore = document.getElementById('sr-score');
+    const srFp    = document.getElementById('sr-fp');
+    if (srScore) srScore.textContent = Math.round(p * score) + '/10';
+    if (srFp)    srFp.textContent    = Math.round(p * fpLen) + '/5';
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== FIX REBUILD STEPS =====
+function animateFixSteps() {
+  const steps = ['fix-step-1','fix-step-2','fix-step-3','fix-step-4'];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i > 0) {
+      document.getElementById(steps[i - 1]).classList.remove('active');
+      document.getElementById(steps[i - 1]).classList.add('done');
+    }
+    if (i < steps.length) {
+      document.getElementById(steps[i]).classList.add('active');
+      i++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 800);
+  return interval;
+}
+
+function resetFixSteps() {
+  ['fix-step-1','fix-step-2','fix-step-3','fix-step-4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active', 'done');
+  });
+}
+
+// ===== FIX CONTENT PROGRESSIVE REVEAL =====
+function revealFixContent(text) {
+  const fixContent = document.getElementById('fix-content');
+  fixContent.innerHTML = '';
+
+  // Split into paragraph-level chunks; further split very long ones
+  const rawChunks = text.split(/\n\n+/).filter(c => c.trim());
+  const chunks = [];
+  rawChunks.forEach(chunk => {
+    const lines = chunk.split('\n');
+    if (lines.length <= 5) {
+      chunks.push(chunk);
+    } else {
+      for (let i = 0; i < lines.length; i += 4) {
+        chunks.push(lines.slice(i, i + 4).join('\n'));
+      }
+    }
+  });
+
+  if (chunks.length === 0) {
+    fixContent.textContent = text;
+    return;
+  }
+
+  // Insert scan beam
+  const beam = document.createElement('div');
+  beam.className = 'fix-beam';
+  fixContent.appendChild(beam);
+
+  let chunkIdx = 0;
+  const REVEAL_DELAY = 160; // ms between chunks
+
+  function revealNext() {
+    if (chunkIdx >= chunks.length) {
+      // Fade out beam after last chunk settles
+      setTimeout(() => {
+        beam.style.opacity = '0';
+        setTimeout(() => { if (beam.parentNode) beam.parentNode.removeChild(beam); }, 450);
+      }, 300);
+      return;
+    }
+
+    const chunkDiv = document.createElement('div');
+    chunkDiv.className = 'fix-chunk';
+    // Re-add double newline spacing between paragraphs via margin
+    chunkDiv.style.marginBottom = chunkIdx < chunks.length - 1 ? '1.4em' : '0';
+    chunkDiv.textContent = chunks[chunkIdx];
+    // Insert before beam so beam stays at the bottom
+    fixContent.insertBefore(chunkDiv, beam);
+
+    // Trigger CSS transition on next paint
+    requestAnimationFrame(() => requestAnimationFrame(() => chunkDiv.classList.add('visible')));
+
+    // Advance beam to just below the newly added chunk
+    setTimeout(() => {
+      let totalH = 24; // top padding of #fix-content
+      fixContent.querySelectorAll('.fix-chunk').forEach(d => { totalH += d.offsetHeight + parseFloat(d.style.marginBottom || 0); });
+      beam.style.top = totalH + 'px';
+    }, 60);
+
+    chunkIdx++;
+    setTimeout(revealNext, REVEAL_DELAY);
+  }
+
+  // Brief pause so beam renders at 0 before first chunk
+  setTimeout(revealNext, 80);
+}
+
+// ===== ASYNC JOB POLLING =====
+const WHY_JOB_KEY = 'why_pending_job';
+
+function savePendingJob(id, type, token) {
+  try { localStorage.setItem(WHY_JOB_KEY, JSON.stringify({ id, type, token: token || '', startedAt: Date.now() })); } catch (_) {}
+}
+function clearPendingJob() {
+  try { localStorage.removeItem(WHY_JOB_KEY); } catch (_) {}
+}
+
+function pollWhyJob(jobId, token, onComplete, onError) {
+  const started = Date.now();
+  const MAX_WAIT = 300000;
+  function check() {
+    if (Date.now() - started > MAX_WAIT) {
+      clearPendingJob();
+      onError('Timeout — please try again.');
+      return;
+    }
+    fetch('/api/why-job/' + jobId + (token ? '?token=' + encodeURIComponent(token) : ''))
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'complete') { clearPendingJob(); onComplete(data.result, data.jobType); return; }
+        if (data.status === 'error')    { clearPendingJob(); onError(data.error || 'Unknown error'); return; }
+        setTimeout(check, 2500);
+      })
+      .catch(() => setTimeout(check, 2500));
+  }
+  setTimeout(check, 2000);
+}
+
+// ===== MAIN ANALYSIS =====
+async function runAnalysis() {
+  const input = document.getElementById('content-input').value.trim();
+  if (!input || input.length < 50) {
+    showError('Please paste at least 50 characters of content to analyze.');
+    return;
+  }
+
+  hideError();
+  showLoading();
+
+  const loadInterval = animateLoadingSteps();
+
+  const prompt = `You are WHY., a friction diagnostic tool. Analyze the following ${contentType} and return a JSON object with this exact structure:
+
+{
+  "friction_score": <number 1-10, where 1 = low friction, 10 = very high friction>,
+  "verdict": "<short punchy sentence about why it fails, max 10 words>",
+  "summary": "<2-sentence diagnosis of the core structural problem>",
+  "friction_points": [
+    {
+      "title": "<friction point name, 3-6 words — use a recognized structural pattern name>",
+      "description": "<WHY this is a structural failure and what decision cost it places on the reader — NOT the fix, 1-2 sentences>",
+      "fix_preview": "<first 8 words of the corrected version of this specific element — stop at exactly 8 words, no ellipsis, no preamble>",
+      "impact": "<HIGH|MID|LOW>"
+    }
+  ],
+  "questions": [
+    {
+      "q": "<question the reader will inevitably ask>",
+      "a": "<name the structural failure category that causes this question to go unanswered — do NOT provide the corrective copy or rewrite>"
+    }
+  ]
+}
+
+Rules:
+- friction_points: exactly 5, ranked by impact (highest first)
+- questions: exactly 15, ordered by likelihood (most likely first)
+- Be brutally specific - reference actual phrases, structure, or decisions in the content
+- Never say "the document" - say what type it is
+- questions should sound like real humans asking them, not consultants
+- answers must identify the structural failure category only — never provide the corrective text, rewrite, or fix
+- fix_preview: EXACTLY 8 words from the corrected version — no more, no ellipsis, no explanation
+- friction_points titles must be unique - no two points can have the same title
+- Return ONLY valid JSON, no markdown, no backticks, no explanation
+${contentTypeContext ? `\nSpecific failure patterns to prioritize for this content type:\n${contentTypeContext}\n` : ''}
+Content to analyze:
+${input}`;
+
+  try {
+    const response = await fetch('/api/why-analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, contentType, rawContent: input, blinkEmail: sessionStorage.getItem('blink_email') || '' })
+    });
+
+    if (response.status === 429) {
+      clearInterval(loadInterval);
+      hideLoading();
+      resetLoadingSteps();
+      showLimitBlock();
+      return;
+    }
+
+    if (!response.ok) throw new Error('API error ' + response.status);
+
+    const data = await response.json();
+    if (data.error === 'limit_reached') {
+      clearInterval(loadInterval);
+      hideLoading();
+      resetLoadingSteps();
+      showLimitBlock();
+      return;
+    }
+    if (data.error) throw new Error(data.error);
+
+    savePendingJob(data.id, 'analyze', data.token || '');
+    const loadTitle = document.querySelector('.loading-title');
+    if (loadTitle) loadTitle.textContent = 'Analyzing... this can take up to 40 seconds';
+    pollWhyJob(
+      data.id,
+      data.token || '',
+      (result) => {
+        clearInterval(loadInterval);
+        outputData = result;
+        hideLoading();
+        renderOutput(result);
+      },
+      (errMsg) => {
+        clearInterval(loadInterval);
+        hideLoading();
+        resetLoadingSteps();
+        showError('Something went wrong. Please try again. (' + errMsg + ')');
+      }
+    );
+
+  } catch (err) {
+    clearInterval(loadInterval);
+    hideLoading();
+    resetLoadingSteps();
+    showError('Something went wrong. Please try again. (' + err.message + ')');
+  }
+}
+
+// ===== RENDER =====
+function renderOutput(data) {
+  // Assessment status: complete
+  const as = document.getElementById('assess-status');
+  if (as) { as.textContent = '// ASSESSMENT COMPLETE'; as.className = 'assess-status complete'; }
+
+  // Stat reveal block
+  showStatReveal(data);
+
+  // Dynamic section counts
+  document.getElementById('why-count').textContent = data.friction_points.length + ' friction points';
+  document.getElementById('q-count').textContent   = data.questions.length + ' predicted questions';
+
+  // Score
+  document.getElementById('score-num').textContent = data.friction_score;
+  document.getElementById('score-verdict').textContent = data.verdict;
+  document.getElementById('score-summary').textContent = data.summary;
+
+  // Anonymous visitors see the score and one insight first. The already
+  // computed detail stays client-side but is not revealed until the email
+  // unlock is completed.
+  if (!window.isWhyPro) {
+    const topPreview = data.friction_points?.[0];
+    const unlock = document.getElementById('whyUnlockBlock');
+    const insight = document.getElementById('whyPreviewInsight');
+    if (insight) insight.textContent = topPreview
+      ? `${topPreview.title}: ${topPreview.description}`
+      : (data.summary || 'The audit found a clear source of decision friction.');
+    if (unlock) unlock.style.display = 'block';
+    ['section-why', 'section-questions', 'hli-block', 'fix-section', 'next-step-block'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    document.getElementById('why-share-btn')?.style.setProperty('display', 'none');
+    document.getElementById('why-copy-btn')?.style.setProperty('display', 'none');
+    document.getElementById('fix-btn')?.style.setProperty('display', 'none');
+    const sfWrap = document.querySelector('.sf-btn-wrap');
+    if (sfWrap) sfWrap.style.display = 'none';
+  }
+
+  // Friction bar (score/10 * 100%)
+  setTimeout(() => {
+    document.getElementById('friction-bar').style.width = (data.friction_score / 10 * 100) + '%';
+  }, 300);
+
+  // Friction points
+  const whyList = document.getElementById('why-list');
+  whyList.innerHTML = '';
+  data.friction_points.forEach((point, i) => {
+    const impactClass = point.impact === 'HIGH' ? 'impact-high' : point.impact === 'MID' ? 'impact-mid' : 'impact-low';
+    const el = document.createElement('div');
+    el.className = 'friction-item';
+    const fixBlock = !window.isWhyPro && point.fix_preview
+      ? `<div class="fix-preview-locked">
+          <div class="fix-preview-label">Fix preview</div>
+          <div class="fix-preview-blurred">${point.fix_preview}…</div>
+          <div class="fix-preview-overlay"><span class="fix-lock-icon">🔒</span><span class="fix-lock-text">Unlock full fix with rebuild</span></div>
+        </div>`
+      : '';
+    el.innerHTML = `
+      <div class="friction-rank">0${i + 1}</div>
+      <div class="friction-content">
+        <div class="friction-title">${point.title}</div>
+        <div class="friction-desc">${point.description}</div>
+        ${fixBlock}
+      </div>
+      <div class="friction-impact">
+        <span class="impact-badge ${impactClass}">${point.impact}</span>
+      </div>
+    `;
+    whyList.appendChild(el);
+  });
+
+  // Questions
+  const qList = document.getElementById('q-list');
+  qList.innerHTML = '';
+  data.questions.forEach((q, i) => {
+    const question = typeof q === 'string' ? q : q.q;
+    const answer = typeof q === 'object' ? q.a : null;
+    const el = document.createElement('div');
+    el.className = 'question-item' + (answer ? ' has-answer' : '');
+    let answerHtml = '';
+    if (answer) {
+      if (window.isWhyPro) {
+        answerHtml = `<div class="q-answer">${answer}</div>`;
+      } else {
+        const preview = answer.split(' ').slice(0, 6).join(' ');
+        answerHtml = `<div class="q-answer q-answer-locked"><span class="q-a-preview">${preview}…</span><span class="q-a-lock">🔒 Full answer in rebuild</span></div>`;
+      }
+    }
+    el.innerHTML = `
+      <div class="q-num">${i + 1}</div>
+      <div class="q-body">
+        <div class="q-text">${question}</div>
+        ${answerHtml}
+      </div>
+    `;
+    qList.appendChild(el);
+  });
+
+  // Show output
+  const output = document.getElementById('output');
+  output.style.display = 'block';
+  requestAnimationFrame(() => {
+    setTimeout(() => output.classList.add('visible'), 50);
+  });
+
+  // Highest Leverage Insight
+  const hliBlock = document.getElementById('hli-block');
+  const hliText = document.getElementById('hli-text');
+  if (hliBlock && hliText && data.friction_points && data.friction_points.length > 0) {
+    const top = data.friction_points[0];
+    if (window.isWhyPro) {
+      const insightMap = {
+        'Feature-First Bias': 'Your content talks about <strong>what you built</strong>.<br>Not <strong>what changed for the reader</strong>.<br>Move the consequence before the feature - everything else is secondary.',
+        'Guest Language CTA': 'Your CTA belongs to <strong>your company</strong>, not your reader.<br>"Learn more" is your language. "See if this applies to me" is theirs.<br>Own the language of the decision, not the action.',
+        'Filing Label Subject': 'Your subject line announces a <strong>category</strong>, not a <strong>consequence</strong>.<br>The reader already knows what you do. They need to know what changes for them.',
+        'Consequence-After-Caveat': 'The most important line in your content is <strong>buried</strong>.<br>Move it to line one. The reader who needed to act already left.',
+        'Missing Visual Hierarchy': 'Everything looks equally important, so <strong>nothing is</strong>.<br>The reader\'s eye needs a path. Give it one.',
+        'Zero Social Proof': 'You are asking for trust <strong>before delivering proof</strong>.<br>One specific result, one real number, one named outcome - that is all you need.',
+      };
+      let insight = null;
+      for (const [key, val] of Object.entries(insightMap)) {
+        if (top.title && top.title.toLowerCase().includes(key.toLowerCase().split(' ')[0])) {
+          insight = val;
+          break;
+        }
+      }
+      if (!insight) {
+        insight = `Your content has friction where it needs flow.<br><strong>${top.title}</strong> is costing you readers before they reach the action.<br>Fix that first. Everything else is secondary.`;
+      }
+      hliText.innerHTML = insight;
+    } else {
+      // Free users: name the structural failure, not the fix
+      const highCount = data.friction_points.filter(p => p.impact === 'HIGH').length;
+      hliText.innerHTML = `<strong>${top.title}</strong> is the primary structural failure in this content.<br>${highCount} of ${data.friction_points.length} identified friction points are rated HIGH impact — each one is costing you reader decisions before they reach your CTA.`;
+    }
+    hliBlock.style.display = 'block';
+    setTimeout(() => {
+      hliBlock.style.opacity = '1';
+      hliBlock.style.transform = 'translateY(0)';
+    }, 400);
+  }
+
+  // Animate sections
+  setTimeout(() => document.getElementById('section-why').classList.add('visible'), 200);
+  setTimeout(() => document.getElementById('section-questions').classList.add('visible'), 400);
+  setTimeout(() => document.getElementById('output-actions').classList.add('visible'), 600);
+
+  // Animate friction items
+  document.querySelectorAll('.friction-item').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 300 + i * 80);
+  });
+
+  document.querySelectorAll('.question-item').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 500 + i * 50);
+  });
+
+  // Show next step block — upgrade CTA for free users, SF link for Pro
+  const nextStep = document.getElementById('next-step-block');
+  if (nextStep) {
+    if (!window.isWhyPro) {
+      const bugCount = data.friction_points.length;
+      nextStep.innerHTML = `<div class="next-step-inner">
+        <div class="next-step-check">!</div>
+        <div class="next-step-content">
+          <div class="next-step-label">Diagnosis complete — rebuild locked</div>
+          <div class="next-step-text">Your content scored <strong>${data.friction_score}/10</strong>. We found <strong>${bugCount} structural ${bugCount === 1 ? 'bug' : 'bugs'}</strong> costing you opens and clicks.<br><span style="font-size:13px;color:#AAAAAA;font-weight:400;">Unlock the full rebuild: rewritten subject line, corrected CTA, downloadable HTML — $149 one-time.</span></div>
+          <a href="https://strategic-flow-pro.replit.app/decision-friction-review/" class="next-step-cta" target="_blank">Unlock full rebuild →</a>
+        </div>
+      </div>`;
+    } else {
+      nextStep.innerHTML = `<div class="next-step-inner">
+        <div class="next-step-check">✓</div>
+        <div class="next-step-content">
+          <div class="next-step-label">You've found the friction.</div>
+          <div class="next-step-text">Now remove it.<br><span style="font-size:13px;color:#AAAAAA;font-weight:400;">Run it through Strategic Flow's full Architecture Audit.</span></div>
+          <a href="https://strategic-flow-audit.replit.app" class="next-step-cta" target="_blank">Continue to Strategic Flow →</a>
+        </div>
+      </div>`;
+    }
+    nextStep.style.display = 'block';
+    setTimeout(() => {
+      nextStep.style.opacity = '1';
+      nextStep.style.transform = 'translateY(0)';
+    }, 800);
+  }
+
+  // Scroll to output
+  setTimeout(() => {
+    output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+
+  if (!window.isWhyPro) {
+    document.getElementById('hli-block')?.style.setProperty('display', 'none');
+    document.getElementById('next-step-block')?.style.setProperty('display', 'none');
+    document.getElementById('fix-btn')?.style.setProperty('display', 'none');
+  }
+
+  // Auto-rebuild for Pro users
+  if (window.isWhyPro) {
+    setTimeout(() => runFix(), 3500);
+  }
+}
+
+async function unlockWhyFullReport() {
+  const email = (document.getElementById('whyUnlockEmail')?.value || '').trim();
+  const terms = document.getElementById('whyUnlockTerms');
+  const error = document.getElementById('whyUnlockError');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    error.textContent = 'Enter a valid email address.';
+    error.style.display = 'block';
+    return;
+  }
+  if (!terms?.checked) {
+    error.textContent = 'Please agree to the Terms of Use to continue.';
+    error.style.display = 'block';
+    return;
+  }
+  try {
+    const response = await fetch('/api/public-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source: 'strategic-flow-why' })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Could not save your email.');
+    window.whyUnlockedEmail = email;
+    document.getElementById('whyUnlockBlock').style.display = 'none';
+    ['section-why', 'section-questions', 'hli-block', 'next-step-block'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = '';
+    });
+    document.getElementById('why-share-btn')?.style.removeProperty('display');
+    document.getElementById('why-copy-btn')?.style.removeProperty('display');
+    const sfWrap = document.querySelector('.sf-btn-wrap');
+    if (sfWrap) sfWrap.style.removeProperty('display');
+    document.getElementById('fix-btn')?.style.removeProperty('display');
+  } catch (err) {
+    error.textContent = err.message || 'Could not unlock the full report. Please try again.';
+    error.style.display = 'block';
+  }
+}
+
+// ===== UI HELPERS =====
+function showLoading() {
+  document.getElementById('input-wrap').style.display = 'none';
+  document.getElementById('output').style.display = 'none';
+  document.getElementById('output').classList.remove('visible');
+  document.getElementById('loading').style.display = 'block';
+  const as = document.getElementById('assess-status');
+  if (as) { as.textContent = '// RUNNING ASSESSMENT...'; as.className = 'assess-status running'; }
+  startScanTags();
+  startProgress();
+}
+
+function hideLoading() {
+  document.getElementById('loading').style.display = 'none';
+  resetLoadingSteps();
+  stopScanTags();
+  stopProgress();
+}
+
+function showLimitBlock() {
+  hideLoading();
+  document.getElementById('input-wrap').style.display = 'none';
+  const existing = document.getElementById('limit-block');
+  if (existing) return;
+  const block = document.createElement('div');
+  block.id = 'limit-block';
+  block.innerHTML = `
+    <div style="border:1px solid #2A2A2A;border-left:4px solid #FF4422;background:#141414;padding:32px;text-align:center;margin-top:24px;">
+      <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#FF4422;margin-bottom:12px;">3 / 3 DIAGNOSES USED</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#FFFFFF;margin-bottom:8px;">You've used your 3 free diagnostics.</div>
+      <div style="font-size:14px;color:#AAAAAA;margin-bottom:24px;line-height:1.6;">WHY Pro gives you unlimited analyses, the full rebuilt version every time, and the complete friction breakdown.</div>
+      <a href="https://buy.stripe.com/9B67sL8A0d7HdBHdNF7wA0d" style="display:inline-block;background:#FF4422;color:#FFFFFF;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;padding:14px 32px;text-decoration:none;letter-spacing:0.02em;">Get WHY Pro — $19/month</a>
+      <div style="margin-top:12px;">
+        <a href="/why/login" style="font-family:'Space Mono',monospace;font-size:11px;color:#666666;text-decoration:underline;letter-spacing:0.08em;">Already a Pro subscriber? Log in</a>
+      </div>
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid #2A2A2A;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#555555;margin-bottom:10px;">Or start smaller</div>
+        <a href="https://strategicflowtech.gumroad.com/l/koczgh" style="display:inline-block;background:transparent;color:#DDDDDD;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;padding:12px 24px;text-decoration:none;letter-spacing:0.02em;border:1px solid #333333;">SaaS Email Architecture Pack — $47 →</a>
+        <div style="font-family:'Space Mono',monospace;font-size:10px;color:#555555;margin-top:8px;">5 interactive tools. 59 teardowns. Lifetime access. No subscription.</div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid #2A2A2A;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#555555;margin-bottom:10px;">Or start free</div>
+        <a href="https://strategic-flow-audit.replit.app/subscribe" style="display:inline-block;background:transparent;color:#AAAAAA;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;padding:12px 24px;text-decoration:none;letter-spacing:0.02em;border:1px solid #2A2A2A;">Get the free Email Audit Checklist -></a>
+         <div style="font-family:'Space Mono',monospace;font-size:10px;color:#555555;margin-top:8px;">The diagnostic checklist used on every Strategic Flow teardown. Free.</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('app').appendChild(block);
+}
+
+function showError(msg) {
+  const box = document.getElementById('error-box');
+  box.textContent = msg;
+  box.style.display = 'block';
+  document.getElementById('input-wrap').style.display = 'block';
+}
+
+function hideError() {
+  document.getElementById('error-box').style.display = 'none';
+}
+
+function resetApp() {
+  document.getElementById('output').style.display = 'none';
+  document.getElementById('output').classList.remove('visible');
+  document.getElementById('input-wrap').style.display = 'block';
+  document.getElementById('content-input').value = '';
+  document.getElementById('char-count').textContent = '0 characters';
+  outputData = null;
+
+  const nextStep = document.getElementById('next-step-block');
+  if (nextStep) { nextStep.style.display = 'none'; nextStep.style.opacity = '0'; }
+  const hliBlock = document.getElementById('hli-block');
+  if (hliBlock) { hliBlock.style.display = 'none'; hliBlock.style.opacity = '0'; }
+
+  // Reset friction bar
+  document.getElementById('friction-bar').style.width = '0';
+
+  // Reset status header and stat reveal
+  const as = document.getElementById('assess-status');
+  if (as) { as.className = 'assess-status'; as.textContent = ''; }
+  const sr = document.getElementById('stat-reveal');
+  if (sr) { sr.style.display = 'none'; sr.innerHTML = ''; }
+
+  document.getElementById('input-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ===== FIX THIS =====
+async function runFix() {
+  if (!outputData) return;
+  if (!window.isWhyPro && !window.whyUnlockedEmail) {
+    document.getElementById('whyUnlockBlock')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  if (rebuildInFlight) return;
+  rebuildInFlight = true;
+
+  const input = document.getElementById('content-input').value.trim();
+  const fixBtn = document.getElementById('fix-btn');
+  const fixSection = document.getElementById('fix-section');
+  const fixLoading = document.getElementById('fix-loading');
+  const fixContent = document.getElementById('fix-content');
+
+  fixBtn.disabled = true;
+  fixBtn.textContent = 'Rebuilding...';
+
+  fixSection.style.display = 'block';
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      fixSection.style.opacity = '1';
+      fixSection.style.transform = 'translateY(0)';
+    }, 50);
+  });
+  resetFixSteps();
+  fixLoading.style.display = 'block';
+  fixContent.innerHTML = '';
+  const fixStepInterval = animateFixSteps();
+
+  const frictionSummary = outputData.friction_points.map((p, i) =>
+    `${i+1}. [${p.impact}] ${p.title}: ${p.description}`
+  ).join('\n');
+
+  const unansweredQs = outputData.questions
+    .filter(q => typeof q === 'object' && q.a && q.a.toLowerCase().includes('not'))
+    .slice(0, 5)
+    .map(q => `- ${q.q}`)
+    .join('\n');
+
+  const fixPrompt = `You are WHY., a content rebuilder. The following ${contentType} has been diagnosed with these friction points:
+
+${frictionSummary}
+
+These questions were left unanswered:
+${unansweredQs || '(see friction points above)'}
+
+Rewrite the ${contentType} from scratch to fix every friction point. Rules:
+- Keep the author's core argument and data intact
+- Lead with consequence, not feature or topic
+- Make the CTA specific about what the reader gets
+- Answer the top unanswered questions inside the content itself
+- Match the original tone and length
+- Match the original word count as closely as possible
+- Output ONLY the rewritten content, nothing else - no preamble, no labels, no explanation
+
+Original content:
+${input}`;
+
+  try {
+    const response = await fetch('/api/why-rebuild', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: fixPrompt, contentType, rawContent: input, frictionScore: outputData.friction_score ?? null })
+    });
+
+    if (response.status === 429) {
+      let errCode = 'limit_reached';
+      try { const d = await response.json(); errCode = d.error || errCode; } catch (_) {}
+      clearInterval(fixStepInterval);
+      resetFixSteps();
+      fixLoading.style.display = 'none';
+      fixBtn.textContent = 'Rebuild with WHY.';
+      fixBtn.disabled = false;
+      rebuildInFlight = false;
+      if (errCode === 'daily_limit_reached') {
+        fixSection.style.display = 'block';
+        fixContent.innerHTML = `<div style="color:var(--red);font-family:'Space Mono',monospace;font-size:12px;padding:8px 0;letter-spacing:0.04em;">You've used all 10 rebuilds for today. Resets at midnight.</div>`;
+      } else if (errCode === 'monthly_limit_reached') {
+        fixSection.style.display = 'block';
+        fixContent.innerHTML = `<div style="color:var(--red);font-family:'Space Mono',monospace;font-size:12px;padding:8px 0 4px;letter-spacing:0.04em;">You've reached this month's 200 rebuild limit.</div><button onclick="buyRebuildCredits()" style="margin-top:8px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--red);border:1px solid rgba(255,68,34,0.6);background:transparent;padding:6px 14px;cursor:pointer;">Buy 20 more for $9 →</button>`;
+      } else {
+        showLimitBlock();
+      }
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data.error === 'limit_reached') {
+      clearInterval(fixStepInterval);
+      resetFixSteps();
+      fixLoading.style.display = 'none';
+      fixBtn.textContent = 'Rebuild with WHY.';
+      fixBtn.disabled = false;
+      rebuildInFlight = false;
+      showLimitBlock();
+      return;
+    }
+    if (data.error) throw new Error(data.error);
+
+    savePendingJob(data.id, 'rebuild', data.token || '');
+    fixBtn.textContent = 'Rebuilding... (up to 40s)';
+    pollWhyJob(
+      data.id,
+      data.token || '',
+      (result) => {
+        clearInterval(fixStepInterval);
+        resetFixSteps();
+        fixLoading.style.display = 'none';
+        fixBtn.textContent = 'Rebuild with WHY.';
+        fixBtn.disabled = false;
+        rebuildInFlight = false;
+        revealFixContent(result.text || '');
+        fixSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      },
+      (errMsg) => {
+        clearInterval(fixStepInterval);
+        resetFixSteps();
+        fixLoading.style.display = 'none';
+        fixBtn.textContent = 'Rebuild with WHY.';
+        fixBtn.disabled = false;
+        rebuildInFlight = false;
+        fixContent.textContent = 'Rebuild failed: ' + errMsg;
+      }
+    );
+
+  } catch (err) {
+    clearInterval(fixStepInterval);
+    resetFixSteps();
+    fixLoading.style.display = 'none';
+    fixBtn.textContent = 'Rebuild with WHY.';
+    fixBtn.disabled = false;
+    rebuildInFlight = false;
+    fixContent.textContent = 'Rebuild failed: ' + err.message;
+  }
+}
+
+async function buyRebuildCredits() {
+  try {
+    const resp = await fetch('/api/why-credits-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!resp.ok) throw new Error('checkout_failed');
+    const { url } = await resp.json();
+    if (url) window.location.href = url;
+  } catch (err) {
+    console.error('[buyRebuildCredits]', err.message);
+  }
+}
+
+function goToSF() {
+  window.open('https://strategic-flow-audit.replit.app', '_blank');
+}
+
+function copyFix() {
+  const text = document.getElementById('fix-content').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('#fix-section .action-btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+
+function shareDiagnosis() {
+  if (!outputData) return;
+
+  const hliText = document.getElementById('hli-text');
+  const hliContent = hliText ? hliText.innerText.replace(/\n/g, ' ') : '';
+
+  const score = outputData.score || '?';
+  const diagnosis = outputData.diagnosis || '';
+  const contentTypeLabel = contentType || 'Content';
+
+  const frictionLines = (outputData.friction_points || []).map((p, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    return `${num}. [${p.impact}] ${p.title}`;
+  }).join('\n');
+
+  const questionLines = (outputData.questions || []).slice(0, 5).map((q, i) => {
+    const question = typeof q === 'string' ? q : q.q;
+    return `${i + 1}. ${question}`;
+  }).join('\n');
+
+  const shareText = `WHY.(TM) Diagnosis - ${contentTypeLabel}
+Friction Score: ${score}/10
+
+${hliContent ? 'If you remember one thing:\n' + hliContent + '\n\n' : ''}Diagnosis:
+${diagnosis}
+
+Top friction points:
+${frictionLines}
+
+Top questions your reader will ask:
+${questionLines}
+
+---
+Run your own diagnosis: strategic-flow-audit.replit.app/why.html
+Powered by the Decision Friction Model(TM) . A Strategic Flow product`;
+
+  navigator.clipboard.writeText(shareText).then(() => {
+    const btn = document.querySelector('.share-btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied - paste anywhere';
+    btn.style.borderColor = 'var(--red)';
+    btn.style.color = 'var(--red)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 3000);
+  });
+}
+
+function copyResults() {
+  if (!outputData) return;
+  const text = `WHY. Friction Diagnostic\n\nFriction Score: ${outputData.friction_score}/10\n${outputData.verdict}\n\n${outputData.summary}\n\nFRICTION POINTS:\n${outputData.friction_points.map((p, i) => `${i+1}. [${p.impact}] ${p.title}\n   ${p.description}`).join('\n')}\n\nPREDICTED QUESTIONS:\n${outputData.questions.map((q, i) => {
+    const question = typeof q === 'string' ? q : q.q;
+    const answer = typeof q === 'object' ? `\n   -> ${q.a}` : '';
+    return `${i+1}. ${question}${answer}`;
+  }).join('\n')}`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.action-btn:last-child');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+</script>
+<footer style="text-align:center;padding:24px 20px;margin-top:40px;border-top:1px solid rgba(255,255,255,0.08);font-size:15px;color:#1D9E75;">
+  © 2026 Strategic Flow · By continuing on this page you agree to our
+  <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank" style="color:#1D9E75;text-decoration:underline;">Terms of Service</a>
+</footer>
+</body>
+</html>

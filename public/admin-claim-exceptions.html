@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claim email exceptions · ToolIndex Admin</title>
+  <style>
+    :root { color-scheme: dark; --bg:#07111f; --panel:#0d1c2f; --line:#1b3857; --text:#e7f2ff; --muted:#91a9c2; --accent:#00d4c8; --danger:#ff7d8a; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:32px 18px 56px; background:var(--bg); color:var(--text); font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
+    main { max-width:1080px; margin:auto; }
+    h1 { margin:0 0 8px; font-size:28px; }
+    h2 { margin:0 0 16px; font-size:18px; }
+    p { color:var(--muted); }
+    .panel { margin-top:24px; padding:22px; background:var(--panel); border:1px solid var(--line); border-radius:12px; }
+    .form-grid { display:grid; grid-template-columns:140px minmax(180px,1fr) 220px; gap:12px; align-items:end; }
+    label { display:block; color:var(--muted); font-size:12px; margin-bottom:5px; }
+    input { width:100%; padding:10px 11px; color:var(--text); background:#081625; border:1px solid var(--line); border-radius:7px; }
+    button { border:0; border-radius:7px; padding:10px 14px; font-weight:700; cursor:pointer; color:#041018; background:var(--accent); }
+    button.danger { color:#fff; background:#a83d50; padding:7px 10px; }
+    button:disabled { opacity:.55; cursor:wait; }
+    .message { min-height:24px; margin-top:12px; color:var(--muted); }
+    .message.error { color:var(--danger); }
+    .table-wrap { overflow:auto; }
+    table { width:100%; border-collapse:collapse; min-width:760px; }
+    th, td { padding:12px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:12px; font-weight:600; }
+    td small { display:block; color:var(--muted); margin-top:3px; }
+    a { color:var(--accent); }
+    .empty { color:var(--muted); padding:16px 0; }
+    @media (max-width:760px) {
+      body { padding:22px 12px 40px; }
+      .form-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Claim email exceptions</h1>
+    <p>Manage approved listing/email pairs whose address does not match the product domain. Every claim still requires the normal OTP.</p>
+
+    <section class="panel">
+      <h2>Add an exception</h2>
+      <form id="add-form">
+        <div class="form-grid">
+          <div>
+            <label for="listing-id">Listing ID</label>
+            <input id="listing-id" name="listing_id" type="number" min="1" required>
+          </div>
+          <div>
+            <label for="owner-email">Approved owner email</label>
+            <input id="owner-email" name="owner_email" type="email" autocomplete="off" required>
+          </div>
+          <div>
+            <label for="reason">Reason</label>
+            <input id="reason" name="reason" value="Approved by admin" maxlength="500" required>
+          </div>
+          <div><button type="submit">Add exception</button></div>
+        </div>
+      </form>
+      <div id="message" class="message" role="status"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Active exceptions</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Listing</th><th>Owner email</th><th>Reason</th><th>Created</th><th></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div id="empty" class="empty" hidden>No approved exceptions.</div>
+      </div>
+    </section>
+  </main>
+  <script>
+    let csrfToken = '';
+    const message = document.getElementById('message');
+    const rows = document.getElementById('rows');
+    const empty = document.getElementById('empty');
+
+    function esc(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+      }[char]));
+    }
+    function setMessage(text, isError = false) {
+      message.textContent = text;
+      message.className = `message${isError ? ' error' : ''}`;
+    }
+    async function getCsrf() {
+      if (csrfToken) return csrfToken;
+      const response = await fetch('/auth/csrf', { credentials:'same-origin' });
+      if (!response.ok) throw new Error('Could not load CSRF token');
+      csrfToken = (await response.json()).token;
+      return csrfToken;
+    }
+    async function loadExceptions() {
+      const response = await fetch('/admin/directory/claim-email-exceptions', { credentials:'same-origin' });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Could not load exceptions');
+      rows.innerHTML = '';
+      empty.hidden = data.exceptions.length !== 0;
+      for (const item of data.exceptions) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${esc(item.listing_name)}</strong><small>#${esc(item.listing_id)} · ${esc(item.listing_status)}</small>
+             ${item.listing_url ? `<small><a href="${esc(item.listing_url)}" target="_blank" rel="noopener">${esc(item.listing_url)}</a></small>` : ''}</td>
+          <td>${esc(item.owner_email)}</td>
+          <td>${esc(item.reason)}</td>
+          <td>${esc(new Date(item.created_at).toLocaleString())}<small>${esc(item.created_by || '')}</small></td>
+          <td><button class="danger" data-id="${esc(item.id)}" type="button">Revoke</button></td>`;
+        rows.appendChild(tr);
+      }
+    }
+    document.getElementById('add-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = event.submitter;
+      button.disabled = true;
+      setMessage('Saving…');
+      try {
+        const token = await getCsrf();
+        const body = Object.fromEntries(new FormData(event.currentTarget).entries());
+        const response = await fetch('/admin/directory/claim-email-exceptions', {
+          method:'POST', credentials:'same-origin',
+          headers:{'Content-Type':'application/json','X-CSRF-Token':token},
+          body:JSON.stringify(body)
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Could not add exception');
+        event.currentTarget.reset();
+        document.getElementById('reason').value = 'Approved by admin';
+        setMessage('Exception added.');
+        await loadExceptions();
+      } catch (error) {
+        setMessage(error.message, true);
+      } finally {
+        button.disabled = false;
+      }
+    });
+    rows.addEventListener('click', async event => {
+      const button = event.target.closest('button[data-id]');
+      if (!button || !confirm('Revoke this claim email exception?')) return;
+      button.disabled = true;
+      setMessage('Revoking…');
+      try {
+        const token = await getCsrf();
+        const response = await fetch('/admin/directory/claim-email-exceptions/revoke', {
+          method:'POST', credentials:'same-origin',
+          headers:{'Content-Type':'application/json','X-CSRF-Token':token},
+          body:JSON.stringify({id:Number(button.dataset.id)})
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Could not revoke exception');
+        setMessage('Exception revoked.');
+        await loadExceptions();
+      } catch (error) {
+        button.disabled = false;
+        setMessage(error.message, true);
+      }
+    });
+    loadExceptions().catch(error => setMessage(error.message, true));
+  </script>
+</body>
+</html>

@@ -1,0 +1,2606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow Architecture — Free Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── DESIGN TOKENS ─────────────────────────────────── */
+  :root {
+    --void:         #060a10;
+    --panel:        #0d141c;
+    --teal:         #1d9e75;
+    --scan-cyan:    #4EE1FF;
+    --bug-red:      #E5484D;
+    --text-primary: #EDEFF2;
+    --text-dim:     #7C8894;
+    --border:       rgba(255,255,255,0.08);
+    --card:         rgba(255,255,255,0.04);
+    /* Compatibility aliases — keep JS-generated HTML working */
+    --black:        #060a10;
+    --white:        #EDEFF2;
+    --signal:       #1d9e75;
+    --signal-dim:   #158f65;
+    --noise:        #E5484D;
+    --mid:          #7C8894;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text-primary);
+    font-family: 'Figtree', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ───────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(6,10,16,0.93);
+    backdrop-filter: blur(16px);
+  }
+  .nav-logo { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--text-primary); }
+  .nav-logo span { color: var(--scan-cyan); }
+  .nav-badge {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; color: var(--scan-cyan);
+    border: 1px solid rgba(78,225,255,0.25); padding: 4px 10px; text-transform: uppercase;
+  }
+
+  /* ── LAYOUT ────────────────────────────────────────── */
+  main { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 100px 24px 80px; }
+
+  .panel { display: none; animation: fadeUp 0.4s ease forwards; }
+  .panel.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.16em; color: var(--scan-cyan);
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .panel-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 48px); line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 12px;
+  }
+  .panel-title em { font-style: italic; color: var(--scan-cyan); }
+  .panel-sub { font-size: 15px; color: #BFD0DC; margin-bottom: 36px; max-width: 560px; line-height: 1.7; }
+
+  /* ── FORM (non-editor fields) ──────────────────────── */
+  .form-group { margin-bottom: 20px; }
+
+  label {
+    display: block; font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.15em; color: #FFFFFF; text-transform: uppercase; margin-bottom: 8px;
+  }
+
+  input[type="email"], input[type="text"], input[type="number"] {
+    width: 100%; background: var(--panel); border: 1px solid var(--border);
+    color: var(--text-primary); font-family: 'DM Mono', monospace;
+    font-size: 13px; padding: 12px 14px; outline: none;
+    transition: border-color 0.2s; -webkit-appearance: none;
+  }
+  input[type="email"]:focus, input[type="text"]:focus, input[type="number"]:focus {
+    border-color: rgba(78,225,255,0.55);
+    box-shadow: 0 0 0 1px rgba(78,225,255,0.10), 0 0 14px rgba(78,225,255,0.08);
+  }
+  input[type="email"]::placeholder,
+  input[type="text"]::placeholder,
+  input[type="number"]::placeholder { color: #8C97A2; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ── BUTTONS ───────────────────────────────────────── */
+  .btn {
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    letter-spacing: 0.08em; padding: 13px 28px;
+    cursor: pointer; border: none; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary { background: var(--teal); color: #fff; font-weight: 600; }
+  .btn-primary:hover { background: #158f65; }
+  .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  /* ── EDITOR TABS ───────────────────────────────────── */
+  .editor-section { margin-bottom: 20px; }
+  .editor-section > label { margin-bottom: 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+
+  .editor-tabs {
+    display: flex; border-bottom: 1px solid var(--border); margin-bottom: 0;
+  }
+  .etab {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    color: var(--text-dim); background: none; border: none;
+    border-bottom: 2px solid transparent; padding: 10px 16px 9px;
+    cursor: pointer; transition: color 0.2s, border-color 0.2s; margin-bottom: -1px;
+  }
+  .etab.active { color: var(--scan-cyan); border-bottom-color: var(--scan-cyan); }
+  .etab:hover:not(.active) { color: var(--text-primary); }
+
+  /* ── CONTENT TYPE SELECTOR ────────────────────────── */
+  .ctype-label {
+    display: block; font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.15em; color: #FFFFFF; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .ctype-tabs {
+    display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 0;
+  }
+  .ctab {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    color: var(--text-dim); background: none;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 7px 16px;
+    cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+  .ctab.active {
+    color: var(--scan-cyan);
+    border-color: rgba(78,225,255,0.4);
+    background: rgba(78,225,255,0.08);
+  }
+  .ctab:hover:not(.active) { color: var(--text-primary); border-color: rgba(255,255,255,0.18); }
+
+  /* ── CODE EDITOR WINDOW ────────────────────────────── */
+  .editor-window {
+    border: 1px solid var(--border); border-top: none;
+    background: var(--panel); overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(78,225,255,0.06), 0 0 22px rgba(78,225,255,0.05);
+    transition: box-shadow 0.35s ease;
+  }
+  .editor-window:focus-within {
+    box-shadow: 0 0 0 1px rgba(78,225,255,0.22), 0 0 30px rgba(78,225,255,0.11);
+  }
+  .editor-header {
+    display: flex; align-items: center; gap: 8px; padding: 9px 14px;
+    background: rgba(255,255,255,0.025); border-bottom: 1px solid var(--border);
+  }
+  .editor-dots { display: flex; gap: 6px; flex-shrink: 0; }
+  .editor-dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot-red    { background: #FF5F57; }
+  .dot-yellow { background: #FEBC2E; }
+  .dot-green  { background: #28C840; }
+  .editor-fname {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-dim); opacity: 0.6; margin-left: 6px;
+  }
+
+  .editor-body-wrap { display: flex; }
+  .line-nums {
+    padding: 14px 0; min-width: 42px; flex-shrink: 0;
+    background: rgba(255,255,255,0.015);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: flex-end;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: rgba(124,136,148,0.35); user-select: none;
+  }
+  .line-num { padding: 0 10px; line-height: 1.86; }
+
+  .editor-textarea {
+    width: 100%; background: transparent; border: none;
+    color: var(--text-primary); font-family: 'DM Mono', monospace;
+    font-size: 13px; padding: 14px 14px; outline: none;
+    resize: vertical; min-height: 180px; line-height: 1.86;
+    tab-size: 2;
+  }
+  .editor-textarea::placeholder { color: #8C97A2; }
+
+  /* ── UPLOAD TAB ────────────────────────────────────── */
+  .paste-pane { display: block; }
+  .paste-pane.hidden { display: none; }
+  .upload-pane { display: none; }
+  .upload-pane.active { display: block; }
+
+  .dropzone {
+    display: block;
+    border: 1px dashed rgba(78,225,255,0.18);
+    border-top: none;
+    background: rgba(78,225,255,0.02);
+    padding: 44px 24px; text-align: center;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    position: relative; outline: none;
+  }
+  .dropzone:hover, .dropzone:focus, .dropzone.drag-over {
+    border-color: rgba(78,225,255,0.45);
+    background: rgba(78,225,255,0.05);
+  }
+  .dropzone-file-input {
+    position: absolute; inset: 0; opacity: 0;
+    cursor: pointer; width: 100%; height: 100%; font-size: 0;
+  }
+  .dropzone-icon { font-size: 24px; margin-bottom: 14px; display: block; }
+  .dropzone-text {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    color: var(--text-dim); line-height: 1.8;
+  }
+  .dropzone-hint {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-dim); opacity: 0.4; margin-top: 12px;
+  }
+
+  .file-loaded {
+    display: none; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: rgba(29,158,117,0.07);
+    border: 1px solid rgba(29,158,117,0.18); border-top: none;
+  }
+  .file-loaded.show { display: flex; }
+  .file-loaded-name {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    color: var(--teal); flex: 1; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .file-clear {
+    background: none; border: none; color: var(--text-dim);
+    font-size: 18px; cursor: pointer; padding: 0 2px;
+    line-height: 1; transition: color 0.2s; flex-shrink: 0;
+  }
+  .file-clear:hover { color: var(--bug-red); }
+  .file-error {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    color: var(--bug-red); padding: 8px 0; display: none;
+  }
+
+  /* ── SCAN ANIMATION (Panel 2) ──────────────────────── */
+  .scan-layout {
+    display: grid; grid-template-columns: 1fr 220px;
+    gap: 20px; align-items: start; margin-top: 24px;
+  }
+
+  .scan-editor-wrap {
+    border: 1px solid var(--border); background: var(--panel);
+    overflow: hidden; position: relative;
+  }
+  .scan-editor-header {
+    display: flex; align-items: center; gap: 8px; padding: 9px 14px;
+    background: rgba(255,255,255,0.025); border-bottom: 1px solid var(--border);
+  }
+  .scan-status-badge {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--scan-cyan); border: 1px solid rgba(78,225,255,0.25);
+    padding: 2px 8px; margin-left: auto;
+    animation: scanPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes scanPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  .scan-content-area {
+    position: relative; min-height: 230px; max-height: 310px; overflow: hidden;
+  }
+  .scan-lines-display { display: flex; }
+  .scan-line-nums-col {
+    display: flex; flex-direction: column;
+    padding: 14px 10px; min-width: 38px;
+    background: rgba(255,255,255,0.015);
+    border-right: 1px solid var(--border);
+    align-items: flex-end; flex-shrink: 0;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: rgba(124,136,148,0.28); user-select: none;
+    line-height: 1.86;
+  }
+  .scan-lines-col {
+    flex: 1; min-width: 0; padding: 14px 14px;
+    font-family: 'DM Mono', monospace; font-size: 12px;
+  }
+  .scan-line {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; min-height: 1.86em;
+  }
+  .scan-line-txt {
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    flex: 1; color: rgba(237,239,242,0.42); transition: color 0.4s;
+  }
+  .scan-line.passed .scan-line-txt { color: rgba(237,239,242,0.15); }
+  .scan-line.active-line .scan-line-txt { color: rgba(237,239,242,0.7); }
+
+  .scan-bug-tag {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 0.1em; color: var(--bug-red);
+    border: 1px solid rgba(229,72,77,0.35);
+    background: rgba(229,72,77,0.07);
+    padding: 1px 7px; white-space: nowrap; flex-shrink: 0;
+    opacity: 0; transform: translateX(8px) scale(0.88);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .scan-bug-tag.show { opacity: 1; transform: translateX(0) scale(1); }
+
+  /* The scanning beam */
+  .scan-beam {
+    position: absolute; left: 0; right: 0; height: 1px;
+    background: var(--scan-cyan);
+    box-shadow: 0 0 10px var(--scan-cyan),
+                0 -8px 20px rgba(78,225,255,0.12),
+                0  8px 20px rgba(78,225,255,0.12);
+    pointer-events: none; top: 0; z-index: 2;
+    transition: top 0.52s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Readout */
+  .scan-readout { }
+  .scan-readout-label {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-dim); padding-bottom: 12px;
+    border-bottom: 1px solid var(--border); margin-bottom: 18px;
+  }
+  .scan-counter {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    color: var(--scan-cyan); margin-bottom: 20px;
+    line-height: 1.5; min-height: 2.4em;
+  }
+  .scan-check-list { display: flex; flex-direction: column; gap: 9px; }
+  .scan-check-item {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.04em; color: var(--text-dim);
+    transition: color 0.3s; line-height: 1.4;
+  }
+  .scan-check-item.active { color: var(--scan-cyan); }
+  .scan-check-item.done   { color: var(--teal); }
+  .scan-check-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* Error state in scan panel */
+  .scan-error {
+    display: none; margin-top: 20px;
+    border: 1px solid rgba(229,72,77,0.2);
+    background: rgba(229,72,77,0.04);
+    padding: 20px 22px;
+  }
+  .scan-error.show { display: block; }
+  .scan-error-msg {
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    color: var(--bug-red); margin-bottom: 16px; line-height: 1.6;
+  }
+
+  /* ── RESULTS PANEL ──────────────────────────────────── */
+  .score-row {
+    display: flex; align-items: stretch;
+    border: 1px solid var(--border); margin-bottom: 32px;
+  }
+  .score-cell { background: var(--panel); padding: 24px; flex: 1; }
+  .score-sep-cell {
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 12px; background: var(--panel);
+    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+  }
+  .score-sep-arrow { font-size: 18px; color: var(--teal); line-height: 1; }
+  .score-divider { width: 1px; background: var(--border); flex-shrink: 0; }
+  .score-cell-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; color: var(--text-dim);
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .score-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px; line-height: 1; margin-bottom: 4px;
+  }
+  .score-num.low  { color: var(--bug-red); }
+  .score-num.high { color: var(--teal); }
+  .score-note { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  .section-title {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.14em; color: var(--scan-cyan);
+    text-transform: uppercase; margin-bottom: 16px; margin-top: 32px;
+  }
+
+  .bug-list { border: 1px solid var(--border); margin-bottom: 32px; }
+  .bug-item {
+    display: flex; gap: 16px; padding: 16px 20px;
+    border-bottom: 1px solid var(--border); align-items: flex-start;
+  }
+  .bug-item:last-child { border-bottom: none; }
+  .bug-icon { font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+  .bug-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .bug-desc  { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+
+  .rebuild-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin-bottom: 32px;
+  }
+  .rebuild-cell { background: var(--panel); padding: 24px; }
+  .rebuild-tag {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+  }
+  .rebuild-tag.before { color: var(--bug-red); }
+  .rebuild-tag.after  { color: var(--teal); }
+  .rebuild-tag::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .rebuild-text { font-size: 13px; line-height: 1.7; color: var(--text-primary); }
+
+  .variant-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .variant-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px; border: 1px solid var(--border);
+    background: rgba(29,158,117,0.04);
+  }
+  .variant-tag  { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--teal); letter-spacing: 0.1em; flex-shrink: 0; padding-top: 1px; }
+  .variant-text { font-size: 13px; color: var(--text-primary); line-height: 1.5; flex: 1; }
+  .variant-rate { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--teal); flex-shrink: 0; }
+
+  .roi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin-bottom: 32px;
+  }
+  .roi-cell { background: var(--panel); padding: 20px 24px; }
+  .roi-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; }
+  .roi-value { font-family: 'DM Serif Display', serif; font-size: 32px; line-height: 1; margin-bottom: 4px; }
+  .roi-value.positive { color: var(--teal); }
+  .roi-value.negative { color: var(--bug-red); }
+  .roi-note { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+
+  .locked-section {
+    border: 1px solid var(--border); padding: 32px;
+    margin-bottom: 32px; position: relative;
+    background: rgba(78,225,255,0.02);
+  }
+  .locked-title {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.14em; color: var(--text-primary);
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .locked-overlay { text-align: center; }
+  .locked-msg { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-dim); margin-bottom: 16px; }
+
+  .cta-block {
+    border: 1px solid rgba(29,158,117,0.25);
+    background: rgba(29,158,117,0.04);
+    padding: 40px; text-align: center; margin-top: 40px;
+  }
+  .cta-block-title { font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1.2; margin-bottom: 12px; }
+  .cta-block-title em { font-style: italic; color: var(--teal); }
+  .cta-block-sub { font-size: 14px; color: var(--text-dim); line-height: 1.7; margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .cta-block-price { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-dim); margin-top: 16px; }
+  .cta-block-price strong { color: var(--text-primary); }
+
+  /* ── INCLUDED SECTION ──────────────────────────────── */
+  .included-section { margin-top: 64px; padding-top: 48px; border-top: 1px solid var(--border); }
+  .included-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin: 24px 0 40px;
+  }
+  .included-card { background: var(--panel); padding: 28px; }
+  .included-card-num {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 0.12em; color: var(--scan-cyan);
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .tool-label-row { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+  .tool-arch-badge {
+    font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #f59e0b; border: 1px solid rgba(245,158,11,0.35);
+    padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+  }
+  .included-card-name { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .included-card-desc { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-bottom: 16px; }
+  .included-preview {
+    border: 1px solid var(--border); background: rgba(255,255,255,0.02);
+    padding: 14px 16px; font-family: 'DM Mono', monospace; font-size: 11px;
+  }
+  .preview-row {
+    display: flex; gap: 10px; padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: flex-start; line-height: 1.5;
+  }
+  .preview-row:last-child { border-bottom: none; }
+  .preview-row.col { flex-direction: column; gap: 3px; }
+  .preview-label { color: var(--scan-cyan); flex-shrink: 0; min-width: 32px; }
+  .preview-val    { color: var(--text-primary); flex: 1; }
+  .preview-note   { color: var(--text-dim); font-size: 10px; }
+  .preview-winner { color: #4ade80; font-size: 10px; letter-spacing: 0.06em; flex-shrink: 0; }
+  .preview-fix    { color: var(--bug-red); font-size: 10px; letter-spacing: 0.06em; flex-shrink: 0; }
+
+  .included-callout {
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    color: var(--text-primary); line-height: 1.8;
+    border-left: 2px solid var(--scan-cyan);
+    padding: 16px 20px; margin-bottom: 32px;
+    background: rgba(78,225,255,0.03);
+  }
+
+  /* ── COOKIE BANNER ─────────────────────────────────── */
+  #cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:rgba(6,10,16,0.97);border-top:1px solid var(--border);padding:18px 48px;display:none;}
+  #cookie-banner.visible{display:flex;}
+  .cookie-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;width:100%;flex-wrap:wrap;}
+  .cookie-text{font-size:13px;color:var(--text-dim);line-height:1.6;max-width:680px;}
+  .cookie-text a{color:var(--scan-cyan);text-decoration:underline;}
+  .cookie-actions{display:flex;gap:10px;flex-shrink:0;}
+  .cookie-btn{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:10px 18px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-dim);transition:all .2s;}
+  .cookie-btn:hover{border-color:var(--scan-cyan);color:var(--scan-cyan);}
+  .cookie-btn.accept{background:var(--teal);color:#fff;border-color:var(--teal);}
+  .cookie-btn.accept:hover{background:#158f65;}
+
+  /* ── RESPONSIVE ────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-badge { display: none; }
+    main { padding: 80px 16px 60px; }
+    .form-row { grid-template-columns: 1fr; }
+    .scan-layout { grid-template-columns: 1fr; }
+    .score-row { flex-direction: column; }
+    .score-sep-cell { display: none; }
+    .score-divider { display: none; }
+    .rebuild-grid { grid-template-columns: 1fr; }
+    .roi-grid { grid-template-columns: 1fr; }
+    .included-grid {
+      grid-template-columns: 1fr !important; gap: 12px !important;
+      background: transparent !important; border: none !important;
+    }
+    .included-card { border: 1px solid var(--border); grid-column: auto !important; }
+    .showcase-ba { grid-template-columns: 1fr !important; }
+    .showcase-batch { grid-template-columns: auto 1fr auto auto !important; font-size:10px !important; }
+    #cookie-banner{padding:16px 18px;}
+    .cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}
+    .cookie-actions{justify-content:flex-end;}
+  }
+
+  /* ── SCI-FI LAYER — Panel 1 input page only ────────── */
+
+  /* 1 · Ambient grid background */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(78,225,255,0.11) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(78,225,255,0.11) 1px, transparent 1px);
+    background-size: 34px 34px;
+    animation: ambientGridDrift 22s linear infinite;
+  }
+
+  /* 2 · System-status line above headline */
+  .sys-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: rgba(78,225,255,0.38);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+    display: flex; align-items: center; gap: 9px;
+    user-select: none;
+  }
+  .sys-status::before {
+    content: '';
+    display: inline-block; flex-shrink: 0;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--teal);
+    animation: statusPulse 3.5s ease-in-out infinite;
+  }
+
+  /* 3 · Blinking cursor on headline */
+  .panel-title-cursor {
+    display: inline-block;
+    width: 3px; height: 0.78em;
+    background: var(--scan-cyan);
+    margin-left: 5px;
+    vertical-align: middle;
+    border-radius: 1px;
+    animation: cursorBlink 1.05s step-end infinite;
+  }
+
+  /* 4 · Editor pre-cursor — blinking block at line 1 when empty + unfocused */
+  .editor-body-wrap { position: relative; }
+  .editor-pre-cursor {
+    position: absolute;
+    top: 14px;
+    left: 56px; /* 42px line-nums min-width + 14px textarea padding-left */
+    width: 2px; height: calc(13px * 1.4);
+    background: var(--scan-cyan); opacity: 0.55;
+    border-radius: 1px; pointer-events: none; z-index: 1;
+    animation: cursorBlink 1.05s step-end infinite;
+  }
+  /* Hide when user has typed or focused */
+  .editor-textarea:focus ~ .editor-pre-cursor,
+  .editor-textarea:not(:placeholder-shown) ~ .editor-pre-cursor {
+    opacity: 0; animation: none;
+  }
+  .editor-textarea:focus { outline: none; }
+
+  /* 5 · Run button scan-line sweep on hover */
+  .btn-primary { position: relative; overflow: hidden; }
+  .btn-primary::after {
+    content: '';
+    position: absolute; top: 0; bottom: 0; left: -70%;
+    width: 45%;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255,255,255,0.17),
+      transparent);
+    transform: skewX(-18deg);
+    pointer-events: none;
+  }
+  .btn-primary:not(:disabled):hover::after {
+    animation: btnSweep 0.52s ease-out forwards;
+  }
+
+  /* ── KEYFRAMES ──────────────────────────────────────── */
+  @keyframes ambientGridDrift {
+    from { background-position: 0 0; }
+    to   { background-position: 48px 48px; }
+  }
+  @keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.22; }
+  }
+  @keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  @keyframes btnSweep {
+    from { left: -70%; }
+    to   { left: 130%; }
+  }
+
+  /* ══════════════════════════════════════════════════════
+     HI-TECH OVERHAUL — Panel 1 input form
+  ══════════════════════════════════════════════════════ */
+
+  /* Spotlight radial behind content */
+  #panel-1 {
+    position: relative;
+  }
+  #panel-1::before {
+    content: '';
+    position: fixed;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 1000px; height: 700px;
+    background: radial-gradient(ellipse at 50% 30%,
+      rgba(78,225,255,0.07) 0%,
+      rgba(29,158,117,0.04) 35%,
+      transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* Inputs — always-on cyan character */
+  #panel-1 input[type="email"],
+  #panel-1 input[type="text"],
+  #panel-1 input[type="number"] {
+    background: rgba(3,8,18,0.92);
+    border: 1px solid rgba(78,225,255,0.32);
+    border-left: 3px solid var(--scan-cyan);
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 14px 16px;
+    transition: all 0.25s ease;
+  }
+  #panel-1 input[type="email"]:focus,
+  #panel-1 input[type="text"]:focus,
+  #panel-1 input[type="number"]:focus {
+    border-color: rgba(78,225,255,0.75);
+    border-left-color: var(--scan-cyan);
+    box-shadow: 0 0 0 1px rgba(78,225,255,0.22),
+                0 0 28px rgba(78,225,255,0.18);
+  }
+  #panel-1 input[type="email"]::placeholder,
+  #panel-1 input[type="text"]::placeholder,
+  #panel-1 input[type="number"]::placeholder {
+    color: rgba(78,225,255,0.5);
+  }
+
+  /* Editor — dominant visual centerpiece */
+  #panel-1 .editor-window {
+    border: 1px solid rgba(78,225,255,0.38) !important;
+    border-left: 3px solid var(--scan-cyan) !important;
+    box-shadow: 0 0 0 1px rgba(78,225,255,0.08),
+                0 0 50px rgba(78,225,255,0.16) !important;
+  }
+  #panel-1 .editor-window:focus-within {
+    border-color: rgba(78,225,255,0.65) !important;
+    box-shadow: 0 0 0 1px rgba(78,225,255,0.2),
+                0 0 65px rgba(78,225,255,0.24) !important;
+  }
+  #panel-1 .editor-fname {
+    color: var(--scan-cyan) !important;
+    opacity: 1 !important;
+    font-weight: 500;
+  }
+  #panel-1 .line-nums { color: rgba(78,225,255,0.5) !important; }
+  #panel-1 .editor-textarea::placeholder { color: rgba(78,225,255,0.45) !important; }
+  #panel-1 .editor-pre-cursor { opacity: 0.85 !important; }
+
+  /* Editor tabs */
+  #panel-1 .etab { color: #BFCAD4; }
+  #panel-1 .etab.active { color: var(--scan-cyan); }
+  #panel-1 .editor-tabs { border-color: rgba(78,225,255,0.2); }
+
+  /* Sys-status — bright and prominent */
+  .sys-status {
+    color: rgba(78,225,255,0.92) !important;
+    font-size: 10px !important;
+    letter-spacing: 0.26em !important;
+    margin-bottom: 28px !important;
+  }
+  .sys-status::before { width: 6px !important; height: 6px !important; }
+
+  /* DIAGNOSTIC PARAMETERS header bar */
+  .param-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 16px;
+    border: 1px solid rgba(78,225,255,0.28);
+    border-bottom: none;
+    background: rgba(78,225,255,0.04);
+  }
+  .param-header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: rgba(78,225,255,0.8);
+    text-transform: uppercase;
+  }
+  .param-lights { display: flex; gap: 5px; align-items: center; }
+  .param-light {
+    width: 5px; height: 5px; border-radius: 50%;
+    animation: statusPulse 2.8s ease-in-out infinite;
+  }
+  .param-light-c { background: var(--scan-cyan); opacity: 0.7; }
+  .param-light-g { background: var(--teal); opacity: 0.9; animation-delay: 0.6s; }
+  .param-light-r { background: var(--bug-red); opacity: 0.5; animation-delay: 1.2s; }
+
+  /* Form frame with corner brackets */
+  .form-frame {
+    border: 1px solid rgba(78,225,255,0.28);
+    padding: 24px 24px 8px;
+    background: rgba(3,8,18,0.35);
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .form-frame::before {
+    content: '';
+    position: absolute; top: -1px; right: -1px;
+    width: 18px; height: 18px;
+    border-top: 2px solid var(--scan-cyan);
+    border-right: 2px solid var(--scan-cyan);
+    pointer-events: none;
+  }
+  .form-frame::after {
+    content: '';
+    position: absolute; bottom: -1px; left: -1px;
+    width: 18px; height: 18px;
+    border-bottom: 2px solid var(--scan-cyan);
+    border-left: 2px solid var(--scan-cyan);
+    pointer-events: none;
+  }
+
+  /* Consent text bright */
+  #panel-1 label[for="terms-consent"] {
+    color: #D4E0EA !important;
+  }
+
+  /* Glowing CTA button */
+  #panel-1 .btn-primary {
+    padding: 16px 44px;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    background: linear-gradient(135deg, #23cc88 0%, #1d9e75 55%, #19886a 100%);
+    box-shadow: 0 0 32px rgba(29,158,117,0.6), 0 4px 24px rgba(0,0,0,0.45);
+    border: 1px solid rgba(50,220,150,0.35);
+    transition: all 0.3s ease;
+  }
+  #panel-1 .btn-primary:not(:disabled):hover {
+    background: linear-gradient(135deg, #2be097 0%, #23cc88 55%, #1d9e75 100%);
+    box-shadow: 0 0 52px rgba(29,158,117,0.82), 0 8px 32px rgba(0,0,0,0.5) !important;
+    transform: translateY(-2px);
+  }
+  #panel-1 .btn-primary:disabled {
+    background: linear-gradient(135deg, #23cc88 0%, #1d9e75 55%, #19886a 100%);
+  }
+
+  /* Hint text */
+  .run-hint { color: rgba(78,225,255,0.6) !important; }
+
+  /* ── PREFERS-REDUCED-MOTION ─────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    body::before                   { animation: none; }
+    .sys-status::before            { animation: none; }
+    .panel-title-cursor            { animation: none; opacity: 1; }
+    .editor-pre-cursor             { animation: none; opacity: 0.55; }
+    .btn-primary::after            { display: none; }
+  }
+
+</style>
+<meta name="description" content="Try the Strategic Flow email audit. Get a free 1–10 preview across five conversion signals, a simplified entry point to Alex Iliescu's complete 7-point Decision Friction Model.">
+<link rel="canonical" href="https://strategic-flow-audit.replit.app/demo.html">
+<link rel="alternate" hreflang="en-us" href="https://strategic-flow-audit.replit.app/demo.html">
+<link rel="alternate" hreflang="x-default" href="https://strategic-flow-audit.replit.app/demo.html">
+<meta property="og:title" content="Strategic Flow Audit — Live Demo">
+<meta property="og:description" content="Live demo: score a real SaaS email across five conversion signals and see the clearest friction point before the rebuild.">
+<meta property="og:url" content="https://strategic-flow-audit.replit.app/demo.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://strategic-flow-audit.replit.app/#organization",
+      "name": "Strategic Flow",
+      "url": "https://strategicflow.tech",
+      "areaServed": "US",
+      "founder": { "@id": "https://strategic-flow-audit.replit.app/#alex-iliescu" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://strategic-flow-audit.replit.app/#alex-iliescu",
+      "name": "Alex Iliescu",
+      "url": "https://strategicflow.tech",
+      "worksFor": { "@id": "https://strategic-flow-audit.replit.app/#organization" }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://strategic-flow-audit.replit.app/demo.html#webapplication",
+      "name": "Strategic Flow Architecture — Free Demo",
+      "url": "https://strategic-flow-audit.replit.app/demo.html",
+      "applicationCategory": "BusinessApplication",
+      "description": "Live demo of the Strategic Flow five-signal email audit for diagnosing and rebuilding SaaS email content.",
+      "author": { "@id": "https://strategic-flow-audit.replit.app/#alex-iliescu" },
+      "mainEntityOfPage": { "@id": "https://strategic-flow-audit.replit.app/demo.html#webpage" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://strategic-flow-audit.replit.app/demo.html#webpage",
+      "name": "Strategic Flow Architecture — Free Demo",
+      "url": "https://strategic-flow-audit.replit.app/demo.html",
+      "isPartOf": { "@id": "https://strategic-flow-audit.replit.app/#website" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Strategic Flow Audit", "item": "https://strategic-flow-audit.replit.app/" },
+        { "@type": "ListItem", "position": 2, "name": "Free Demo", "item": "https://strategic-flow-audit.replit.app/demo.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://strategic-flow-audit.replit.app/demo.html#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the free demo work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Paste your content and receive a free 1–10 score across five conversion signals plus one actionable insight before the full report is unlocked."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need an account to see my score?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You can see the free score and one actionable insight before entering an email or creating an account."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens after I see my score?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can enter your email to unlock the full diagnostic, rebuilt copy, named friction points, and the available HTML output."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://strategic-flow-audit.replit.app/demo.html#signals",
+      "name": "Five conversion signals in the Strategic Flow demo",
+      "numberOfItems": 5,
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Subject specificity" },
+        { "@type": "ListItem", "position": 2, "name": "Hook strength" },
+        { "@type": "ListItem", "position": 3, "name": "Feature-to-outcome translation" },
+        { "@type": "ListItem", "position": 4, "name": "Proof specificity" },
+        { "@type": "ListItem", "position": 5, "name": "CTA ownership" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Strategic Flow <span>Architecture</span></span>
+  <span class="nav-badge">Free Demo</span>
+</nav>
+
+<main>
+
+  <!-- PANEL 1: INPUT ──────────────────────────────────── -->
+  <div class="panel active" id="panel-1">
+    <div class="sys-status" aria-hidden="true">// System Ready — Awaiting Input</div>
+    <div class="panel-label">// Free Demo — One-time assessment</div>
+    <h1 class="panel-title">See exactly what's<br><em>broken in your content.</em><span class="panel-title-cursor" aria-hidden="true"></span></h1>
+    <p class="panel-sub">Paste a SaaS email, blog post, product update, changelog, release note, or LinkedIn post. Get a free score and one actionable insight first, then unlock the full Strategic Flow diagnostic when you are ready.</p>
+
+    <div class="param-header" aria-hidden="true">
+      <span class="param-header-label">// Diagnostic Parameters</span>
+      <span class="param-lights">
+        <span class="param-light param-light-c"></span>
+        <span class="param-light param-light-g"></span>
+        <span class="param-light param-light-r"></span>
+      </span>
+    </div>
+    <div class="form-frame">
+    <input type="hidden" id="demoEmail">
+
+    <div class="form-group">
+      <span class="ctype-label">Content type</span>
+      <div class="ctype-tabs" role="tablist" aria-label="Content type">
+        <button class="ctab active" role="tab" aria-selected="true"  data-ctype="email"          onclick="switchContentType(this)">Email</button>
+        <button class="ctab"        role="tab" aria-selected="false" data-ctype="blog_post"       onclick="switchContentType(this)">Blog Post</button>
+        <button class="ctab"        role="tab" aria-selected="false" data-ctype="product_update"  onclick="switchContentType(this)">Product Update</button>
+        <button class="ctab"        role="tab" aria-selected="false" data-ctype="changelog"       onclick="switchContentType(this)">Changelog</button>
+        <button class="ctab"        role="tab" aria-selected="false" data-ctype="release_notes"   onclick="switchContentType(this)">Release Notes</button>
+        <button class="ctab"        role="tab" aria-selected="false" data-ctype="linkedin_post"   onclick="switchContentType(this)">LinkedIn Post</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="demoSubject">Headline or subject line</label>
+      <input type="text" id="demoSubject" placeholder="e.g. New dashboard features available">
+    </div>
+
+    <!-- Email body — editor + upload tabs -->
+    <div class="editor-section">
+      <div class="editor-tabs" role="tablist" aria-label="Input method">
+        <button class="etab active" id="tabPaste" role="tab" aria-selected="true"
+                onclick="switchTab('paste')">Paste text</button>
+        <button class="etab" id="tabUpload" role="tab" aria-selected="false"
+                onclick="switchTab('upload')">Upload file</button>
+      </div>
+
+      <!-- PASTE TAB: code editor window -->
+      <div class="paste-pane" id="pastePaneWrap" role="tabpanel" aria-labelledby="tabPaste">
+        <div class="editor-window">
+          <div class="editor-header">
+            <div class="editor-dots" aria-hidden="true">
+              <span class="editor-dot dot-red"></span>
+              <span class="editor-dot dot-yellow"></span>
+              <span class="editor-dot dot-green"></span>
+            </div>
+            <span class="editor-fname" id="editorFname">content-body.txt</span>
+          </div>
+          <div class="editor-body-wrap">
+            <div class="line-nums" id="lineNums" aria-hidden="true">
+              <span class="line-num">1</span>
+            </div>
+            <textarea id="demoBody" class="editor-textarea"
+                      placeholder="Paste the full email body here..."
+                      oninput="updateLineNums(this)"
+                      aria-label="Email body"></textarea>
+            <span class="editor-pre-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPLOAD TAB: dropzone -->
+      <div class="upload-pane" id="uploadPaneWrap" role="tabpanel" aria-labelledby="tabUpload">
+        <label class="dropzone" id="dropzone" tabindex="0"
+               ondragover="event.preventDefault();this.classList.add('drag-over')"
+               ondragleave="this.classList.remove('drag-over')"
+               ondrop="handleFileDrop(event)">
+          <input type="file" class="dropzone-file-input" id="fileInput"
+                 accept=".html,.htm,.eml,.txt"
+                 onchange="handleFileSelect(this.files[0])">
+          <span class="dropzone-icon" aria-hidden="true">📄</span>
+          <div class="dropzone-text">Drop your .html, .eml, or .txt file here,<br>or click to browse</div>
+          <div class="dropzone-hint">.html · .htm · .eml · .txt · max 500 KB</div>
+        </label>
+        <div class="file-loaded" id="fileLoaded">
+          <span class="file-loaded-name" id="fileLoadedName"></span>
+          <button class="file-clear" onclick="clearFile()" aria-label="Remove uploaded file">×</button>
+        </div>
+        <div class="file-error" id="fileError" role="alert"></div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="demoCompany">Company name</label>
+        <input type="text" id="demoCompany" placeholder="e.g. Acme SaaS">
+      </div>
+      <div class="form-group">
+        <label for="demoSubscribers">Subscriber / follower count</label>
+        <input type="number" id="demoSubscribers" placeholder="e.g. 25000" min="100">
+      </div>
+    </div>
+    </div><!-- /form-frame -->
+
+    <div style="display:flex;align-items:center;gap:16px;margin-top:8px;">
+      <button class="btn btn-primary" id="runBtn" onclick="runDemo()"
+              >Get Free Score →</button>
+      <span class="run-hint" style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(78,225,255,0.65);">score first · email after</span>
+    </div>
+
+    <div id="inputError" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--bug-red);margin-top:12px;display:none;"></div>
+  </div>
+
+  <!-- PANEL 2: SCANNING ───────────────────────────────── -->
+  <div class="panel" id="panel-2">
+    <div class="panel-label">// Running assessment...</div>
+    <h2 class="panel-title">Diagnosing your<br><em>email architecture.</em></h2>
+
+    <div class="scan-layout">
+      <!-- Left: editor display with scan beam -->
+      <div class="scan-editor-wrap">
+        <div class="scan-editor-header">
+          <div class="editor-dots" aria-hidden="true">
+            <span class="editor-dot dot-red"></span>
+            <span class="editor-dot dot-yellow"></span>
+            <span class="editor-dot dot-green"></span>
+          </div>
+          <span class="editor-fname" id="scanFname">email-body.txt</span>
+          <span class="scan-status-badge" id="scanStatusBadge">SCANNING</span>
+        </div>
+        <div class="scan-content-area" id="scanContentArea">
+          <div class="scan-lines-display">
+            <div class="scan-line-nums-col" id="scanLineNumsCol"></div>
+            <div class="scan-lines-col" id="scanLinesCol"></div>
+          </div>
+          <div class="scan-beam" id="scanBeam"></div>
+        </div>
+      </div>
+
+      <!-- Right: readout -->
+      <div class="scan-readout">
+        <div class="scan-readout-label">Diagnostic Engine</div>
+        <div class="scan-counter" id="scanCounter">Initialising scan...</div>
+        <div class="scan-check-list" id="scanCheckList"></div>
+      </div>
+    </div>
+
+    <!-- Error state (shown instead of scan on failure) -->
+    <div class="scan-error" id="scanError">
+      <div class="scan-error-msg" id="scanErrorMsg"></div>
+      <button class="btn btn-primary" style="font-size:12px;padding:10px 22px;" onclick="resetToPanel1()">Try again →</button>
+    </div>
+
+    <!-- Hidden backwards-compat elements (addLog / setProgress still call these) -->
+    <div style="display:none;" aria-hidden="true">
+      <div id="statusLog"></div>
+      <div id="progressLabel"></div>
+      <div id="progressPct"></div>
+      <div style="height:2px;"><div id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: RESULTS ────────────────────────────────── -->
+  <div class="panel" id="panel-3">
+    <div class="panel-label">// Assessment complete</div>
+    <h2 class="panel-title">Here's what we<br><em>found and fixed.</em></h2>
+
+    <div class="score-row">
+      <div class="score-cell">
+        <div class="score-cell-label">Original score</div>
+        <div class="score-num low" id="origScore">—</div>
+        <div class="score-note">Before rebuild</div>
+      </div>
+      <div class="score-sep-cell" aria-hidden="true">
+        <span class="score-sep-arrow">→</span>
+      </div>
+      <div class="score-cell">
+        <div class="score-cell-label">Rebuilt score</div>
+        <div class="score-num high" id="newScore">—</div>
+        <div class="score-note">After Strategic Flow</div>
+      </div>
+      <div class="score-divider" aria-hidden="true"></div>
+      <div class="score-cell">
+        <div class="score-cell-label">Bugs found</div>
+        <div class="score-num" style="color:var(--bug-red)" id="bugsFound">—</div>
+        <div class="score-note">Preview across five signals</div>
+      </div>
+    </div>
+
+    <div id="demoPreviewCard" style="margin:28px 0;padding:24px;border:1px solid rgba(78,225,255,.28);background:rgba(78,225,255,.04);">
+      <div class="section-title" style="margin-top:0;">// Free preview</div>
+      <p id="demoPreviewInsight" style="font-size:15px;line-height:1.7;color:var(--text-primary);margin:0 0 20px;">Your score and one actionable insight will appear here.</p>
+      <div style="border-top:1px solid var(--border);padding-top:20px;">
+        <strong style="display:block;margin-bottom:6px;">Unlock the full diagnostic and rebuild</strong>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin:0 0 14px;">We ask for your email only after showing the free result. The full report includes named friction points, rebuilt copy, and the HTML download.</p>
+        <input type="email" id="demoUnlockEmail" placeholder="you@company.com" style="max-width:420px;margin-bottom:10px;">
+        <label style="display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-dim);line-height:1.55;margin-bottom:12px;cursor:pointer;">
+          <input type="checkbox" id="demoUnlockTerms" style="margin-top:2px;accent-color:var(--teal);">
+          <span>I agree to the <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank" style="color:var(--teal);">Terms of Use</a> and consent to this assessment.</span>
+        </label>
+        <button class="btn btn-primary" onclick="unlockDemo()">Unlock full report →</button>
+        <div id="demoUnlockError" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--bug-red);margin-top:10px;display:none;"></div>
+      </div>
+    </div>
+
+    <div id="demoFullResults" hidden>
+    <div class="section-title">// Full diagnostic results</div>
+    <div class="bug-list" id="bugList"></div>
+
+    <div id="sectionSubjectWrap">
+      <div class="section-title" id="sectionSubjectTitle">// Subject line — rebuilt</div>
+      <div class="rebuild-grid" id="subjectRebuild"></div>
+    </div>
+
+    <div id="sectionVariantsWrap">
+      <div class="section-title" id="sectionVariantsTitle">// 3 A/B subject line variants</div>
+      <div class="variant-list" id="variantList"></div>
+    </div>
+
+    <div class="section-title" id="sectionHookTitle">// Hook — rebuilt consequence-first</div>
+    <div class="rebuild-grid" id="hookRebuild"></div>
+
+    <div class="section-title">// CTA — ownership language applied</div>
+    <div class="rebuild-grid" id="ctaRebuild"></div>
+
+    <div class="section-title" id="sectionRoiTitle">// ROI projection</div>
+    <div class="roi-grid">
+      <div class="roi-cell">
+        <div class="roi-label" id="roiCurrentLabel">Current open rate</div>
+        <div class="roi-value negative" id="roiCurrent">—</div>
+        <div class="roi-note" id="roiCurrentReaders">—</div>
+      </div>
+      <div class="roi-cell">
+        <div class="roi-label" id="roiProjectedLabel">Projected open rate</div>
+        <div class="roi-value positive" id="roiProjected">—</div>
+        <div class="roi-note" id="roiProjectedReaders">—</div>
+      </div>
+      <div class="roi-cell">
+        <div class="roi-label" id="roiDeltaLabel">Monthly delta</div>
+        <div class="roi-value positive" id="roiDelta">—</div>
+        <div class="roi-note" id="roiDeltaNote">—</div>
+      </div>
+    </div>
+    <div id="roiEngagementNote" style="display:none;margin-top:14px;font-size:13px;color:var(--text-dim);line-height:1.65;font-style:italic;padding:12px 16px;border-left:2px solid var(--scan-cyan);background:rgba(78,225,255,0.04);"></div>
+
+    <!-- ARCHITECTURE SHOWCASE -->
+    <div style="margin-top:48px;margin-bottom:48px;" id="paidRebuildSection">
+      <div class="section-title">// WHAT THE PAID OUTPUT LOOKS LIKE</div>
+      <p style="font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:24px;max-width:620px;">The free audit shows where your email fails. Run the paid rebuild to see the fixed version, three A/B subject variants, and a line-by-line change log on your actual email.</p>
+
+      <div id="rebuildTrigger" style="display:none;margin-bottom:32px;">
+        <button class="btn btn-primary" id="rebuildBtn" onclick="runDemoRebuild()">Run the paid rebuild on this email</button>
+        <div id="rebuildErrMsg" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--bug-red);margin-top:10px;display:none;"></div>
+      </div>
+
+      <div id="rebuildLoading" style="display:none;font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);margin-bottom:24px;padding:16px;background:var(--panel);border:1px solid var(--border);">Rebuilding your email...</div>
+
+      <div id="rebuildResults" style="display:none;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:12px;">01 — Your email, rebuilt</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:28px;" id="rebuildBeforeAfter"></div>
+
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:12px;">02 — A/B subject variants</div>
+        <div style="background:var(--panel);border:1px solid var(--border);padding:20px;margin-bottom:28px;" id="rebuildVariants"></div>
+
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:12px;">03 — What changed and why</div>
+        <div style="background:var(--panel);border:1px solid var(--border);margin-bottom:28px;" id="rebuildChanges"></div>
+
+        <button class="btn" style="background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text-primary);margin-bottom:20px;" onclick="downloadRebuild()">Download this rebuild (HTML)</button>
+        <div id="rebuildCountDisplay" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);margin-bottom:28px;display:none;"></div>
+      </div>
+
+      <div id="rebuildLimitReached" style="display:none;margin-bottom:28px;">
+        <div style="background:var(--panel);border:1px solid var(--border);padding:20px 24px;">
+          <p style="font-family:'DM Mono',monospace;font-size:13px;color:var(--text-primary);line-height:1.7;margin:0 0 16px;">You have used all 3 rebuilds for this email. Architecture does this on every email, every month, without limits.</p>
+          <a href="https://strategicflow.tech/architecture.html" target="_blank" class="btn btn-primary" style="text-decoration:none;display:inline-block;">See how Architecture works</a>
+        </div>
+      </div>
+
+      <div style="margin-top:32px;padding:24px;background:var(--panel);border:1px solid var(--border);" id="whatsNextSection">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:20px;">// What's next</div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="padding-bottom:20px;">
+            <p style="font-size:13px;color:var(--text-primary);line-height:1.6;margin-bottom:12px;">Need a deeper diagnosis on this exact email?</p>
+            <a href="https://strategicflow.tech/architecture.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;color:var(--teal);text-decoration:none;border:1px solid rgba(29,158,117,0.3);padding:10px 18px;letter-spacing:0.04em;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='rgba(29,158,117,0.3)'">→ Architecture Audit</a>
+          </div>
+          <div style="padding-top:20px;border-top:1px solid var(--border);">
+            <p style="font-size:13px;color:var(--text-primary);line-height:1.6;margin-bottom:12px;">Need to check your full onboarding or lifecycle sequence instead of one email?</p>
+            <a href="https://strategicflow.tech/teardown-vs-lifecycle-audit.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;color:var(--teal);text-decoration:none;border:1px solid rgba(29,158,117,0.3);padding:10px 18px;letter-spacing:0.04em;transition:border-color .2s;" onmouseover="this.style.borderColor='var(--teal)'" onmouseout="this.style.borderColor='rgba(29,158,117,0.3)'">→ Lifecycle Audit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="plans-section" style="margin-top:48px;margin-bottom:48px;">
+      <div class="section-title">// PICK THE GAP YOU WANT CLOSED</div>
+      <p style="font-size:14px;color:var(--text-dim);line-height:1.7;margin-bottom:32px;max-width:600px;">The average email we audit scores 3.4 out of 10. The rebuilt version scores 9.0. Every plan below closes that gap at a different volume.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+
+        <div style="background:var(--panel);border:1px solid var(--border);padding:20px 20px 24px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:8px;">Decision Friction Review</div>
+          <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--text-primary);font-weight:700;margin-bottom:12px;">$149 <span style="font-size:11px;color:var(--text-dim);font-weight:400;">one time</span></div>
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:20px;">One email, rebuilt and scored. The fastest way to see the method on your own material.</p>
+          <button class="btn btn-primary" style="width:100%;font-size:12px;" onclick="goToDecisionFrictionReview()">Start with one email</button>
+        </div>
+
+        <div style="background:var(--panel);border:1px solid var(--border);padding:20px 20px 24px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:8px;">Lite</div>
+          <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--text-primary);font-weight:700;margin-bottom:12px;">$299 <span style="font-size:11px;color:var(--text-dim);font-weight:400;">/mo</span></div>
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:20px;">4 rebuilds per month plus A/B subject variants and a content calendar. One rebuilt email typically recovers more revenue than the plan costs.</p>
+          <button class="btn btn-primary" style="width:100%;font-size:12px;" onclick="goToDecisionFrictionReview()">See Lite</button>
+        </div>
+
+        <div style="background:var(--panel);border:1px solid var(--border);padding:20px 20px 24px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:8px;">Growth</div>
+          <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--text-primary);font-weight:700;margin-bottom:12px;">$499 <span style="font-size:11px;color:var(--text-dim);font-weight:400;">/mo</span></div>
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:20px;">8 rebuilds per month plus onboarding sequence audit. For teams sending weekly.</p>
+          <button class="btn btn-primary" style="width:100%;font-size:12px;" onclick="goToDecisionFrictionReview()">See Growth</button>
+        </div>
+
+        <div style="background:var(--panel);border:1px solid var(--border);padding:20px 20px 24px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--scan-cyan);text-transform:uppercase;margin-bottom:8px;">High-Impact</div>
+          <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--text-primary);font-weight:700;margin-bottom:12px;">$899 <span style="font-size:11px;color:var(--text-dim);font-weight:400;">/mo</span></div>
+          <p style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:20px;">Everything in Growth at full volume, with priority turnaround. For marketing teams where email is a primary channel.</p>
+          <button class="btn btn-primary" style="width:100%;font-size:12px;" onclick="goToDecisionFrictionReview()">See High-Impact</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="locked-section">
+      <div class="locked-title">// ARCHITECTURE — WHEN EMAIL IS A SYSTEM, NOT A TASK</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:24px;">
+        <div style="background:var(--panel);padding:16px 20px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--bug-red);text-transform:uppercase;margin-bottom:16px;">Pay as you go</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">You paste manually each time</div>
+            <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">HTML output only</div>
+            <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">No strategy or tracking</div>
+            <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">No onboarding audit</div>
+            <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">No direct access</div>
+          </div>
+        </div>
+        <div style="background:rgba(29,158,117,0.06);padding:16px 20px;">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--teal);text-transform:uppercase;margin-bottom:16px;">Architecture — $2,500/mo</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="font-size:12px;color:#2dd4bf;font-weight:700;line-height:1.6;">Includes Pro High-Impact ($899/mo value)</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">Every email — unlimited rebuilds, no quota</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">Paste any email — rebuilt HTML in 60 seconds</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">Batch — 10 emails diagnosed at once, ranked by priority</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">Content calendar — 4-week arc + follow-up sequences</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">Competitor benchmark — you vs 3 competitors, same diagnostic</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">A/B tracker — log tests, record open rates, see patterns</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">Monthly report — score trends + ROI for leadership</div>
+            <div style="font-size:12px;color:var(--text-primary);line-height:1.6;">Monthly call with Alex + direct Slack access</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.7;margin-bottom:16px;">
+        Run your numbers first: <a href="https://strategicflow.tech/roi" target="_blank" style="color:var(--teal);text-decoration:none;">strategicflow.tech/roi</a> — if the ROI is not at least 3x the plan cost, Architecture is not the right plan for you.
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <h3 class="cta-block-title">Get this for every email<br><em>your company sends.</em></h3>
+      <p class="cta-block-sub">This was one email, once. Every email, forwarded or pasted, rebuilt in 60 seconds. Architecture covers every product update, release note, and onboarding email.</p>
+      <div style="font-size:22px;font-weight:800;letter-spacing:0.08em;color:#fff;margin-bottom:10px;">3 DAYS FREE TRIAL</div>
+      <button class="btn btn-primary" onclick="goToArchitecture()">
+        Start Architecture →
+      </button>
+      <div class="cta-block-price"><strong>$2,500/mo</strong> · Unlimited rebuilds · Cancel anytime</div>
+    </div>
+
+    <div class="included-section">
+      <div class="section-title">// What's included in Architecture</div>
+
+      <div class="included-grid">
+
+        <div class="included-card">
+          <div class="included-card-num">Tool 01</div>
+          <div class="included-card-name">Email Assessment</div>
+          <div class="included-card-desc">Full five-signal diagnostic + rebuild on every email. Score, subject variants, before/after fixes.</div>
+          <div class="included-preview">
+            <div class="preview-row">
+              <span class="preview-label">Score</span>
+              <span class="preview-val">3/10 <span style="color:var(--text-dim)">→</span> 8/10</span>
+            </div>
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Publisher release roundup: Q1"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"3 changes quietly killing your Q2 fill rate"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num">Tool 02</div>
+          <div class="included-card-name">Content Calendar</div>
+          <div class="included-card-desc">30-day email arc with subject lines, angles, and timing — generated from your product.</div>
+          <div class="included-preview">
+            <div class="preview-row">
+              <span class="preview-label" style="min-width:72px">Week 1 Mon</span>
+              <span class="preview-val">"Your onboarding isn't broken. Your day-3 email is."</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label" style="min-width:72px">Week 1 Wed</span>
+              <span class="preview-val">"3 users activated this. Here's what they did differently."</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label" style="min-width:72px">Week 1 Fri</span>
+              <span class="preview-val">"You set this up wrong. Here's the 2-minute fix."</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num">Tool 03</div>
+          <div class="included-card-name">Batch Assessment</div>
+          <div class="included-card-desc">Diagnose up to 10 emails at once, ranked by impact score. Know which to fix first.</div>
+          <div class="included-preview">
+            <div class="preview-row">
+              <span class="preview-label">#1</span>
+              <span class="preview-val">2/10 · "Q1 Product Update" · 6 bugs</span>
+              <span class="preview-fix">FIX FIRST</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">#2</span>
+              <span class="preview-val">4/10 · "New feature available" · 4 bugs</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">#3</span>
+              <span class="preview-val">7/10 · "Your account is ready" · 2 bugs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num">Tool 04</div>
+          <div class="included-card-name">Monthly Report</div>
+          <div class="included-card-desc">Score trends, rebuild history, and what to fix next — formatted for leadership.</div>
+          <div class="included-preview">
+            <div class="preview-row">
+              <span class="preview-label">Avg</span>
+              <span class="preview-val">6.2/10 <span style="color:#4ade80">+2.1 vs last month</span></span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Fixed</span>
+              <span class="preview-val">14 bugs resolved</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Best</span>
+              <span class="preview-val">"You skipped this step. 340 users didn't."</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num">Tool 05</div>
+          <div class="included-card-name">Competitor Benchmark</div>
+          <div class="included-card-desc">The same five-signal diagnostic run against competitor emails. Find the structural gaps.</div>
+          <div class="included-preview">
+            <div class="preview-row">
+              <span class="preview-label">You</span>
+              <span class="preview-val">4/10</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Comp A</span>
+              <span class="preview-val">7/10</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">Comp B</span>
+              <span class="preview-val">5/10</span>
+            </div>
+            <div class="preview-row col">
+              <span class="preview-note">Gap identified</span>
+              <span class="preview-val">Subject lines and hook architecture</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num">Tool 06</div>
+          <div class="included-card-name">A/B Tracker</div>
+          <div class="included-card-desc">Log subject line variants, record open rates, see patterns across sends.</div>
+          <div class="included-preview">
+            <div class="preview-row">
+              <span class="preview-label">V1</span>
+              <span class="preview-val">"New dashboard features"</span>
+              <span class="preview-note" style="margin-left:auto;flex-shrink:0">14%</span>
+            </div>
+            <div class="preview-row">
+              <span class="preview-label">V2</span>
+              <span class="preview-val">"Your reporting is 3 clicks slower than it should be"</span>
+              <span class="preview-winner">31% · WINNER</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 07<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Changelog Audit</div>
+          <div class="included-card-desc">Every product update email diagnosed before it ships. Major update surfaces first. Minor fixes grouped below.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"New Feature: Dashboard Update"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"Your reports now build in 40% less time"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 08<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Onboarding Audit</div>
+          <div class="included-card-desc">Day-1, day-3, and day-7 emails scored and rebuilt. Resequenced around the reader's first win, not the feature list.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Here's everything you can do with [Product]"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"One thing. Do this first. It takes 3 minutes."</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card" style="grid-column: 1 / -1;">
+          <div class="included-card-num tool-label-row">Tool 09<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">LinkedIn Audit</div>
+          <div class="included-card-desc">Product posts and feature announcements scored against five conversion signals. Hook rebuilt consequence-first.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"We're excited to announce our new integration"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"Your team just lost 2 hours to a problem we fixed"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 10<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Open Rate Predictor</div>
+          <div class="included-card-desc">Predict open rate before sending. Scored against subject line, send time, and audience signal.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Newsletter #42: Updates and news inside"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"Predicted: 14% open. Rebuilt subject: predicted 31%."</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 11<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Pattern Intelligence</div>
+          <div class="included-card-desc">Identify recurring structural bugs across your email archive. Surface the pattern before it compounds.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Every email opens with company news"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"One bug, repeated 23 times across your archive"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 12<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Monthly Report</div>
+          <div class="included-card-desc">Full 30-day communication audit. Every email scored, patterns flagged, wins documented.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"We think our emails are fine"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"30 days scored: 11 emails, 4 recurring bugs, 2 fixes that move revenue"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 13<span class="tool-arch-badge">Coming Soon</span></div>
+          <div class="included-card-name">90-Day Communication Audit</div>
+          <div class="included-card-desc">Full-stack analysis of your last 90 days. Every email type, sequence gap, and structural pattern surfaced.</div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 14<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Release Note System</div>
+          <div class="included-card-desc">Structured framework for turning raw changelogs into consequence-first release emails. Paste the changelog, receive rebuilt HTML in 60 seconds.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"v2.4.1: Fixed bugs, improved performance"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"The export that crashed your Friday report won't crash again"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 15<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Email Fatigue Detector</div>
+          <div class="included-card-desc">Paste your full lifecycle sequence. Find where you lose the reader before they unsubscribe.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Email 5 of 7: Just checking in again"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"Readers leave at email 3. This is the line that loses them."</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 16<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Audience Mirror</div>
+          <div class="included-card-desc">Paste real customer language. Extract the exact words that belong in your subject line, lead, and CTA.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Our solution streamlines workflows"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"I waste every Monday rebuilding this report"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 17<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Dead Email Resurrector</div>
+          <div class="included-card-desc">Paste any underperforming email. Get the diagnosis and the rebuilt version ready to send, in 90 seconds.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Sent to 4,000. Six replies."</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"Same email, rebuilt and ready to resend in 90 seconds"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 18<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Best Send Window</div>
+          <div class="included-card-desc">Tell us your email type, industry, and audience. Get the optimal send window with reasoning, not a generic Tuesday 10am guess.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Tuesday 10am, because everyone says so"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"Your audience: Thursday 7:40am, with the reasoning attached"</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="included-card">
+          <div class="included-card-num tool-label-row">Tool 19<span class="tool-arch-badge">Architecture Only</span></div>
+          <div class="included-card-name">Sequence Gap Finder</div>
+          <div class="included-card-desc">Paste your lifecycle sequence. Find the missing emails that are stalling activation, before you rewrite the ones you already have.</div>
+          <div class="included-preview">
+            <div class="preview-row col">
+              <span class="preview-note">Before</span>
+              <span class="preview-val">"Onboarding: welcome email, then silence for 9 days"</span>
+              <span class="preview-note" style="margin-top:4px">After</span>
+              <span class="preview-val">"The missing day 2 email is where activation stalls"</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cta-block" style="margin-top:0">
+        <h3 class="cta-block-title">Start with Architecture.<br><em>Every email, every month.</em></h3>
+        <div style="font-size:22px;font-weight:800;letter-spacing:0.08em;color:#fff;margin-bottom:10px;">3 DAYS FREE TRIAL</div>
+        <button class="btn btn-primary" onclick="goToArchitecture()">
+          Start Architecture →
+        </button>
+        <div class="cta-block-price"><strong>$2,500/mo</strong> · Unlimited rebuilds · Cancel anytime</div>
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+  <!-- PANEL 4: ALREADY USED ───────────────────────────── -->
+  <div class="panel" id="panel-4">
+    <div class="panel-label">// Demo already used</div>
+    <h2 class="panel-title">You've already run<br><em>the free demo.</em></h2>
+    <p class="panel-sub">Each email address can run the demo once. You've already seen what Strategic Flow Architecture does to your emails.</p>
+
+    <div class="cta-block" style="margin-top:32px;">
+      <h3 class="cta-block-title">Ready to run this<br><em>every month?</em></h3>
+      <p class="cta-block-sub">Every email, forwarded or pasted, rebuilt in 60 seconds. Architecture covers every email your company sends.</p>
+      <div style="font-size:22px;font-weight:800;letter-spacing:0.08em;color:#fff;margin-bottom:10px;">3 DAYS FREE TRIAL</div>
+      <button class="btn btn-primary" onclick="goToArchitecture()">
+        Start Architecture →
+      </button>
+      <div class="cta-block-price"><strong>$2,500/mo</strong> · Unlimited rebuilds · Cancel anytime</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ── STATE ─────────────────────────────────────────────── */
+let _affiliateRef     = '';   // ?ref= from landing URL, passed through to pro app
+let _rebuildEmailText = '';
+let _rebuildData = null;
+let _scanInterval = null;
+let _scanCheckIdx = 0;
+let _scanLineIdx = 0;
+let _scanTotalLines = 0;
+
+const SCAN_CHECKS = [
+  'Filing Label Subject',
+  'Feature-First Bias',
+  'Guest Language CTA',
+  'Social Proof Placement',
+  'Visual Hierarchy',
+  'Consequence-After-Caveat',
+  'Hook Architecture'
+];
+
+/* Bug positions (line indices) and their labels */
+const BUG_LINE_MAP = { 1: 0, 3: 1, 6: 2, 9: 3 }; // lineIdx → checkIdx
+
+/* ── LINE NUMBERS ──────────────────────────────────────── */
+function updateLineNums(ta) {
+  const lines = ta.value.split('\n');
+  const nums = document.getElementById('lineNums');
+  if (!nums) return;
+  let html = '';
+  for (let i = 1; i <= Math.max(lines.length, 1); i++) {
+    html += `<span class="line-num">${i}</span>`;
+  }
+  nums.innerHTML = html;
+}
+
+/* ── TAB SWITCHER ──────────────────────────────────────── */
+function switchTab(tab) {
+  const tabPaste  = document.getElementById('tabPaste');
+  const tabUpload = document.getElementById('tabUpload');
+  const pasteWrap  = document.getElementById('pastePaneWrap');
+  const uploadWrap = document.getElementById('uploadPaneWrap');
+
+  if (tab === 'paste') {
+    tabPaste.classList.add('active');   tabPaste.setAttribute('aria-selected', 'true');
+    tabUpload.classList.remove('active'); tabUpload.setAttribute('aria-selected', 'false');
+    pasteWrap.classList.remove('hidden'); pasteWrap.style.display = '';
+    uploadWrap.classList.remove('active'); uploadWrap.style.display = 'none';
+  } else {
+    tabUpload.classList.add('active');  tabUpload.setAttribute('aria-selected', 'true');
+    tabPaste.classList.remove('active'); tabPaste.setAttribute('aria-selected', 'false');
+    uploadWrap.classList.add('active'); uploadWrap.style.display = '';
+    pasteWrap.style.display = 'none';
+  }
+}
+// Init: hide upload pane
+(function() {
+  const up = document.getElementById('uploadPaneWrap');
+  if (up) up.style.display = 'none';
+})();
+
+/* ── CONTENT TYPE SWITCHER ─────────────────────────────── */
+const SUBJECT_PLACEHOLDERS = {
+  email:          'e.g. New dashboard features available',
+  blog_post:      'e.g. How we cut onboarding time by 40%',
+  product_update: 'e.g. Introducing real-time collaboration',
+  changelog:      'e.g. v2.4 — bug fixes and performance improvements',
+  release_notes:  'e.g. Release 3.1.0',
+  linkedin_post:  'e.g. the opening line or hook of the post',
+};
+function switchContentType(btn) {
+  document.querySelectorAll('.ctab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+  const ph = SUBJECT_PLACEHOLDERS[btn.dataset.ctype] || SUBJECT_PLACEHOLDERS.email;
+  document.getElementById('demoSubject').placeholder = ph;
+}
+
+/* ── FILE UPLOAD ───────────────────────────────────────── */
+function handleFileDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFileSelect(file);
+}
+
+function handleFileSelect(file) {
+  if (!file) return;
+  const errEl = document.getElementById('fileError');
+  errEl.style.display = 'none';
+
+  const allowed = ['.html', '.htm', '.eml', '.txt'];
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
+  if (!allowed.includes(ext)) {
+    errEl.textContent = 'Unsupported file type. Please upload a .html, .eml, or .txt file.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (file.size > 500 * 1024) {
+    errEl.textContent = 'This file is too large. Try a file under 500 KB.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Write content into the shared demoBody textarea
+    document.getElementById('demoBody').value = e.target.result;
+
+    // Show file loaded state
+    const kb = (file.size / 1024).toFixed(1);
+    document.getElementById('fileLoadedName').textContent = file.name + ' · ' + kb + ' KB';
+    document.getElementById('fileLoaded').classList.add('show');
+
+    // Update dropzone icon/text
+    const dz = document.getElementById('dropzone');
+    dz.style.borderStyle = 'solid';
+    dz.style.borderColor = 'rgba(29,158,117,0.3)';
+  };
+  reader.onerror = function() {
+    errEl.textContent = 'Could not read this file. Try copying and pasting the content instead.';
+    errEl.style.display = 'block';
+  };
+  reader.readAsText(file);
+}
+
+function clearFile() {
+  document.getElementById('demoBody').value = '';
+  document.getElementById('fileLoaded').classList.remove('show');
+  document.getElementById('fileLoadedName').textContent = '';
+  document.getElementById('fileError').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  const dz = document.getElementById('dropzone');
+  dz.style.borderStyle = 'dashed';
+  dz.style.borderColor = '';
+}
+
+/* ── SCAN ANIMATION ────────────────────────────────────── */
+function initScanEditor(subject, body) {
+  // Set filename in scan header
+  const fname = document.getElementById('scanFname');
+  if (fname) fname.textContent = subject ? subject.slice(0, 32) + (subject.length > 32 ? '…' : '') : 'email-body.txt';
+
+  // Strip HTML tags for display, split into lines
+  const plainText = body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const rawLines  = body.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  const lines     = rawLines.slice(0, 16);
+  while (lines.length < 8) lines.push('');
+
+  _scanTotalLines = lines.length;
+
+  // Build line nums col
+  const numsCol = document.getElementById('scanLineNumsCol');
+  if (numsCol) numsCol.innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+
+  // Build lines col
+  const linesCol = document.getElementById('scanLinesCol');
+  if (linesCol) {
+    linesCol.innerHTML = lines.map((line, i) => {
+      const bugLabel = BUG_LINE_MAP.hasOwnProperty(i) ? SCAN_CHECKS[BUG_LINE_MAP[i]] : null;
+      return `<div class="scan-line" id="sl${i}">
+        <span class="scan-line-txt">${esc(line.slice(0, 70)) || '\u00a0'}</span>
+        ${bugLabel ? `<span class="scan-bug-tag" id="sbt${i}">${bugLabel.toUpperCase().slice(0,20)}</span>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // Build check list
+  const cl = document.getElementById('scanCheckList');
+  if (cl) {
+    cl.innerHTML = SCAN_CHECKS.map((c, i) =>
+      `<div class="scan-check-item" id="sck${i}"><span class="scan-check-dot"></span>${c}</div>`
+    ).join('');
+  }
+
+  // Reset beam
+  const beam = document.getElementById('scanBeam');
+  if (beam) beam.style.top = '0px';
+  _scanLineIdx = 0;
+  _scanCheckIdx = 0;
+}
+
+function runScanAnimation() {
+  const contentArea = document.getElementById('scanContentArea');
+  const areaHeight  = contentArea ? contentArea.offsetHeight : 230;
+  const lineH       = areaHeight / Math.max(_scanTotalLines, 8);
+
+  document.getElementById('scanCounter').textContent = 'Checking 1 of 5 conversion signals...';
+
+  _scanInterval = setInterval(function() {
+    const beam = document.getElementById('scanBeam');
+    if (!beam) return;
+
+    // Advance beam to next line
+    _scanLineIdx++;
+    if (_scanLineIdx > _scanTotalLines) {
+      // Loop: reset beam, keep bug tags visible
+      _scanLineIdx = 1;
+      document.querySelectorAll('.scan-line').forEach(l => {
+        l.classList.remove('passed', 'active-line');
+      });
+    }
+
+    // Position beam
+    const pct = ((_scanLineIdx - 0.5) / _scanTotalLines) * 100;
+    beam.style.top = pct + '%';
+
+    // Mark passed lines
+    for (let i = 0; i < _scanLineIdx - 1; i++) {
+      const el = document.getElementById('sl' + i);
+      if (el) { el.classList.add('passed'); el.classList.remove('active-line'); }
+    }
+    const activeEl = document.getElementById('sl' + (_scanLineIdx - 1));
+    if (activeEl) { activeEl.classList.add('active-line'); activeEl.classList.remove('passed'); }
+
+    // Reveal bug tag if this line has one
+    const bugTag = document.getElementById('sbt' + (_scanLineIdx - 1));
+    if (bugTag) setTimeout(() => bugTag.classList.add('show'), 180);
+
+    // Advance check counter
+    const newCheckIdx = Math.min(Math.floor((_scanLineIdx / _scanTotalLines) * 7), 6);
+    if (newCheckIdx !== _scanCheckIdx) {
+      // Mark previous done
+      const prevEl = document.getElementById('sck' + _scanCheckIdx);
+      if (prevEl) { prevEl.classList.remove('active'); prevEl.classList.add('done'); }
+      _scanCheckIdx = newCheckIdx;
+      const currEl = document.getElementById('sck' + _scanCheckIdx);
+      if (currEl) { currEl.classList.remove('done'); currEl.classList.add('active'); }
+      document.getElementById('scanCounter').textContent =
+        `Checking ${_scanCheckIdx + 1} of 5 conversion signals...`;
+    }
+  }, 480);
+}
+
+function stopScanAnimation() {
+  if (_scanInterval) { clearInterval(_scanInterval); _scanInterval = null; }
+}
+
+/* ── UI HELPERS ────────────────────────────────────────── */
+function setProgress(pct, label) {
+  // Update hidden compat elements — scan animation is the visible feedback
+  const fill  = document.getElementById('progressFill');
+  const pctEl = document.getElementById('progressPct');
+  const lblEl = document.getElementById('progressLabel');
+  if (fill)  fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+  if (lblEl && label) lblEl.textContent = label;
+}
+
+function addLog(text, type) {
+  // Append to hidden statusLog — no visible effect in new UI
+  const log = document.getElementById('statusLog');
+  if (!log) return;
+  const line = document.createElement('div');
+  line.className = 'log-line ' + (type || '');
+  line.innerHTML = `<span class="log-dot"></span>${text}`;
+  log.appendChild(line);
+}
+
+function showPanel(n) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showError(msg) {
+  const el = document.getElementById('inputError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function showAssessmentError(msg) {
+  stopScanAnimation();
+  document.getElementById('runBtn').disabled = false;
+
+  // Update scan badge to ERROR state
+  const badge = document.getElementById('scanStatusBadge');
+  if (badge) { badge.textContent = 'ERROR'; badge.style.color = 'var(--bug-red)'; badge.style.borderColor = 'rgba(229,72,77,0.25)'; badge.style.animation = 'none'; }
+
+  // Show the error block
+  const errEl = document.getElementById('scanError');
+  const msgEl = document.getElementById('scanErrorMsg');
+  if (msgEl) msgEl.textContent = msg;
+  if (errEl) errEl.classList.add('show');
+
+  // Also write to hidden statusLog for compat
+  addLog(msg, 'error');
+}
+
+function resetToPanel1() {
+  // Clear error state
+  const errEl = document.getElementById('scanError');
+  if (errEl) errEl.classList.remove('show');
+  const badge = document.getElementById('scanStatusBadge');
+  if (badge) { badge.textContent = 'SCANNING'; badge.style.color = ''; badge.style.borderColor = ''; badge.style.animation = ''; }
+  document.getElementById('statusLog').innerHTML = '';
+  showPanel(1);
+}
+
+/* ── MAIN DEMO FLOW ────────────────────────────────────── */
+async function runDemo() {
+  const subject    = document.getElementById('demoSubject').value.trim();
+  const body       = document.getElementById('demoBody').value.trim();
+  const company    = document.getElementById('demoCompany').value.trim() || 'Your Company';
+  const subscribers = parseInt(document.getElementById('demoSubscribers').value) || 10000;
+  const contentType = (document.querySelector('.ctab.active') || {}).dataset?.ctype || 'email';
+
+  if (!subject) return showError('Please enter the headline or subject line.');
+  if (!body) return showError('Please paste the content body.');
+
+  window.demoRunInput = { subject, body, company, subscribers, contentType };
+  document.getElementById('inputError').style.display = 'none';
+  document.getElementById('runBtn').disabled = true;
+
+  // Init scan panel BEFORE switching to it
+  initScanEditor(subject, body);
+
+  showPanel(2);
+  setProgress(0, 'Initialising...');
+  addLog('Assessment engine initialised');
+  addLog('Email received: "' + subject.slice(0, 55) + (subject.length > 55 ? '...' : '') + '"');
+
+  // Start scan animation
+  runScanAnimation();
+
+  try {
+    setProgress(15, 'Running free preview...');
+    addLog('No account required for the preview');
+    const res = await fetch('/api/public-score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subject, body })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Assessment failed');
+    const preview = await pollDemoJob(data.jobId);
+    stopScanAnimation();
+    setProgress(100, 'Preview complete');
+    addLog('Free score ready', 'done');
+    renderPreviewResults(preview, subscribers);
+  } catch (err) {
+    showAssessmentError('Something went wrong scoring this content. Try again, or paste a shorter excerpt.');
+    document.getElementById('runBtn').disabled = false;
+  }
+}
+
+async function pollDemoJob(jobId) {
+  for (let attempts = 0; attempts < 90; attempts++) {
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    const response = await fetch('/generate/status/' + jobId);
+    const data = await response.json();
+    if (data.status === 'complete') return data.result;
+    if (data.status === 'failed') throw new Error(data.error || 'Preview scoring failed');
+  }
+  throw new Error('Preview scoring timed out');
+}
+
+function renderPreviewResults(preview) {
+  const panel = document.getElementById('panel-3');
+  document.getElementById('demoFullResults').hidden = true;
+  document.getElementById('origScore').textContent = Number(preview.score).toFixed(1) + '/10';
+  document.getElementById('newScore').textContent = '—';
+  document.getElementById('bugsFound').textContent = '1';
+  document.getElementById('demoPreviewInsight').textContent = preview.insight || 'The audit found one clear structural friction point.';
+  document.getElementById('demoPreviewCard').style.display = '';
+  panel.classList.add('demo-preview');
+  showPanel(3);
+}
+
+async function unlockDemo() {
+  const email = (document.getElementById('demoUnlockEmail')?.value || '').trim();
+  const terms = document.getElementById('demoUnlockTerms');
+  const error = document.getElementById('demoUnlockError');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    error.textContent = 'Enter a valid email address.';
+    error.style.display = 'block';
+    return;
+  }
+  if (!terms?.checked) {
+    error.textContent = 'Please agree to the Terms of Use to continue.';
+    error.style.display = 'block';
+    return;
+  }
+  error.style.display = 'none';
+  const input = window.demoRunInput;
+  if (!input) return;
+  const button = document.querySelector('#demoPreviewCard button');
+  if (button) { button.disabled = true; button.textContent = 'Unlocking…'; }
+  try {
+    const leadResponse = await fetch('/api/public-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source: 'strategic-flow-demo' })
+    });
+    const leadData = await leadResponse.json();
+    if (!leadResponse.ok) throw new Error(leadData.error || 'Could not save your email.');
+    const response = await fetch('/api/demo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...input, email })
+    });
+    const data = await response.json();
+    if (data.alreadyUsed) { showPanel(4); return; }
+    if (!response.ok) throw new Error(data.error || 'Assessment failed');
+    const result = await pollDemoJob(data.jobId);
+    document.getElementById('demoEmail').value = email;
+    renderResults(result, input.subscribers);
+  } catch (err) {
+    error.textContent = err.message || 'Could not unlock the full report. Please try again.';
+    error.style.display = 'block';
+    if (button) { button.disabled = false; button.textContent = 'Unlock full report →'; }
+  }
+}
+
+/* ── RENDER RESULTS ────────────────────────────────────── */
+function renderResults(result, subscribers) {
+  document.getElementById('demoFullResults').hidden = false;
+  document.getElementById('panel-3').classList.remove('demo-preview');
+  document.getElementById('demoPreviewCard').style.display = 'none';
+  const score   = result.score || result.originalScore || 3;
+  const rebuilt = result.rebuiltScore || result.newScore || 9;
+  const bugs    = result.bugs || [];
+
+  // ── Detect content type group ──────────────────────────
+  const ct       = (result.content_type || 'email').toLowerCase();
+  const isSocial = ct === 'linkedin_post';
+  const isWeb    = ['blog_post','product_update','changelog','release_notes'].includes(ct);
+  const isEmail  = !isSocial && !isWeb;
+
+  document.getElementById('origScore').textContent = score + '/10';
+  document.getElementById('newScore').textContent  = rebuilt + '/10';
+  document.getElementById('bugsFound').textContent = bugs.length + '/5';
+
+  const bugList = document.getElementById('bugList');
+  bugList.innerHTML = bugs.length > 0 ? bugs.map(b => `
+    <div class="bug-item">
+      <span class="bug-icon">⚠</span>
+      <div>
+        <div class="bug-title">${esc(b.name || b.title || 'Structural bug')}</div>
+        <div class="bug-desc">${esc(b.description || b.desc || '')}</div>
+      </div>
+    </div>
+  `).join('') : `<div class="bug-item"><div><div class="bug-desc" style="color:var(--teal)">No critical bugs detected.</div></div></div>`;
+
+  // ── Subject / Headline / Opening line section ──────────
+  const subjectWrap    = document.getElementById('sectionSubjectWrap');
+  const variantsWrap   = document.getElementById('sectionVariantsWrap');
+  const sectionHookTitle = document.getElementById('sectionHookTitle');
+  const sectionRoiTitle  = document.getElementById('sectionRoiTitle');
+
+  if (isSocial) {
+    // LinkedIn: hide subject + variants entirely; rename hook section
+    subjectWrap.style.display  = 'none';
+    variantsWrap.style.display = 'none';
+    sectionHookTitle.textContent = '// Opening line — rebuilt';
+    sectionRoiTitle.textContent  = '// Engagement projection';
+  } else if (isWeb) {
+    subjectWrap.style.display  = '';
+    variantsWrap.style.display = '';
+    document.getElementById('sectionSubjectTitle').textContent  = '// Headline — rebuilt';
+    document.getElementById('sectionVariantsTitle').textContent = '// 3 alternative headlines';
+    sectionHookTitle.textContent = '// Hook / lead paragraph — rebuilt';
+    sectionRoiTitle.textContent  = '// Click-through projection';
+  } else {
+    subjectWrap.style.display  = '';
+    variantsWrap.style.display = '';
+    document.getElementById('sectionSubjectTitle').textContent  = '// Subject line — rebuilt';
+    document.getElementById('sectionVariantsTitle').textContent = '// 3 A/B subject line variants';
+    sectionHookTitle.textContent = '// Hook — rebuilt consequence-first';
+    sectionRoiTitle.textContent  = '// ROI projection';
+  }
+
+  // ── Subject / Headline rebuild ─────────────────────────
+  if (!isSocial) {
+    const origSubject = result.originalSubject || document.getElementById('demoSubject').value;
+    const newSubject  = (result.abSubjects || [])[0]?.subject || result.rebuiltSubject || origSubject;
+    document.getElementById('subjectRebuild').innerHTML = `
+      <div class="rebuild-cell">
+        <div class="rebuild-tag before">Before</div>
+        <div class="rebuild-text">${esc(origSubject)}</div>
+      </div>
+      <div class="rebuild-cell">
+        <div class="rebuild-tag after">After</div>
+        <div class="rebuild-text">${esc(newSubject)}</div>
+      </div>
+    `;
+
+    const variantRateLabel = isEmail ? 'openRate' : 'openRate'; // same field; label differs in heading
+    const variants = result.abSubjects || [];
+    document.getElementById('variantList').innerHTML = variants.length > 0 ? variants.map((v, i) => `
+      <div class="variant-item">
+        <span class="variant-tag">V${i+1}</span>
+        <span class="variant-text">${esc(typeof v === 'string' ? v : v.subject || v)}</span>
+        <span class="variant-rate">${typeof v === 'object' && v.openRate ? v.openRate : ''}</span>
+      </div>
+    `).join('') : '<div style="font-family:\'DM Mono\',monospace;font-size:12px;color:var(--text-dim);padding:16px;">Variants not available.</div>';
+  }
+
+  // ── Hook / Opening line rebuild ────────────────────────
+  const changes = result.whatChanged || [];
+  let hookChange, ctaChange;
+  if (isSocial) {
+    hookChange = changes.find(c => c.fix && (c.fix.toLowerCase().includes('opening') || c.fix.toLowerCase().includes('hook'))) || changes[0] || null;
+    ctaChange  = changes.find(c => c.fix && c.fix.toLowerCase().includes('cta')) || changes[2] || null;
+  } else if (isWeb) {
+    hookChange = changes.find(c => c.fix && (c.fix.toLowerCase().includes('lead') || c.fix.toLowerCase().includes('hook') || c.fix.toLowerCase().includes('paragraph'))) || changes[1] || null;
+    ctaChange  = changes.find(c => c.fix && c.fix.toLowerCase().includes('cta')) || changes[2] || null;
+  } else {
+    hookChange = changes.find(c => c.fix && c.fix.toLowerCase().includes('hook')) || changes[2] || null;
+    ctaChange  = changes.find(c => c.fix && c.fix.toLowerCase().includes('cta')) || changes[3] || null;
+  }
+
+  document.getElementById('hookRebuild').innerHTML = hookChange ? `
+    <div class="rebuild-cell">
+      <div class="rebuild-tag before">Before</div>
+      <div class="rebuild-text">${esc(hookChange.before || '—')}</div>
+    </div>
+    <div class="rebuild-cell">
+      <div class="rebuild-tag after">After</div>
+      <div class="rebuild-text">${esc(hookChange.after || '—')}</div>
+    </div>
+  ` : '<div class="rebuild-cell" style="grid-column:1/-1"><div class="rebuild-text" style="color:var(--text-dim)">Rebuild not available.</div></div>';
+
+  document.getElementById('ctaRebuild').innerHTML = ctaChange ? `
+    <div class="rebuild-cell">
+      <div class="rebuild-tag before">Before</div>
+      <div class="rebuild-text">${esc(ctaChange.before || '—')}</div>
+    </div>
+    <div class="rebuild-cell">
+      <div class="rebuild-tag after">After</div>
+      <div class="rebuild-text">${esc(ctaChange.after || '—')}</div>
+    </div>
+  ` : '<div class="rebuild-cell" style="grid-column:1/-1"><div class="rebuild-text" style="color:var(--text-dim)">CTA rebuild not available.</div></div>';
+
+  // ── Projection section (ROI / Engagement / Click-through) ─
+  const engagementNoteEl = document.getElementById('roiEngagementNote');
+
+  if (isEmail) {
+    const currentRate    = result.currentOpenRate   || 0.18;
+    const projectedRate  = result.projectedOpenRate || 0.31;
+    const currentReaders  = Math.round(subscribers * currentRate);
+    const projectedReaders = Math.round(subscribers * projectedRate);
+    const delta = (projectedReaders - currentReaders) * 4;
+
+    document.getElementById('roiCurrentLabel').textContent    = 'Current open rate';
+    document.getElementById('roiProjectedLabel').textContent  = 'Projected open rate';
+    document.getElementById('roiDeltaLabel').textContent      = 'Monthly delta';
+    document.getElementById('roiCurrent').textContent         = Math.round(currentRate * 100) + '%';
+    document.getElementById('roiCurrentReaders').textContent  = currentReaders.toLocaleString() + ' readers/email';
+    document.getElementById('roiProjected').textContent       = Math.round(projectedRate * 100) + '%';
+    document.getElementById('roiProjectedReaders').textContent = projectedReaders.toLocaleString() + ' readers/email';
+    document.getElementById('roiDelta').textContent           = '+' + delta.toLocaleString();
+    document.getElementById('roiDeltaNote').textContent       = 'Additional readers/month (4 emails)';
+    engagementNoteEl.style.display = 'none';
+
+  } else if (isSocial) {
+    const curr = result.currentEngagementRate;
+    const proj = result.projectedEngagementRate;
+
+    document.getElementById('roiCurrentLabel').textContent   = 'Est. engagement rate';
+    document.getElementById('roiProjectedLabel').textContent = 'Projected engagement rate';
+    document.getElementById('roiDeltaLabel').textContent     = 'Estimated uplift';
+    document.getElementById('roiCurrent').textContent        = curr != null ? Math.round(curr * 100) + '%' : 'n/a';
+    document.getElementById('roiCurrentReaders').textContent = 'with current hook structure';
+    document.getElementById('roiProjected').textContent      = proj != null ? Math.round(proj * 100) + '%' : 'n/a';
+    document.getElementById('roiProjectedReaders').textContent = 'with consequence-first opening';
+
+    if (curr != null && proj != null && curr > 0) {
+      const uplift = Math.round((proj - curr) / curr * 100);
+      document.getElementById('roiDelta').textContent    = '+' + uplift + '%';
+      document.getElementById('roiDeltaNote').textContent = 'Estimated engagement uplift';
+    } else {
+      document.getElementById('roiDelta').textContent    = '—';
+      document.getElementById('roiDeltaNote').textContent = 'See note below';
+    }
+
+    const note = result.engagementNote;
+    if (note) {
+      engagementNoteEl.textContent   = note;
+      engagementNoteEl.style.display = 'block';
+    } else {
+      engagementNoteEl.style.display = 'none';
+    }
+
+  } else {
+    // Web content
+    const curr = result.currentReadThroughRate;
+    const proj = result.projectedReadThroughRate;
+
+    document.getElementById('roiCurrentLabel').textContent   = 'Est. read-through rate';
+    document.getElementById('roiProjectedLabel').textContent = 'Projected read-through rate';
+    document.getElementById('roiDeltaLabel').textContent     = 'Estimated uplift';
+
+    if (curr != null && proj != null && curr > 0) {
+      const uplift = Math.round((proj - curr) / curr * 100);
+      document.getElementById('roiCurrent').textContent          = Math.round(curr * 100) + '%';
+      document.getElementById('roiCurrentReaders').textContent   = 'current headline + hook performance';
+      document.getElementById('roiProjected').textContent        = Math.round(proj * 100) + '%';
+      document.getElementById('roiProjectedReaders').textContent = 'with optimized headline + hook';
+      document.getElementById('roiDelta').textContent            = '+' + uplift + '%';
+      document.getElementById('roiDeltaNote').textContent        = 'Estimated click-through / read-through lift';
+      engagementNoteEl.style.display = 'none';
+    } else {
+      document.getElementById('roiCurrent').textContent          = 'n/a';
+      document.getElementById('roiCurrentReaders').textContent   = 'no reliable benchmark';
+      document.getElementById('roiProjected').textContent        = 'n/a';
+      document.getElementById('roiProjectedReaders').textContent = 'no reliable benchmark';
+      document.getElementById('roiDelta').textContent            = '—';
+      document.getElementById('roiDeltaNote').textContent        = 'See note below';
+      const note = result.readThroughNote;
+      if (note) {
+        engagementNoteEl.textContent   = note;
+        engagementNoteEl.style.display = 'block';
+      } else {
+        engagementNoteEl.style.display = 'none';
+      }
+    }
+  }
+
+  // Capture text for paid rebuild
+  const _subj = (document.getElementById('demoSubject').value || '').trim();
+  const _body = (document.getElementById('demoBody').value || '').trim();
+  _rebuildEmailText = (_subj + '\n\n' + _body).slice(0, 12000);
+  _rebuildData = null;
+  document.getElementById('rebuildTrigger').style.display  = 'block';
+  document.getElementById('rebuildResults').style.display  = 'none';
+  document.getElementById('rebuildLimitReached').style.display = 'none';
+  document.getElementById('rebuildLoading').style.display  = 'none';
+  document.getElementById('rebuildCountDisplay').style.display = 'none';
+  document.getElementById('rebuildErrMsg').style.display   = 'none';
+  const btn = document.getElementById('rebuildBtn');
+  btn.disabled = false;
+  btn.textContent = 'Run the paid rebuild on this email';
+
+  showPanel(3);
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── DEMO REBUILD ──────────────────────────────────────── */
+async function runDemoRebuild() {
+  if (!_rebuildEmailText) return;
+  const btn = document.getElementById('rebuildBtn');
+  btn.disabled = true;
+  document.getElementById('rebuildLoading').style.display  = 'block';
+  document.getElementById('rebuildResults').style.display  = 'none';
+  document.getElementById('rebuildErrMsg').style.display   = 'none';
+
+  try {
+    const r = await fetch('/api/demo-rebuild', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email_text: _rebuildEmailText })
+    });
+    const data = await r.json();
+    document.getElementById('rebuildLoading').style.display = 'none';
+
+    if (r.status === 429) {
+      document.getElementById('rebuildTrigger').style.display     = 'none';
+      document.getElementById('rebuildLimitReached').style.display = 'block';
+      document.getElementById('paidRebuildSection').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    if (!r.ok || data.error) {
+      btn.disabled = false;
+      const e = document.getElementById('rebuildErrMsg');
+      e.textContent = 'Rebuild failed. Please try again.';
+      e.style.display = 'block';
+      return;
+    }
+    _rebuildData = data;
+    renderRebuildResults(data);
+  } catch (err) {
+    document.getElementById('rebuildLoading').style.display = 'none';
+    btn.disabled = false;
+    const e = document.getElementById('rebuildErrMsg');
+    e.textContent = 'Network error. Please try again.';
+    e.style.display = 'block';
+  }
+}
+
+function renderRebuildResults(d) {
+  const origPreview = _rebuildEmailText.slice(0, 400) + (_rebuildEmailText.length > 400 ? '...' : '');
+  document.getElementById('rebuildBeforeAfter').innerHTML = `
+    <div style="background:var(--panel);padding:20px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--bug-red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Before</div>
+      <div style="font-size:11px;color:var(--text-primary);font-weight:600;margin-bottom:8px;line-height:1.5;">Subject: ${esc(d.original_subject)}</div>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.7;border-top:1px solid var(--border);padding-top:12px;white-space:pre-line;">${esc(origPreview)}</div>
+    </div>
+    <div style="background:rgba(29,158,117,0.05);padding:20px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">After — rebuilt</div>
+      <div style="font-size:11px;color:#4ade80;font-weight:600;margin-bottom:8px;line-height:1.5;">Subject: ${esc(d.rebuilt_subject)}</div>
+      <div style="font-size:12px;color:var(--text-primary);line-height:1.7;border-top:1px solid var(--border);padding-top:12px;">
+        ${(d.rebuilt_body || []).map(p => `<p style="margin:0 0 8px;">${esc(p)}</p>`).join('')}
+        <p style="margin:8px 0 0;"><span style="background:var(--teal);color:#fff;padding:6px 12px;font-size:11px;font-weight:600;">${esc(d.rebuilt_cta || 'See the full rebuild')}</span></p>
+      </div>
+    </div>`;
+
+  const variants = d.variants || [];
+  document.getElementById('rebuildVariants').innerHTML = `<div style="display:flex;flex-direction:column;gap:14px;">` +
+    variants.map((v, i) => `
+      <div style="${i > 0 ? 'padding-top:14px;border-top:1px solid var(--border);' : ''}display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);min-width:32px;">${esc(v.label || String.fromCharCode(65 + i))}</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5;margin-bottom:4px;">${esc(v.subject)}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);">Pattern: ${esc(v.pattern)}</div>
+        </div>
+      </div>`).join('') + `</div>`;
+
+  const changes = d.changes || [];
+  document.getElementById('rebuildChanges').innerHTML = changes.map((c, i) => `
+    <div style="${i > 0 ? 'border-top:1px solid var(--border);' : ''}padding:16px 20px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--scan-cyan);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">${esc(c.element)}</div>
+      <div style="background:rgba(229,72,77,0.07);border-left:2px solid var(--bug-red);padding:8px 12px;margin-bottom:8px;font-size:12px;color:var(--text-primary);line-height:1.6;">${esc(c.before)}</div>
+      <div style="background:rgba(29,158,117,0.08);border-left:2px solid var(--teal);padding:8px 12px;margin-bottom:8px;font-size:12px;color:var(--text-primary);line-height:1.6;">${esc(c.after)}</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);line-height:1.6;">${esc(c.why)}</div>
+    </div>`).join('');
+
+  const used = d.rebuild_count || 1;
+  const remaining = 3 - used;
+  const countEl = document.getElementById('rebuildCountDisplay');
+  countEl.textContent = 'Rebuild ' + used + ' of 3 for this email';
+  countEl.style.display = 'block';
+
+  document.getElementById('rebuildResults').style.display = 'block';
+  document.getElementById('paidRebuildSection').scrollIntoView({ behavior: 'smooth' });
+
+  const btn = document.getElementById('rebuildBtn');
+  if (remaining <= 0) {
+    document.getElementById('rebuildTrigger').style.display     = 'none';
+    document.getElementById('rebuildLimitReached').style.display = 'block';
+  } else {
+    btn.disabled = false;
+    btn.textContent = 'Run again (' + remaining + ' left)';
+  }
+}
+
+/* ── DOWNLOAD REBUILD ──────────────────────────────────── */
+function downloadRebuild() {
+  if (!_rebuildData) return;
+  const d = _rebuildData;
+  const origPreview = _rebuildEmailText.slice(0, 600) + (_rebuildEmailText.length > 600 ? '...' : '');
+
+  const afterParas   = (d.rebuilt_body || []).map(p => '<p>' + esc(p) + '</p>').join('');
+  const variantsHtml = (d.variants || []).map((v, i) => `
+    <div class="var-row">
+      <div class="var-lbl">${esc(v.label || String.fromCharCode(65 + i))}</div>
+      <div><div class="var-subj">${esc(v.subject)}</div><div class="var-pat">Pattern: ${esc(v.pattern)}</div></div>
+    </div>`).join('');
+  const changesHtml = (d.changes || []).map(c => `
+    <div class="chg-row">
+      <div class="chg-el">${esc(c.element)}</div>
+      <div class="chg-before">${esc(c.before)}</div>
+      <div class="chg-after">${esc(c.after)}</div>
+      <div class="chg-why">${esc(c.why)}</div>
+    </div>`).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow Rebuild</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;}
+body{font-family:'Inter',Arial,sans-serif;background:#060a10;color:#EDEFF2;margin:0;padding:16px;}
+.wrap{max-width:720px;margin:0 auto;padding:16px;}
+p{margin:0 0 8px;line-height:1.7;font-size:15px;}
+h2{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#1d9e75;margin:0 0 12px;}
+.section{margin-bottom:32px;}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08);}
+@media(max-width:700px){.ba-grid{grid-template-columns:1fr;}}
+.ba-cell{padding:20px;}
+.ba-before{background:#0d141c;}
+.ba-after{background:rgba(29,158,117,0.05);}
+.ba-lbl{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.ba-lbl.before{color:#E5484D;}.ba-lbl.after{color:#1d9e75;}
+.ba-subj{font-size:13px;font-weight:600;margin-bottom:10px;line-height:1.5;}
+.ba-subj.after{color:#4ade80;}
+.ba-body{font-size:13px;line-height:1.7;border-top:1px solid rgba(255,255,255,0.08);padding-top:12px;overflow-x:auto;white-space:pre-line;}
+.cta-btn{display:inline-block;background:#1d9e75;color:#fff;padding:10px 24px;font-size:13px;font-weight:600;text-decoration:none;margin-top:8px;}
+.var-block{background:#0d141c;border:1px solid rgba(255,255,255,0.08);padding:20px;}
+.var-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);align-items:flex-start;}
+.var-row:last-child{border-bottom:none;}
+.var-lbl{font-family:'DM Mono',monospace;font-size:10px;color:#1d9e75;min-width:24px;flex-shrink:0;padding-top:2px;}
+.var-subj{font-size:14px;color:#EDEFF2;line-height:1.5;margin-bottom:4px;}
+.var-pat{font-family:'DM Mono',monospace;font-size:10px;color:#7C8894;}
+.chg-block{background:#0d141c;border:1px solid rgba(255,255,255,0.08);}
+.chg-row{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.chg-row:last-child{border-bottom:none;}
+.chg-el{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#4EE1FF;margin-bottom:8px;}
+.chg-before{background:rgba(229,72,77,0.07);border-left:2px solid #E5484D;padding:8px 12px;font-size:12px;color:#EDEFF2;line-height:1.6;margin-bottom:6px;overflow-x:auto;}
+.chg-after{background:rgba(29,158,117,0.08);border-left:2px solid #1d9e75;padding:8px 12px;font-size:12px;color:#EDEFF2;line-height:1.6;margin-bottom:6px;overflow-x:auto;}
+.chg-why{font-family:'DM Mono',monospace;font-size:10px;color:#7C8894;line-height:1.6;}
+.arch-cta{border:1px solid rgba(29,158,117,0.25);padding:24px;margin-top:32px;background:rgba(29,158,117,0.04);}
+.arch-cta p{font-size:14px;margin-bottom:16px;}
+.arch-btn{display:inline-block;background:#1d9e75;color:#fff;padding:12px 28px;font-size:14px;font-weight:600;text-decoration:none;}
+footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);font-family:'DM Mono',monospace;font-size:11px;color:#7C8894;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="section">
+    <h2>01 — Your email, rebuilt</h2>
+    <div class="ba-grid">
+      <div class="ba-cell ba-before">
+        <div class="ba-lbl before">Before</div>
+        <div class="ba-subj">Subject: ${esc(d.original_subject)}</div>
+        <div class="ba-body">${esc(origPreview)}</div>
+      </div>
+      <div class="ba-cell ba-after">
+        <div class="ba-lbl after">After — rebuilt</div>
+        <div class="ba-subj after">Subject: ${esc(d.rebuilt_subject)}</div>
+        <div class="ba-body">${afterParas}<a href="https://strategicflow.tech/architecture.html" class="cta-btn">${esc(d.rebuilt_cta || 'See the full rebuild')}</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>02 — A/B subject variants</h2>
+    <div class="var-block">${variantsHtml}</div>
+  </div>
+  <div class="section">
+    <h2>03 — What changed and why</h2>
+    <div class="chg-block">${changesHtml}</div>
+  </div>
+  <div class="arch-cta">
+    <p>This rebuild ran once, on one email. Architecture runs the full system on every email your company sends, every month.</p>
+    <a href="https://strategicflow.tech/architecture.html" class="arch-btn">See how Architecture works</a>
+  </div>
+  <footer>Rebuilt by Strategic Flow Architecture — strategicflow.tech</footer>
+</div>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'strategic-flow-rebuild.html';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+/* ── AFFILIATE / REVIEW NAVIGATION ────────────────────── */
+function goToDecisionFrictionReview() {
+  const base = 'https://strategic-flow-pro.replit.app/decision-friction-review/';
+  const url  = _affiliateRef
+    ? base + '?ref=' + encodeURIComponent(_affiliateRef)
+    : base;
+  window.open(url, '_blank');
+}
+
+function goToArchitecture() {
+  const base = 'https://strategic-flow-pro.replit.app/packages';
+  const url  = _affiliateRef
+    ? base + '?ref=' + encodeURIComponent(_affiliateRef) + '#architecture'
+    : base + '#architecture';
+  window.location.href = url;
+}
+
+/* ── LOAD FROM URL ?job=jobId ──────────────────────────── */
+(async function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const jobId  = params.get('job');
+  _affiliateRef = params.get('ref') || '';   // persist for entire session
+  if (!jobId) return;
+
+  try {
+    showPanel(2);
+    setProgress(80, 'Loading saved result...');
+    addLog('Fetching saved assessment...');
+
+    const r = await fetch('/generate/status/' + jobId);
+    const d = await r.json();
+
+    if (d.status === 'complete') {
+      setProgress(100, 'Complete');
+      addLog('Assessment loaded', 'done');
+      await new Promise(r => setTimeout(r, 400));
+      renderResults(d.result, 0);
+    } else if (d.status === 'failed') {
+      addLog('Saved assessment failed — please run a new one', 'error');
+      showPanel(1);
+    } else {
+      addLog('Assessment not found or expired', 'error');
+      showPanel(1);
+    }
+  } catch (e) {
+    showPanel(1);
+  }
+})();
+</script>
+
+<footer style="margin-top:64px;padding:32px 24px;border-top:1px solid var(--border);text-align:center;font-family:inherit;">
+  <div style="margin-bottom:16px;">
+    <a href="https://strategicflow.tech" style="color:var(--text-dim);text-decoration:none;margin:0 12px;font-size:13px;">Strategic Flow</a>
+    <a href="https://strategicflow.tech/teardowns.html" style="color:var(--text-dim);text-decoration:none;margin:0 12px;font-size:13px;">57 Teardowns</a>
+    <a href="https://strategicflow.tech/glossary.html" style="color:var(--text-dim);text-decoration:none;margin:0 12px;font-size:13px;">Glossary</a>
+    <a href="https://strategicflow.tech/addons.html" style="color:var(--text-dim);text-decoration:none;margin:0 12px;font-size:13px;">Add-Ons</a>
+    <a href="https://strategicflowtech.gumroad.com/l/koczgh" style="color:var(--text-dim);text-decoration:none;margin:0 12px;font-size:13px;">$47 Pack</a>
+  </div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.25);">Strategic Flow © 2026 · Built by Alex Iliescu · <a href="https://strategicflow.tech" style="color:rgba(255,255,255,0.25);">strategicflow.tech</a> &nbsp;|&nbsp; <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank" style="color:rgba(255,255,255,0.25);text-decoration:none;">Terms</a></div>
+</footer>
+
+<!-- COOKIE CONSENT BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  var STORAGE_KEY = 'sf_consent';
+  var stored = localStorage.getItem(STORAGE_KEY);
+  var banner = document.getElementById('cookie-banner');
+
+  function grant() {
+    gtag('consent', 'update', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted'
+    });
+  }
+
+  if (stored === 'granted') {
+    grant();
+  } else if (stored !== 'denied') {
+    banner.classList.add('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  }
+
+  document.getElementById('cookie-accept').addEventListener('click', function() {
+    localStorage.setItem(STORAGE_KEY, 'granted');
+    grant();
+    banner.classList.remove('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  });
+
+  document.getElementById('cookie-decline').addEventListener('click', function() {
+    localStorage.setItem(STORAGE_KEY, 'denied');
+    banner.classList.remove('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  });
+})();
+</script>
+</body>
+</html>

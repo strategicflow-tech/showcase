@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7TV731EJTB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+
+  gtag('js', new Date());
+  gtag('config', 'G-7TV731EJTB');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Flow — A/B Test Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a08;
+    --white: #f4f2ed;
+    --signal: #4A8FE7;
+    --signal-dim: #2D6BE4;
+    --noise: #ff4d2e;
+    --mid: #a8a39b;
+    --border: rgba(244,242,237,0.12);
+    --card: rgba(244,242,237,0.04);
+    --green: #34d399;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(244,242,237,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(244,242,237,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,8,0.9);
+    backdrop-filter: blur(16px);
+  }
+
+  .nav-logo { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--signal); }
+  .nav-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: var(--mid); text-decoration: none; transition: color 0.2s; }
+  .nav-back:hover { color: var(--white); }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 100px 24px 80px;
+  }
+
+  .page-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.16em; color: var(--signal); text-transform: uppercase; margin-bottom: 16px; }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: clamp(28px, 4vw, 44px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .page-title em { font-style: italic; color: var(--signal); }
+  .page-sub { font-size: 15px; color: var(--mid); margin-bottom: 40px; line-height: 1.7; }
+
+  label { display: block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--mid); text-transform: uppercase; margin-bottom: 8px; }
+  input, select { width: 100%; background: var(--card); border: 1px solid var(--border); color: var(--white); font-family: 'DM Mono', monospace; font-size: 13px; padding: 12px 14px; outline: none; transition: border-color 0.2s; margin-bottom: 0; -webkit-appearance: none; }
+  input:focus, select:focus { border-color: rgba(74,143,231,0.5); }
+  input[type="number"] { -moz-appearance: textfield; }
+  select option { background: #1a1a18; }
+
+  .add-form {
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    background: var(--card);
+  }
+
+  .form-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--signal);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 140px; gap: 16px; margin-bottom: 20px; }
+
+  .field { display: flex; flex-direction: column; gap: 8px; }
+
+  .variant-block {
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    background: rgba(244,242,237,0.02);
+  }
+
+  .variant-label-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .variant-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--signal);
+    padding: 3px 10px;
+  }
+
+  .variant-badge.b { background: var(--mid); }
+
+  .variant-inputs { display: grid; grid-template-columns: 1fr 130px 160px; gap: 14px; align-items: end; }
+
+  .btn { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 0.08em; padding: 12px 24px; cursor: pointer; border: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary { background: var(--signal); color: var(--white); }
+  .btn-primary:hover { background: var(--signal-dim); }
+  .btn-ghost { background: transparent; color: var(--mid); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--white); border-color: rgba(244,242,237,0.3); }
+
+  /* WINNER PANEL */
+  .winner-panel {
+    border: 1px solid rgba(52,211,153,0.3);
+    background: rgba(52,211,153,0.04);
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    display: none;
+  }
+
+  .winner-panel.visible { display: block; }
+
+  .winner-panel-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .winner-scores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .score-cell {
+    background: var(--black);
+    padding: 18px 20px;
+  }
+
+  .score-cell.is-winner {
+    background: rgba(52,211,153,0.06);
+  }
+
+  .score-cell-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--mid);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .winner-tag {
+    color: var(--green);
+    border: 1px solid rgba(52,211,153,0.35);
+    padding: 1px 7px;
+    font-size: 9px;
+  }
+
+  .score-cell-subject {
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .score-cell-rate {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .score-cell-rate.wins { color: var(--green); }
+  .score-cell-rate.loses { color: var(--mid); }
+
+  .bar-track { height: 3px; background: var(--border); margin-top: 10px; }
+  .bar-fill { height: 100%; transition: width 0.7s ease; }
+  .bar-fill.wins { background: var(--green); }
+  .bar-fill.loses { background: var(--mid); }
+
+  .winner-insight {
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.7;
+    border-left: 2px solid var(--green);
+    padding-left: 14px;
+  }
+
+  /* HISTORY */
+  .history-section { margin-top: 40px; }
+
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .tests-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .test-card { border: 1px solid var(--border); transition: border-color 0.2s; }
+  .test-card:hover { border-color: rgba(74,143,231,0.2); }
+
+  .test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 20px;
+    background: var(--card);
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .test-header.open { border-bottom-color: var(--border); }
+
+  .test-name { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+  .test-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--mid); }
+
+  .test-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .test-winner-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    border: 1px solid rgba(52,211,153,0.3);
+    padding: 3px 9px;
+  }
+
+  .delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--mid);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 0 2px;
+    transition: color 0.2s;
+  }
+
+  .delete-btn:hover { color: var(--noise); }
+
+  .test-body { display: none; padding: 18px 20px; }
+  .test-body.open { display: block; }
+
+  .test-body-bars { display: flex; flex-direction: column; gap: 14px; }
+
+  .test-variant-row { display: flex; flex-direction: column; gap: 6px; }
+  .test-variant-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .test-variant-subject { font-size: 13px; color: var(--white); flex: 1; }
+  .test-variant-rate { font-family: 'DM Mono', monospace; font-size: 13px; min-width: 50px; text-align: right; }
+  .test-variant-rate.wins { color: var(--green); }
+  .test-variant-rate.loses { color: var(--mid); }
+
+  /* PATTERNS */
+  .patterns-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .pattern-cell { background: var(--black); padding: 20px; }
+  .pattern-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--mid); text-transform: uppercase; margin-bottom: 8px; }
+  .pattern-value { font-family: 'DM Serif Display', serif; font-size: 30px; color: var(--signal); line-height: 1; margin-bottom: 4px; }
+  .pattern-note { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+  /* HOW TO USE */
+  .how-to-use {
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    background: rgba(74,143,231,0.03);
+  }
+
+  .how-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin-bottom: 20px;
+  }
+
+  .how-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .how-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.65;
+  }
+
+  .how-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--signal);
+    flex-shrink: 0;
+    padding-top: 1px;
+    min-width: 22px;
+  }
+
+  .how-step strong {
+    display: block;
+    color: var(--white);
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  .how-tip {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  .how-tip-icon {
+    font-family: 'DM Mono', monospace;
+    color: var(--signal);
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+
+  .empty { text-align: center; padding: 48px 24px; border: 1px solid var(--border); }
+  .empty-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 8px; }
+  .empty-sub { font-size: 14px; color: var(--mid); }
+
+  @media (max-width: 640px) {
+    nav { padding: 14px 20px; }
+    main { padding: 80px 16px 60px; }
+    .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    .variant-inputs { grid-template-columns: 1fr 120px; }
+    .variant-inputs > *:last-child { grid-column: 1 / -1; }
+    .winner-scores { grid-template-columns: 1fr; }
+    .patterns-row { grid-template-columns: 1fr 1fr; }
+  }
+
+/* COOKIE CONSENT */
+#cookie-banner{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:var(--bg3, #161614);border-top:1px solid var(--border, rgba(255,255,255,0.1));padding:18px 48px;display:none;}
+#cookie-banner.visible{display:flex;}
+.cookie-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;width:100%;flex-wrap:wrap;}
+.cookie-text{font-size:13px;color:var(--text2, #ddddd8);line-height:1.6;max-width:680px;}
+.cookie-text a{color:var(--green, #4A8FE7);text-decoration:underline;}
+.cookie-actions{display:flex;gap:10px;flex-shrink:0;}
+.cookie-btn{font-family:var(--mono, 'DM Mono', monospace);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding:10px 18px;border-radius:6px;cursor:pointer;border:1px solid var(--border, rgba(255,255,255,0.1));background:transparent;color:var(--text2, #ddddd8);transition:all .2s;}
+.cookie-btn:hover{border-color:var(--green, #4A8FE7);color:var(--green, #4A8FE7);}
+.cookie-btn.accept{background:var(--green, #4A8FE7);color:#fff;border-color:var(--green, #4A8FE7);}
+.cookie-btn.accept:hover{background:var(--green-mid, #2D6BE4);}
+@media(max-width:640px){
+  #cookie-banner{padding:16px 18px;}
+  .cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}
+  .cookie-actions{justify-content:flex-end;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/architecture-dashboard" class="nav-logo">Strategic Flow <span>Architecture</span></a>
+  <a href="/architecture-dashboard" class="nav-back">← Dashboard</a>
+</nav>
+
+<main>
+  <div class="page-label">// Tool 04 — A/B Test Tracker</div>
+  <h1 class="page-title">Track what actually<br><em>converts.</em></h1>
+  <p class="page-sub">Log A/B subject line tests, record real open or click rates, and see which pattern wins — with a running history of every test.</p>
+
+  <!-- HOW TO USE -->
+  <div class="how-to-use">
+    <div class="how-title">// How it works</div>
+    <div class="how-steps">
+      <div class="how-step">
+        <span class="how-num">01</span>
+        <div>
+          <strong>Fill in the test</strong>
+          Enter the email name, send date, and the two subject line variants (A and B).
+        </div>
+      </div>
+      <div class="how-step">
+        <span class="how-num">02</span>
+        <div>
+          <strong>Add the real rates</strong>
+          Once the test is done, enter the actual open rate or click rate for each variant. Select the right metric from the dropdown (Open rate / Click rate).
+        </div>
+      </div>
+      <div class="how-step">
+        <span class="how-num">03</span>
+        <div>
+          <strong>Click Save &amp; Compare</strong>
+          The tool calculates the winner, shows the exact difference between variants, and logs the test to your session history below.
+        </div>
+      </div>
+      <div class="how-step">
+        <span class="how-num">04</span>
+        <div>
+          <strong>Track patterns over time</strong>
+          After a few tests, the <em>What's winning</em> section shows your average winner rate and the subject type that converts most consistently with your audience.
+        </div>
+      </div>
+    </div>
+    <div class="how-tip">
+      <span class="how-tip-icon">→</span>
+      Rates are optional — you can save a test while it's still running and it will appear in your history. Add the results later when the test is complete.
+    </div>
+  </div>
+
+  <!-- ADD TEST FORM -->
+  <div class="add-form">
+    <div class="form-title">// Log a new A/B test</div>
+
+    <div class="form-row" style="margin-bottom:20px;">
+      <div class="field">
+        <label>Test name / email</label>
+        <input type="text" id="testName" placeholder="e.g. April product update">
+      </div>
+      <div class="field">
+        <label>Date sent</label>
+        <input type="date" id="testDate">
+      </div>
+    </div>
+
+    <!-- Variant A -->
+    <div class="variant-block">
+      <div class="variant-label-row">
+        <span class="variant-badge">A</span>
+      </div>
+      <div class="variant-inputs">
+        <div class="field">
+          <label>Subject line</label>
+          <input type="text" id="subjectA" placeholder="Variant A subject line">
+        </div>
+        <div class="field">
+          <label id="rateLabel">Open rate %</label>
+          <input type="number" id="rateA" placeholder="e.g. 28" min="0" max="100" step="0.1">
+        </div>
+        <div class="field">
+          <label>Subject type</label>
+          <select id="typeA">
+            <option value="">Select type…</option>
+            <option value="consequence">Consequence</option>
+            <option value="curiosity">Curiosity gap</option>
+            <option value="number">Number-led</option>
+            <option value="question">Question</option>
+            <option value="announcement">Announcement</option>
+            <option value="personal">Personal</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variant B -->
+    <div class="variant-block" style="margin-bottom:20px;">
+      <div class="variant-label-row">
+        <span class="variant-badge b">B</span>
+      </div>
+      <div class="variant-inputs">
+        <div class="field">
+          <label>Subject line</label>
+          <input type="text" id="subjectB" placeholder="Variant B subject line">
+        </div>
+        <div class="field">
+          <label>Open rate %</label>
+          <input type="number" id="rateB" placeholder="e.g. 34" min="0" max="100" step="0.1">
+        </div>
+        <div class="field">
+          <label>Subject type</label>
+          <select id="typeB">
+            <option value="">Select type…</option>
+            <option value="consequence">Consequence</option>
+            <option value="curiosity">Curiosity gap</option>
+            <option value="number">Number-led</option>
+            <option value="question">Question</option>
+            <option value="announcement">Announcement</option>
+            <option value="personal">Personal</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
+      <label style="margin-bottom:0;white-space:nowrap;">Metric tracked:</label>
+      <select id="metricType" style="width:auto;flex:0 0 auto;margin-bottom:0;" onchange="updateRateLabels()">
+        <option value="open">Open rate</option>
+        <option value="click">Click rate</option>
+      </select>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-primary" onclick="saveTest()">Save &amp; Compare →</button>
+      <button class="btn btn-ghost" onclick="clearForm()">Clear</button>
+    </div>
+  </div>
+
+  <!-- LIVE WINNER PANEL -->
+  <div class="winner-panel" id="winnerPanel">
+    <div class="winner-panel-label">// Result — Winner</div>
+    <div class="winner-scores" id="winnerScores"></div>
+    <div class="winner-insight" id="winnerInsight"></div>
+  </div>
+
+  <!-- PATTERNS SUMMARY -->
+  <div id="patternsSection" style="display:none; margin-bottom:0;">
+    <div class="page-label" style="margin-bottom:16px;">// What's winning</div>
+    <div class="patterns-row">
+      <div class="pattern-cell">
+        <div class="pattern-label">Tests logged</div>
+        <div class="pattern-value" id="patternCount">0</div>
+        <div class="pattern-note">With rate data</div>
+      </div>
+      <div class="pattern-cell">
+        <div class="pattern-label">Avg winner rate</div>
+        <div class="pattern-value" id="patternAvgRate">—</div>
+        <div class="pattern-note">Winning variants</div>
+      </div>
+      <div class="pattern-cell">
+        <div class="pattern-label">Top pattern</div>
+        <div class="pattern-value" id="patternTop" style="font-size:18px;padding-top:6px;">—</div>
+        <div class="pattern-note">Most common winner</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history-section">
+    <div class="history-header">
+      <div class="page-label" style="margin-bottom:0;">// Session history</div>
+      <button class="btn btn-ghost" style="padding:8px 14px;font-size:11px;" onclick="clearAll()" id="clearAllBtn" style="display:none;">Clear all</button>
+    </div>
+    <div id="testsList"></div>
+  </div>
+</main>
+
+<script>
+let tests = JSON.parse(localStorage.getItem('sf_ab_tests_v2') || '[]');
+
+function save() {
+  localStorage.setItem('sf_ab_tests_v2', JSON.stringify(tests));
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function updateRateLabels() {
+  const metric = document.getElementById('metricType').value;
+  const label = metric === 'click' ? 'Click rate %' : 'Open rate %';
+  document.querySelectorAll('[id="rateLabel"], label[for="rateA"]').forEach(el => el.textContent = label);
+  document.querySelectorAll('.variant-block label').forEach(el => {
+    if (el.textContent.includes('rate')) el.textContent = label;
+  });
+}
+
+const TYPE_INSIGHTS = {
+  consequence: "Consequence-first subjects are winning — naming the reader's problem outperforms feature announcements.",
+  curiosity:   "Curiosity gaps are driving opens — the open loop compels action before intent is decided.",
+  number:      "Number-led subjects are outperforming — specificity creates credibility before the open.",
+  question:    "Questions are converting — but watch for fatigue if repeated every send.",
+  announcement:"Announcement subjects won this test — rarely the strongest long-term pattern.",
+  personal:    "Personal tone is resonating — conversational subjects feel less like broadcast."
+};
+
+function showWinner(a, b, metricLabel) {
+  const panel = document.getElementById('winnerPanel');
+  const scoresEl = document.getElementById('winnerScores');
+  const insightEl = document.getElementById('winnerInsight');
+
+  const hasRateA = a.rate !== null;
+  const hasRateB = b.rate !== null;
+
+  if (!hasRateA || !hasRateB) { panel.classList.remove('visible'); return; }
+
+  const aWins = a.rate >= b.rate;
+  const maxRate = Math.max(a.rate, b.rate);
+
+  scoresEl.innerHTML = `
+    <div class="score-cell ${aWins ? 'is-winner' : ''}">
+      <div class="score-cell-label">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;background:var(--signal);color:var(--black);padding:2px 8px;">A</span>
+        ${aWins ? '<span class="winner-tag">winner</span>' : ''}
+      </div>
+      <div class="score-cell-subject">${esc(a.subject)}</div>
+      <div class="score-cell-rate ${aWins ? 'wins' : 'loses'}">${a.rate}%</div>
+      <div class="bar-track"><div class="bar-fill ${aWins ? 'wins' : 'loses'}" style="width:${maxRate > 0 ? (a.rate/maxRate*100).toFixed(1) : 0}%"></div></div>
+    </div>
+    <div class="score-cell ${!aWins ? 'is-winner' : ''}">
+      <div class="score-cell-label">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;background:var(--mid);color:var(--black);padding:2px 8px;">B</span>
+        ${!aWins ? '<span class="winner-tag">winner</span>' : ''}
+      </div>
+      <div class="score-cell-subject">${esc(b.subject)}</div>
+      <div class="score-cell-rate ${!aWins ? 'wins' : 'loses'}">${b.rate}%</div>
+      <div class="bar-track"><div class="bar-fill ${!aWins ? 'wins' : 'loses'}" style="width:${maxRate > 0 ? (b.rate/maxRate*100).toFixed(1) : 0}%"></div></div>
+    </div>
+  `;
+
+  const winner = aWins ? a : b;
+  const diff = Math.abs(a.rate - b.rate).toFixed(1);
+  const typeInsight = winner.type ? (TYPE_INSIGHTS[winner.type] || '') : '';
+  insightEl.innerHTML = `<strong>Variant ${aWins ? 'A' : 'B'} wins by ${diff}${metricLabel}.</strong>${typeInsight ? ' ' + typeInsight : ''}`;
+
+  panel.classList.add('visible');
+}
+
+function saveTest() {
+  const name    = document.getElementById('testName').value.trim();
+  const subjectA = document.getElementById('subjectA').value.trim();
+  const subjectB = document.getElementById('subjectB').value.trim();
+  const rateARaw = document.getElementById('rateA').value;
+  const rateBRaw = document.getElementById('rateB').value;
+  const typeA   = document.getElementById('typeA').value;
+  const typeB   = document.getElementById('typeB').value;
+  const metric  = document.getElementById('metricType').value;
+
+  if (!name)     { alert('Please enter a test name.'); return; }
+  if (!subjectA) { alert('Please enter Subject A.'); return; }
+  if (!subjectB) { alert('Please enter Subject B.'); return; }
+
+  const rateA = rateARaw !== '' ? parseFloat(rateARaw) : null;
+  const rateB = rateBRaw !== '' ? parseFloat(rateBRaw) : null;
+
+  const metricLabel = metric === 'click' ? '% click rate' : '% open rate';
+
+  const a = { subject: subjectA, rate: rateA, type: typeA || null };
+  const b = { subject: subjectB, rate: rateB, type: typeB || null };
+
+  showWinner(a, b, metricLabel);
+
+  const hasRates = rateA !== null && rateB !== null;
+  let winnerId = null;
+  let winnerType = null;
+
+  if (hasRates) {
+    winnerId = rateA >= rateB ? 0 : 1;
+    winnerType = winnerId === 0 ? (typeA || null) : (typeB || null);
+  }
+
+  const test = {
+    id: Date.now(),
+    name,
+    date: document.getElementById('testDate').value || new Date().toISOString().slice(0, 10),
+    metric,
+    variants: [a, b],
+    winnerId,
+    winnerType,
+    status: hasRates ? 'complete' : 'active',
+    createdAt: new Date().toISOString()
+  };
+
+  tests.unshift(test);
+  save();
+  renderTests();
+  updatePatterns();
+}
+
+function clearForm() {
+  document.getElementById('testName').value = '';
+  document.getElementById('testDate').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('subjectA').value = '';
+  document.getElementById('subjectB').value = '';
+  document.getElementById('rateA').value = '';
+  document.getElementById('rateB').value = '';
+  document.getElementById('typeA').value = '';
+  document.getElementById('typeB').value = '';
+  document.getElementById('winnerPanel').classList.remove('visible');
+}
+
+function renderTests() {
+  const container = document.getElementById('testsList');
+  document.getElementById('clearAllBtn').style.display = tests.length > 0 ? '' : 'none';
+
+  if (tests.length === 0) {
+    container.innerHTML = `
+      <div class="empty">
+        <div class="empty-title">No tests logged yet.</div>
+        <div class="empty-sub">Fill in the form above and click Save &amp; Compare.</div>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = `<div class="tests-list">${tests.map(t => renderTestCard(t)).join('')}</div>`;
+}
+
+function renderTestCard(test) {
+  const [a, b] = test.variants;
+  const hasRates = a.rate !== null && b.rate !== null;
+  const maxRate = hasRates ? Math.max(a.rate, b.rate) : 0;
+  const metricSuffix = test.metric === 'click' ? '% CR' : '% OR';
+
+  const varRows = test.variants.map((v, i) => {
+    const isWinner = i === test.winnerId && hasRates;
+    const label = i === 0 ? 'A' : 'B';
+    const barColor = isWinner ? 'wins' : 'loses';
+    const barW = hasRates && maxRate > 0 && v.rate !== null ? (v.rate / maxRate * 100).toFixed(1) : 0;
+    return `
+      <div class="test-variant-row">
+        <div class="test-variant-top">
+          <span style="font-family:'DM Mono',monospace;font-size:9px;background:${i===0?'var(--signal)':'var(--mid)'};color:var(--black);padding:1px 7px;margin-right:6px;">${label}</span>
+          <span class="test-variant-subject">${esc(v.subject)}</span>
+          <span class="test-variant-rate ${isWinner ? 'wins' : (hasRates ? 'loses' : '')}">${v.rate !== null ? v.rate + metricSuffix : '—'}${isWinner ? ' ✓' : ''}</span>
+        </div>
+        ${hasRates ? `<div class="bar-track"><div class="bar-fill ${barColor}" style="width:${barW}%"></div></div>` : ''}
+      </div>`;
+  }).join('');
+
+  const winnerLabel = test.winnerId !== null ? `Variant ${test.winnerId === 0 ? 'A' : 'B'} won` : 'Pending';
+
+  return `
+    <div class="test-card">
+      <div class="test-header" id="th-${test.id}" onclick="toggleCard(${test.id})">
+        <div>
+          <div class="test-name">${esc(test.name)}</div>
+          <div class="test-meta">${test.date}${test.winnerType ? ' · ' + test.winnerType : ''}</div>
+        </div>
+        <div class="test-header-right">
+          ${test.winnerId !== null ? `<span class="test-winner-badge">${winnerLabel}</span>` : ''}
+          <button class="delete-btn" onclick="deleteTest(${test.id}, event)" title="Delete">×</button>
+        </div>
+      </div>
+      <div class="test-body" id="tb-${test.id}">
+        <div class="test-body-bars">${varRows}</div>
+      </div>
+    </div>`;
+}
+
+function toggleCard(id) {
+  const header = document.getElementById('th-' + id);
+  const body   = document.getElementById('tb-' + id);
+  if (!body) return;
+  const isOpen = body.classList.toggle('open');
+  header.classList.toggle('open', isOpen);
+}
+
+function deleteTest(id, e) {
+  e.stopPropagation();
+  if (!confirm('Delete this test?')) return;
+  tests = tests.filter(t => t.id !== id);
+  save();
+  renderTests();
+  updatePatterns();
+  document.getElementById('winnerPanel').classList.remove('visible');
+}
+
+function clearAll() {
+  if (!confirm('Clear all test history?')) return;
+  tests = [];
+  save();
+  renderTests();
+  updatePatterns();
+  document.getElementById('winnerPanel').classList.remove('visible');
+}
+
+function updatePatterns() {
+  const completed = tests.filter(t => t.status === 'complete');
+  const pSection = document.getElementById('patternsSection');
+
+  if (completed.length === 0) { pSection.style.display = 'none'; return; }
+
+  pSection.style.display = 'block';
+  document.getElementById('patternCount').textContent = completed.length;
+
+  const winnerRates = completed.map(t => t.variants[t.winnerId]?.rate).filter(r => r !== null && r !== undefined);
+  const avgRate = winnerRates.length > 0
+    ? (winnerRates.reduce((a, b) => a + b, 0) / winnerRates.length).toFixed(1) + '%'
+    : '—';
+  document.getElementById('patternAvgRate').textContent = avgRate;
+
+  const typeCounts = {};
+  completed.forEach(t => { if (t.winnerType) typeCounts[t.winnerType] = (typeCounts[t.winnerType] || 0) + 1; });
+  const topType = Object.entries(typeCounts).sort((a, b) => b[1] - a[1])[0];
+  document.getElementById('patternTop').textContent = topType ? topType[0] : '—';
+}
+
+document.getElementById('testDate').value = new Date().toISOString().slice(0, 10);
+renderTests();
+updatePatterns();
+</script>
+
+<footer style="margin-top:64px;padding:32px 24px;border-top:1px solid rgba(255,255,255,0.12);text-align:center;font-family:inherit;">
+  <div style="margin-bottom:16px;">
+    <a href="https://strategicflow.tech" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">Strategic Flow</a>
+    <a href="https://strategicflow.tech/teardowns.html" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">54 Teardowns</a>
+    <a href="https://strategicflow.tech/glossary.html" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">Glossary</a>
+    <a href="https://strategicflow.tech/addons.html" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">Add-Ons</a>
+    <a href="https://strategicflowtech.gumroad.com/l/koczgh" style="color:rgba(255,255,255,0.7);text-decoration:none;margin:0 12px;font-size:13px;">$47 Pack</a>
+  </div>
+  <div style="font-size:12px;color:rgba(255,255,255,0.4);">Strategic Flow © 2026 · Built by Alex Iliescu · <a href="https://strategicflow.tech" style="color:rgba(255,255,255,0.4);">strategicflow.tech</a></div>
+</footer>
+<!-- COOKIE CONSENT BANNER -->
+<div id="cookie-banner">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      This site uses cookies for analytics (Google Analytics). We don't sell or share your data. See our <a href="https://strategic-flow-pro.replit.app/terms.html" target="_blank">Terms</a> for details.
+    </div>
+    <div class="cookie-actions">
+      <button class="cookie-btn" id="cookie-decline">Decline</button>
+      <button class="cookie-btn accept" id="cookie-accept">Accept</button>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  var STORAGE_KEY = 'sf_consent';
+  var stored = localStorage.getItem(STORAGE_KEY);
+  var banner = document.getElementById('cookie-banner');
+
+  function grant() {
+    gtag('consent', 'update', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted'
+    });
+  }
+
+  if (stored === 'granted') {
+    grant();
+  } else if (stored !== 'denied') {
+    banner.classList.add('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  }
+
+  document.getElementById('cookie-accept').addEventListener('click', function() {
+    localStorage.setItem(STORAGE_KEY, 'granted');
+    grant();
+    banner.classList.remove('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  });
+
+  document.getElementById('cookie-decline').addEventListener('click', function() {
+    localStorage.setItem(STORAGE_KEY, 'denied');
+    banner.classList.remove('visible');
+    if (window.sfRepositionStickyBar) window.sfRepositionStickyBar();
+  });
+})();
+</script>
+</body>
+</html>

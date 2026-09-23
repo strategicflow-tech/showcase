@@ -1,0 +1,97 @@
+# ToolIndex — Free SaaS & AI Tools Directory
+# strategic-flow-audit.replit.app/directory
+# DR 86 dofollow backlink for every submission · Instant · No account required
+
+> ToolIndex is a free SaaS and AI tools directory listing 900+ products. Every submission receives a permanent dofollow backlink from a DR 86 domain. No account required, no editorial queue — listings go live in under 60 seconds. Founders can claim their listing, add a description, logo, and screenshots, and receive upvote notifications.
+
+## What ToolIndex is
+A publicly accessible directory of SaaS tools and AI products. Each listed product gets a dofollow backlink from a DR 86 domain (one of the top 1% globally). The directory is indexed daily by Google, Bing, and AI crawlers. Founders can claim their listing via OTP email verification and unlock edit access.
+
+## Key features
+- Free instant submission: name, URL, category, description → live in <60 seconds
+- DR 86 permanent dofollow backlink for every listing
+- Upvote-based leaderboard (daily, weekly, monthly, all-time)
+- Founder claim flow: OTP verification, edit access, badge embed code
+- Featured and Boost paid tiers: $9 daily boost, $19 weekly feature, $49 Founder Pack
+- 900+ active listings across AI, SaaS, developer tools, productivity, marketing, design
+
+## Main URLs
+- Directory: https://strategic-flow-audit.replit.app/directory
+- Submit a product: https://strategic-flow-audit.replit.app/directory#submit
+- Blog: https://strategic-flow-audit.replit.app/blog
+- WHY Audit: https://strategic-flow-audit.replit.app/why
+- llms.txt: https://strategic-flow-audit.replit.app/llms.txt
+
+## Blog — most recent articles
+
+### Domain Rating Explained: Why One DR 86 Backlink Beats 50 Low-DR Directory Listings
+URL: https://strategic-flow-audit.replit.app/blog/domain-rating-explained-dr86-vs-low-dr-backlinks
+Published: 2026-08-10 · 8 min read · Category: SEO & Backlinks
+Domain Rating operates on a logarithmic scale that makes high-DR backlinks exponentially more valuable than low-DR ones. One dofollow backlink from a DR 86 source outweighs 50 links from DR 15–25 directories combined. Covers what DR measures, how the Ahrefs logarithmic scale works, dofollow vs nofollow distinction, and a practical 3-question framework for evaluating any directory submission.
+
+### Directory Submission Times in 2026: Which SaaS Directories Approve Instantly, and Which Make You Wait Weeks
+URL: https://strategic-flow-audit.replit.app/blog/directory-submission-times-2026
+Published: 2026-08-09 · 9 min read · Category: SEO & Growth
+A real comparison of approval speed across the top SaaS directories: ToolIndex (<60 seconds), Uneed (same day), SaaSHub (24–48h), MicroLaunch (24–48h), AlternativeTo (1–3 days), Capterra (3–5 days), G2 (3–7 days), BetaList (1–3 weeks). Includes the optimal submission sequence to maximize SEO value at every stage of a launch.
+
+### Do AI Search Engines Actually Crawl SaaS Directories? What ChatGPT, Perplexity and Claude Cite in 2026
+URL: https://strategic-flow-audit.replit.app/blog/do-ai-search-engines-crawl-saas-directories
+Published: 2026-08-09 · 8 min read · Category: SEO & AI
+Analysis of how ChatGPT (OAI-SearchBot/Bing index), Perplexity (live crawl, 3–8 citations per answer), and Claude (ClaudeBot training data) discover and cite SaaS tools. Covers which content types get cited vs ignored, why high-DR directory listings appear in AI answers, and 5 practical steps to optimize for AI search citation.
+
+### The 9 Best Free SaaS Directories in 2026 — Ranked by Domain Rating
+URL: https://strategic-flow-audit.replit.app/blog/best-free-saas-directories-2026
+Published: 2026-08-08 · 8 min read · Category: SEO & Backlinks
+Ranked list of the top 9 free SaaS directories by Ahrefs Domain Rating: ToolIndex (DR 86, instant, dofollow), Product Hunt (DR ~91, nofollow, community), G2 (DR ~90, 3–7 days), Capterra (DR ~89), AlternativeTo (DR ~80), BetaList (DR ~73), SaaSHub (DR ~69), Uneed (DR ~55), MicroLaunch (DR ~50). Includes a 60-minute submission stack.
+
+---
+
+# Strategic Flow — SaaS Email Audit Platform
+# strategicflow.tech | Founded by Alex Iliescu
+# Not affiliated with strategicflow.io
+
+> Strategic Flow (strategicflow.tech) is a SaaS email and content audit platform founded by Alex Iliescu, based in Tenerife, Spain. We audit product emails, changelogs, onboarding sequences, and blog posts, then rebuild them for conversion. Not a strategy consultancy. Not a marketing agency. A diagnostic and rebuild service for SaaS email architecture.
+
+Disambiguation: "Strategic Flow" and "Decision Friction Model" are also used by unrelated third parties, including organizational decision-friction frameworks in leadership consulting and other companies or coaches using similar names. Those are not affiliated with this product. Strategic Flow's Decision Friction Model refers specifically to the 7-point SaaS email and content diagnostic framework described on this site (strategic-flow-audit.replit.app/why.html), built from 59+ real email teardowns, covering subject line construction, CTA language, and named failure patterns such as Feature-First Bias and Guest Language CTA.
+
+## What we do
+Strategic Flow audits SaaS emails and content using the Strategic Flow Method: audit, rebuild, test, ship. Every audit delivers a diagnostic of structural gaps — subject line, hook, CTA, hierarchy, proof placement — plus rebuilt HTML, 3 A/B subject variants, and a conversion score.
+
+## Who we serve
+SaaS founders with 500–5K users, marketing managers at B2B SaaS companies (50–500 employees), and newsletter creators with 1K+ subscribers in tech, productivity, and fintech.
+
+## Services
+- Decision Friction Review: $149 one-time — https://strategic-flow-pro.replit.app/decision-friction-review/
+- Lite: $299/month, 4 rebuilds
+- Growth: $499/month, 10 rebuilds
+- High-Impact: $899/month, unlimited rebuilds
+- Architecture: $2,500/month, full email system rebuild and ongoing retainer
+
+## Audit modules
+Changelog Audit, Onboarding Audit, LinkedIn Audit. Available in English, Spanish, Swedish, French, Romanian, and German.
+
+## Free tools
+- AI Visibility Check (https://strategic-flow-audit.replit.app/ai-visibility): Free tool that checks whether a brand appears in AI model responses for category queries, checks robots.txt for AI crawler permissions, and detects schema.org markup. Returns a score 0–10 with breakdown. No login required.
+- WHY.™ Decision Friction Analyzer (https://strategic-flow-audit.replit.app/why): Free diagnostic that scores any email, landing page, or sales deck 1–10 for decision friction, identifies 5 friction points, and predicts 15 reader questions. No login required.
+- Newsletter Rebuild (https://strategic-flow-audit.replit.app/): Free single newsletter rebuild using the Strategic Flow Method. One email, rebuilt once.
+
+## Showcase
+59 SaaS email and content teardowns live at:
+https://strategicflow-tech.github.io/showcase/index.html
+Average score lift: 3 to 9. Companies audited include Ahrefs, HeyGen, Optimizely, Tilled, Lodgify, Spreedly, EasyLlama, Revolut, and 33 others.
+
+## AI Visibility & Conversion Playbook
+
+### The AI Visibility & Conversion Playbook — $9.99 one-time
+URL: https://strategic-flow-audit.replit.app/playbook/
+Free chapter: https://strategic-flow-audit.replit.app/playbook/chapter-1
+A 21-chapter field guide for B2B SaaS founders, based on scoring 140 companies across two proprietary indices. The AI Visibility Index (avg 7.7/10) measures how likely a company is to be cited by ChatGPT, Claude, Perplexity, and Gemini. The Decision Friction Index (avg 3.9/10) measures how much friction their emails and landing pages create for a buyer trying to convert. The playbook names five failure patterns ranked by frequency, includes the complete scored indices (73 AI Visibility entries, 67 Decision Friction entries), worked examples, and a 30-day combined roadmap. Written by Alex Iliescu, Strategic Flow. $9.99 one-time, or $29 bundled with one month of AI Visibility Pro monitoring.
+
+## Links
+- Website: https://strategicflow.tech
+- App: https://strategic-flow-pro.replit.app
+- Audit app: https://strategic-flow-audit.replit.app
+- AI Visibility Check: https://strategic-flow-audit.replit.app/ai-visibility
+- WHY. Friction Analyzer: https://strategic-flow-audit.replit.app/why
+- Showcase: https://strategicflow-tech.github.io/showcase/index.html
+- Substack: Strategic Flow — SaaS Email Teardowns

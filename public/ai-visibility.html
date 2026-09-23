@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Visibility Check — Strategic Flow</title>
+<meta name="description" content="Check whether AI tools know your brand. Enter a domain, get an AI Visibility Score 0–10 in under 30 seconds.">
+<meta property="og:title" content="AI Visibility Check — Strategic Flow">
+<meta property="og:description" content="Enter a domain. We run 2 AI queries in your category and check your technical crawlability. Score: 0–10.">
+<meta property="og:url" content="https://strategic-flow-audit.replit.app/ai-visibility">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Strategic Flow">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AI Visibility Check — Strategic Flow">
+<meta name="twitter:description" content="Is your brand visible to AI tools? Enter a domain and get a score 0–10 in under 30 seconds.">
+<link rel="canonical" href="https://strategic-flow-audit.replit.app/ai-visibility">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI Visibility Check",
+  "description": "Check whether AI tools know your brand. Enter a domain, get an AI Visibility Score 0–10 in under 30 seconds.",
+  "url": "https://strategic-flow-audit.replit.app/ai-visibility",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "Strategic Flow",
+    "url": "https://strategic-flow-audit.replit.app"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is AI visibility?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AI visibility means whether your brand appears when AI tools like ChatGPT, Claude, or Perplexity answer queries in your product category. If someone asks 'best CRM for SaaS teams' and your brand never comes up, you have zero AI visibility — even if your SEO rankings are strong."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is the AI Visibility Score calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The score is 0–10 across three criteria: +4 if your brand appears in at least one of two AI model responses to category queries, +3 if the AI describes your product accurately (not just mentions the name), and +3 if your site is technically crawlable by AI bots (schema.org markup present, no AI crawlers blocked in robots.txt)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is GEO (Generative Engine Optimization)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GEO is the practice of optimizing your brand's content so AI-powered search engines and LLMs mention you in relevant responses. It differs from traditional SEO in that rankings are replaced by mentions — and the signals that drive mentions are schema.org markup, llms.txt files, structured content, and citation-worthy claims."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my brand not appearing in AI responses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Common reasons: your homepage is JavaScript-rendered with no crawlable text, AI crawlers are blocked in robots.txt, you have no schema.org structured data, or your brand simply lacks enough web presence for the AI model's training data to include it. The AI Visibility Check surfaces which of these applies to your domain."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I improve my AI visibility score?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Four steps: (1) Allow AI crawlers in robots.txt — GPTBot, ClaudeBot, PerplexityBot. (2) Add schema.org JSON-LD markup to your homepage. (3) Add an llms.txt file describing your product clearly. (4) Publish structured, citation-worthy content so AI training datasets and live web search include your brand in relevant category responses."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to check your brand's AI visibility",
+  "description": "Check whether AI tools mention your brand when answering queries in your product category.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Enter your domain",
+      "text": "Type your company domain (e.g. example.com) and optionally your industry or product category."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "We run two AI queries",
+      "text": "Two differently-phrased queries are sent to an AI model. We check whether your brand appears in either response and whether it is described accurately."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "We check technical crawlability",
+      "text": "Your robots.txt is fetched to check if AI crawlers are blocked. Your homepage is scanned for schema.org structured data."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Read your AI Visibility Score",
+      "text": "You receive a score from 0 to 10 with a breakdown: +4 for AI recognition, +3 for accurate citation, +3 for technical crawlability."
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --surface2: #1E1E1E;
+    --border: #2A2A2A;
+    --red: #FF4422;
+    --green: #22CC88;
+    --amber: #F59E0B;
+    --white: #FFFFFF;
+    --muted: #AAAAAA;
+    --dim: #666666;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-logo:hover { color: var(--white); }
+  .nav-links { display: flex; align-items: center; gap: 20px; }
+  .nav-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--white); }
+  .nav-link.cta { color: var(--red); }
+
+  main { max-width: 680px; margin: 0 auto; padding: 64px 24px 100px; }
+
+  .page-header { margin-bottom: 52px; }
+  .page-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 18px;
+  }
+  .page-title {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .page-sub {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 480px;
+  }
+
+  .form-wrap { margin-bottom: 0; }
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .field label .opt {
+    color: var(--dim);
+    font-size: 9px;
+    margin-left: 10px;
+  }
+  .field input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    caret-color: var(--red);
+  }
+  .field input:focus { border-color: var(--red); }
+  .field input::placeholder { color: var(--dim); }
+
+  .query-preview {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--dim);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    transition: border-left-color 0.3s;
+  }
+  .query-preview.active { border-left-color: var(--red); }
+  .qp-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 6px;
+  }
+  .qp-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  #check-btn {
+    width: 100%;
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 16px 32px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  #check-btn:hover { opacity: 0.9; }
+  #check-btn:active { transform: scale(0.99); }
+  #check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .error-box {
+    margin-top: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--red);
+    display: none;
+  }
+
+  #loading { display: none; padding: 64px 0; text-align: center; }
+  .loading-ring {
+    width: 40px; height: 40px;
+    border: 2px solid var(--surface2);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+  .loading-steps { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .loading-step {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    opacity: 0;
+    transition: opacity 0.4s, color 0.4s;
+  }
+  .loading-step.active { opacity: 1; color: var(--red); }
+  .loading-step.done { opacity: 0.5; color: var(--green); }
+
+  #output { display: none; }
+
+  .score-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    padding: 32px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .score-number-wrap { text-align: center; flex-shrink: 0; }
+  .score-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--red);
+    display: block;
+  }
+  .score-denom {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+  .score-info { flex: 1; min-width: 200px; }
+  .score-card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .score-brand {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--white);
+    word-break: break-all;
+  }
+  .score-reasons { display: flex; flex-direction: column; gap: 8px; }
+  .score-reason {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+  }
+  .score-reason::before {
+    content: '—';
+    color: var(--dim);
+    position: absolute;
+    left: 0;
+  }
+
+  .breakdown-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .breakdown-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-item {
+    display: grid;
+    grid-template-columns: 40px 1fr 28px;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-item:last-child { border-bottom: none; }
+  .b-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dim);
+    text-align: center;
+  }
+  .b-score.earned { color: var(--green); }
+  .b-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .b-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .b-check {
+    font-size: 15px;
+    text-align: center;
+    color: var(--dim);
+  }
+  .b-check.yes { color: var(--green); }
+  .b-check.no { color: var(--red); }
+
+  .detail-section { border: 1px solid var(--border); margin-bottom: 20px; }
+  .detail-toggle {
+    width: 100%;
+    background: var(--surface);
+    border: none;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 20px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: color 0.2s, background 0.2s;
+  }
+  .detail-toggle:hover { color: var(--white); background: var(--surface2); }
+  .detail-body { border-top: 1px solid var(--border); }
+  .query-block { padding: 20px; border-bottom: 1px solid var(--border); }
+  .query-block:last-child { border-bottom: none; }
+  .query-lbl {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+  }
+  .query-q {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .query-answer {
+    font-size: 14px;
+    color: var(--white);
+    line-height: 1.75;
+  }
+  .mention-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    margin-top: 12px;
+  }
+  .mention-badge.yes { background: rgba(34,204,136,0.10); color: var(--green); border: 1px solid rgba(34,204,136,0.25); }
+  .mention-badge.no { background: rgba(255,68,34,0.07); color: #FF6644; border: 1px solid rgba(255,68,34,0.2); }
+
+  .cta-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    padding: 32px;
+  }
+  .cta-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 14px;
+  }
+  .cta-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.3;
+    color: var(--white);
+  }
+  .cta-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 500px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 28px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
+    margin-bottom: 24px;
+  }
+  .cta-btn:hover { opacity: 0.9; }
+  .cta-competitors {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(255,68,34,0.06);
+    border: 1px solid rgba(255,68,34,0.2);
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    line-height: 1.55;
+    display: none;
+  }
+  .cta-competitors strong { color: var(--white); }
+  .cta-cost {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .cta-proof {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+    display: none;
+  }
+  .cta-secondary {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .cta-secondary button {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .cta-secondary button:hover { border-color: var(--white); color: var(--white); }
+
+  footer {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 28px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #1D9E75;
+    letter-spacing: 0.1em;
+  }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: #1D9E75;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+
+  .about-section {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 64px 24px 80px;
+    border-top: 1px solid var(--border);
+  }
+  .about-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 14px;
+    margin-top: 40px;
+    letter-spacing: -0.01em;
+  }
+  .about-section h2:first-child { margin-top: 0; }
+  .about-section p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+  .about-criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .about-criterion {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .about-criterion:last-child { border-bottom: none; }
+  .ac-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dim);
+    flex-shrink: 0;
+    width: 36px;
+    padding-top: 2px;
+  }
+  .about-criterion strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .about-criterion p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 0;
+  }
+  .about-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    counter-reset: step;
+  }
+  .about-list li {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    padding-left: 28px;
+    position: relative;
+    counter-increment: step;
+  }
+  .about-list li::before {
+    content: counter(step) ".";
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    position: absolute;
+    left: 0;
+    top: 2px;
+  }
+  .about-list li strong { color: var(--white); }
+  .about-list li code {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    background: var(--surface2);
+    padding: 1px 6px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 520px) {
+    .score-card { flex-direction: column; gap: 20px; }
+    .score-number { font-size: 56px; }
+    .breakdown-item { grid-template-columns: 36px 1fr 24px; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Strategic Flow</a>
+  <div class="nav-links">
+    <a href="/why" class="nav-link">WHY.™</a>
+    <a href="https://strategic-flow-pro.replit.app/packages" class="nav-link cta">Pro Plans →</a>
+  </div>
+</nav>
+
+<main>
+
+  <div class="page-header">
+    <div class="page-label">AI Visibility Check</div>
+    <h1 class="page-title">Is your brand visible<br>to AI tools?</h1>
+    <p class="page-sub">Enter your domain. We run 2 AI queries in your category and check your technical crawlability. Score: 0–10.</p>
+  </div>
+
+  <div class="form-wrap" id="form-wrap">
+    <div class="field">
+      <label>Company domain</label>
+      <input type="text" id="domain-input" placeholder="example.com" autocomplete="off" autocorrect="off" spellcheck="false" oninput="updateSuggestion()" onkeydown="if(event.key==='Enter')runCheck()">
+    </div>
+    <div class="field">
+      <label>Industry / category<span class="opt">optional</span></label>
+      <input type="text" id="category-input" placeholder="e.g. email marketing, CRM, analytics" oninput="updateSuggestion()" onkeydown="if(event.key==='Enter')runCheck()">
+    </div>
+    <div class="query-preview" id="query-preview">
+      <div class="qp-label">Query that will be used</div>
+      <div class="qp-text" id="qp-text">Enter a domain above to see the query</div>
+    </div>
+    <button id="check-btn" onclick="runCheck()">Check AI Visibility <span>→</span></button>
+    <div class="error-box" id="error-box"></div>
+  </div>
+
+  <div id="loading">
+    <div class="loading-ring"></div>
+    <div class="loading-text">Checking AI visibility...</div>
+    <div class="loading-steps">
+      <div class="loading-step" id="step-1">↳ Querying AI model — query 1</div>
+      <div class="loading-step" id="step-2">↳ Querying AI model — query 2</div>
+      <div class="loading-step" id="step-3">↳ Checking robots.txt and homepage schema</div>
+      <div class="loading-step" id="step-4">↳ Computing visibility score</div>
+    </div>
+  </div>
+
+  <div id="output">
+
+    <div class="score-card" id="score-card">
+      <div class="score-number-wrap">
+        <span class="score-number" id="score-num">—</span>
+        <div class="score-denom">AI Visibility Score /10</div>
+      </div>
+      <div class="score-info">
+        <div class="score-card-label">AI Visibility Check</div>
+        <div class="score-brand" id="score-brand">—</div>
+        <div class="score-reasons" id="score-reasons"></div>
+        <div id="benchmark-badge" style="display:none;margin-top:8px;font-family:'Space Mono',monospace;font-size:10px;color:#555;letter-spacing:0.05em;"></div>
+      </div>
+    </div>
+
+    <div class="breakdown-card">
+      <div class="breakdown-title">Score breakdown</div>
+      <div class="breakdown-item">
+        <div class="b-score" id="bs-mention">+4</div>
+        <div>
+          <div class="b-label">AI Model Recognition</div>
+          <div class="b-text" id="bt-mention">—</div>
+        </div>
+        <div class="b-check" id="bc-mention">—</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="b-score" id="bs-cited">+3</div>
+        <div>
+          <div class="b-label">Cited Correctly</div>
+          <div class="b-text" id="bt-cited">—</div>
+        </div>
+        <div class="b-check" id="bc-cited">—</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="b-score" id="bs-tech">+3</div>
+        <div>
+          <div class="b-label">Technical Crawlability</div>
+          <div class="b-text" id="bt-tech">—</div>
+        </div>
+        <div class="b-check" id="bc-tech">—</div>
+      </div>
+      <div class="breakdown-item px-row" id="px-row" style="display:none;border-top:1px solid rgba(255,255,255,0.06);margin-top:4px;padding-top:4px;">
+        <div class="b-score" id="bs-px" style="font-size:9px;letter-spacing:0.04em;color:#888;font-weight:600;">LIVE</div>
+        <div>
+          <div class="b-label">Live Web Presence <span style="font-size:9px;color:#888;font-weight:400;font-family:'Space Mono',monospace;">(Perplexity)</span></div>
+          <div class="b-text" id="bt-px">—</div>
+          <div id="px-context" style="display:none;margin-top:6px;padding:8px 10px;background:rgba(255,255,255,0.03);border-left:2px solid #1D9E75;font-family:'Space Mono',monospace;font-size:10px;color:#aaa;line-height:1.6;"></div>
+        </div>
+        <div class="b-check" id="bc-px">—</div>
+      </div>
+    </div>
+
+    <div style="padding:12px 20px;background:rgba(0,212,200,0.06);border:1px solid rgba(0,212,200,0.18);font-family:'Space Mono',monospace;font-size:11px;color:#00d4c8;line-height:1.6;margin-bottom:20px;">
+      Want your company tracked over time and listed publicly? → <a href="/ai-visibility-index" style="color:#00d4c8;text-decoration:underline;">The AI Visibility Index</a>
+    </div>
+
+    <div id="impact-line" style="display:none;padding:12px 20px;background:rgba(255,68,34,0.06);border:1px solid rgba(255,68,34,0.18);font-family:'Space Mono',monospace;font-size:11px;color:#FF6644;line-height:1.6;margin-bottom:20px;"></div>
+
+    <div class="detail-section">
+      <button class="detail-toggle" onclick="toggleDetail()">
+        What the AI model actually said
+        <span id="toggle-arrow">↓</span>
+      </button>
+      <div class="detail-body" id="detail-body" style="display:none;">
+        <div class="query-block">
+          <div class="query-lbl">Query 1</div>
+          <div class="query-q" id="q1-q">—</div>
+          <div class="query-answer" id="q1-answer">—</div>
+          <div id="q1-badge"></div>
+        </div>
+        <div class="query-block">
+          <div class="query-lbl">Query 2</div>
+          <div class="query-q" id="q2-q">—</div>
+          <div class="query-answer" id="q2-answer">—</div>
+          <div id="q2-badge"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <div class="cta-label">Next step</div>
+      <div class="cta-title" id="cta-title">Your recurring emails shape how AI describes your brand.</div>
+      <div class="cta-sub" id="cta-sub">Start with a Decision Friction Review and see the fix.</div>
+      <div class="cta-competitors" id="cta-competitors"></div>
+      <div class="cta-cost" id="cta-cost"></div>
+      <div class="cta-proof" id="cta-proof">We've done this 59 times. Average score before: 3.4/10. After: 9/10.</div>
+      <a href="https://strategic-flow-pro.replit.app/decision-friction-review/" class="cta-btn" id="cta-btn">See Strategic Flow Plans →</a>
+      <div class="cta-secondary">
+        <button onclick="resetCheck()">← Check another domain</button>
+        <button onclick="copyScore()">Copy score →</button>
+        <button onclick="generateShareCard()">Download card →</button>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<section class="about-section" aria-label="About AI Visibility">
+  <h2>What is AI visibility — and why does it matter?</h2>
+  <p>AI visibility means whether your brand appears when tools like ChatGPT, Claude, or Perplexity answer questions in your product category. Traditional SEO gets you ranked in Google. <strong>GEO (Generative Engine Optimization)</strong> gets you mentioned in AI responses — and the signals are different.</p>
+  <p>When a SaaS buyer asks an AI assistant "what's the best email marketing tool for B2B teams", the model pulls from its training data and live web index. If your brand has no schema.org markup, blocks AI crawlers in robots.txt, or simply lacks enough structured online presence, you don't appear — even with strong SEO rankings.</p>
+
+  <h2>How the AI Visibility Score works</h2>
+  <div class="about-criteria">
+    <div class="about-criterion">
+      <div class="ac-score">+4</div>
+      <div>
+        <strong>AI Model Recognition</strong>
+        <p>Two differently-phrased queries are sent to an AI model in your category. If your brand appears in either response, you earn 4 points. This tests whether the model has encountered your brand in training data or live web search.</p>
+      </div>
+    </div>
+    <div class="about-criterion">
+      <div class="ac-score">+3</div>
+      <div>
+        <strong>Cited Correctly</strong>
+        <p>Appearing is not enough. The model must also describe your product accurately — right category, right offer, right context. A wrong description can mislead buyers. 3 points for accurate citation.</p>
+      </div>
+    </div>
+    <div class="about-criterion">
+      <div class="ac-score">+3</div>
+      <div>
+        <strong>Technical Crawlability</strong>
+        <p>Your robots.txt is checked for AI crawler blocks (GPTBot, ClaudeBot, PerplexityBot, CCBot, and others). Your homepage is scanned for schema.org structured data. Both must pass for 3 points.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2>How to improve your AI visibility</h2>
+  <ol id="fix-recs" class="about-list">
+    <li><strong>Allow AI crawlers in robots.txt.</strong> Explicitly permit GPTBot, ClaudeBot, PerplexityBot, and CCBot. Blocking them cuts your brand from live-web AI responses entirely.</li>
+    <li><strong>Add schema.org JSON-LD to your homepage.</strong> Use <code>WebSite</code>, <code>Organization</code>, and <code>SoftwareApplication</code> types. Schema markup is one of the strongest GEO signals for AI models.</li>
+    <li><strong>Publish an llms.txt file.</strong> A plain-text file at <code>/llms.txt</code> tells AI tools what your product does, who it serves, and what makes it different in a format optimised for model ingestion.</li>
+    <li><strong>Create citation-worthy content.</strong> Case studies, benchmarks, and specific claims are the data AI models surface in recommendations.</li>
+  </ol>
+
+  <h2>Related free tools</h2>
+  <div class="about-criteria">
+    <div class="about-criterion">
+      <div class="ac-score" style="color:#FF4422;">→</div>
+      <div>
+        <a href="/why" style="display:block;font-size:13px;font-weight:700;color:#FFFFFF;margin-bottom:5px;text-decoration:none;">WHY.™ — Decision Friction Analyzer</a>
+        <p>Scores any email, landing page, or sales deck 1–10 for decision friction. Identifies 5 friction points, predicts 15 reader questions, and rebuilds the content. Free.</p>
+      </div>
+    </div>
+    <div class="about-criterion">
+      <div class="ac-score" style="color:#FF4422;">→</div>
+      <div>
+        <a href="/patterns" style="display:block;font-size:13px;font-weight:700;color:#FFFFFF;margin-bottom:5px;text-decoration:none;">Pattern Intelligence — Live failure pattern tracker</a>
+        <p>Real-time frequency data on the 7 Strategic Flow failure patterns across 59 SaaS email teardowns. See which patterns are most common in your industry.</p>
+      </div>
+    </div>
+    <div class="about-criterion">
+      <div class="ac-score" style="color:#FF4422;">→</div>
+      <div>
+        <a href="/" style="display:block;font-size:13px;font-weight:700;color:#FFFFFF;margin-bottom:5px;text-decoration:none;">Newsletter Rebuild — Strategic Flow Method</a>
+        <p>Paste your newsletter or drop a URL. Rebuilt with outcome-first subject line, hook above fold, and ownership CTA. HTML ready to send. One free rebuild.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">Strategic Flow © 2026</span>
+  <div class="footer-links">
+    <a href="/">Email Rebuild</a>
+    <a href="/why">WHY.™</a>
+    <a href="/patterns">Pattern Intelligence</a>
+    <a href="/pattern-intelligence">Failure Patterns</a>
+    <a href="https://strategicflow.tech/structural-vs-deliverability-audit.html">Structural vs deliverability audit</a>
+    <a href="https://strategic-flow-pro.replit.app/packages">Pro Plans →</a>
+  </div>
+</footer>
+
+<script>
+function getDomainBrand(raw) {
+  const d = raw.replace(/^https?:\/\//i, '').replace(/\/.*$/, '').replace(/^www\./i, '').toLowerCase().split('.')[0];
+  return d.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function updateSuggestion() {
+  const domain = document.getElementById('domain-input').value.trim();
+  const cat = document.getElementById('category-input').value.trim();
+  const preview = document.getElementById('query-preview');
+  const text = document.getElementById('qp-text');
+  if (!domain) {
+    text.textContent = 'Enter a domain above to see the query';
+    preview.classList.remove('active');
+    return;
+  }
+  const brand = getDomainBrand(domain);
+  const q = cat
+    ? `"best ${cat} tool for B2B SaaS teams in 2026"`
+    : `"what does ${brand} do and who is it for"`;
+  text.textContent = q;
+  preview.classList.add('active');
+}
+
+let detailOpen = false;
+function toggleDetail() {
+  detailOpen = !detailOpen;
+  document.getElementById('detail-body').style.display = detailOpen ? 'block' : 'none';
+  document.getElementById('toggle-arrow').textContent = detailOpen ? '↑' : '↓';
+}
+
+let loadInterval;
+function startLoadingAnimation() {
+  const steps = ['step-1','step-2','step-3','step-4'];
+  steps.forEach(id => { document.getElementById(id).className = 'loading-step'; });
+  let i = 0;
+  loadInterval = setInterval(() => {
+    if (i > 0) document.getElementById(steps[i-1]).className = 'loading-step done';
+    if (i < steps.length) { document.getElementById(steps[i]).className = 'loading-step active'; i++; }
+  }, 7000);
+}
+
+function stopLoadingAnimation() {
+  clearInterval(loadInterval);
+  ['step-1','step-2','step-3','step-4'].forEach(id => {
+    document.getElementById(id).className = 'loading-step done';
+  });
+}
+
+function showError(msg) {
+  const b = document.getElementById('error-box');
+  b.textContent = msg;
+  b.style.display = 'block';
+}
+function hideError() { document.getElementById('error-box').style.display = 'none'; }
+
+async function runCheck() {
+  const domain = document.getElementById('domain-input').value.trim();
+  const category = document.getElementById('category-input').value.trim();
+  if (!domain) { showError('Enter a domain to check — e.g. example.com'); return; }
+  hideError();
+  document.getElementById('check-btn').disabled = true;
+  document.getElementById('form-wrap').style.display = 'none';
+  document.getElementById('output').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  startLoadingAnimation();
+  try {
+    const resp = await fetch('/api/ai-visibility', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domain, category })
+    });
+    const data = await resp.json();
+    stopLoadingAnimation();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('check-btn').disabled = false;
+    if (data.error) {
+      document.getElementById('form-wrap').style.display = 'block';
+      showError(data.error);
+      return;
+    }
+    renderResult(data);
+  } catch {
+    stopLoadingAnimation();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('check-btn').disabled = false;
+    document.getElementById('form-wrap').style.display = 'block';
+    showError('Something went wrong. Please try again.');
+  }
+}
+
+let _lastResult = null;
+
+function renderResult(data) {
+  _lastResult = data;
+  const score = data.score || 0;
+  const color = score >= 7 ? '#22CC88' : score >= 4 ? '#F59E0B' : '#FF4422';
+
+  // Score number
+  const numEl = document.getElementById('score-num');
+  numEl.textContent = score;
+  numEl.style.color = color;
+  document.getElementById('score-card').style.borderLeftColor = color;
+  document.getElementById('score-brand').textContent = data.brand + ' · ' + data.domain;
+
+  // Benchmark badge
+  const bb = document.getElementById('benchmark-badge');
+  if (data.benchmarkAvg !== null && data.benchmarkAvg !== undefined) {
+    const lbl = data.benchmarkCategory ? data.benchmarkCategory + ' average' : 'overall average';
+    bb.textContent = lbl + ': ' + data.benchmarkAvg + '/10';
+    bb.style.display = 'block';
+  } else {
+    bb.style.display = 'none';
+  }
+
+  // Reason pills
+  const reasonsEl = document.getElementById('score-reasons');
+  reasonsEl.innerHTML = '';
+  (data.reasons || []).slice(0, 4).forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'score-reason';
+    d.textContent = r;
+    reasonsEl.appendChild(d);
+  });
+
+  // Breakdown rows
+  function setBD(prefix, earned, text) {
+    document.getElementById('bs-' + prefix).className = 'b-score' + (earned ? ' earned' : '');
+    const check = document.getElementById('bc-' + prefix);
+    check.textContent = earned ? '✓' : '✕';
+    check.className = 'b-check ' + (earned ? 'yes' : 'no');
+    document.getElementById('bt-' + prefix).textContent = text;
+  }
+
+  const mc = (data.q1Mentioned ? 1 : 0) + (data.q2Mentioned ? 1 : 0);
+  setBD('mention', data.brandMentioned,
+    data.brandMentioned
+      ? `${data.brand} appeared in ${mc}/2 AI responses — model has knowledge of this brand`
+      : data.brandDenied
+        ? `${data.brand} named in AI response but model denied knowing it — no recognition credit`
+        : `${data.brand} not found in either AI response — model has no knowledge of this brand`);
+  setBD('cited', data.citedCorrectly,
+    data.citedCorrectly
+      ? 'AI described product/offer with accurate context'
+      : data.brandMentioned
+        ? 'Mentioned but product/offer context incomplete or inaccurate'
+        : data.brandDenied
+          ? 'Model mentioned brand only to deny familiarity — not counted as recognition'
+          : 'No product description — brand not mentioned in either response');
+  const techParts = [];
+  if (data.schemaPresent) techParts.push('schema.org markup present');
+  else techParts.push('0 schema.org types on homepage');
+  if (data.robotsBlocked && (data.blockedAgents||[]).length)
+    techParts.push(`${data.blockedAgents.length} AI crawler(s) blocked in robots.txt`);
+  else if (data.robotsFetched) techParts.push('no AI bots blocked in robots.txt');
+  else techParts.push('robots.txt not accessible');
+  setBD('tech', data.crawlable, techParts.join(' · '));
+
+  // Impact estimate
+  const failedNames = [];
+  if (!data.brandMentioned) failedNames.push('AI Model Recognition');
+  if (!data.citedCorrectly) failedNames.push('Cited Correctly');
+  if (!data.crawlable) failedNames.push('Technical Crawlability');
+  const impactEl = document.getElementById('impact-line');
+  if (score < 10 && failedNames.length > 0) {
+    const potential = score + (!data.brandMentioned ? 4 : 0) + (!data.citedCorrectly ? 3 : 0) + (!data.crawlable ? 3 : 0);
+    impactEl.textContent = 'Fixing ' + failedNames.join(' and ') + ' would move this score to ' + potential + '/10';
+    impactEl.style.display = 'block';
+  } else {
+    impactEl.style.display = 'none';
+  }
+
+  // AI model responses — populate and open by default
+  document.getElementById('q1-q').textContent = '"' + (data.q1 || '') + '"';
+  document.getElementById('q1-answer').textContent = data.q1Answer || 'Response unavailable.';
+  document.getElementById('q1-badge').innerHTML = `<span class="mention-badge ${data.q1Mentioned ? 'yes' : 'no'}">${data.q1Mentioned ? '✓ ' + data.brand + ' recognised' : '✕ ' + data.brand + ' not recognised'}</span>`;
+  document.getElementById('q2-q').textContent = '"' + (data.q2 || '') + '"';
+  document.getElementById('q2-answer').textContent = data.q2Answer || 'Response unavailable.';
+  document.getElementById('q2-badge').innerHTML = `<span class="mention-badge ${data.q2Mentioned ? 'yes' : 'no'}">${data.q2Mentioned ? '✓ ' + data.brand + ' recognised' : '✕ ' + data.brand + ' not recognised'}</span>`;
+  detailOpen = true;
+  document.getElementById('detail-body').style.display = 'block';
+  document.getElementById('toggle-arrow').textContent = '↑';
+
+  // Dynamic fix recommendations
+  const fixEl = document.getElementById('fix-recs');
+  if (fixEl) {
+    const fixes = [];
+    if (!data.brandMentioned && data.brandDenied) {
+      fixes.push('Model named your brand only to deny knowing it. Publish structured content with FAQs, case studies, and schema.org markup so AI training crawlers can index an accurate description. Recognition typically follows indexable content by weeks to months.');
+    } else if (!data.brandMentioned) {
+      fixes.push('Brand not found in either AI query. Publish structured content that names your product and its specific use case in the same sentence.');
+    }
+    if (data.brandMentioned && !data.citedCorrectly) {
+      fixes.push('Brand appeared but description was inaccurate or generic. Add FAQs, case studies, and specific outcome claims so models have accurate context to cite.');
+    }
+    if (!data.crawlable) {
+      if (!data.schemaPresent) fixes.push('No schema.org markup detected. Add WebSite, Organization, and SoftwareApplication JSON-LD to your homepage.');
+      if (data.robotsBlocked && data.blockedAgents?.length)
+        fixes.push('Blocked in robots.txt: ' + data.blockedAgents.join(', ') + '. Remove Disallow: / for these agents.');
+    }
+    if (fixes.length === 0) {
+      fixEl.innerHTML = '<li style="color:#555;font-family:\'Space Mono\',monospace;font-size:12px;list-style:none;">All criteria passed. No fixes required.</li>';
+    } else {
+      fixEl.innerHTML = fixes.map((f, i) =>
+        `<li style="padding-left:0;list-style:none;margin-bottom:14px;"><strong style="font-family:'Space Mono',monospace;font-size:11px;color:#FF4422;">${i + 1}.</strong> ${f}</li>`
+      ).join('');
+    }
+  }
+
+  // Perplexity Live Web Presence row
+  const pxRow = document.getElementById('px-row');
+  const pxCheck = document.getElementById('bc-px');
+  const pxText = document.getElementById('bt-px');
+  const pxCtx = document.getElementById('px-context');
+  if (data.pxError === 'no_key') {
+    pxRow.style.display = 'none';
+  } else {
+    pxRow.style.display = '';
+    if (data.pxFound) {
+      pxCheck.textContent = '✓';
+      pxCheck.className = 'b-check yes';
+      pxText.textContent = 'Found in Perplexity live-web results';
+      if (data.pxContext) {
+        pxCtx.textContent = '"' + data.pxContext + '"';
+        pxCtx.style.display = 'block';
+      } else {
+        pxCtx.style.display = 'none';
+      }
+    } else {
+      pxCheck.textContent = '✕';
+      pxCheck.className = 'b-check no';
+      pxText.textContent = 'Not found in Perplexity live-web results';
+      pxCtx.style.display = 'none';
+    }
+  }
+
+  // Industry-aware CTA
+  const ctaCopy = getIndustryCTA(document.getElementById('category-input').value.trim());
+  document.getElementById('cta-title').textContent = ctaCopy.framing;
+  document.getElementById('cta-sub').textContent = ctaCopy.sub;
+  document.getElementById('cta-btn').href = 'https://strategic-flow-pro.replit.app/decision-friction-review/';
+
+  // Cost of staying invisible — first failed criterion wins
+  const costEl = document.getElementById('cta-cost');
+  if (!data.brandMentioned) {
+    costEl.textContent = 'Every AI-assisted buyer search in your category right now recommends someone else instead of you.';
+    costEl.style.display = 'block';
+  } else if (!data.citedCorrectly) {
+    costEl.textContent = 'Buyers who do hear about you get an inaccurate picture of what you actually do.';
+    costEl.style.display = 'block';
+  } else if (!data.crawlable) {
+    costEl.textContent = "AI systems can't read your site well enough to cite you accurately, even when they try.";
+    costEl.style.display = 'block';
+  } else {
+    costEl.style.display = 'none';
+  }
+
+  // Competitor tools named in AI responses — extracted server-side by Claude,
+  // not by client-side regex (which produced false positives like "Common", "Book", "Acid").
+  const compEl = document.getElementById('cta-competitors');
+  const competitors = Array.isArray(data.competitors) ? data.competitors : [];
+  if (competitors.length > 0 && !data.brandMentioned) {
+    compEl.innerHTML = 'Right now, AI recommends <strong>' + competitors.join(', ') + '</strong> instead of you.';
+    compEl.style.display = 'block';
+  } else {
+    compEl.style.display = 'none';
+  }
+
+  // Proof line — always visible when score < 10
+  const proofEl = document.getElementById('cta-proof');
+  proofEl.style.display = score < 10 ? 'block' : 'none';
+
+  // Fix-specific CTA button copy
+  const btnEl = document.getElementById('cta-btn');
+  if (!data.brandMentioned) {
+    btnEl.textContent = 'Fix Your AI Visibility — Decision Friction Review ($149) \u2192';
+  } else if (!data.citedCorrectly) {
+    btnEl.textContent = 'Fix Your AI Description — Decision Friction Review ($149) \u2192';
+  } else if (!data.crawlable) {
+    btnEl.textContent = 'Fix Your Technical Crawlability — Decision Friction Review ($149) \u2192';
+  } else {
+    btnEl.textContent = 'See Strategic Flow Plans \u2192';
+  }
+
+  document.getElementById('output').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function generateShareCard() {
+  const d = _lastResult;
+  if (!d) return;
+  const score = d.score || 0;
+  const color = score >= 7 ? '#22CC88' : score >= 4 ? '#F59E0B' : '#FF4422';
+
+  const W = 1200, H = 630;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#0A0A0A';
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for (let y = 60; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  for (let x = 60; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+
+  // Left accent bar
+  ctx.fillStyle = '#FF4422';
+  ctx.fillRect(0, 0, 8, H);
+
+  // Label
+  ctx.fillStyle = '#FF4422';
+  ctx.font = '700 12px monospace';
+  ctx.fillText('AI VISIBILITY CHECK', 80, 78);
+
+  // Brand name
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 50px system-ui, sans-serif';
+  ctx.fillText(d.brand || '', 80, 158);
+
+  // Domain
+  ctx.fillStyle = '#444444';
+  ctx.font = '400 18px monospace';
+  ctx.fillText(d.domain || '', 80, 194);
+
+  // Big score
+  ctx.fillStyle = color;
+  ctx.font = 'bold 220px monospace';
+  const scoreStr = String(score);
+  ctx.fillText(scoreStr, 72, 490);
+  const scoreW = ctx.measureText(scoreStr).width;
+
+  // /10
+  ctx.fillStyle = '#2a2a2a';
+  ctx.font = 'bold 64px monospace';
+  ctx.fillText('/10', 80 + scoreW + 12, 490);
+
+  // Criteria (right column)
+  const criteria = [
+    { label: 'AI Model Recognition', pts: '+4', earned: d.brandMentioned },
+    { label: 'Cited Correctly',       pts: '+3', earned: d.citedCorrectly },
+    { label: 'Technical Crawlability',pts: '+3', earned: d.crawlable },
+  ];
+  const rx = 660;
+  criteria.forEach((c, i) => {
+    const cy = 210 + i * 110;
+    ctx.fillStyle = c.earned ? '#22CC88' : '#FF4422';
+    ctx.font = 'bold 26px monospace';
+    ctx.fillText(c.earned ? '✓' : '✕', rx, cy);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 19px system-ui, sans-serif';
+    ctx.fillText(c.label, rx + 44, cy);
+    ctx.fillStyle = c.earned ? '#22CC88' : '#444';
+    ctx.font = '600 15px monospace';
+    ctx.fillText(c.pts + (c.earned ? ' earned' : ' missed'), rx + 44, cy + 24);
+  });
+
+  // Divider line between score and criteria
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(630, 160); ctx.lineTo(630, 540); ctx.stroke();
+
+  // Bottom watermark
+  ctx.fillStyle = '#2a2a2a';
+  ctx.font = '400 14px monospace';
+  ctx.fillText('strategicflow.tech/ai-visibility', 80, H - 28);
+
+  // SF monogram
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#1a1a1a';
+  ctx.font = '700 96px monospace';
+  ctx.fillText('SF', W - 64, H - 28);
+  ctx.textAlign = 'left';
+
+  const a = document.createElement('a');
+  a.download = (d.domain || 'ai-visibility') + '-score.png';
+  a.href = cv.toDataURL('image/png');
+  a.click();
+}
+
+function extractCompetitors(answers, brand) {
+  const STOP = new Set(['The','A','An','And','Or','But','In','On','At','To','For','Of','With','By','From','Is','Are','Was','Were','Be','Been','Being','Have','Has','Had','Do','Does','Did','Will','Would','Could','Should','May','Might','Can','I','You','We','They','He','She','It','This','That','These','Those','My','Your','Our','Their','Some','Any','All','Both','Each','Few','More','Most','Other','Another','Such','What','Which','Who','Whom','How','When','Where','Why','Not','Also','As','If','So','Than','Then','Too','Very','Just','About','Before','After','Between','Through','During','Under','Over','Above','Below','Up','Down','Out','Off','Here','There','Now','First','Second','Third','Last','New','Old','Next','Additionally','However','Furthermore','Moreover','Finally','Overall','Generally','Typically','Often','Usually','Always','Sometimes','Perhaps','Indeed','Certainly','Especially','Including','Many','Several','Various','Different','Popular','Available','Best','Better','Top','Well','Known','Used','Based','Designed','Response','Unavailable','Here','Some','Recommend','Recommended',
+    'SaaS','B2B','B2C','AI','ML','LLM','API','SDK','CRM','ERP','CDP','SEO','SEM','CTA','ROI','KPI','OKR','GTM','SMB','SME','IPO',
+    'Software','Platform','Tool','Tools','Service','Services','Solution','Solutions','Product','Products','App','Application','Applications','System','Systems','Suite',
+    'Company','Companies','Enterprise','Business','Businesses','Market','Markets','Category','Industry','Industries','Sector','Technology','Technologies','Tech',
+    'Digital','Online','Cloud','Modern','Advanced','Smart','Automated','Integrated','Native','Based','Driven','Focused','Led','Powered','Enabled',
+    'Email','Marketing','Analytics','Automation','Management','Intelligence','Data','Growth','Revenue','Conversion','Engagement','Retention','Acquisition','Optimization',
+    'Team','Teams','User','Users','Customer','Customers','Client','Clients','Buyer','Buyers','Vendor','Vendors',
+    'Yes','No','True','False','None','Null','Key','Value','Note','Example','See','Use','Get','Set','Run','Go','Help','Support','Learn','Read','Try','Start','Stop','Send','Build','Make','Find','Show','Give','Take','Keep','Turn','Come','Look','Work','Need','Want','Know','Think','Feel','Seem','Become','Include','Provide','Offer','Allow','Enable','Require','Ensure','Consider','Understand','Identify','Create','Improve','Increase','Decrease','Reduce','Generate','Develop','Implement','Apply','Follow','Check','Test','Review','Update','Change','Add','Remove','Move','Place','Put','Write','Call','Ask','Tell','Say','Mean']);
+  // Returns true for acronym-pattern words that are never product names:
+  // SERP, SERPs, API, APIs — all-caps with optional plural s
+  // B2B, B2C, G2 — letter-digit combos
+  // SaaS, SaAS — mixed-case where the word ends in uppercase (acronym convention)
+  function isGenericAcronym(w) {
+    if (/^[A-Z]{2,}s?$/.test(w)) return true;       // SERP SERPs API CRM SEO
+    if (/^[A-Z][0-9][A-Za-z0-9]*$/.test(w)) return true; // B2B B2C G2
+    if (/^[A-Z][a-z]+[A-Z]$/.test(w)) return true;  // SaaS SheEO
+    return false;
+  }
+  const brandLower = (brand || '').toLowerCase();
+  const combined = answers.filter(Boolean).join(' ');
+  const raw = combined.match(/\b[A-Z][a-zA-Z]{1,24}(?:\.[a-z]{2,4})?(?:\s+[A-Z][a-zA-Z]{1,24}){0,2}\b/g) || [];
+  const seen = new Set();
+  const results = [];
+  for (const m of raw) {
+    const words = m.split(' ');
+    if (words.some(w => STOP.has(w) || isGenericAcronym(w))) continue;
+    if (m.toLowerCase().includes(brandLower)) continue;
+    if (m.length < 3) continue;
+    const key = m.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    results.push(m);
+    if (results.length >= 4) break;
+  }
+  return results;
+}
+
+function getIndustryCTA(cat) {
+  const c = (cat || '').toLowerCase();
+  const isSaaS   = /saas|software|crm|erp|analytics|email.?market|marketing.?auto|productivity|devtool|api|platform|b2b/.test(c);
+  const isEcom   = /ecomm|e.?comm|shopify|woo|retail|store|shop|dtc|d2c|product/.test(c);
+  const isMedia  = /media|publish|newsletter|content|blog|journal|magazine|editorial/.test(c);
+  if (isSaaS)  return { framing: 'Your onboarding emails decide if AI tools describe you correctly.',   sub: 'Start with a Decision Friction Review and see the fix.' };
+  if (isEcom)  return { framing: 'Your product emails are what AI sees first.',                         sub: 'Start with a Decision Friction Review and see the fix.' };
+  if (isMedia) return { framing: 'Your newsletter structure feeds what AI quotes about you.',            sub: 'Start with a Decision Friction Review and see the fix.' };
+  return         { framing: 'Your recurring emails shape how AI describes your brand.',                  sub: 'Start with a Decision Friction Review and see the fix.' };
+}
+
+function resetCheck() {
+  document.getElementById('domain-input').value = '';
+  document.getElementById('category-input').value = '';
+  document.getElementById('query-preview').classList.remove('active');
+  document.getElementById('output').style.display = 'none';
+  document.getElementById('form-wrap').style.display = 'block';
+  document.getElementById('domain-input').focus();
+}
+
+function copyScore() {
+  const score = document.getElementById('score-num').textContent;
+  const brand = document.getElementById('score-brand').textContent;
+  const reasons = Array.from(document.querySelectorAll('.score-reason'))
+    .map(r => '— ' + r.textContent.replace(/^—\s*/, '').trim()).join('\n');
+  const txt = `AI Visibility Score: ${score}/10\n${brand}\n\n${reasons}\n\nCheck yours: https://strategic-flow-audit.replit.app/ai-visibility`;
+  navigator.clipboard.writeText(txt).catch(() => {});
+}
+
+document.getElementById('domain-input').focus();
+</script>
+
+</body>
+</html>
