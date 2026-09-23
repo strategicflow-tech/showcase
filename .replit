@@ -22,3 +22,7 @@ args = "python3 scripts/validate-blog.py"
 
 [workflows.workflow.metadata]
 isValidation = true
+
+[deployment]
+deploymentTarget = "static"
+publicDir = "."
