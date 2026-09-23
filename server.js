@@ -4660,31 +4660,45 @@ ${buildUnsubFooterHtml(email || '')}
 
 function buildClaimFollowupEmail(name, listingUrl, email) {
   const safeName = escapeHtml(name || 'your product');
-  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:32px auto;color:#1a1a2e;line-height:1.7;font-size:15px;">
-<p>Hi,</p>
-<p>I’m following up once because <strong>${safeName}'s ToolIndex profile</strong> is still unclaimed.</p>
-<p>The draft is based on public information, which means the most important perspective — the one from the people who built the product — is still missing.</p>
-<ul style="margin:0 0 20px;padding-left:20px;font-size:14px;color:#374151;line-height:1.85;">
-  <li>Correct the description and facts</li>
-  <li>Add the right logo and links</li>
-  <li>Keep the permanent dofollow backlink from strategicflow.tech</li>
-</ul>
-<p>Claiming is free. If the profile is already accurate, no action is needed.</p>
-<p style="margin:28px 0;"><a href="${listingUrl}" style="display:inline-block;background:#00d4c8;color:#0a1628;padding:13px 28px;text-decoration:none;font-weight:700;border-radius:6px;font-size:15px;">Take ownership of ${safeName}'s profile &rarr;</a></p>
- <p style="margin-top:28px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:13px;color:#555;line-height:2;"><strong>Alex Iliescu</strong><br>Strategic Flow — <a href="https://strategicflow.tech" style="color:#00d4c8;">strategicflow.tech</a><br>ToolIndex — <a href="https://strategic-flow-audit.replit.app/directory" style="color:#00d4c8;">strategic-flow-audit.replit.app/directory</a><br>Tenerife, Spain</p>${buildUnsubFooterHtml(email || '')}</div>`;
+  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:32px auto;color:#0f172a;line-height:1.7;font-size:15px;">
+ <div style="background:#07111f;color:#fff;border-radius:12px 12px 0 0;padding:26px 30px 22px;">
+   <p style="margin:0 0 12px;font-family:monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#00d4c8;">Strategic Flow · ownership gap</p>
+   <h1 style="margin:0;font-size:23px;line-height:1.25;letter-spacing:-.02em;">Your product is being described without you.</h1>
+ </div>
+ <div style="border:1px solid #dbe4ec;border-top:0;border-radius:0 0 12px 12px;padding:28px 30px;">
+   <p>Hi,</p>
+   <p><strong>${safeName}</strong> already has a ToolIndex profile. The page is built from public information, but the people who know the product best still have no control over how it is presented.</p>
+   <p style="background:#f0fdfa;border-left:3px solid #00bfae;padding:14px 16px;border-radius:0 7px 7px 0;margin:22px 0;color:#164e63;"><strong>The cost of leaving it unclaimed:</strong><br>the description, facts, logo and links remain an approximation while your product's public authority keeps accumulating around a version you did not write.</p>
+   <p>Claiming closes that gap. In about 60 seconds, you can:</p>
+   <ul style="margin:0 0 22px;padding-left:20px;color:#334155;line-height:1.9;">
+     <li>replace inference with your own positioning and facts;</li>
+     <li>control the logo and destination links attached to the profile;</li>
+     <li>keep the permanent DR 86 dofollow backlink from strategicflow.tech.</li>
+   </ul>
+   <p>This is free. No subscription. No payment. Just ownership of the page that represents your product.</p>
+   <p style="margin:26px 0 10px;"><a href="${listingUrl}" style="display:inline-block;background:#00d4c8;color:#06131d;padding:14px 30px;text-decoration:none;font-weight:800;border-radius:7px;font-size:15px;">Close the ownership gap &rarr;</a></p>
+   <p style="font-size:13px;color:#64748b;margin:0;">If the profile is already accurate, no action is needed. If you are not the right person, forward this to whoever owns your product's public presence.</p>
+   <p style="margin-top:28px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:13px;color:#64748b;line-height:2;"><strong style="color:#0f172a;">Alex Iliescu</strong><br>Strategic Flow — <a href="https://strategicflow.tech" style="color:#009f96;">strategicflow.tech</a><br>ToolIndex — <a href="https://strategic-flow-audit.replit.app/directory" style="color:#009f96;">strategic-flow-audit.replit.app/directory</a><br>Tenerife, Spain</p>
+   ${buildUnsubFooterHtml(email || '')}
+ </div>
+ </div>`;
   const text = `Hi,
 
- I’m following up once because ${name}'s ToolIndex profile is still unclaimed.
+${name} already has a ToolIndex profile. The page is built from public information, but the people who know the product best still have no control over how it is presented.
 
-The draft is based on public information, which means the most important perspective — the one from the people who built the product — is still missing.
+The cost of leaving it unclaimed:
+The description, facts, logo and links remain an approximation while your product's public authority keeps accumulating around a version you did not write.
 
-✓ Correct the description and facts
-✓ Add the right logo and links
-✓ Keep the permanent dofollow backlink from strategicflow.tech
+Claiming closes that gap. In about 60 seconds, you can:
+✓ Replace inference with your own positioning and facts
+✓ Control the logo and destination links attached to the profile
+✓ Keep the permanent DR 86 dofollow backlink from strategicflow.tech
 
-Claiming is free. If the profile is already accurate, no action is needed.
+This is free. No subscription. No payment. Just ownership of the page that represents your product.
 
-Take ownership of ${name}'s profile: ${listingUrl}
+Close the ownership gap: ${listingUrl}
+
+If the profile is already accurate, no action is needed. If you are not the right person, forward this to whoever owns your product's public presence.
 
 --
 Alex Iliescu
@@ -4692,7 +4706,7 @@ Strategic Flow — strategicflow.tech
 ToolIndex — https://strategic-flow-audit.replit.app/directory
 Tenerife, Spain${buildUnsubFooterText(email || '')}`;
   return {
-    subject: `One detail remains on ${name}'s ToolIndex profile`,
+    subject: `${name}'s ToolIndex profile is still missing your voice`,
     html,
     text,
   };
