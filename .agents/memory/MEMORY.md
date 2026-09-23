@@ -1,0 +1,1 @@
+- [Static blog validation](blog-validation.md) — enforce the current Field Note contract strictly while reporting legacy article variants as warnings.

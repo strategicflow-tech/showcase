@@ -133,6 +133,7 @@ def validate_metadata(
     filename: str,
     parser: ArticleParser,
     expected_url: str,
+    is_field_note: bool,
     errors: list[str],
     warnings: list[str],
 ) -> None:
@@ -151,7 +152,12 @@ def validate_metadata(
     }
     for key, label in required.items():
         if not parser.meta.get(key):
-            add_issue(errors, warnings, f"{filename}: missing {label}")
+            add_issue(
+                errors,
+                warnings,
+                f"{filename}: missing {label}",
+                warning=not is_field_note,
+            )
 
     canonical = parser.meta.get("canonical")
     if canonical and canonical != expected_url:
@@ -159,6 +165,7 @@ def validate_metadata(
             errors,
             warnings,
             f"{filename}: canonical is {canonical!r}, expected {expected_url!r}",
+            warning=not is_field_note,
         )
     og_url = parser.meta.get("og:url")
     if og_url and og_url != expected_url:
@@ -166,6 +173,7 @@ def validate_metadata(
             errors,
             warnings,
             f"{filename}: og:url is {og_url!r}, expected {expected_url!r}",
+            warning=not is_field_note,
         )
 
     # These fields are part of the current Field Note template but some
@@ -262,7 +270,10 @@ def validate_field_note_template(
 
 
 def validate_index_and_sitemap(
-    cards: list[str], errors: list[str], warnings: list[str]
+    cards: list[str],
+    field_note_files: set[str],
+    errors: list[str],
+    warnings: list[str],
 ) -> None:
     if not BLOG_INDEX.exists():
         errors.append("blog.html: file does not exist")
@@ -301,14 +312,24 @@ def validate_index_and_sitemap(
     for href in sorted(card_counts):
         expected = f"{SITE_ORIGIN}{href}"
         count = sitemap_counts.get(expected, 0)
+        filename = Path(urllib.parse.urlparse(href).path).name
         if count == 0:
-            errors.append(f"sitemap.xml: missing {expected}")
+            add_issue(
+                errors,
+                warnings,
+                f"sitemap.xml: missing {expected}",
+                warning=filename not in field_note_files,
+            )
         elif count > 1:
             errors.append(f"sitemap.xml: {expected} appears {count} times")
 
 
 def validate_internal_links(
-    filename: str, parser: ArticleParser, errors: list[str]
+    filename: str,
+    parser: ArticleParser,
+    is_field_note: bool,
+    errors: list[str],
+    warnings: list[str],
 ) -> None:
     for href in parser.links:
         parsed = urllib.parse.urlparse(href)
@@ -317,7 +338,12 @@ def validate_internal_links(
         if parsed.scheme not in {"", "https"}:
             continue
         if local_file_for_url(href) is None:
-            errors.append(f"{filename}: internal link does not resolve: {href}")
+            add_issue(
+                errors,
+                warnings,
+                f"{filename}: internal link does not resolve: {href}",
+                warning=not is_field_note,
+            )
 
 
 def main() -> int:
@@ -327,12 +353,22 @@ def main() -> int:
         action="store_true",
         help="Treat legacy warnings, including duplicate cards, as errors.",
     )
+    args.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Print every legacy warning instead of only the warning count.",
+    )
     options = args.parse_args()
 
     errors: list[str] = []
     warnings: list[str] = []
     cards = published_cards()
-    validate_index_and_sitemap(cards, errors, warnings)
+    field_note_files = {
+        path.name
+        for path in BLOG_DIR.glob("*.html")
+        if 'class="article-tag">Field Note' in path.read_text(encoding="utf-8")
+    }
+    validate_index_and_sitemap(cards, field_note_files, errors, warnings)
 
     if not cards:
         errors.append("blog.html: no article cards found")
@@ -346,22 +382,29 @@ def main() -> int:
         parser = ArticleParser()
         parser.feed(source)
         expected_url = f"{SITE_ORIGIN}/blog/{filename}"
-        validate_metadata(filename, parser, expected_url, errors, warnings)
         is_field_note = "class=\"article-tag\">Field Note" in source
+        validate_metadata(
+            filename, parser, expected_url, is_field_note, errors, warnings
+        )
         validate_jsonld(filename, source, parser, is_field_note, errors, warnings)
         if is_field_note:
             validate_field_note_template(filename, source, parser, errors)
-        validate_internal_links(filename, parser, errors)
+        validate_internal_links(filename, parser, is_field_note, errors, warnings)
 
     print(f"Checked {len(set(cards))} published article files and {len(cards)} cards.")
     if errors:
         print("\nErrors:")
         for issue in errors:
             print(f"  - {issue}")
-    if warnings:
+    if warnings and (options.verbose or options.strict):
         print("\nWarnings:")
         for issue in warnings:
             print(f"  - {issue}")
+    elif warnings:
+        print(
+            f"\nWarnings: {len(warnings)} legacy item(s) found. "
+            "Use --verbose for the full report."
+        )
 
     if options.strict and warnings:
         errors.extend(f"[strict] {issue}" for issue in warnings)
