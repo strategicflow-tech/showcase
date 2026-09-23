@@ -65,6 +65,7 @@ Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limite
 - [About](https://strategicflow.tech/about.html)
 - [Reviews](https://strategicflow.tech/reviews.html)
 - [Blog](https://strategicflow.tech/blog.html): published articles
+- [Answers hub](https://strategicflow.tech/answers.html): short, direct answers about SaaS email architecture, roles, and AI search visibility
 
 ## Secondary pages
 
