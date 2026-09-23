@@ -1,4 +1,4 @@
-modules = ["python-base-3.13", "nodejs-24"]
+modules = ["python-base-3.13", "nodejs-24", "postgresql-16"]
 
 [workflows]
 runButton = "Project"
@@ -30,3 +30,6 @@ run = ["npm", "start"]
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[nix]
+channel = "stable-25_05"
