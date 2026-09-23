@@ -24892,13 +24892,42 @@ a{display:inline-block;background:#FF4422;color:#FFF;font-size:14px;font-weight:
 app.get('/playbook', (req, res) => res.sendFile(path.join(__dirname, 'public', 'playbook', 'index.html')));
 // GET /playbook/chapter-1 — free chapter (directly shareable, not gated)
 app.get('/playbook/chapter-1', (req, res) => res.sendFile(path.join(__dirname, 'public', 'playbook', 'chapter1-free.html')));
-// GET /playbook/full — paid full playbook (served without Stripe gate here;
-//   actual gating happens via /playbook-access → /playbook/download which
-//   verifies the purchase record. This clean URL is for bookmarked access.)
-app.get('/playbook/full', (req, res) => res.sendFile(path.join(__dirname, 'public', 'playbook', 'ai-visibility-conversion-playbook.html')));
+function playbookBaseUrl() {
+  return process.env.APP_URL || 'https://strategic-flow-audit.replit.app';
+}
+
+// GET /playbook/full — paid full playbook, gated by a verified purchase record.
+// The purchase session is kept in the browser session after checkout; a
+// session_id query parameter is also accepted for a first visit from a
+// bookmarked purchase link.
+app.get('/playbook/full', async (req, res) => {
+  const sessionId = String(
+    req.query.session_id || req.session?.playbookPurchaseSessionId || ''
+  ).trim();
+
+  if (!sessionId) {
+    return res.status(401).send(renderPlaybookPurchaseRequiredHtml());
+  }
+
+  try {
+    const purchase = await getStoredPlaybookPurchase(sessionId);
+    if (!purchase) {
+      return res.status(401).send(renderPlaybookPurchaseRequiredHtml());
+    }
+
+    req.session.playbookPurchaseSessionId = sessionId;
+    res.setHeader('Cache-Control', 'private, no-store');
+    return res.sendFile(path.join(__dirname, 'public', 'playbook', 'ai-visibility-conversion-playbook.html'));
+  } catch (e) {
+    console.error('[playbook/full] purchase lookup error:', e.message);
+    return res.status(503).send(renderPlaybookPurchaseRequiredHtml(
+      'We could not verify your purchase right now. Please try again in a moment.'
+    ));
+  }
+});
 
 // POST /api/playbook/chapter1-lead — capture email from landing page form,
-//   persist to playbook_leads, return redirect to /playbook/chapter-1
+//   persist to playbook_leads, send the sample link, return redirect to /playbook/chapter-1
 app.post('/api/playbook/chapter1-lead', async (req, res) => {
   const raw = String(req.body?.email || req.body?.e || '').trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
@@ -24910,6 +24939,27 @@ app.post('/api/playbook/chapter1-lead', async (req, res) => {
        ON CONFLICT (email) DO NOTHING`,
       [raw]
     );
+
+    const chapterUrl = `${playbookBaseUrl()}/playbook/chapter-1`;
+    void resend.emails.send({
+      _skipGlobalCooldown: true,
+      from: 'Strategic Flow <noreply@strategicflow.tech>',
+      replyTo: 'strategicflow@proton.me',
+      to: raw,
+      subject: 'Your free Chapter 1 — Strategic Flow',
+      html: `<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#070d1a;color:#e8f0fa;padding:40px 32px;border:1px solid #1a2e45;border-radius:12px;">
+        <p style="font-size:11px;letter-spacing:.1em;color:#6a8aaa;text-transform:uppercase;margin:0 0 28px;">AI Visibility &amp; Conversion Playbook</p>
+        <h2 style="font-size:22px;margin:0 0 14px;font-weight:700;">Your free Chapter 1 is ready</h2>
+        <p style="font-size:15px;color:#6a8aaa;margin:0 0 28px;line-height:1.6;">Thanks for checking out the Playbook. Read the first chapter whenever you are ready:</p>
+        <a href="${chapterUrl}" style="display:inline-block;background:#00e5ff;color:#070d1a;padding:14px 28px;text-decoration:none;font-size:14px;font-weight:700;margin-bottom:28px;border-radius:8px;">Read Chapter 1 →</a>
+        <p style="font-size:12px;color:#6a8aaa;margin:0;line-height:1.6;">Questions? Reply to this email or contact <a href="mailto:strategicflow@proton.me" style="color:#00e5ff;">strategicflow@proton.me</a>.</p>
+      </div>`,
+      text: `Your free Chapter 1 is ready.\n\nRead the first chapter here: ${chapterUrl}\n\nQuestions? Reply to this email or contact strategicflow@proton.me.`
+    }).then(result => {
+      console.log('[playbook-lead] Chapter 1 email sent:', result?.data?.id || 'ok');
+    }).catch(e => {
+      console.error('[playbook-lead] Chapter 1 email error:', e.message);
+    });
   } catch (e) {
     console.error('[playbook-lead]', e.message);
     // Non-fatal — still let them through
@@ -24920,6 +24970,48 @@ app.post('/api/playbook/chapter1-lead', async (req, res) => {
 // ── Playbook: payment verification + gated download ───────────────────────────
 const PLAYBOOK_PRICE_SINGLE = 'price_1U7Y3EDpTwoDeZJnyDv5DNHx'; // $9.99 — playbook only
 const PLAYBOOK_PRICE_BUNDLE = 'price_1U7Y3KDpTwoDeZJnOjcVX6yv'; // $29   — playbook + AI Vis Pro month
+
+async function getStoredPlaybookPurchase(sessionId) {
+  const result = await pool.query(
+    `SELECT email, tier, price_id
+     FROM playbook_purchases
+     WHERE stripe_session_id=$1
+       AND price_id = ANY($2::text[])`,
+    [sessionId, [PLAYBOOK_PRICE_SINGLE, PLAYBOOK_PRICE_BUNDLE]]
+  );
+  return result.rows[0] || null;
+}
+
+function renderPlaybookPurchaseRequiredHtml(
+  reason = 'A completed Playbook purchase is required to read the full 21-chapter guide online.'
+) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Purchase Required — Strategic Flow</title>
+<style>
+:root{--bg:#070d1a;--card:#0c1526;--teal:#00e5ff;--muted:#6a8aaa;--hairline:#1a2e45;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{background:var(--bg);}
+body{background:var(--bg);color:#e8f0fa;font-family:Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;}
+.card{max-width:520px;width:100%;background:var(--card);border:1px solid var(--hairline);border-radius:16px;padding:48px 40px;text-align:center;}
+.eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;}
+h1{font-size:28px;line-height:1.25;margin-bottom:16px;}
+p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
+.btn{display:inline-block;background:var(--teal);color:#070d1a;font-weight:700;font-size:14px;padding:13px 28px;border-radius:8px;text-decoration:none;}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="eyebrow">Playbook Access</div>
+  <h1>Purchase required</h1>
+  <p>${reason}</p>
+  <a class="btn" href="/playbook/">View the Playbook →</a>
+</main>
+</body>
+</html>`;
+}
 
 function renderPlaybookErrorHtml(reason) {
   return `<!DOCTYPE html>
@@ -24996,6 +25088,7 @@ h1{font-size:32px;font-weight:700;margin-bottom:10px;line-height:1.2;}
 .download-btn{display:inline-flex;align-items:center;gap:10px;background:var(--teal);color:#070d1a;font-weight:700;font-size:16px;padding:16px 32px;border-radius:10px;text-decoration:none;font-family:var(--font);box-shadow:0 0 24px var(--teal-glow);transition:box-shadow .2s;margin-bottom:36px;}
 .download-btn:hover{box-shadow:0 0 40px var(--teal-glow);}
 .download-btn .dl-icon{font-size:20px;}
+.web-btn{display:inline-block;color:var(--teal);font-size:14px;text-decoration:none;font-family:var(--mono);margin:0 0 36px;}
 .bundle-note{background:var(--card);border:1px solid var(--hairline);border-left:3px solid var(--teal);border-radius:10px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;text-align:left;margin-bottom:32px;}
 .bundle-icon{color:var(--teal);font-size:18px;flex-shrink:0;margin-top:2px;}
 .bundle-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;}
@@ -25017,6 +25110,7 @@ h1{font-size:32px;font-weight:700;margin-bottom:10px;line-height:1.2;}
     <span class="dl-icon">⬇</span>
     Download the Playbook
   </a>
+  <a class="web-btn" href="/playbook/full">Read the Playbook online →</a>
   <div class="divider"></div>
   <p class="bookmark-note">Questions? <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a></p>
 </div>
@@ -25042,6 +25136,7 @@ app.get('/playbook-access', async (req, res) => {
     );
     if (cached.rows.length) {
       const { email, tier } = cached.rows[0];
+      req.session.playbookPurchaseSessionId = sessionId;
       console.log(`[playbook-access] re-visit for session ${sessionId} (${tier})`);
       return res.send(renderPlaybookSuccessHtml(email, tier === 'playbook_bundle', sessionId));
     }
@@ -25094,6 +25189,7 @@ app.get('/playbook-access', async (req, res) => {
   } catch (e) {
     console.error('[playbook-access] failed to store purchase:', e.message);
   }
+  req.session.playbookPurchaseSessionId = sessionId;
 
   // Activate AI Visibility Pro for bundle purchasers
   if (isBundle && email) {
@@ -25150,11 +25246,8 @@ app.get('/playbook/download', async (req, res) => {
   const sessionId = String(req.query.session_id || '').trim();
   if (!sessionId) return res.redirect('/playbook-access');
   try {
-    const result = await pool.query(
-      `SELECT 1 FROM playbook_purchases WHERE stripe_session_id=$1`,
-      [sessionId]
-    );
-    if (!result.rows.length) {
+    const purchase = await getStoredPlaybookPurchase(sessionId);
+    if (!purchase) {
       return res.redirect(`/playbook-access?session_id=${encodeURIComponent(sessionId)}`);
     }
     res.setHeader('Content-Disposition', 'attachment; filename="ai-visibility-conversion-playbook.html"');
