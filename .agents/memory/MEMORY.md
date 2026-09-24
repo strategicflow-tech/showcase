@@ -1,4 +1,5 @@
 - [Static blog validation](blog-validation.md) — enforce the current Field Note contract strictly while reporting legacy article variants as warnings.
+- [Static count audits](static-count-audits.md) — scan rendered HTML and `N+` forms; distinguish archive totals from subgroup metrics and company-list formulas.
 - [GitHub Pages publishing](github-pages-publishing.md) — publish static-site batches through one Git Data API commit to avoid overlapping Pages builds.
 - [Static mobile preview](mobile-static-preview.md) — use direct Chromium screenshots for viewport checks; iframe probes can report a misleading default width.
 - [Audit deployment separation](audit-deployment-separation.md) — keep the audit backend/public tree separate from the repository-root marketing site.
