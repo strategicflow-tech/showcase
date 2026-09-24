@@ -12,6 +12,7 @@ const {
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
   hashWriteKey,
+  WRITE_SCOPE,
 } = require('../decision-execution-layer');
 
 function makeDiagnosis() {
@@ -51,17 +52,80 @@ class FakePool {
 
     if (normalized.startsWith('insert into execution_write_api_keys')) {
       const [id, keyHash, keyName, scope] = params;
-      const row = { id, key_hash: keyHash, key_name: keyName, scope, created_at: new Date().toISOString() };
+      const row = {
+        id,
+        key_hash: keyHash,
+        key_name: keyName,
+        scope,
+        created_at: new Date().toISOString(),
+        revoked_at: null,
+      };
       this.state.keys.push(row);
       return { rows: [{ id, key_name: keyName, scope, created_at: row.created_at }], rowCount: 1 };
     }
 
-    if (normalized.startsWith('select id from execution_write_api_keys')) {
-      const [keyHash, scope] = params;
-      const row = this.state.keys.find(
-        key => key.key_hash === keyHash && key.scope === scope && !key.revoked_at
+    if (normalized.startsWith('select k.id, k.key_name as name')) {
+      const rows = this.state.keys
+        .map(key => ({
+          id: key.id,
+          name: key.key_name,
+          scope: key.scope,
+          created_at: key.created_at,
+          last_used_at: this.state.attempts
+            .filter(attempt => attempt.write_key_id === key.id)
+            .map(attempt => attempt.created_at)
+            .sort()
+            .at(-1) || null,
+          revoked_at: key.revoked_at,
+        }))
+        .sort((left, right) => right.created_at.localeCompare(left.created_at));
+      return { rows, rowCount: rows.length };
+    }
+
+    if (normalized.startsWith('update execution_write_api_keys')) {
+      const [keyId] = params;
+      const row = this.state.keys.find(key => key.id === keyId);
+      if (!row) return { rows: [], rowCount: 0 };
+      row.revoked_at ||= new Date().toISOString();
+      return {
+        rows: [{
+          id: row.id,
+          name: row.key_name,
+          scope: row.scope,
+          created_at: row.created_at,
+          revoked_at: row.revoked_at,
+        }],
+        rowCount: 1,
+      };
+    }
+
+    if (normalized.startsWith('select id, scope, revoked_at from execution_write_api_keys')) {
+      const [keyHash] = params;
+      const row = this.state.keys.find(key => key.key_hash === keyHash);
+      return {
+        rows: row ? [{ id: row.id, scope: row.scope, revoked_at: row.revoked_at }] : [],
+        rowCount: row ? 1 : 0,
+      };
+    }
+
+    if (normalized.startsWith('select count(*)::int as call_count')) {
+      const [keyId] = params;
+      const cutoff = Date.now() - 60 * 60 * 1000;
+      const recent = this.state.attempts.filter(attempt =>
+        attempt.write_key_id === keyId &&
+        attempt.failure_reason !== 'rate_limited' &&
+        new Date(attempt.created_at).getTime() >= cutoff
       );
-      return { rows: row ? [{ id: row.id }] : [], rowCount: row ? 1 : 0 };
+      const oldest = recent
+        .map(attempt => new Date(attempt.created_at).getTime())
+        .sort((left, right) => left - right)[0];
+      const retryAfterSeconds = oldest
+        ? Math.max(0, Math.ceil((oldest + 60 * 60 * 1000 - Date.now()) / 1000))
+        : 0;
+      return {
+        rows: [{ call_count: recent.length, retry_after_seconds: retryAfterSeconds }],
+        rowCount: 1,
+      };
     }
 
     if (normalized.startsWith('select structured_fixes, field_values from decision_audit_records')) {
@@ -116,6 +180,7 @@ class FakePool {
         failure_reason: failureReason,
         http_status: httpStatus,
         write_key_id: writeKeyId,
+        created_at: new Date().toISOString(),
       });
       return { rows: [], rowCount: 1 };
     }
@@ -279,10 +344,119 @@ test('admin-issued key is separate, successful writes verify, and failed trigger
   assert.equal(staleResponse.status, 409);
   const stale = await staleResponse.json();
   assert.equal(stale.error, 'precondition_failed');
+  assert.equal(stale.precondition_failure_reason, 'stored_value_no_longer_matches_before_value');
   assert.equal(pool.state.attempts.at(-1).trigger_evaluated, true);
   assert.equal(pool.state.attempts.at(-1).trigger_matched, false);
   assert.equal(pool.state.attempts.at(-1).precondition_failure_reason, 'stored_value_no_longer_matches_before_value');
   assert.equal(pool.state.attempts.at(-1).write_attempted, false);
   assert.equal(pool.state.attempts.at(-1).write_succeeded, false);
-  assert.equal(pool.state.attempts.length, 4);
+  assert.equal(pool.state.attempts.at(-2).write_key_id, issued.key_id);
+
+  const listResponse = await fetch(`${baseUrl}/api/admin/execution-write-keys`, {
+    headers: { 'x-admin-key': 'admin-issuer-secret' },
+  });
+  assert.equal(listResponse.status, 200);
+  const listPayload = await listResponse.json();
+  assert.equal(listPayload.keys.length, 1);
+  const listedKey = listPayload.keys[0];
+  assert.equal(listedKey.id, issued.key_id);
+  assert.equal(listedKey.name, 'Execution POC');
+  assert.equal(listedKey.scope, WRITE_SCOPE);
+  assert.ok(listedKey.created_at);
+  assert.ok(listedKey.last_used_at);
+  assert.equal(listedKey.revoked_at, null);
+  assert.equal(Object.hasOwn(listedKey, 'api_key'), false);
+  assert.equal(Object.hasOwn(listedKey, 'key_hash'), false);
+  assert.equal(JSON.stringify(listPayload).includes(issued.api_key), false);
+
+  const revokeResponse = await fetch(
+    `${baseUrl}/api/admin/execution-write-keys/${issued.key_id}/revoke`,
+    {
+      method: 'POST',
+      headers: { 'x-admin-key': 'admin-issuer-secret' },
+    }
+  );
+  assert.equal(revokeResponse.status, 200);
+  const revokePayload = await revokeResponse.json();
+  assert.equal(revokePayload.success, true);
+  assert.equal(revokePayload.key.id, issued.key_id);
+  assert.ok(revokePayload.key.revoked_at);
+
+  const revokedKeyResponse = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${issued.api_key}`,
+    },
+    body: JSON.stringify({ record_id: recordId, fix_id: ctaFix.fix_id }),
+  });
+  assert.equal(revokedKeyResponse.status, 401);
+  assert.equal(pool.state.attempts.at(-1).write_key_id, issued.key_id);
+  assert.equal(pool.state.attempts.at(-1).failure_reason, 'invalid_api_key');
+
+  const relisted = await (await fetch(`${baseUrl}/api/admin/execution-write-keys`, {
+    headers: { 'x-admin-key': 'admin-issuer-secret' },
+  })).json();
+  assert.ok(relisted.keys[0].revoked_at);
+  assert.equal(pool.state.attempts.length, 5);
+});
+
+test('a write-scoped key is limited to 60 calls in a rolling hour', async t => {
+  const pool = new FakePool();
+  const { server, baseUrl } = await startTestServer(pool);
+  t.after(() => new Promise(resolve => server.close(resolve)));
+
+  const apiKey = `sf_exec_test_${crypto.randomBytes(8).toString('hex')}`;
+  const keyId = crypto.randomUUID();
+  pool.state.keys.push({
+    id: keyId,
+    key_hash: hashWriteKey(apiKey),
+    key_name: 'Rate limit test',
+    scope: WRITE_SCOPE,
+    created_at: new Date().toISOString(),
+    revoked_at: null,
+  });
+
+  const diagnosis = attachStructuredFixes(makeDiagnosis());
+  const recordId = crypto.randomUUID();
+  const fieldValues = Object.fromEntries(
+    diagnosis.structured_fixes.map(fix => [fix.fix_id, fix.before_value])
+  );
+  pool.state.records.set(recordId, {
+    id: recordId,
+    structured_fixes: diagnosis.structured_fixes,
+    field_values: fieldValues,
+  });
+  const fixId = diagnosis.structured_fixes.find(fix => fix.field_name === 'cta_text').fix_id;
+
+  for (let call = 0; call < 60; call += 1) {
+    const response = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({ record_id: recordId, fix_id: fixId }),
+    });
+    assert.ok([200, 409].includes(response.status), `call ${call + 1} should be within the limit`);
+  }
+
+  const limitedResponse = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({ record_id: recordId, fix_id: fixId }),
+  });
+  assert.equal(limitedResponse.status, 429);
+  assert.equal(limitedResponse.headers.get('retry-after') !== null, true);
+  const limited = await limitedResponse.json();
+  assert.equal(limited.error, 'rate_limited');
+  assert.equal(limited.limit, 60);
+  assert.equal(limited.window_seconds, 3600);
+  assert.ok(limited.retry_after_seconds >= 1);
+  assert.equal(pool.state.attempts.at(-1).failure_reason, 'rate_limited');
+  assert.equal(pool.state.attempts.at(-1).write_key_id, keyId);
+  assert.equal(pool.state.attempts.length, 61);
 });

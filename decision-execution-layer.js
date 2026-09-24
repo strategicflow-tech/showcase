@@ -450,18 +450,18 @@ function createDecisionExecutionRouter({ pool, adminKey } = {}) {
         FROM decision_execution_attempts
         WHERE write_key_id = $1
           AND created_at >= NOW() - INTERVAL '1 hour'
-          AND failure_reason IS DISTINCT FROM 'rate_limit_exceeded'
+          AND failure_reason IS DISTINCT FROM 'rate_limited'
       `, [keyRow.id]);
       const recentAttempts = recentAttemptsResult.rows[0] || {};
       if (Number(recentAttempts.call_count || 0) >= WRITE_KEY_RATE_LIMIT) {
-        attempt.failure_reason = 'rate_limit_exceeded';
+        attempt.failure_reason = 'rate_limited';
         const retryAfterSeconds = Math.max(
           1,
           Number(recentAttempts.retry_after_seconds) || 1
         );
         res.set('Retry-After', String(retryAfterSeconds));
         return await finish(429, {
-          error: 'rate_limit_exceeded',
+          error: 'rate_limited',
           limit: WRITE_KEY_RATE_LIMIT,
           window_seconds: WRITE_KEY_RATE_WINDOW_SECONDS,
           retry_after_seconds: retryAfterSeconds,
