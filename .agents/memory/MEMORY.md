@@ -4,3 +4,4 @@
 - [Static mobile preview](mobile-static-preview.md) — use direct Chromium screenshots for viewport checks; iframe probes can report a misleading default width.
 - [Audit deployment separation](audit-deployment-separation.md) — keep the audit backend/public tree separate from the repository-root marketing site.
 - [Existing secret operations](existing-secret-operations.md) — requestSecrets is for collecting new values; existing secrets can be passed through shell headers without printing them.
+- [DFM execution boundary](dfm-execution-boundary.md) — keep fix writes in stored audit records; no ESP or CMS effects without a new explicit request.

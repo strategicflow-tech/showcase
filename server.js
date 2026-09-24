@@ -68,6 +68,12 @@ const {
   deriveAgencyOutreachToken
 } = require('./agency-outreach-endpoint');
 const {
+  attachStructuredFixes,
+  createExecutionJsonErrorHandler,
+  createDecisionExecutionRouter,
+  persistDecisionAuditRecord,
+} = require('./decision-execution-layer');
+const {
   detectBrandedTerm,
   buildBrandedTermQuestions,
 } = require('./ai-visibility-question-engine');
@@ -788,6 +794,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.json({ limit: '10mb' }));
+app.use(createExecutionJsonErrorHandler({ pool }));
 
 const browserOrigins = new Set(
   [
@@ -29539,6 +29546,10 @@ JSON shape (all keys required):
   "rebuilt_subject": "consequence-first rewrite of the subject line",
   "rebuilt_body": ["paragraph 1", "paragraph 2", "paragraph 3"],
   "rebuilt_cta": "rewritten CTA text with ownership language (e.g. Fix my X, not Learn more)",
+  "cta_rewrite": {
+    "before": "exact original CTA text copied verbatim from the pasted email",
+    "after": "must exactly equal rebuilt_cta"
+  },
   "variants": [
     { "label": "A", "subject": "...", "pattern": "consequence-first + time anchor" },
     { "label": "B", "subject": "...", "pattern": "named pain without feature language" },
@@ -29547,6 +29558,8 @@ JSON shape (all keys required):
   "changes": [
     {
       "element": "Hook",
+      "pattern": "one of the seven Decision Friction Model patterns listed below",
+      "field_name": "stable target field for this pattern",
       "before": "exact line quoted verbatim from the pasted email",
       "after": "exact rebuilt line",
       "why": "one sentence structural reason tied to reader behavior"
@@ -29561,6 +29574,16 @@ Rules you must follow:
 - All 3 variants must be present with exactly the pattern labels given above.
 - rebuilt_cta: use ownership language.
 - rebuilt_subject: must be consequence-first, specific, and tied to reader outcome.
+- Include at least one CTA change with pattern "Guest Language CTA" and field_name "cta_text"; its after value must exactly equal rebuilt_cta.
+- Every changes item must include one exact pattern and its mapped field_name:
+  - "Guest Language CTA" -> "cta_text"
+  - "Feature-First Bias" -> "lead_text"
+  - "Filing Label Subject" -> "subject_line"
+  - "Consequence-After-Caveat" -> "opening_text"
+  - "Missing Visual Hierarchy" -> "visual_hierarchy"
+  - "Zero/Buried Social Proof" -> "social_proof"
+  - "Generic Urgency Theatre" -> "urgency_text"
+- If the original has no text for a field, set before to the empty string. Never invent an original value.
 
 Pasted email to rebuild:
 ${truncated}`;
@@ -29572,6 +29595,25 @@ ${truncated}`;
       console.error('[api/demo-rebuild] both attempts returned null');
       return res.status(422).json({ error: 'rebuild_failed' });
     }
+  }
+
+  let structuredDiagnosis;
+  try {
+    structuredDiagnosis = attachStructuredFixes(result);
+  } catch (e) {
+    console.error('[api/demo-rebuild] structured fixes invalid:', e.message);
+    return res.status(422).json({ error: 'structured_fixes_invalid' });
+  }
+
+  let auditRecordId;
+  try {
+    auditRecordId = await persistDecisionAuditRecord(pool, {
+      source: 'demo_rebuild',
+      diagnosis: structuredDiagnosis,
+    });
+  } catch (e) {
+    console.error('[api/demo-rebuild] audit persistence failed:', e.message);
+    return res.status(500).json({ error: 'audit_persistence_failed' });
   }
 
   try {
@@ -29591,12 +29633,21 @@ ${truncated}`;
   } catch (e) {}
 
   console.log(`[api/demo-rebuild] ok hash=${hash.slice(0,8)} count=${usedCount}`);
-  return res.json({ ...result, rebuild_count: usedCount });
+  return res.json({
+    ...structuredDiagnosis,
+    audit_record_id: auditRecordId,
+    rebuild_count: usedCount,
+  });
 });
 // ─── END DEMO REBUILD ENDPOINT ────────────────────────────────────────────────
 
 // ── MCP AUDIT ENDPOINT (ChatGPT integration) ──────────────────────────────────
 const MCP_INTERNAL_CALL_HEADER = 'X-MCP-Internal-Call';
+
+app.use(createDecisionExecutionRouter({
+  pool,
+  adminKey: process.env.WHY_ADMIN_KEY,
+}));
 
 function hasValidMcpInternalSecret(req) {
   const provided = req.get(MCP_INTERNAL_CALL_HEADER);
@@ -29660,6 +29711,10 @@ JSON shape (all keys required):
   "rebuilt_subject": "consequence-first rewrite of the subject line",
   "rebuilt_body": ["paragraph 1", "paragraph 2", "paragraph 3"],
   "rebuilt_cta": "rewritten CTA text with ownership language (e.g. Fix my X, not Learn more)",
+  "cta_rewrite": {
+    "before": "exact original CTA text copied verbatim from the pasted email",
+    "after": "must exactly equal rebuilt_cta"
+  },
   "variants": [
     { "label": "A", "subject": "...", "pattern": "consequence-first + time anchor" },
     { "label": "B", "subject": "...", "pattern": "named pain without feature language" },
@@ -29668,6 +29723,8 @@ JSON shape (all keys required):
   "changes": [
     {
       "element": "Hook",
+      "pattern": "one of the seven Decision Friction Model patterns listed below",
+      "field_name": "stable target field for this pattern",
       "before": "exact line quoted verbatim from the pasted email",
       "after": "exact rebuilt line",
       "why": "one sentence structural reason tied to reader behavior"
@@ -29681,6 +29738,16 @@ Rules:
 - All 3 variants must be present.
 - rebuilt_cta: ownership language.
 - rebuilt_subject: consequence-first, specific, tied to reader outcome.
+- Include at least one CTA change with pattern "Guest Language CTA" and field_name "cta_text"; its after value must exactly equal rebuilt_cta.
+- Every changes item must include one exact pattern and its mapped field_name:
+  - "Guest Language CTA" -> "cta_text"
+  - "Feature-First Bias" -> "lead_text"
+  - "Filing Label Subject" -> "subject_line"
+  - "Consequence-After-Caveat" -> "opening_text"
+  - "Missing Visual Hierarchy" -> "visual_hierarchy"
+  - "Zero/Buried Social Proof" -> "social_proof"
+  - "Generic Urgency Theatre" -> "urgency_text"
+- If the original has no text for a field, set before to the empty string. Never invent an original value.
 Pasted email:
 ${truncated}`;
 
@@ -29692,7 +29759,7 @@ In addition to every field above, include these required top-level fields:
 - "original_score": a number from 0 to 10, optionally with one decimal, representing the original email's score against all 7 Decision Friction Model diagnostic checks.
 - "rebuilt_score": a number from 0 to 10, optionally with one decimal, representing the estimated score of the rewritten email.
 
-For every object in "changes", include a required "pattern" field. Its value MUST be exactly one of these six named Decision Friction Model failure-pattern names:
+For every object in "changes", include a required "pattern" field. Its value MUST be exactly one of these seven named Decision Friction Model failure-pattern names:
 - "Guest Language CTA"
 - "Feature-First Bias"
 - "Filing Label Subject"
@@ -29710,6 +29777,25 @@ In detailed mode, each "why" field must be 2 to 3 sentences and explain the conv
     if (!result) {
       return res.status(422).json({ error: 'rebuild_failed' });
     }
+  }
+
+  let structuredDiagnosis;
+  try {
+    structuredDiagnosis = attachStructuredFixes(result);
+  } catch (e) {
+    console.error('[mcp/audit] structured fixes invalid:', e.message);
+    return res.status(422).json({ error: 'structured_fixes_invalid' });
+  }
+
+  let auditRecordId;
+  try {
+    auditRecordId = await persistDecisionAuditRecord(pool, {
+      source: 'mcp_audit',
+      diagnosis: structuredDiagnosis,
+    });
+  } catch (e) {
+    console.error('[mcp/audit] audit persistence failed:', e.message);
+    return res.status(500).json({ error: 'audit_persistence_failed' });
   }
 
   if (!isInternalMcpCall) {
@@ -29732,7 +29818,8 @@ In detailed mode, each "why" field must be 2 to 3 sentences and explain the conv
   } catch (e) {}
 
   return res.json({
-    ...result,
+    ...structuredDiagnosis,
+    audit_record_id: auditRecordId,
     audits_used: isInternalMcpCall ? null : usedCount,
     audits_remaining: isInternalMcpCall ? null : Math.max(0, 3 - usedCount),
     upgrade_url: isInternalMcpCall || usedCount < 3
