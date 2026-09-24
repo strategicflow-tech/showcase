@@ -4,6 +4,8 @@ const crypto = require('node:crypto');
 const express = require('express');
 
 const WRITE_SCOPE = 'decision_audit.write';
+const WRITE_KEY_RATE_LIMIT = 60;
+const WRITE_KEY_RATE_WINDOW_SECONDS = 60 * 60;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const FIX_ID_RE = /^fx_[a-f0-9]{10}$/i;
 
@@ -172,6 +174,18 @@ function sameSecret(provided, expected) {
   return left.length === right.length && crypto.timingSafeEqual(left, right);
 }
 
+function authorizeAdminRequest(req, res, adminKey) {
+  if (!adminKey) {
+    res.status(503).json({ error: 'admin_issuer_not_configured' });
+    return false;
+  }
+  if (!sameSecret(req.get('x-admin-key'), adminKey)) {
+    res.status(401).json({ error: 'unauthorized' });
+    return false;
+  }
+  return true;
+}
+
 function parseJsonObject(value) {
   if (value && typeof value === 'object' && !Array.isArray(value)) return value;
   if (typeof value !== 'string') return {};
@@ -308,13 +322,51 @@ function createDecisionExecutionRouter({ pool, adminKey } = {}) {
   if (!pool) throw new TypeError('A PostgreSQL pool is required');
   const router = express.Router();
 
+  router.get('/api/admin/execution-write-keys', async (req, res) => {
+    if (!authorizeAdminRequest(req, res, adminKey)) return;
+
+    try {
+      const result = await pool.query(`
+        SELECT k.id, k.key_name AS name, k.scope, k.created_at,
+               MAX(a.created_at) AS last_used_at, k.revoked_at
+        FROM execution_write_api_keys k
+        LEFT JOIN decision_execution_attempts a ON a.write_key_id = k.id
+        GROUP BY k.id, k.key_name, k.scope, k.created_at, k.revoked_at
+        ORDER BY k.created_at DESC, k.id
+      `);
+      return res.json({ keys: result.rows });
+    } catch (error) {
+      console.error('[execution-write-key] listing failed:', error.message);
+      return res.status(500).json({ error: 'key_listing_failed' });
+    }
+  });
+
+  router.post('/api/admin/execution-write-keys/:id/revoke', async (req, res) => {
+    if (!authorizeAdminRequest(req, res, adminKey)) return;
+    const keyId = typeof req.params.id === 'string' ? req.params.id.trim() : '';
+    if (!UUID_RE.test(keyId)) return res.status(400).json({ error: 'invalid_key_id' });
+
+    try {
+      const result = await pool.query(`
+        UPDATE execution_write_api_keys
+        SET revoked_at = COALESCE(revoked_at, NOW())
+        WHERE id = $1
+        RETURNING id, key_name AS name, scope, created_at, revoked_at
+      `, [keyId]);
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'key_not_found' });
+      }
+      return res.json({ success: true, key: result.rows[0] });
+    } catch (error) {
+      console.error('[execution-write-key] revocation failed:', error.message);
+      return res.status(500).json({ error: 'key_revocation_failed' });
+    }
+  });
+
   // Admin-only issuance: the raw key is returned once and only its SHA-256 hash
   // is stored. There is deliberately no public claim/self-serve route.
   router.post('/api/admin/execution-write-keys', async (req, res) => {
-    if (!adminKey) return res.status(503).json({ error: 'admin_issuer_not_configured' });
-    if (!sameSecret(req.get('x-admin-key'), adminKey)) {
-      return res.status(401).json({ error: 'unauthorized' });
-    }
+    if (!authorizeAdminRequest(req, res, adminKey)) return;
 
     const name = typeof req.body?.name === 'string' ? req.body.name.trim().slice(0, 80) : '';
     if (!name) return res.status(400).json({ error: 'name_required' });
@@ -360,11 +412,12 @@ function createDecisionExecutionRouter({ pool, adminKey } = {}) {
       let keyRow = null;
       if (key) {
         const keyResult = await client.query(`
-          SELECT id
+          SELECT id, scope, revoked_at
           FROM execution_write_api_keys
-          WHERE key_hash = $1 AND scope = $2 AND revoked_at IS NULL
+          WHERE key_hash = $1
           LIMIT 1
-        `, [hashWriteKey(key), WRITE_SCOPE]);
+          FOR UPDATE
+        `, [hashWriteKey(key)]);
         keyRow = keyResult.rows[0] || null;
       }
 
@@ -373,17 +426,47 @@ function createDecisionExecutionRouter({ pool, adminKey } = {}) {
         await insertAttempt(client, attempt);
         await client.query('COMMIT');
         transactionOpen = false;
-        return res.status(status).json(payload);
+        return res.status(status).json({
+          precondition_failure_reason: attempt.precondition_failure_reason,
+          ...payload,
+        });
       };
 
-      if (!keyRow) {
+      if (keyRow) attempt.write_key_id = keyRow.id;
+      if (!keyRow || keyRow.scope !== WRITE_SCOPE || keyRow.revoked_at) {
         try {
           await enrichAttemptFromRecord(client, recordId, fixId, attempt);
         } catch (_) {}
         attempt.failure_reason = 'invalid_api_key';
         return await finish(401, { error: 'unauthorized' });
       }
-      attempt.write_key_id = keyRow.id;
+
+      const recentAttemptsResult = await client.query(`
+        SELECT COUNT(*)::int AS call_count,
+               GREATEST(
+                 0,
+                 CEIL(EXTRACT(EPOCH FROM (MIN(created_at) + INTERVAL '1 hour' - NOW())))::int
+               ) AS retry_after_seconds
+        FROM decision_execution_attempts
+        WHERE write_key_id = $1
+          AND created_at >= NOW() - INTERVAL '1 hour'
+          AND failure_reason IS DISTINCT FROM 'rate_limit_exceeded'
+      `, [keyRow.id]);
+      const recentAttempts = recentAttemptsResult.rows[0] || {};
+      if (Number(recentAttempts.call_count || 0) >= WRITE_KEY_RATE_LIMIT) {
+        attempt.failure_reason = 'rate_limit_exceeded';
+        const retryAfterSeconds = Math.max(
+          1,
+          Number(recentAttempts.retry_after_seconds) || 1
+        );
+        res.set('Retry-After', String(retryAfterSeconds));
+        return await finish(429, {
+          error: 'rate_limit_exceeded',
+          limit: WRITE_KEY_RATE_LIMIT,
+          window_seconds: WRITE_KEY_RATE_WINDOW_SECONDS,
+          retry_after_seconds: retryAfterSeconds,
+        });
+      }
 
       if (!recordId || !UUID_RE.test(recordId) || !fixId || !FIX_ID_RE.test(fixId)) {
         attempt.failure_reason = 'invalid_record_or_fix_id';
@@ -528,7 +611,12 @@ function createDecisionExecutionRouter({ pool, adminKey } = {}) {
         console.error('[execution-apply-fix] failure log could not be persisted:', logError.message);
       }
       console.error('[execution-apply-fix] request failed:', error.message);
-      if (!res.headersSent) return res.status(500).json({ error: 'write_attempt_failed' });
+      if (!res.headersSent) {
+        return res.status(500).json({
+          error: 'write_attempt_failed',
+          precondition_failure_reason: attempt.precondition_failure_reason,
+        });
+      }
     } finally {
       if (client) client.release();
     }
@@ -542,6 +630,8 @@ module.exports = {
   FIELD_PATTERNS,
   PATTERN_FIELDS,
   WRITE_SCOPE,
+  WRITE_KEY_RATE_LIMIT,
+  WRITE_KEY_RATE_WINDOW_SECONDS,
   attachStructuredFixes,
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
