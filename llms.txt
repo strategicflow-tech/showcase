@@ -4,7 +4,7 @@
 
 ## What it is
 
-Strategic Flow diagnoses why B2B SaaS emails (product updates, onboarding sequences, changelogs, nurture emails) get opened but fail to convert. It uses a proprietary 7-point framework called the Decision Friction Model, built from 59 public teardowns of real SaaS emails.
+Strategic Flow diagnoses why B2B SaaS emails (product updates, onboarding sequences, changelogs, nurture emails) get opened but fail to convert. It uses a proprietary 7-point framework called the Decision Friction Model, built from 67 public teardowns of real SaaS emails.
 
 ## Who it is for
 
@@ -20,7 +20,7 @@ Decision Friction Model: a 7-point behavioral diagnostic framework. The 7 fricti
 
 ## Verifiable claims
 
-- 59 teardowns published as of this writing
+- 67 teardowns published as of this writing
 - Average original score: 3.4 out of 10
 - Average rebuilt score: 9 out of 10
 - 96% of audited SaaS emails fail the Guest Language CTA check (highest fail rate of the 7 checks)
@@ -57,7 +57,7 @@ Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limite
 
 - [Homepage](https://strategicflow.tech/): overview, proof stats, pricing, FAQ
 - [Methodology](https://strategicflow.tech/email-architecture-audit.html): full explanation of the Decision Friction Model
-- [Teardowns](https://strategicflow.tech/teardowns.html): all 59 published email teardowns with before/after scores
+- [Teardowns](https://strategicflow.tech/teardowns.html): all 67 published email teardowns with before/after scores
 - [Glossary](https://strategicflow.tech/glossary.html): definitions of Feature-First Bias, Guest Language CTA, Filing Label Subject, and other named failure patterns
 - [Field Notes](https://strategicflow.tech/notes.html): ongoing observations and research
 - [Free diagnostic tool](https://strategic-flow-audit.replit.app/why.html): WHY.™, the interactive email architecture diagnostic

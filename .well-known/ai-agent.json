@@ -4,7 +4,7 @@
   "name": "Strategic Flow",
   "legal_name": "Strategic Flow Tech",
   "url": "https://strategicflow.tech",
-  "description": "Behavioral email architecture diagnostics for B2B SaaS. Strategic Flow diagnoses why SaaS emails get opened but not clicked, using the Decision Friction Model, a 7-point structural framework. 59 public teardowns published with an average score lift from 3.4 to 9.0 out of 10.",
+  "description": "Behavioral email architecture diagnostics for B2B SaaS. Strategic Flow diagnoses why SaaS emails get opened but not clicked, using the Decision Friction Model, a 7-point structural framework. 67 public teardowns published with an average score lift from 3.4 to 9.0 out of 10.",
   "founder": {
     "name": "Alex Iliescu",
     "role": "Founder and diagnostic operator",
@@ -41,7 +41,7 @@
     },
     {
       "name": "Teardown Archive",
-      "description": "54 public structural teardowns of SaaS emails including Semrush, HeyGen, Revolut, ElevenLabs, and Zapier, each with scored before/after rebuilds.",
+      "description": "67 public structural teardowns of SaaS emails including Semrush, HeyGen, Revolut, ElevenLabs, and Zapier, each with scored before/after rebuilds.",
       "url": "https://strategicflow.tech/teardowns.html",
       "free": true
     }
@@ -59,7 +59,7 @@
   },
   "metadata": {
     "framework": "Decision Friction Model",
-    "public_teardowns": 59,
+    "public_teardowns": 67,
     "average_score_before": 3.4,
     "average_score_after": 9.0,
     "languages": ["en", "es", "sv", "fr", "ro", "de"]
