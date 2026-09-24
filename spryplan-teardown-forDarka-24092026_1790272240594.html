@@ -92,6 +92,15 @@ ul.clean.t li::before{background:var(--teal)}ul.clean.r li::before{background:va
 .score .note{grid-column:1/-1;font-size:13px;color:var(--muted);line-height:1.5}
 .bar{grid-column:1/-1;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
 .bar i{display:block;height:100%;border-radius:2px}
+.score .def{grid-column:1/-1;font-size:13px;line-height:1.5;color:var(--ink);opacity:.85}
+.pat{position:relative}
+.pat .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.pat .top h3{margin:0}
+.pat .st{flex:none;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:5px;border:1px solid}
+.pat .st.f{color:var(--red);border-color:rgba(240,103,75,.5)}
+.pat .st.n{color:var(--teal);border-color:rgba(62,207,192,.5)}
+.pat .on{margin-top:8px;font-size:13.5px;color:var(--muted)}
+.pat .on b{color:var(--amber);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
 .chip{font-family:"JetBrains Mono",monospace;font-size:11px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;color:var(--ink);background:var(--card)}
 
@@ -150,28 +159,49 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-fa
     <p><strong>Scope and limits.</strong> Twelve mobile screenshots of the homepage and the full text of the latest post. Gaps between screenshots were not reviewed. No links were followed and no analytics were available, so nothing here is a funnel number.</p>
 
     <div class="card">
-      <div class="score"><span class="n">1 · Headline (subject line)</span><span class="v" style="color:var(--teal)">8</span><div class="bar"><i style="width:80%;background:var(--teal)"></i></div><span class="note">Consequence in five words: "Every hour has a cost."</span></div>
-      <div class="score"><span class="n">2 · Lead construction</span><span class="v" style="color:var(--teal)">7</span><div class="bar"><i style="width:70%;background:var(--teal)"></i></div><span class="note">Names the reader's situation before the product: full calendars, flat results.</span></div>
-      <div class="score"><span class="n">3 · Feature to outcome</span><span class="v" style="color:var(--amber)">5</span><div class="bar"><i style="width:50%;background:var(--amber)"></i></div><span class="note">"Put a price on time" is an outcome. "Sync and reserve" and "See the insights" are mechanics.</span></div>
-      <div class="score"><span class="n">4 · Visual hierarchy</span><span class="v" style="color:var(--amber)">4</span><div class="bar"><i style="width:40%;background:var(--amber)"></i></div><span class="note">Dashboard cards carry several numbers at equal weight, and the arrow colors contradict the message.</span></div>
-      <div class="score"><span class="n">5 · Before/after contrast</span><span class="v" style="color:var(--red)">3</span><div class="bar"><i style="width:30%;background:var(--red)"></i></div><span class="note">A before number (18hrs) and after numbers (3-5hrs) exist, with no shared baseline between them.</span></div>
-      <div class="score"><span class="n">6 · Social proof</span><span class="v" style="color:var(--red)">1</span><div class="bar"><i style="width:10%;background:var(--red)"></i></div><span class="note">No named customer, quote or sourced figure in the captured sections.</span></div>
-      <div class="score"><span class="n">7 · CTA language</span><span class="v" style="color:var(--red)">3</span><div class="bar"><i style="width:30%;background:var(--red)"></i></div><span class="note">"Book demo", "Request pricing", "Request access to Spry": guest verbs, one gate.</span></div>
+      <div class="score"><span class="n">1 · Headline (subject line)</span><span class="v" style="color:var(--teal)">8</span><span class="def">Does the headline earn the read with a consequence or a curiosity gap, or does it only label the topic? On a web page, the hero headline plays this role.</span><div class="bar"><i style="width:80%;background:var(--teal)"></i></div><span class="note">Consequence in five words: "Every hour has a cost."</span></div>
+      <div class="score"><span class="n">2 · Lead construction</span><span class="v" style="color:var(--teal)">7</span><span class="def">Does the first line name the reader's own situation, or the company's news?</span><div class="bar"><i style="width:70%;background:var(--teal)"></i></div><span class="note">Names the reader's situation before the product: full calendars, flat results.</span></div>
+      <div class="score"><span class="n">3 · Feature to outcome</span><span class="v" style="color:var(--amber)">5</span><span class="def">Is every feature claim translated into what changes for the reader?</span><div class="bar"><i style="width:50%;background:var(--amber)"></i></div><span class="note">"Put a price on time" is an outcome. "Sync and reserve" and "See the insights" are mechanics.</span></div>
+      <div class="score"><span class="n">4 · Visual hierarchy</span><span class="v" style="color:var(--amber)">4</span><span class="def">Does the key item carry the greatest visual weight, with secondary items below it?</span><div class="bar"><i style="width:40%;background:var(--amber)"></i></div><span class="note">Dashboard cards carry several numbers at equal weight, and the arrow colors contradict the message.</span></div>
+      <div class="score"><span class="n">5 · Before/after contrast</span><span class="v" style="color:var(--red)">3</span><span class="def">Is the reader's before-state named and the after-state specific and verifiable?</span><div class="bar"><i style="width:30%;background:var(--red)"></i></div><span class="note">A before number (18hrs) and after numbers (3-5hrs) exist, with no shared baseline between them.</span></div>
+      <div class="score"><span class="n">6 · Social proof</span><span class="v" style="color:var(--red)">1</span><span class="def">Is there a third-party voice near the top: a named customer, a sourced number or a verifiable result?</span><div class="bar"><i style="width:10%;background:var(--red)"></i></div><span class="note">No named customer, quote or sourced figure in the captured sections.</span></div>
+      <div class="score"><span class="n">7 · CTA language</span><span class="v" style="color:var(--red)">3</span><span class="def">Does the button use ownership language (the reader performs the action) or guest language (the reader waits for the company)?</span><div class="bar"><i style="width:30%;background:var(--red)"></i></div><span class="note">"Book demo", "Request pricing", "Request access to Spry": guest verbs, one gate.</span></div>
     </div>
 
     <p class="mono" style="font-size:13px;color:var(--ink)">AVERAGE 31 / 7 = 4.4 · BAND 3.5 to 5.5 · COMPETENT BUT LEAKING</p>
     <p>Clear and professional, nothing embarrassing, and the information arrives in the wrong order. That is the band where nothing looks wrong, which makes the leak expensive.</p>
 
-    <p style="margin-top:18px"><strong>Patterns present</strong> (glossary names, evidence in the tabs):</p>
-    <div class="chips">
-      <span class="chip">Zero/Buried Social Proof</span>
-      <span class="chip">Implied Transformation</span>
-      <span class="chip">Guest Language CTA</span>
-      <span class="chip">Missing Visual Hierarchy</span>
-      <span class="chip">Feature-First Bias</span>
-      <span class="chip">Filing Label Subject</span>
-    </div>
-    <p style="font-size:14px;color:var(--muted)">Consequence-After-Caveat was not found. The demo integrity issues in the Demo data tab are an extra finding, not an eighth pattern.</p>
+    <p style="margin-top:22px"><strong>The seven patterns, explained.</strong> Each pattern is a recurring structural failure in the order information reaches the reader. Six were found on these pages.</p>
+
+    <div class="card pat"><div class="top"><h3>1 · Guest Language CTA</h3><span class="st f">Found</span></div>
+      <p>The button verb places the reader outside the action, observing the company's offer instead of making their own decision. "Learn more" is guest language. "Fix my reporting" is ownership language.</p>
+      <p class="on"><b>On Spry</b><br>"Book demo", "Request pricing", "Request access to Spry".</p></div>
+
+    <div class="card pat"><div class="top"><h3>2 · Feature-First Bias</h3><span class="st f">Found</span></div>
+      <p>The copy leads with what the product does instead of what changes for the reader.</p>
+      <p class="on"><b>On Spry</b><br>Steps two and three: "Sync and reserve" and "See the insights" describe mechanics before results.</p></div>
+
+    <div class="card pat"><div class="top"><h3>3 · Filing Label Subject</h3><span class="st f">Found</span></div>
+      <p>The headline announces the topic like a folder tab. It gives no consequence and no reason to open.</p>
+      <p class="on"><b>On Spry</b><br>The article title "Ways of Working Template (Free, 2026)" names the topic and the year.</p></div>
+
+    <div class="card pat"><div class="top"><h3>4 · Missing Visual Hierarchy</h3><span class="st f">Found</span></div>
+      <p>Everything carries equal weight, so no single item or next step dominates.</p>
+      <p class="on"><b>On Spry</b><br>The dashboard cards show several percentages side by side, and the headline number, Deep work 15%, has no legend entry.</p></div>
+
+    <div class="card pat"><div class="top"><h3>5 · Implied Transformation</h3><span class="st f">Found</span></div>
+      <p>An improvement is claimed with a bare figure or an adjective instead of a before/after pair with a baseline and a measured result.</p>
+      <p class="on"><b>On Spry</b><br>"3-5 hours save per week" and "40% more focus time" state a gain with no starting point.</p></div>
+
+    <div class="card pat"><div class="top"><h3>6 · Consequence-After-Caveat</h3><span class="st n">Not found</span></div>
+      <p>The outcome is buried behind qualifications, context or disclaimers, so the caveat arrives before the point.</p>
+      <p class="on"><b>On Spry</b><br>The hero states the consequence first: "Every hour has a cost."</p></div>
+
+    <div class="card pat"><div class="top"><h3>7 · Zero/Buried Social Proof</h3><span class="st f">Found</span></div>
+      <p>No third-party voice, named result or sourced number appears, or the proof sits below the point where it would reduce hesitation.</p>
+      <p class="on"><b>On Spry</b><br>The impact block and the blog post carry no customer name, quote or source.</p></div>
+
+    <p style="font-size:14px;color:var(--muted)">The demo integrity issues in the Demo data tab are an extra finding, not an eighth pattern.</p>
   </div>
 
   <!-- 1 PROOF -->
