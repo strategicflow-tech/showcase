@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spry Teardown · Strategic Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#08090A;--card:#111113;--card2:#0D0E10;--line:#232326;--ink:#EDEDEF;--muted:#9B9BA3;
+  --red:#F0674B;--amber:#E8A33D;--teal:#3ECFC0;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;overflow-x:hidden}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+
+/* HUD signature */
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:44px 44px;animation:gridmove 40s linear infinite}
+@keyframes gridmove{from{background-position:0 0,0 0}to{background-position:44px 44px,44px 44px}}
+.scanline{position:fixed;left:0;right:0;top:-140px;height:140px;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,transparent,rgba(62,207,192,.07),transparent);animation:scan 9s linear infinite}
+@keyframes scan{from{transform:translateY(0)}to{transform:translateY(calc(100vh + 280px))}}
+.noise-vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.65) 100%)}
+
+.wrap{position:relative;z-index:2;max-width:860px;margin:0 auto;padding:28px 18px 60px}
+
+/* Header */
+.eyebrow{display:flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(62,207,192,.6);animation:pulse 2s infinite;flex:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(62,207,192,.6)}70%{box-shadow:0 0 0 10px rgba(62,207,192,0)}100%{box-shadow:0 0 0 0 rgba(62,207,192,0)}}
+.source{margin:14px 0 0;font-family:"JetBrains Mono",monospace;font-size:11.5px;line-height:1.6;color:var(--muted);border-left:2px solid var(--line);padding-left:12px}
+h1{font-size:clamp(30px,8vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:800;margin:22px 0 14px}
+h1 .hl{color:var(--amber);text-shadow:0 0 28px rgba(232,163,61,.45)}
+.subline{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);margin:0 0 26px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:26px}
+@media(min-width:720px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 14px}
+.stat b{display:block;font-size:30px;line-height:1.1;font-weight:800;letter-spacing:-.02em}
+.stat b.r{color:var(--red)}.stat b.a{color:var(--amber)}.stat b.t{color:var(--teal)}
+.stat span{display:block;margin-top:8px;font-family:"JetBrains Mono",monospace;font-size:10.5px;line-height:1.5;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+/* Tabs */
+.tabbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(8,9,10,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -18px 24px;padding:0 18px}
+.tabs{position:relative;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabbtn{flex:none;background:none;border:0;color:var(--muted);font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;padding:14px 12px;cursor:pointer;white-space:nowrap;text-transform:uppercase}
+.tabbtn.active{color:var(--ink)}
+.tab-underline{position:absolute;bottom:0;left:0;height:2px;width:0;background:var(--amber);box-shadow:0 0 12px rgba(232,163,61,.7);transition:left .3s ease,width .3s ease}
+
+.panel{display:none}
+.panel.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.section-tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:5px;border:1px solid;margin-bottom:14px}
+.section-tag.red{color:var(--red);border-color:rgba(240,103,75,.5);background:rgba(240,103,75,.08)}
+.section-tag.amber{color:var(--amber);border-color:rgba(232,163,61,.5);background:rgba(232,163,61,.08)}
+.section-tag.teal{color:var(--teal);border-color:rgba(62,207,192,.5);background:rgba(62,207,192,.08)}
+h2{font-size:clamp(22px,5.4vw,30px);line-height:1.2;letter-spacing:-.015em;font-weight:700;margin:0 0 16px}
+p{margin:0 0 14px;color:#D2D2D8}
+strong{color:var(--ink)}
+
+.excerpt{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--muted);border-radius:8px;padding:14px 16px;margin:18px 0}
+.excerpt.red{border-left-color:var(--red)}.excerpt.amber{border-left-color:var(--amber)}.excerpt.teal{border-left-color:var(--teal)}
+.excerpt .lbl{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.excerpt p{margin:0 0 6px;font-size:14.5px;color:var(--ink)}
+.excerpt p:last-child{margin-bottom:0}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 12px}
+.card h3{margin:0 0 6px;font-size:15px;font-weight:700}
+.card p{margin:0;font-size:14.5px}
+
+ul.clean{list-style:none;margin:0 0 14px;padding:0}
+ul.clean li{position:relative;padding:0 0 12px 22px;color:#D2D2D8}
+ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:2px;background:var(--amber)}
+ul.clean.t li::before{background:var(--teal)}ul.clean.r li::before{background:var(--red)}
+
+.score{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.score:last-of-type{border-bottom:0}
+.score .n{font-weight:600;font-size:14.5px}
+.score .v{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:700}
+.score .note{grid-column:1/-1;font-size:13px;color:var(--muted);line-height:1.5}
+.bar{grid-column:1/-1;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.chip{font-family:"JetBrains Mono",monospace;font-size:11px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;color:var(--ink);background:var(--card)}
+
+.locked{border:1.5px dashed var(--amber);border-radius:12px;padding:18px;margin:22px 0 0;background:rgba(232,163,61,.05)}
+.locked b{display:block;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.locked p{margin:0;color:var(--ink);font-size:14.5px}
+
+.gapchain{margin:18px 0}
+.gapchain .link{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:14.5px}
+.gapchain .link em{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:4px}
+
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--muted);line-height:1.6}
+@media(prefers-reduced-motion:reduce){.grid-bg,.scanline,.pulse{animation:none}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+<div class="noise-vignette"></div>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><span class="pulse"></span>WEBSITE + BLOG TEARDOWN · DIAGNOSIS ONLY</div>
+    <p class="source">Reviewed: spryplan.com homepage (12 mobile screenshots, 24 Sep 2026) and the full text of the blog post "Ways of Working Template (Free, 2026)", dated 10 Jun 2026, the newest card on the homepage.</p>
+    <h1>Spry sells measurement.<br><span class="hl">Its own numbers have no source.</span></h1>
+    <p class="subline">Structural read against the pages as published · 7-point Decision Friction Model</p>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><b class="a">4.4/10</b><span>Structural score · competent but leaking</span></div>
+    <div class="stat"><b class="r">0</b><span>Named customers, quotes or sourced figures in the captured sections</span></div>
+    <div class="stat"><b class="r">3</b><span>Different time-saved promises across homepage and blog</span></div>
+    <div class="stat"><b class="a">$0</b><span>Prices shown across 3 tiers, all "Request pricing"</span></div>
+  </section>
+
+  <div class="tabbar">
+    <div class="tabs" id="tabs">
+      <button class="tabbtn active">Method</button>
+      <button class="tabbtn">Proof</button>
+      <button class="tabbtn">CTAs</button>
+      <button class="tabbtn">Demo data</button>
+      <button class="tabbtn">Blog post</button>
+      <button class="tabbtn">Handoff</button>
+      <button class="tabbtn">What works</button>
+      <button class="tabbtn">Actual gap</button>
+      <button class="tabbtn">What changes</button>
+      <div class="tab-underline" id="underline"></div>
+    </div>
+  </div>
+
+  <!-- 0 METHODOLOGY -->
+  <div class="panel active" data-panel="0">
+    <span class="section-tag teal">Methodology</span>
+    <h2>How this was read</h2>
+    <p>The seven Decision Friction checks were applied to web copy instead of email. The hero headline stands in for the subject line, the hero paragraph for the lead, and the section headings for the feature to outcome check. The score is structural: the order in which information reaches the reader. It is not a design, SEO or deliverability score.</p>
+    <p><strong>Scope and limits.</strong> Twelve mobile screenshots of the homepage and the full text of the latest post. Gaps between screenshots were not reviewed. No links were followed and no analytics were available, so nothing here is a funnel number.</p>
+
+    <div class="card">
+      <div class="score"><span class="n">1 · Headline (subject line)</span><span class="v" style="color:var(--teal)">8</span><div class="bar"><i style="width:80%;background:var(--teal)"></i></div><span class="note">Consequence in five words: "Every hour has a cost."</span></div>
+      <div class="score"><span class="n">2 · Lead construction</span><span class="v" style="color:var(--teal)">7</span><div class="bar"><i style="width:70%;background:var(--teal)"></i></div><span class="note">Names the reader's situation before the product: full calendars, flat results.</span></div>
+      <div class="score"><span class="n">3 · Feature to outcome</span><span class="v" style="color:var(--amber)">5</span><div class="bar"><i style="width:50%;background:var(--amber)"></i></div><span class="note">"Put a price on time" is an outcome. "Sync and reserve" and "See the insights" are mechanics.</span></div>
+      <div class="score"><span class="n">4 · Visual hierarchy</span><span class="v" style="color:var(--amber)">4</span><div class="bar"><i style="width:40%;background:var(--amber)"></i></div><span class="note">Dashboard cards carry several numbers at equal weight, and the arrow colors contradict the message.</span></div>
+      <div class="score"><span class="n">5 · Before/after contrast</span><span class="v" style="color:var(--red)">3</span><div class="bar"><i style="width:30%;background:var(--red)"></i></div><span class="note">A before number (18hrs) and after numbers (3-5hrs) exist, with no shared baseline between them.</span></div>
+      <div class="score"><span class="n">6 · Social proof</span><span class="v" style="color:var(--red)">1</span><div class="bar"><i style="width:10%;background:var(--red)"></i></div><span class="note">No named customer, quote or sourced figure in the captured sections.</span></div>
+      <div class="score"><span class="n">7 · CTA language</span><span class="v" style="color:var(--red)">3</span><div class="bar"><i style="width:30%;background:var(--red)"></i></div><span class="note">"Book demo", "Request pricing", "Request access to Spry": guest verbs, one gate.</span></div>
+    </div>
+
+    <p class="mono" style="font-size:13px;color:var(--ink)">AVERAGE 31 / 7 = 4.4 · BAND 3.5 to 5.5 · COMPETENT BUT LEAKING</p>
+    <p>Clear and professional, nothing embarrassing, and the information arrives in the wrong order. That is the band where nothing looks wrong, which makes the leak expensive.</p>
+
+    <p style="margin-top:18px"><strong>Patterns present</strong> (glossary names, evidence in the tabs):</p>
+    <div class="chips">
+      <span class="chip">Zero/Buried Social Proof</span>
+      <span class="chip">Implied Transformation</span>
+      <span class="chip">Guest Language CTA</span>
+      <span class="chip">Missing Visual Hierarchy</span>
+      <span class="chip">Feature-First Bias</span>
+      <span class="chip">Filing Label Subject</span>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">Consequence-After-Caveat was not found. The demo integrity issues in the Demo data tab are an extra finding, not an eighth pattern.</p>
+  </div>
+
+  <!-- 1 PROOF -->
+  <div class="panel" data-panel="1">
+    <span class="section-tag red">Proof · Zero/Buried Social Proof · Implied Transformation</span>
+    <h2>Four impact numbers. No baseline, no customer, no time window.</h2>
+    <p>The block titled "See measurable impact" carries four figures and nothing measurable about them. There is no company, no team size, no period and no before value. A reader who wants to trust "87% fewer status calls" has no way to ask: 87% of what, for whom, over how long?</p>
+    <div class="excerpt red">
+      <span class="lbl">Homepage · impact block</span>
+      <p>"3-5 hours save per week"</p>
+      <p>"50% fewer follow-up meetings"</p>
+      <p>"40% more focus time"</p>
+      <p>"87% fewer status calls"</p>
+    </div>
+    <p>The savings promise also changes between pages. The homepage says 3-5 hours a week. The related reading on the blog post promises to cut 6 to 10 hours of meetings a week in one title, and to go from 8 hours to under 4 in another. The article's own example goal, 18 hours down to 12, is a sixth. A buyer comparing the pages finds three promises and no method behind any of them.</p>
+    <p>The "18hrs" stat has a second problem. The homepage presents it as time lost per team member. The article says knowledge workers at 150+ person companies spend 15 to 25 hours a week in meetings, with no source, and uses 18 to 12 as a hypothetical goal. "Spent in meetings" and "lost" are different claims, and the site treats them as one.</p>
+    <div class="excerpt red">
+      <span class="lbl">Homepage · crisis block</span>
+      <p>"18hrs lost per team member weekly"</p>
+      <span class="lbl" style="margin-top:10px">Blog post · goal example</span>
+      <p>"Reduce average meeting hours per person from 18 to 12"</p>
+    </div>
+    <p>The article teaches the standard the homepage misses. It says <strong>"Improve meeting culture" is not a key result</strong> and asks for a baseline, a target and a date. The proof block has none of the three.</p>
+  </div>
+
+  <!-- 2 CTAs -->
+  <div class="panel" data-panel="2">
+    <span class="section-tag red">CTAs and pricing · Guest Language CTA</span>
+    <h2>Three verbs, one gate: every path ends in a sales conversation.</h2>
+    <p>The homepage asks for "Book demo" in the nav and again under the hero. Each of the three tiers ends in "Request pricing" with no price on it. The blog post closes its product section with "Request access to Spry" and its footer block with "Book demo". Three action names cover what is one funnel, and each one places the reader outside the action, waiting for the company to respond.</p>
+    <div class="excerpt red">
+      <span class="lbl">CTA inventory · captured pages</span>
+      <p>Nav and hero: "Book demo"</p>
+      <p>Starter, Growth, Enterprise: "Request pricing"</p>
+      <p>Blog post, product section: "Request access to Spry"</p>
+      <p>Blog post, closing block: "Book demo"</p>
+    </div>
+    <p>The nav also holds "Meeting Cost Calculator", the one asset that delivers the homepage promise ("Put a price on time") in seconds. It sits as a text link at the same weight as "Blog". Neither hero CTA points to it. A reader with thirty seconds of curiosity has one visible route: talk to sales.</p>
+    <p>The tier copy adds no way to self-select. Starter is "For small teams ready to cut wasted time." Growth is "For scaling orgs with more complexity." Enterprise is "Advanced security & integrations." No seat count, no feature difference, no starting price.</p>
+    <p>The article does one thing right here. "See your team's meeting load" is ownership language: the reader performs the action. The next words, "Request access to Spry", hand the reader back to a queue.</p>
+  </div>
+
+  <!-- 3 DEMO DATA -->
+  <div class="panel" data-panel="3">
+    <span class="section-tag amber">Demo data · Missing Visual Hierarchy</span>
+    <h2>The dashboards contradict their own story.</h2>
+    <p>Spry's promise is accurate time accounting. The demo screens do not pass a simple check. None of the demo data is labeled as illustrative.</p>
+    <ul class="clean">
+      <li><strong>Arrow colors invert the message.</strong> Meetings time 18% carries a green up arrow (+12%). Transition time 33% and Buffers 43% carry red down arrows. The product's claim is less wasted time, and the chart colors the reductions as bad news.</li>
+      <li><strong>The donut does not match its legend.</strong> The ring has four colors and the legend names three. The headline number, Deep work 15%, has no legend entry. The three labeled shares add to 94%. Adding the 15% headline gives 109%.</li>
+      <li><strong>Durations disagree with clock times.</strong> "Reserve slot 8:30-9:30am" carries a 1:30 badge, which is 60 minutes. "Monday, sep 19, 7-8:30am" carries 0:30, which is 90 minutes.</li>
+      <li><strong>Dates do not fit one calendar.</strong> "Monday, sep 12" fits 2022. "Wed, May 12" fits 2021 and 2027. Neither matches this year, where 12 September is a Saturday.</li>
+      <li><strong>The time axis skips and truncates.</strong> Weekly buckets read Jun 17-23, Jun 24-30, Jul 8-14, then a two-day bucket, Jul 15-16. The week of Jul 1-7 is missing.</li>
+      <li><strong>Cards do not connect.</strong> The Dev team card shows "$ 1,542" cost per period. The insights card shows Total time "4,400h". If both cover the same period, that prices an hour at about 35 cents.</li>
+    </ul>
+    <div class="excerpt amber">
+      <span class="lbl">Homepage · productivity card</span>
+      <p>"Meetings time 18% 12%" (green up arrow)</p>
+      <p>"Transition time 33% 13%" (red down arrow)</p>
+      <p>"Buffers 43% 7%" (red down arrow)</p>
+    </div>
+    <p>Small copy details sit in the same family: the impact card reads "hours save per week", and the FAQ heading reads "Frequently asked question", singular.</p>
+  </div>
+
+  <!-- 4 BLOG POST -->
+  <div class="panel" data-panel="4">
+    <span class="section-tag amber">Blog post · Ways of Working Template, 10 Jun 2026</span>
+    <h2>The article serves the reader, then loses them at the handoff.</h2>
+    <p>The opening is reader-first and specific: a new hire arrives with old habits and books a 30-minute sync for a Slack message. The six norms are concrete. The post earns attention. The structure then works against the product.</p>
+    <div class="card">
+      <h3>The template position contradicts itself</h3>
+      <p>The intro says the free template is at the bottom. The next section says here it is, and later the text calls it the template at the top of the page. A reader who scans for the download and finds it early has no reason to reach the product section.</p>
+    </div>
+    <div class="excerpt amber">
+      <span class="lbl">Blog post · intro vs first section</span>
+      <p>"The free template is at the bottom."</p>
+      <p>"If you're here for the template, here it is."</p>
+    </div>
+    <div class="card">
+      <h3>The product bridge arrives last</h3>
+      <p>"How Spry Helps You See If It's Working" comes after the template, six norms, goals, three document types, the personal version and before the FAQ. The reader who came for the template has already left. The bridge also leads with mechanics: calendar analytics, hours in meetings, recurring meeting cost.</p>
+    </div>
+    <div class="card">
+      <h3>The second template has no download</h3>
+      <p>The "How to Work With Me" section lists six items and offers no file, link or CTA. The only download in the text is the company guide.</p>
+    </div>
+    <div class="card">
+      <h3>The buyer changes mid-article</h3>
+      <p>The FAQ says the guide belongs to the COO, Head of People or a founder. The product section says "Spry gives managers the data". The stat is about companies of 150+ people, while the homepage opens with a Dev team and a Starter tier for small teams. Three audiences appear in one page.</p>
+    </div>
+    <div class="card">
+      <h3>The article never points to the calculator</h3>
+      <p>A post about meeting overload, on a site with a free Meeting Cost Calculator in the nav, does not mention the calculator anywhere in the body text reviewed.</p>
+    </div>
+    <div class="card">
+      <h3>Title is a filing label</h3>
+      <p>"Ways of Working Template (Free, 2026)" names the topic and the year. It works as a search title. It gives the reader no consequence for the meeting problem the article itself describes so well.</p>
+    </div>
+  </div>
+
+  <!-- 5 HANDOFF -->
+  <div class="panel" data-panel="5">
+    <span class="section-tag amber">Email-to-Product Handoff · UX-level read</span>
+    <h2>The promise is "see your team's meeting load". The visible route is a sales call.</h2>
+    <p><strong>Read type:</strong> UX-level, from screenshots and article text. Not instrumented. No analytics access was available, links were not followed, and no funnel numbers are stated.</p>
+    <ul class="clean">
+      <li><strong>Does the destination match the promise?</strong> Not verifiable. The article promises "See your team's meeting load". The CTA that follows says "Request access to Spry". The destination behind it was not visible: a demo form, a waitlist and a signup would each change the verdict.</li>
+      <li><strong>Is the action name consistent?</strong> No. The same funnel uses "Book demo", "Request pricing" and "Request access to Spry". A reader who clicked one and saw the other would re-orient.</li>
+      <li><strong>Is the fastest route to value linked?</strong> The Meeting Cost Calculator exists in the nav. The article body does not link to it, and the hero does not lead to it.</li>
+      <li><strong>Deep link behavior:</strong> not checkable without following the links. Left open.</li>
+    </ul>
+    <div class="excerpt amber">
+      <span class="lbl">Blog post · product section CTA</span>
+      <p>"See your team's meeting load"</p>
+      <p>"Request access to Spry"</p>
+    </div>
+    <p>To close this section with data, the click-through from article CTA to first meaningful action would need to be traced in the product analytics: article view, CTA click, form or signup completion, first value event.</p>
+  </div>
+
+  <!-- 6 WHAT WORKS -->
+  <div class="panel" data-panel="6">
+    <span class="section-tag teal">What already works</span>
+    <h2>The hero, the rule and the goal format are strong. Keep them.</h2>
+    <ul class="clean t">
+      <li><strong>"Every hour has a cost."</strong> Consequence before product, in five words. It is the strongest line on the site.</li>
+      <li><strong>"Calendars are full, yet results don't always grow."</strong> The reader's situation arrives before the company's news.</li>
+      <li><strong>"No agenda? No meeting."</strong> A rule stated in four words, and the article backs it with a full section on when to meet.</li>
+      <li><strong>The goal format in the article.</strong> "Reduce average meeting hours per person from 18 to 12 per week by end of quarter" has a baseline, a target and a deadline. It is the standard the site's own proof block needs to meet.</li>
+      <li><strong>"Put a price on time."</strong> An outcome-shaped step name, and the calculator behind it is a real free asset.</li>
+      <li><strong>The article opening.</strong> A recognizable scene, named cost, no jargon.</li>
+    </ul>
+  </div>
+
+  <!-- 7 ACTUAL GAP -->
+  <div class="panel" data-panel="7">
+    <span class="section-tag amber">Cross-section synthesis</span>
+    <h2>The Actual Gap: the site sells measured time and shows unmeasured claims.</h2>
+    <p>Every finding traces to one root cause. The product's promise is measurement, and the pages do not demonstrate measurement anywhere the reader looks.</p>
+    <div class="gapchain">
+      <div class="link"><em>Proof</em>Numbers arrive without a baseline, customer or period, and the savings figure changes from page to page.</div>
+      <div class="link"><em>Demo data</em>The dashboards that should show accuracy fail arithmetic, color logic and date checks.</div>
+      <div class="link"><em>CTAs</em>The one asset that lets a reader test the promise, the calculator, is a nav link. Every button leads to a call.</div>
+      <div class="link"><em>Blog post</em>The article teaches baselines and targets, then hands the reader to a product section that has neither.</div>
+      <div class="link"><em>Handoff</em>Three action names, an unverified destination, and no path from the article to the calculator.</div>
+    </div>
+    <p>A reader reaching "See measurable impact" has one question: measured where, on whose team, over what period? The page does not answer it, and the next click is a sales conversation. That is where the structural score loses its points.</p>
+  </div>
+
+  <!-- 8 WHAT CHANGES -->
+  <div class="panel" data-panel="8">
+    <span class="section-tag teal">What changes</span>
+    <h2>The rebuild is not part of this read.</h2>
+    <div class="locked">
+      <b>Locked · paid deliverable</b>
+      <p>This teardown is diagnosis only. The solutions for every finding above are delivered through the Decision Friction Review.</p>
+      <p style="margin-top:12px"><a href="https://strategic-flow-pro.replit.app/decision-friction-review/" target="_blank" rel="noopener" style="color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:13px;word-break:break-all">strategic-flow-pro.replit.app/decision-friction-review</a></p>
+    </div>
+  </div>
+
+  <footer>Read once, structurally, against the pages as published. Same structural method used on every audit.<br>Strategic Flow · Decision Friction Model · 67 teardowns published</footer>
+</div>
+
+<script>
+const buttons = Array.from(document.querySelectorAll('.tabbtn'));
+const panels = Array.from(document.querySelectorAll('.panel'));
+const underline = document.getElementById('underline');
+
+function positionUnderline(btn){
+  underline.style.width = btn.offsetWidth + 'px';
+  underline.style.left = btn.offsetLeft + 'px';
+}
+
+function goTab(i){
+  buttons.forEach(b => b.classList.remove('active'));
+  panels.forEach(p => p.classList.remove('active'));
+  const btn = buttons[i];
+  btn.classList.add('active');
+  document.querySelector('.panel[data-panel="'+i+'"]').classList.add('active');
+  positionUnderline(btn);
+  btn.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+}
+
+buttons.forEach((b, i) => b.addEventListener('click', () => goTab(i)));
+window.addEventListener('load', () => positionUnderline(buttons[0]));
+window.addEventListener('resize', () => {
+  const activeIdx = buttons.findIndex(b => b.classList.contains('active'));
+  positionUnderline(buttons[activeIdx]);
+});
+</script>
+</body>
+</html>
