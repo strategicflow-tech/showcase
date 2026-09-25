@@ -350,6 +350,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 /* TEARDOWN CARDS */
 .td-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);margin-bottom:24px;}
 .td-card{background:var(--bg);padding:28px 32px;transition:background .2s;cursor:pointer;text-decoration:none;display:block;}
+.td-grid > .td-card:last-child:nth-child(odd){grid-column:1 / -1;}
 .td-card:hover{background:var(--bg2);}
 .td-company{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
 .td-logo-box{width:32px;height:32px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:var(--green);font-weight:500;flex-shrink:0;text-transform:uppercase;letter-spacing:.04em;}
@@ -373,8 +374,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .pat-fix{font-size:13px;color:var(--text2);line-height:1.6;}
 
 /* ABOUT */
-.about-grid{display:grid;grid-template-columns:180px 1fr;gap:48px;align-items:start;}
-.about-img{width:180px;height:190px;border-radius:12px;object-fit:cover;object-position:center top;border:1px solid var(--border2);}
+.about-grid{display:grid;grid-template-columns:1fr;max-width:720px;margin:0 auto;align-items:start;}
 .about-name{font-family:var(--serif);font-size:26px;margin-bottom:4px;}
 .about-name em{font-style:italic;color:var(--green);}
 .about-role{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
@@ -418,6 +418,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .deep-cta{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.04em;}
 
 /* FAQ */
+#faq > .sec-label,#faq > .sec-title{text-align:center;}
+.faq-content{max-width:640px;margin:28px auto 0;text-align:left;}
 .faq-item{border-bottom:1px solid var(--border);padding:20px 0;}
 .faq-q{font-family:var(--serif);font-size:17px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;}
 .faq-icon{font-family:var(--mono);font-size:18px;color:var(--green);flex-shrink:0;transition:transform .2s;}
@@ -461,7 +463,6 @@ footer{padding:40px 48px;border-top:1px solid var(--border);display:flex;gap:40p
   .hero{grid-template-columns:1fr;gap:36px;}
   .alex-wrap{display:none;}
   .about-grid{grid-template-columns:1fr;gap:20px;}
-  .about-img{width:120px;height:128px;}
   .price-grid{grid-template-columns:1fr;}
   .pat-grid{grid-template-columns:1fr 1fr;}
   .deep-grid{grid-template-columns:1fr !important;}
@@ -925,9 +926,6 @@ a.gt-pill:hover{border-color:rgba(0,229,255,0.5);color:#fff;}
   <div class="sec-label">About</div>
   <div class="about-grid">
     <div>
-      <img src="https://strategicflow.tech/alex-iliescu.jpg" width="400" height="400" loading="lazy" alt="Alex Iliescu" class="about-img"/>
-    </div>
-    <div>
       <div class="about-name">Alex <em>Iliescu</em></div>
       <div class="about-role">Founder · Strategic Flow · Tenerife, Spain</div>
       <p class="about-p">I'm the founder of Strategic Flow. I built the Decision Friction Model, a 7-point behavioral framework, after diagnosing structural email conversion failures across [[SF_TEARDOWN_COUNT]] real B2B SaaS teardowns that identifies exactly where the reader's decision breaks down.</p>
@@ -1044,7 +1042,7 @@ a.gt-pill:hover{border-color:rgba(0,229,255,0.5);color:#fff;}
 <section class="section" id="faq" style="background:var(--bg2);border-bottom:1px solid var(--border);">
   <div class="sec-label">FAQ</div>
   <div class="sec-title">Common questions.<br><em>Direct answers.</em></div>
-  <div style="max-width:640px;margin-top:28px;">
+  <div class="faq-content">
 
     <div style="background:rgba(74,143,231,0.06);border:1px solid var(--border2);border-radius:10px;padding:18px 22px;margin-bottom:24px;">
   <div style="font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;">Short answer</div>
