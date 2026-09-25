@@ -3,6 +3,7 @@
 
 const express    = require('express');
 const { Pool }   = require('pg');
+const { monitorEventLoopDelay } = require('node:perf_hooks');
 const Anthropic  = require('@anthropic-ai/sdk');
 const { Resend } = require('resend');
 const Stripe = require('stripe');
@@ -89,9 +90,73 @@ const {
 
 const app    = express();
 app.set('trust proxy', 1);
-const pool   = new Pool({ connectionString: process.env.DATABASE_URL });
+const DB_POOL_MAX = 10;
+const DB_CONNECT_TIMEOUT_MS = 5000;
+const DIRECTORY_MAX_ACTIVE_LISTINGS = 3000;
+const DIRECTORY_QUERY_TIMEOUT_MS = 2500;
+const DIRECTORY_RESPONSE_TIMEOUT_MS = 12000;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: DB_POOL_MAX,
+  connectionTimeoutMillis: DB_CONNECT_TIMEOUT_MS,
+  idleTimeoutMillis: 30000,
+  keepAlive: true
+});
 const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+function getPostgresPoolStats() {
+  return {
+    total: pool.totalCount,
+    idle: pool.idleCount,
+    waiting: pool.waitingCount,
+    max: DB_POOL_MAX
+  };
+}
+
+pool.on('error', err => {
+  console.error('[postgres-pool] idle_client_error', JSON.stringify({
+    code: err.code || null,
+    message: err.message,
+    ...getPostgresPoolStats()
+  }));
+});
+
+const postgresPoolMonitor = setInterval(() => {
+  const stats = getPostgresPoolStats();
+  if (stats.waiting > 0) {
+    console.warn('[postgres-pool] wait_queue', JSON.stringify(stats));
+  }
+}, 30000);
+if (typeof postgresPoolMonitor.unref === 'function') postgresPoolMonitor.unref();
+
+const eventLoopDelay = monitorEventLoopDelay({ resolution: 20 });
+eventLoopDelay.enable();
+const eventLoopMonitor = setInterval(() => {
+  const p99Ms = Math.round(eventLoopDelay.percentile(99) / 1e6);
+  const maxMs = Math.round(eventLoopDelay.max / 1e6);
+  if (p99Ms >= 250 || maxMs >= 1000) {
+    console.warn('[runtime-monitor] event_loop_delay', JSON.stringify({
+      p99_ms: p99Ms,
+      max_ms: maxMs,
+      ...getPostgresPoolStats()
+    }));
+  }
+  eventLoopDelay.reset();
+}, 30000);
+if (typeof eventLoopMonitor.unref === 'function') eventLoopMonitor.unref();
+
+function isPgConnectionFailure(err) {
+  const code = String(err?.code || '');
+  return code.startsWith('08')
+    || ['57P01', '57P02', '57P03', 'ECONNRESET', 'ECONNREFUSED', 'EPIPE', 'ETIMEDOUT'].includes(code)
+    || /connection terminated unexpectedly|terminating connection due to administrator command|socket hang up/i
+      .test(String(err?.message || ''));
+}
+
+function isPgClientQueryTimeout(err) {
+  return /query read timeout/i.test(String(err?.message || ''));
+}
 
 const MODEL          = 'claude-sonnet-5';
 
@@ -1495,12 +1560,102 @@ function ssrCard(l, clickMap) {
 }
 
 // ── GET /directory — SSR: pre-render cards + inject listing data for hydration ─
-app.get('/directory', async (req, res) => {
-  try {
-    let html = require('fs').readFileSync(path.join(__dirname, 'public/directory.html'), 'utf8');
+function sendDirectoryUnavailable(res) {
+  if (res.headersSent || res.writableEnded || res.destroyed) return false;
+  res.status(503);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Retry-After', '15');
+  res.send(`<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Directory temporarily unavailable</title>
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f7f8fa;color:#172033;font:16px/1.5 system-ui,sans-serif}
+    main{max-width:34rem;margin:2rem;padding:2rem;background:#fff;border:1px solid #e2e6ed;border-radius:1rem;text-align:center}
+    h1{font-size:1.5rem;margin:.25rem 0 1rem}p{color:#596579}
+    a{display:inline-block;margin-top:.75rem;padding:.65rem 1rem;border-radius:.6rem;background:#172033;color:#fff;text-decoration:none}
+  </style>
+</head>
+<body><main>
+  <h1>Directory temporarily unavailable</h1>
+  <p>We could not load the listings just now. Please try again shortly.</p>
+  <a href="/directory">Try again</a>
+</main></body>
+</html>`);
+  return true;
+}
 
-    // Same query order as /api/directory/listings
-    const r = await pool.query(
+async function queryDirectoryWithMetrics(client, requestId, label, sql, params = []) {
+  const startedAt = Date.now();
+  try {
+    const result = await client.query({
+      text: sql,
+      values: params,
+      query_timeout: DIRECTORY_QUERY_TIMEOUT_MS + 1000
+    });
+    const durationMs = Date.now() - startedAt;
+    if (durationMs >= 1000) {
+      console.warn('[directory-ssr] slow_query', JSON.stringify({
+        request_id: requestId,
+        query: label,
+        duration_ms: durationMs,
+        row_count: result.rowCount,
+        pool: getPostgresPoolStats()
+      }));
+    }
+    return result;
+  } catch (err) {
+    console.error('[directory-ssr] query_error', JSON.stringify({
+      request_id: requestId,
+      query: label,
+      duration_ms: Date.now() - startedAt,
+      code: err.code || null,
+      message: err.message,
+      pool: getPostgresPoolStats()
+    }));
+    throw err;
+  }
+}
+
+app.get('/directory', async (req, res) => {
+  const requestId = crypto.randomUUID();
+  const startedAt = Date.now();
+  let stage = 'pool_acquire';
+  let client = null;
+  let destroyClient = false;
+  let statementTimeoutConfigured = false;
+  const responseDeadline = setTimeout(() => {
+    console.error('[directory-ssr] response_deadline', JSON.stringify({
+      request_id: requestId,
+      stage,
+      duration_ms: Date.now() - startedAt,
+      pool: getPostgresPoolStats()
+    }));
+    sendDirectoryUnavailable(res);
+  }, DIRECTORY_RESPONSE_TIMEOUT_MS);
+  if (typeof responseDeadline.unref === 'function') responseDeadline.unref();
+
+  try {
+    client = await pool.connect();
+    if (res.writableEnded || res.destroyed) return;
+
+    stage = 'set_statement_timeout';
+    await client.query({
+      text: `SET statement_timeout TO '${DIRECTORY_QUERY_TIMEOUT_MS}ms'`,
+      query_timeout: DIRECTORY_QUERY_TIMEOUT_MS + 1000
+    });
+    statementTimeoutConfigured = true;
+    let html = fs.readFileSync(path.join(__dirname, 'public/directory.html'), 'utf8');
+
+    // Bound SSR payload size; the current production directory has 2,121 active listings.
+    stage = 'active_listings';
+    const r = await queryDirectoryWithMetrics(
+      client,
+      requestId,
+      'active_listings',
       `SELECT id, name, url, category, is_auto_imported, source, source_url, vote_count,
               featured_tier, featured_until,
               (outreach_campaign_scheduled_at IS NOT NULL
@@ -1516,29 +1671,54 @@ app.get('/directory', async (req, res) => {
                  AND (outreach_campaign_scheduled_at AT TIME ZONE 'UTC')::date =
                      (NOW() AT TIME ZONE 'UTC')::date) DESC,
                 vote_count DESC, COALESCE(scored_at, submitted_at) DESC
-      `
+       LIMIT $1`,
+      [DIRECTORY_MAX_ACTIVE_LISTINGS]
     );
+    if (res.writableEnded || res.destroyed) return;
+
     const listings = r.rows.map(l => ({
       ...l,
       slug: toListingSlug(l.name, l.id),
       description: sanitizeDesc(l.name, l.description, l.url),
     }));
 
-    // 30-day click counts for each listing
-    const cc = await pool.query(
-      `SELECT listing_id, COUNT(*)::int AS n
-       FROM dir_listing_clicks WHERE clicked_at >= NOW()-INTERVAL '30 days'
-       GROUP BY listing_id`
-    );
+    // Only aggregate recent clicks for listings included in this bounded response.
+    stage = 'click_counts';
+    const listingIds = listings.map(l => l.id);
+    const cc = listingIds.length
+      ? await queryDirectoryWithMetrics(
+        client,
+        requestId,
+        'click_counts',
+        `SELECT listing_id, COUNT(*)::int AS n
+         FROM dir_listing_clicks
+         WHERE listing_id = ANY($1::int[]) AND clicked_at >= NOW()-INTERVAL '30 days'
+         GROUP BY listing_id`,
+        [listingIds]
+      )
+      : { rows: [] };
+    if (res.writableEnded || res.destroyed) return;
+
     const clickMap = {};
     cc.rows.forEach(row => { clickMap[row.listing_id] = row.n; });
 
-    // Pre-render first 30 cards so bots get real HTML without executing JS
+    // Pre-render first 30 cards so bots get real HTML without executing JS.
     const ssrHtml = listings.slice(0, 30).map(l => ssrCard(l, clickMap)).join('\n');
 
-    // Inject live product count into all hardcoded "500+" / "544+" / "566+" occurrences
-    // (meta tags, JSON-LD, FAQ text, search placeholder — JS-hydrated spans are updated by client)
-    const liveCount = await getActiveListingCount();
+    // The selected rows give an exact count until the safety cap is reached.
+    stage = 'active_listing_count';
+    let liveCount = listings.length;
+    if (listings.length >= DIRECTORY_MAX_ACTIVE_LISTINGS) {
+      const countResult = await queryDirectoryWithMetrics(
+        client,
+        requestId,
+        'active_listing_count',
+        `SELECT COUNT(*)::int AS n FROM directory_listings WHERE status='active'`
+      );
+      liveCount = countResult.rows[0]?.n ?? listings.length;
+    }
+    if (res.writableEnded || res.destroyed) return;
+
     const countStr = `${liveCount.toLocaleString('en-US')}+`;
     html = html
       .replace(/\b500\+/g, countStr)
@@ -1556,7 +1736,7 @@ app.get('/directory', async (req, res) => {
       '@id': 'https://strategic-flow-audit.replit.app/directory#listing',
       name: 'ToolIndex SaaS and Tool Directory',
       url: 'https://strategic-flow-audit.replit.app/directory',
-      numberOfItems: listings.length,
+      numberOfItems: liveCount,
       itemListElement: listings.map((l, index) => ({
         '@type': 'ListItem',
         position: index + 1,
@@ -1573,21 +1753,24 @@ app.get('/directory', async (req, res) => {
     html = html.replace('</head>',
       `<script type="application/ld+json">${safeDirectorySchema}</script>\n</head>`);
 
-    // Inject SSR payload so the client JS skips the /api/directory/listings fetch
+    // Inject SSR payload so the client JS skips the /api/directory/listings fetch.
     const safeListings = JSON.stringify(listings).replace(/<\/script>/gi, '<\\/script>');
     const safeClicks   = JSON.stringify(clickMap).replace(/<\/script>/gi, '<\\/script>');
     html = html.replace('</head>',
       `<script>window.__SSR_LISTINGS__=${safeListings};window.__SSR_CLICK_COUNTS__=${safeClicks};</script>\n</head>`);
 
-    // Replace the "Loading listings…" placeholder with actual card HTML
+    // Replace the "Loading listings…" placeholder with actual card HTML.
     html = html.replace(
       '<div class="dir-loading" id="dirLoading">Loading listings…</div>',
       ssrHtml
     );
 
-    // Inject the durable latest post so first paint never falls back to a stale
-    // in-memory/static card while the browser waits for the hydration request.
-    const latest = await getLatestReadableBlogPost();
+    // A failed latest-post query can use the static card without losing directory data.
+    stage = 'latest_blog_post';
+    const latest = await getLatestReadableBlogPost(client, requestId, err => {
+      if (isPgConnectionFailure(err) || isPgClientQueryTimeout(err)) destroyClient = true;
+    });
+    if (res.writableEnded || res.destroyed) return;
     if (latest) {
       const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
       html = html.replace(
@@ -1612,11 +1795,47 @@ app.get('/directory', async (req, res) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.send(html);
+    const durationMs = Date.now() - startedAt;
+    if (durationMs >= 5000) {
+      console.warn('[directory-ssr] slow_response', JSON.stringify({
+        request_id: requestId,
+        duration_ms: durationMs,
+        listing_count: listings.length,
+        pool: getPostgresPoolStats()
+      }));
+    }
   } catch (err) {
-    console.error('[dir-ssr] error:', err.message);
-    // Fallback to static file if SSR fails
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-    res.sendFile(path.join(__dirname, 'public/directory.html'));
+    destroyClient = destroyClient || isPgConnectionFailure(err) || isPgClientQueryTimeout(err);
+    console.error('[directory-ssr] request_error', JSON.stringify({
+      request_id: requestId,
+      stage,
+      duration_ms: Date.now() - startedAt,
+      code: err.code || null,
+      message: err.message,
+      pool: getPostgresPoolStats()
+    }));
+    sendDirectoryUnavailable(res);
+  } finally {
+    clearTimeout(responseDeadline);
+    if (client) {
+      if (!destroyClient && statementTimeoutConfigured) {
+        try {
+          await client.query({
+            text: 'RESET statement_timeout',
+            query_timeout: DIRECTORY_QUERY_TIMEOUT_MS + 1000
+          });
+        } catch (err) {
+          destroyClient = true;
+          console.error('[directory-ssr] statement_timeout_reset_error', JSON.stringify({
+            request_id: requestId,
+            code: err.code || null,
+            message: err.message,
+            pool: getPostgresPoolStats()
+          }));
+        }
+      }
+      client.release(destroyClient);
+    }
   }
 });
 
@@ -3454,6 +3673,8 @@ app.get('/api/directory/listings', async (req, res) => {
                      AND (outreach_campaign_scheduled_at AT TIME ZONE 'UTC')::date =
                          (NOW() AT TIME ZONE 'UTC')::date) DESC,
                     vote_count DESC, COALESCE(scored_at, submitted_at) DESC`;
+    params.push(DIRECTORY_MAX_ACTIVE_LISTINGS);
+    q += ` LIMIT $${params.length}`;
     const r = await pool.query(q, params);
 
     // ── Merge live badge data (winners + trending) ─────────────────────────
@@ -18073,16 +18294,30 @@ const BLOG_POSTS = [
 const BLOG_LEGACY_REDIRECTS = Object.freeze({
   'saas-directory-submission-2026-best-backlinks': 'saas-directory-submission-2026',
 });
-async function getLatestReadableBlogPost() {
+async function getLatestReadableBlogPost(queryable = pool, requestId = null, onError = null) {
+  const startedAt = Date.now();
   try {
     // Do not advertise an auto-generated post unless its body survived restart.
-    const { rows } = await pool.query(`
-      SELECT slug, title, excerpt, date, read_time
-      FROM blog_auto_posts
-      WHERE length(trim(content)) > 0
-      ORDER BY date DESC, created_at DESC
-      LIMIT 1
-    `);
+    const { rows } = await queryable.query({
+      text: `
+        SELECT slug, title, excerpt, date, read_time
+        FROM blog_auto_posts
+        WHERE length(trim(content)) > 0
+        ORDER BY date DESC, created_at DESC
+        LIMIT 1
+      `,
+      ...(requestId ? { query_timeout: DIRECTORY_QUERY_TIMEOUT_MS + 1000 } : {})
+    });
+    const durationMs = Date.now() - startedAt;
+    if (requestId && durationMs >= 1000) {
+      console.warn('[directory-ssr] slow_query', JSON.stringify({
+        request_id: requestId,
+        query: 'latest_blog_post',
+        duration_ms: durationMs,
+        row_count: rows.length,
+        pool: getPostgresPoolStats()
+      }));
+    }
     if (rows.length) {
       const post = rows[0];
       const d = new Date(post.date + 'T12:00:00Z');
@@ -18093,7 +18328,19 @@ async function getLatestReadableBlogPost() {
       };
     }
   } catch (e) {
-    console.error('[blog-latest] database error:', e.message);
+    if (typeof onError === 'function') onError(e);
+    if (requestId) {
+      console.error('[directory-ssr] query_error', JSON.stringify({
+        request_id: requestId,
+        query: 'latest_blog_post',
+        duration_ms: Date.now() - startedAt,
+        code: e.code || null,
+        message: e.message,
+        pool: getPostgresPoolStats()
+      }));
+    } else {
+      console.error('[blog-latest] database error:', e.message);
+    }
   }
   return BLOG_POSTS[0] || null;
 }
