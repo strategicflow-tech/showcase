@@ -15381,12 +15381,75 @@ app.get('/api/directory/recently-claimed', async (req, res) => {
 });
 
 // ── GET /api/directory/leaderboard?period=daily|weekly|all ───────────────────
+let dailyLeaderboardRecoveryDate = null;
+let dailyLeaderboardRecoveryPromise = null;
+
+async function ensureDailyLeaderboardForToday() {
+  const today = new Date().toISOString().slice(0, 10);
+  if (dailyLeaderboardRecoveryDate === today) return;
+
+  if (dailyLeaderboardRecoveryPromise) {
+    await dailyLeaderboardRecoveryPromise;
+    if (dailyLeaderboardRecoveryDate === today) return;
+    return ensureDailyLeaderboardForToday();
+  }
+
+  const recovery = (async () => {
+    const existing = await pool.query(
+      `SELECT COUNT(*)::int AS count
+         FROM dir_daily_leaderboard
+        WHERE display_date = $1`,
+      [today]
+    );
+    const existingCount = Number(existing.rows[0]?.count) || 0;
+    if (existingCount < DAILY_LEADERBOARD_TARGET) {
+      console.warn(
+        `[daily-leaderboard] request recovery for ${today}: ${existingCount}/${DAILY_LEADERBOARD_TARGET} entries`
+      );
+    }
+
+    // Reuse the durable seeder's health check even when the row count is full:
+    // it also detects inactive listings and incomplete staggered vote targets.
+    await seedDailyLeaderboard();
+    await advanceDailyLeaderboard();
+
+    const verified = await pool.query(
+      `SELECT COUNT(*)::int AS count
+         FROM dir_daily_leaderboard
+        WHERE display_date = $1`,
+      [today]
+    );
+    const recoveredCount = Number(verified.rows[0]?.count) || 0;
+    if (recoveredCount === 0) {
+      throw new Error(`Daily leaderboard recovery created no entries for ${today}`);
+    }
+    if (recoveredCount < DAILY_LEADERBOARD_TARGET) {
+      console.warn(
+        `[daily-leaderboard] recovery for ${today} produced ${recoveredCount}/${DAILY_LEADERBOARD_TARGET} entries`
+      );
+    }
+    dailyLeaderboardRecoveryDate = today;
+  })();
+
+  dailyLeaderboardRecoveryPromise = recovery;
+  try {
+    await recovery;
+  } finally {
+    if (dailyLeaderboardRecoveryPromise === recovery) {
+      dailyLeaderboardRecoveryPromise = null;
+    }
+  }
+}
+
 app.get('/api/directory/leaderboard', async (req, res) => {
   const period = req.query.period || 'all';
   try {
     let q;
     let params = [];
     let publishedCount = null;
+    // Cron/startup seeding is the normal path. Recover on demand if a missed
+    // UTC rollover or failed background run left today's cohort empty/partial.
+    if (period === 'daily') await ensureDailyLeaderboardForToday();
     if (period === 'daily' || period === 'new') {
       const published = await pool.query(`
         SELECT COUNT(*)::int AS count
