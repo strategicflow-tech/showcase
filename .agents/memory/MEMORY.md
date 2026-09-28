@@ -6,3 +6,4 @@
 - [Existing secret operations](existing-secret-operations.md) — requestSecrets is for collecting new values; existing secrets can be passed through shell headers without printing them.
 - [DFM execution boundary](dfm-execution-boundary.md) — keep fix writes in stored audit records; no ESP or CMS effects without a new explicit request.
 - [Postgres disconnect evidence](postgres-disconnect-evidence.md) — simultaneous server-terminated sessions are not proof of app pool exhaustion; correlate with runtime pool metrics.
+- [Git merge state across turns](git-merge-state.md) — recheck merge state after turn changes; an unresolved merge may reset to a clean HEAD.
