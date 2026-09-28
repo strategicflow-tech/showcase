@@ -9088,7 +9088,7 @@ app.post('/admin/send-blog-newsletter', async (req, res) => {
   if (!hasMatchingAdminJobToken(req) && !isAdmin(req.session?.userEmail)) {
     return res.status(403).json({ error: 'forbidden' });
   }
-  const input = { ...req.query, ...(req.body || {}) };
+  const input = req.body || {};
   const slug = String(input.slug || '').trim();
   if (!slug) return res.status(400).json({ error: 'slug required', available: BLOG_POSTS.map(p => p.slug) });
 
