@@ -8,3 +8,5 @@ Use `requestSecrets` only when a secret needs to be collected from the user; it 
 **Why:** The secret callback is intentionally non-readable, while some maintenance endpoints still require a job-token header.
 
 **How to apply:** Use an environment-variable expansion in a non-verbose shell request, capture only the endpoint response, and never include the header value in output or code logs.
+
+An added Resend connector can still fail provider requests with an invalid-key response while the app's own configured `RESEND_API_KEY` remains usable. **Why:** the connector credential and application secret are separate credentials. **How to apply:** diagnose each sending/history path independently; never treat one credential's failure as proof the other is invalid.
