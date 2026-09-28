@@ -51,6 +51,8 @@ const PERMANENT_OUTREACH_EXCLUSIONS = new Set([
 
 const LARGE_COMPANY_BLOCKLIST = new Set([
   'anthropic','figma','salesforce','elevenlabs','crisp','framer','atlassian',
+  '1stdibs','unity technologies','wolters kluwer australia','myfitnesspal',
+  'masterclass','alltrails','jama software',
   'digitalocean','airtable','vercel','supabase','raycast','clerk','cursor',
   'windsurf','linear','netlify','cohere','railway','upstash','huggingface',
   'superhuman','runway','postman',
