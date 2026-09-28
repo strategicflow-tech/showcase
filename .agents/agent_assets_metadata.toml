@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "kervwu7I8UiROFaSzMD6T"
+uri = "file://screenshots/live-badge-guide-1440.png"
+type = "image"
+title = "Production Badge Guide at 1440px"
+description = "Fresh screenshot of the published directory after a successful HTTP 200 response. All ten Badge Guide rows render at 64px with single-line descriptions."
+logical_id = "e4ee18db-0d00-4302-8b41-cdd89aa5e730"
+content_hash = "sha256:cfdd95063c929ca82f793062de91539172fddb2d1e982965d8b9dfb88381a529"
+size = 552686
+mtime_ms = 1790614420417
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:c9181a19-fb11-45cc-8b09-db6ff8bbbd8a/e4ee18db-0d00-4302-8b41-cdd89aa5e730/5d2b3cbf-2ef0-4f45-876c-96ca15bfe2e7"
+storage_version_token = "1790614425562015"
+content_type = "image/png"
