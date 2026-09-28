@@ -63,6 +63,7 @@ const multer = require('multer');
 const path   = require('path');
 const fs     = require('fs');
 const { toListingSlug } = require('./public/directory-slug');
+const { submitDirectoryListingTransaction } = require('./directory-submit-transaction');
 const { safeFetchPublicUrl, validatePublicHttpUrl } = require('./safe-url-fetch');
 const {
   createAgencyOutreachRouter,
@@ -3957,39 +3958,25 @@ app.post('/api/directory/submit', async (req, res) => {
     });
   }
   const suppliedLogo = null;
-  let submitClient;
   try {
     // Production has legacy directory_listings tables without a unique URL
     // constraint. Do the duplicate check and insert under a URL-scoped
     // transaction lock instead of relying on ON CONFLICT (url), which fails
     // when that constraint is absent and previously turned valid submissions
     // into a generic 500 error.
-    submitClient = await pool.connect();
-    await submitClient.query('BEGIN');
-    const normalizedUrlKey = cleanUrl.toLowerCase().replace(/\/+$/, '');
-    await submitClient.query(
-      'SELECT pg_advisory_xact_lock(hashtext($1))',
-      [`directory-submit-url:${normalizedUrlKey}`]
-    );
-    const existing = await submitClient.query(
-      `SELECT id FROM directory_listings
-       WHERE regexp_replace(lower(url), '/+$', '')=$1
-       LIMIT 1`,
-      [normalizedUrlKey]
-    );
-    if (existing.rows.length) {
-      await submitClient.query('COMMIT');
+    const submission = await submitDirectoryListingTransaction(pool, {
+      cleanUrl,
+      name,
+      category,
+      description,
+      normalizedEmail,
+      suppliedLogo
+    });
+    if (submission.duplicate) {
       return res.status(409).json({ error: 'already_listed', message: 'This product is already in the directory.' });
     }
-    const r = await submitClient.query(
-      `INSERT INTO directory_listings (name, url, category, description, submitter_email, image_url, score_pending, status)
-       VALUES ($1,$2,$3,$4,$5,$6,FALSE,'active') RETURNING id`,
-      [(name||'').trim().slice(0,80), cleanUrl.slice(0,300), (category||'General').slice(0,40), (description||'').trim().slice(0,300), normalizedEmail||null, suppliedLogo]
-    );
-    const id = r.rows[0].id;
-    await submitClient.query('COMMIT');
-    submitClient.release();
-    submitClient = null;
+    const { id } = submission;
+
     await writeSecurityAudit('directory_listing_submitted', {
       actorType: 'public',
       listingId: id,
@@ -4024,10 +4011,6 @@ app.post('/api/directory/submit', async (req, res) => {
 
     res.json({ success: true, id, name: name.slice(0,80) });
   } catch (err) {
-    if (submitClient) {
-      await submitClient.query('ROLLBACK').catch(() => {});
-      submitClient.release();
-    }
     console.error('[directory] submit error:', err.message);
     res.status(500).json({ error: 'db_error' });
   }
@@ -6941,13 +6924,13 @@ async function getToolindexFoundersCurrentSuppression(email) {
 async function ensureToolindexFoundersRunClaim(runKind, source) {
   const client = await pool.connect();
   const lockKey = `${TOOLINDEX_FOUNDERS_CAMPAIGN_KEY}:${runKind}`;
+  let leaseTransferred = false;
   try {
     const lock = await client.query(
       `SELECT pg_try_advisory_lock(hashtext($1)) AS locked`,
       [lockKey]
     );
     if (!lock.rows[0]?.locked) {
-      client.release();
       return { claimed: false, reason: 'already_running' };
     }
 
@@ -6968,13 +6951,12 @@ async function ensureToolindexFoundersRunClaim(runKind, source) {
     );
     if (!claim.rows.length) {
       await client.query(`SELECT pg_advisory_unlock(hashtext($1))`, [lockKey]).catch(() => {});
-      client.release();
       return { claimed: false, reason: 'already_completed_or_running' };
     }
+    leaseTransferred = true;
     return { claimed: true, client, lockKey, run: claim.rows[0] };
-  } catch (error) {
-    client.release();
-    throw error;
+  } finally {
+    if (!leaseTransferred) client.release();
   }
 }
 
@@ -7093,11 +7075,17 @@ async function runToolindexFoundersOneTime(runKind, source = 'cron') {
     console.error(`[${TOOLINDEX_FOUNDERS_CAMPAIGN_KEY}] ${runKind} failed:`, result.error);
     return { ok: false, ...result };
   } finally {
-    await claim.client.query(
-      `SELECT pg_advisory_unlock(hashtext($1))`,
-      [claim.lockKey]
-    ).catch(() => {});
-    claim.client.release();
+    let destroyClient = false;
+    try {
+      await claim.client.query(
+        `SELECT pg_advisory_unlock(hashtext($1))`,
+        [claim.lockKey]
+      );
+    } catch {
+      destroyClient = true;
+    } finally {
+      claim.client.release(destroyClient);
+    }
   }
 }
 
@@ -10935,15 +10923,16 @@ async function beginStripeWebhookEvent(event, endpoint) {
   const sessionId = event.data?.object?.id || null;
   const attemptToken = crypto.randomUUID();
   const client = await pool.connect();
+  let leaseTransferred = false;
+  let lockAcquired = false;
   try {
     const lock = await client.query(
       `SELECT pg_try_advisory_lock(hashtext($1), hashtext($2)) AS acquired`,
       [endpoint, event.id]
     );
-    if (!lock.rows[0]?.acquired) {
-      client.release();
-      return { retryable: true };
-    }
+    lockAcquired = Boolean(lock.rows[0]?.acquired);
+    if (!lockAcquired) return { retryable: true };
+
     const { rows } = await client.query(
       `INSERT INTO stripe_webhook_events
          (event_id, endpoint, event_type, status, session_id, attempt_token, lease_expires_at)
@@ -10963,16 +10952,20 @@ async function beginStripeWebhookEvent(event, endpoint) {
         [endpoint, event.id]
       );
       await client.query(`SELECT pg_advisory_unlock(hashtext($1), hashtext($2))`, [endpoint, event.id]);
-      client.release();
+      lockAcquired = false;
       return current.rows[0]?.status === 'succeeded' ? null : { retryable: true };
     }
+    leaseTransferred = true;
     return { attemptToken: rows[0].attempt_token, client };
   } catch (err) {
-    try {
-      await client.query(`SELECT pg_advisory_unlock(hashtext($1), hashtext($2))`, [endpoint, event.id]);
-    } catch (_) {}
-    client.release();
+    if (lockAcquired) {
+      try {
+        await client.query(`SELECT pg_advisory_unlock(hashtext($1), hashtext($2))`, [endpoint, event.id]);
+      } catch (_) {}
+    }
     throw err;
+  } finally {
+    if (!leaseTransferred) client.release();
   }
 }
 
@@ -10987,10 +10980,13 @@ async function finishStripeWebhookEvent(eventId, endpoint, lease, error = null) 
       [eventId, error ? 'failed' : 'succeeded', error ? String(error.message || error).slice(0, 1000) : null, endpoint, lease.attemptToken]
     );
   } finally {
+    let destroyClient = false;
     try {
       await lease.client.query(`SELECT pg_advisory_unlock(hashtext($1), hashtext($2))`, [endpoint, eventId]);
+    } catch {
+      destroyClient = true;
     } finally {
-      lease.client.release();
+      lease.client.release(destroyClient);
     }
   }
 }
@@ -13170,8 +13166,6 @@ async function handleSponsorPayment(session) {
     );
     if (existing.rows.length) {
       await client.query('COMMIT');
-      client.release();
-      client = null;
       return;
     }
     const active = await client.query(
@@ -13201,15 +13195,17 @@ async function handleSponsorPayment(session) {
        sponsorCategory, email, sponsor_tier, expires]
     );
     await client.query('COMMIT');
-    client.release();
-    client = null;
     console.log(`[sponsor] "${sponsor_name}" (${sponsor_tier}, ${sponsorCategory}) active until ${expires.toISOString()}`);
   } catch(e) {
     if (client) {
       await client.query('ROLLBACK').catch(()=>{});
-      client.release();
     }
     console.error('[sponsor] DB insert error:', e.message);
+  } finally {
+    if (client) {
+      client.release();
+      client = null;
+    }
   }
 
   // ── Admin notification (Task #39) ────────────────────────────────────────
@@ -14590,7 +14586,6 @@ app.post('/api/sponsor/checkout', async (req, res) => {
     );
     if (Number(active.rows[0]?.n || 0) >= SPONSOR_MAX_SLOTS) {
       await client.query('ROLLBACK');
-      client.release();
       return res.status(409).json({ error: 'no_slots_available', category });
     }
     const sess = await stripe.checkout.sessions.create({
@@ -14611,15 +14606,18 @@ app.post('/api/sponsor/checkout', async (req, res) => {
       },
     });
     await client.query('COMMIT');
-    client.release();
     res.json({ url: sess.url });
   } catch(err) {
     if (client) {
       await client.query('ROLLBACK').catch(()=>{});
-      client.release();
     }
     console.error('[sponsor/checkout]', err.message);
     res.status(500).json({ error: 'checkout_failed' });
+  } finally {
+    if (client) {
+      client.release();
+      client = null;
+    }
   }
 });
 
@@ -31045,13 +31043,15 @@ async function cacheBrandFavicons() {
   }
 }
 
+const backgroundJobsDisabled = process.env.DISABLE_BACKGROUND_JOBS === 'true';
 setupDB().then(async () => {
-  await runMonthlyAudit();
-  cacheBrandFavicons().catch(() => {}); // non-blocking; marquee degrades gracefully
+  if (!backgroundJobsDisabled) {
+    await runMonthlyAudit();
+    cacheBrandFavicons().catch(() => {}); // non-blocking; marquee degrades gracefully
 
-  // ── Auto-fix "Other" listings & missing logos on every startup ───────────────
-  // Triggers only if there's work to do; safe to run on every deploy.
-  setImmediate(async () => {
+    // ── Auto-fix "Other" listings & missing logos on every startup ─────────────
+    // Triggers only if there's work to do; safe to run on every deploy.
+    setImmediate(async () => {
     try {
       const otherCount = await pool.query(`SELECT COUNT(*)::int AS n FROM directory_listings WHERE status='active' AND category='Other'`);
       if (otherCount.rows[0].n > 0 && !_recategorizeRunning) {
@@ -31092,7 +31092,10 @@ setupDB().then(async () => {
           .catch(()=>{});
       }
     } catch(e) { console.error('[startup] logo-backfill-check err:', e.message); }
-  });
+    });
+  } else {
+    console.log('[background-jobs] startup recovery disabled by environment');
+  }
 
   // Bootstrap TEARDOWN_COUNT from DB if not already set via env var
   if (!process.env.TEARDOWN_COUNT) {
@@ -33566,6 +33569,9 @@ full HTML body here
   server.timeout = 180000;
   server.keepAliveTimeout = 180000;
 
+  if (backgroundJobsDisabled) {
+    console.log('[background-jobs] disabled by environment');
+  } else {
   // ── Hourly: expire featured placements + sponsors + activate scheduled boosts — DISABLED
   // cron.schedule('0 * * * *', () => {
   //   expireFeaturedListings().catch(()=>{});
@@ -34577,5 +34583,6 @@ ${buildUnsubFooterHtml(listing.contact_email)}
         await fetch(process.env.APP_URL + '/auth/me');
       } catch(e) {}
     }, 4 * 60 * 1000);
+  }
   }
 }).catch(e => { console.error('[startup]', e); process.exit(1); });
