@@ -1099,7 +1099,7 @@ const ADMIN_MUTATING_GET_PATHS = new Set([
   '/clear-bad-logos', '/fetch-logos', '/strict-logo-refresh', '/fix-wide-logos',
   '/fix-owner-listings', '/extract-emails', '/run-vote-growth', '/enrich-listings',
   '/backfill-logos', '/recategorize-other', '/insert-batch1', '/insert-batch2',
-  '/send-blog-newsletter', '/insert-invisible-exit', '/insert-directree',
+  '/insert-invisible-exit', '/insert-directree',
   '/fix-peerlist-noclaim', '/insert-fetchrly', '/insert-knight-leads',
   '/rank-spread-votes', '/redistribute-votes', '/toggle-promoted', '/seed-votes',
   '/score', '/spread-votes', '/reseed-daily', '/run-claimed-boost',
@@ -1111,6 +1111,7 @@ const ADMIN_MUTATING_GET_PATHS = new Set([
 const ADMIN_JOB_POST_PATHS = new Set([
   '/batch-update',
   '/seq-upload-csv',
+  '/send-blog-newsletter',
   '/toolindex-import-drafts',
   '/import-toolindex-ph-latest',
   '/setup-toolindex-ph-campaign',
@@ -9081,20 +9082,23 @@ app.get('/admin/insert-batch2', async (req, res) => {
   res.end();
 });
 
-// GET /admin/send-blog-newsletter?key=&slug= — manually trigger newsletter for a specific post. Idempotent.
-// Add ?force=1 to resend even if already sent (use with caution — will duplicate emails).
-app.get('/admin/send-blog-newsletter', async (req, res) => {
-  if (req.query.key !== process.env.WHY_ADMIN_KEY) return res.status(403).json({ error: 'forbidden' });
-  const slug = (req.query.slug || '').trim();
+// POST /admin/send-blog-newsletter — header-token or admin-session authenticated.
+// Add force: "1" to resend even if already sent (use with caution — duplicates).
+app.post('/admin/send-blog-newsletter', async (req, res) => {
+  if (!hasMatchingAdminJobToken(req) && !isAdmin(req.session?.userEmail)) {
+    return res.status(403).json({ error: 'forbidden' });
+  }
+  const input = { ...req.query, ...(req.body || {}) };
+  const slug = String(input.slug || '').trim();
   if (!slug) return res.status(400).json({ error: 'slug required', available: BLOG_POSTS.map(p => p.slug) });
 
-  const post = req.query.audience === 'confirmed_toolindex'
+  const post = input.audience === 'confirmed_toolindex'
     ? (await getToolIndexBlogPosts()).find(p => p.slug === slug)
     : BLOG_POSTS.find(p => p.slug === slug);
   if (!post) return res.status(404).json({ error: 'post not found', available: BLOG_POSTS.map(p => p.slug) });
 
-  if (req.query.audience === 'confirmed_toolindex') {
-    if (req.query.dry === '1') {
+  if (input.audience === 'confirmed_toolindex') {
+    if (input.dry === '1') {
       const preview = await previewPublicConfirmedBlogNewsletter();
       return res.json({ slug, audience: 'confirmed_toolindex', ...preview });
     }
@@ -9107,8 +9111,8 @@ app.get('/admin/send-blog-newsletter', async (req, res) => {
   }
 
   // Test send — delivers to a single address only, does NOT mark as sent
-  if (req.query.test_to) {
-    const testAddr = req.query.test_to;
+  if (input.test_to) {
+    const testAddr = input.test_to;
     const { slug, title, excerpt, dateLabel } = post;
     const postUrl = `https://strategic-flow-audit.replit.app/blog/${slug}`;
     try {
@@ -9130,7 +9134,7 @@ app.get('/admin/send-blog-newsletter', async (req, res) => {
   }
 
   // Count recipients without sending (dry-run mode)
-  if (req.query.dry === '1') {
+  if (input.dry === '1') {
     const emailsR = await pool.query(`
       SELECT COUNT(*)::int AS n
       FROM (
@@ -9162,7 +9166,7 @@ app.get('/admin/send-blog-newsletter', async (req, res) => {
   }
 
   // Force-resend: delete log entry first
-  if (req.query.force === '1') {
+  if (input.force === '1') {
     await pool.query(`DELETE FROM blog_newsletter_log WHERE slug=$1`, [slug]);
   }
 
