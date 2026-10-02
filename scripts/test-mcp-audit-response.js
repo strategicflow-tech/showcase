@@ -9,15 +9,32 @@ const {
 } = require('../mcp-audit-response');
 
 const INTERNAL_SECRET = 'synthetic-internal-secret';
+const HIDDEN_PUBLIC_FIELDS = [
+  'after',
+  'after_value',
+  'rebuilt_subject',
+  'rebuilt_body',
+  'rebuilt_cta',
+  'rebuilt_text',
+  'new_cta',
+  'variants',
+  'cta_rewrite',
+];
 
 function makeFullAuditResponse() {
   return {
     original_score: 3.5,
     rebuilt_score: 8.5,
+    original_subject: 'Monthly product update',
     rebuilt_subject: 'Recover missed renewals this month',
     rebuilt_body: ['A complete rewritten email body.'],
     rebuilt_cta: 'Fix my renewal gap',
     variants: [{ label: 'A', subject: 'Reduce missed renewals' }],
+    cta_rewrite: {
+      before: 'Learn more',
+      after: 'Fix my renewal gap',
+      nested: { after_value: 'Fix my renewal gap', new_cta: 'Fix my renewal gap' },
+    },
     changes: [{
       element: 'Subject',
       pattern: 'Filing Label Subject',
@@ -35,7 +52,23 @@ function makeFullAuditResponse() {
       after_value: 'Fix my renewal gap',
       after: 'Fix my renewal gap',
       why: 'Ownership language makes the next step concrete.',
+      metadata: {
+        preview: {
+          after_value: 'Nested private rewrite',
+          rebuilt_text: 'Nested private rewrite',
+        },
+      },
     }],
+    private_preview: {
+      nested: {
+        rebuilt_text: 'A nested rebuilt draft',
+        rebuilt_subject: 'A nested subject',
+        rebuilt_body: ['A nested body'],
+        rebuilt_cta: 'A nested CTA',
+        variants: [{ subject: 'A nested variant' }],
+        cta_rewrite: { after_value: 'A nested CTA' },
+      },
+    },
     audit_record_id: 'synthetic-audit-1',
     audits_used: 1,
     audits_remaining: 2,
@@ -44,15 +77,20 @@ function makeFullAuditResponse() {
 }
 
 function assertPublicRebuildIsHidden(response) {
-  for (const field of ['rebuilt_subject', 'rebuilt_body', 'rebuilt_cta', 'variants']) {
-    assert.equal(Object.hasOwn(response, field), false, `${field} should be omitted`);
-  }
-  for (const field of ['changes', 'structured_fixes']) {
-    for (const fix of response[field]) {
-      assert.equal(Object.hasOwn(fix, 'after'), false, `${field}.after should be omitted`);
-      assert.equal(Object.hasOwn(fix, 'after_value'), false, `${field}.after_value should be omitted`);
+  function visit(value, path = 'response') {
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => visit(item, `${path}[${index}]`));
+      return;
+    }
+    if (!value || typeof value !== 'object') return;
+
+    for (const [key, child] of Object.entries(value)) {
+      assert.equal(HIDDEN_PUBLIC_FIELDS.includes(key), false, `${path}.${key} should be omitted`);
+      visit(child, `${path}.${key}`);
     }
   }
+
+  visit(response);
   assert.equal(response.upgrade_url, 'https://strategic-flow-pro.replit.app/decision-friction-review/');
   assert.equal(
     response.message,
@@ -73,8 +111,16 @@ test('public audit response removes full rebuild content and preserves diagnosis
     before: 'Monthly product update',
     why: 'The revised subject makes the reader outcome explicit.',
   });
-  assert.equal(response.structured_fixes[0].before_value, 'Learn more');
-  assert.equal(response.structured_fixes[0].pattern, 'Guest Language CTA');
+  assert.deepEqual(response.structured_fixes[0], {
+    fix_id: 'synthetic-fix-1',
+    pattern: 'Guest Language CTA',
+    element: 'CTA',
+    field_name: 'cta_text',
+    before_value: 'Learn more',
+    why: 'Ownership language makes the next step concrete.',
+    metadata: { preview: {} },
+  });
+  assert.equal(response.original_subject, 'Monthly product update');
   assert.equal(response.original_score, 3.5);
   assert.equal(response.rebuilt_score, 8.5);
 });
@@ -105,4 +151,5 @@ test('public response filtering does not mutate the complete stored audit fixtur
   assert.deepEqual(storedAudit, originalStoredAudit);
   assert.equal(storedAudit.structured_fixes[0].after_value, 'Fix my renewal gap');
   assert.equal(storedAudit.changes[0].after, 'Recover missed renewals this month');
+  assert.equal(storedAudit.cta_rewrite.nested.after_value, 'Fix my renewal gap');
 });
