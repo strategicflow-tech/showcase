@@ -76,6 +76,10 @@ const {
   persistDecisionAuditRecord,
 } = require('./decision-execution-layer');
 const {
+  buildMcpAuditResponse,
+  hasValidMcpInternalSecretValue,
+} = require('./mcp-audit-response');
+const {
   detectBrandedTerm,
   buildBrandedTermQuestions,
 } = require('./ai-visibility-question-engine');
@@ -29962,14 +29966,10 @@ app.use(createDecisionExecutionRouter({
 }));
 
 function hasValidMcpInternalSecret(req) {
-  const provided = req.get(MCP_INTERNAL_CALL_HEADER);
-  const expected = process.env.MCP_INTERNAL_SHARED_SECRET;
-  if (!provided || !expected) return false;
-
-  const providedBuffer = Buffer.from(provided, 'utf8');
-  const expectedBuffer = Buffer.from(expected, 'utf8');
-  return providedBuffer.length === expectedBuffer.length &&
-    crypto.timingSafeEqual(providedBuffer, expectedBuffer);
+  return hasValidMcpInternalSecretValue(
+    req.get(MCP_INTERNAL_CALL_HEADER),
+    process.env.MCP_INTERNAL_SHARED_SECRET
+  );
 }
 
 app.post('/api/mcp/audit', async (req, res) => {
@@ -30129,7 +30129,7 @@ In detailed mode, each "why" field must be 2 to 3 sentences and explain the conv
     if (r.rows.length > 0) usedCount = r.rows[0].count;
   } catch (e) {}
 
-  return res.json({
+  const response = {
     ...structuredDiagnosis,
     audit_record_id: auditRecordId,
     audits_used: isInternalMcpCall ? null : usedCount,
@@ -30137,7 +30137,9 @@ In detailed mode, each "why" field must be 2 to 3 sentences and explain the conv
     upgrade_url: isInternalMcpCall || usedCount < 3
       ? null
       : 'https://strategic-flow-pro.replit.app/packages'
-  });
+  };
+
+  return res.json(buildMcpAuditResponse(response, isInternalMcpCall));
 });
 // ── END MCP AUDIT ENDPOINT ────────────────────────────────────────────────────
 
