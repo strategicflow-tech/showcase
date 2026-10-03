@@ -1656,7 +1656,7 @@ app.get('/directory', async (req, res) => {
     statementTimeoutConfigured = true;
     let html = fs.readFileSync(path.join(__dirname, 'public/directory.html'), 'utf8');
 
-    // Bound SSR payload size; the current production directory has 2,121 active listings.
+    // Bound SSR payload size for predictable directory response size.
     stage = 'active_listings';
     const r = await queryDirectoryWithMetrics(
       client,
@@ -1725,16 +1725,14 @@ app.get('/directory', async (req, res) => {
     }
     if (res.writableEnded || res.destroyed) return;
 
-    const countStr = `${liveCount.toLocaleString('en-US')}+`;
-    html = html
-      .replace(/\b500\+/g, countStr)
-      .replace(/\b544\+/g, countStr)
-      .replace(/\b550\+/g, countStr)
-      .replace(/\b566\+/g, countStr)
-      .replace(/\b892\+/g, countStr)
-      .replace(/\b948\+/g, countStr);
+    const countMagnitude = liveCount > 0
+      ? 10 ** Math.floor(Math.log10(liveCount))
+      : 1;
+    const roundedLiveCount = Math.floor(liveCount / countMagnitude) * countMagnitude;
+    const displayCount = `${roundedLiveCount.toLocaleString('en-US')}+`;
+    html = html.replace(/\{\{PRODUCT_COUNT\}\}/g, displayCount);
     html = html.replace('</head>',
-      `<script>window.__ACTIVE_LISTING_COUNT__=${liveCount};</script>\n</head>`);
+      `<script>window.__ACTIVE_LISTING_COUNT__=${liveCount};window.__ACTIVE_LISTING_COUNT_DISPLAY__=${JSON.stringify(displayCount)};</script>\n</head>`);
 
     const directoryItemList = {
       '@context': 'https://schema.org',
