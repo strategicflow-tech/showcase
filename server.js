@@ -9000,7 +9000,7 @@ app.get('/admin/recategorize-other', async (req, res) => {
       for(const row of rows){
         try{
           const prompt=`Classify this SaaS product into one of these categories:\n${_VALID_CATS.join(', ')}\n\nProduct: ${row.name}\nURL: ${row.url}\nDescription: ${(row.description||'').slice(0,300)}\n\nReply with ONLY the category name, nothing else.`;
-          const msg=await claude.messages.create({model:'claude-haiku-4-5',max_tokens:20,messages:[{role:'user',content:prompt}]});
+          const msg=await claude.messages.create({model:'claude-haiku-5-5',max_tokens:20,messages:[{role:'user',content:prompt}]});
           const cat=(msg.content[0]?.text||'').trim().replace(/['"]/g,'');
           const finalCat=_VALID_CATS.includes(cat)?cat:'General';
           await pool.query('UPDATE directory_listings SET category=$1 WHERE id=$2',[finalCat,row.id]);
@@ -31068,7 +31068,7 @@ setupDB().then(async () => {
             for(const row of rows){
               try{
                 const prompt=`Classify this SaaS product into one of these categories:\n${_VALID_CATS.join(', ')}\n\nProduct: ${row.name}\nURL: ${row.url}\nDescription: ${(row.description||'').slice(0,300)}\n\nReply with ONLY the category name, nothing else.`;
-                const msg=await claude.messages.create({model:'claude-haiku-4-5',max_tokens:20,messages:[{role:'user',content:prompt}]});
+                const msg=await claude.messages.create({model:'claude-haiku-5-5',max_tokens:20,messages:[{role:'user',content:prompt}]});
                 const cat=(msg.content[0]?.text||'').trim().replace(/['"]/g,'');
                 const finalCat=_VALID_CATS.includes(cat)?cat:'General';
                 await pool.query('UPDATE directory_listings SET category=$1 WHERE id=$2',[finalCat,row.id]);
