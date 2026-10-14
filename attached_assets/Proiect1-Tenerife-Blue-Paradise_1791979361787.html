@@ -578,7 +578,7 @@ details.more[open] summary { margin-bottom: 10px; }
           <li><a href="#ai"><span class="n">08</span><span><b>AI, reguli și riscuri</b><small>Ce face AI, ce fac oamenii, ce nu facem.</small></span></a></li>
           <li><a href="#plan"><span class="n">09</span><span><b>Planul pe faze</b><small>De la zero cod la sistem complet.</small></span></a></li>
           <li><a href="#masurare"><span class="n">10</span><span><b>Ce numărăm</b><small>Cum știm că funcționează.</small></span></a></li>
-          <li><a href="#intrebari"><span class="n">11</span><span><b>Prima întâlnire</b><small>Următorul pas și 16 întrebări.</small></span></a></li>
+          <li><a href="#intrebari"><span class="n">11</span><span><b>Prima întâlnire</b><small>Următorul pas și 20 de întrebări.</small></span></a></li>
           <li><a href="#site"><span class="n">12</span><span><b>Anexă: site-ul actual</b><small>Ce am observat în 13 capturi.</small></span></a></li>
           <li><a href="#exemplu"><span class="n">13</span><span><b>Anexă: lista de clienți</b><small>Exemplu cu date inventate.</small></span></a></li>
           <li><a href="#cuvinte"><span class="n">14</span><span><b>Anexă: cuvinte folosite</b><small>CRM, SEO, AEO, GEO.</small></span></a></li>
@@ -950,7 +950,7 @@ details.more[open] summary { margin-bottom: 10px; }
       <li><b>1. Oaspetele scrie</b><span>Pe numărul firmei tale, de exemplu „Care e parola WiFi?”, în orice limbă.</span></li>
       <li><b>2. Sistemul recunoaște casa</b><span>Potrivește numărul oaspetelui cu rezervarea activă și află în ce casă se află.</span></li>
       <li><b>3. Pregătește răspunsul</b><span>Ia informația din fișa casei (WiFi, cod, ce poți face în zonă, excursii) și scrie răspunsul în limba oaspetelui.</span></li>
-      <li><b>4. Omul aprobă</b><span>Omul verifică răspunsul pregătit și apasă „trimite”. Răspunsul automat fără om, doar pentru informații simple din fișă, se hotărăște după ce verificăm regulile.</span></li>
+      <li><b>4. Omul aprobă</b><span>Omul verifică răspunsul pregătit și apasă „trimite”. Răspunsul automat fără om, doar pentru întrebările simple din lista stabilită, este un nivel separat, descris mai jos.</span></li>
     </ol>
 
     <h3 class="subh">Problema din casă: de la oaspete la omul potrivit</h3>
@@ -992,6 +992,40 @@ details.more[open] summary { margin-bottom: 10px; }
       </div>
     </div>
 
+    <h3 class="subh">Asistentul de răspuns: un om preia când e nevoie</h3>
+    <p>Asistentul răspunde la întrebările simple ale clienților și oaspeților, în limitele stabilite de tine. Când nu e sigur sau apare un subiect important, predă conversația unui operator, împreună cu un rezumat. Așa, un singur operator poate ține mai multe conversații deschise; câte anume aflăm din cifrele reale din Faza 0. Îl construim în două niveluri.</p>
+    <div class="two">
+      <div>
+        <h3>Nivelul 1: asistent cu aprobare, inclus în Faza 3</h3>
+        <ul>
+          <li>Citește mesajul și scrie răspunsul în limba clientului; un om îl verifică și îl trimite cu un singur clic.</li>
+          <li>Include mesajul pentru orele în afara programului și nota de predare către operator.</li>
+          <li>Funcționează și prin copiere și lipire, fără WhatsApp Business Platform.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Nivelul 2: răspuns automat cu predare la operator, opțional</h3>
+        <ul>
+          <li>Răspunde singur, fără aprobare, doar la întrebările de pe o listă permisă: program, zone, cum decurge o vizionare, documente necesare, programări, confirmări și memento-uri.</li>
+          <li>Folosește doar informațiile din sistem și nu inventează prețuri, termene sau disponibilitate.</li>
+          <li>Include un panou de control și un jurnal al conversațiilor.</li>
+          <li>Se comandă separat, prin ofertă scrisă, la 1.500 € o singură dată. Vezi documentul cu opțiunile de plată. Se comandă după acceptarea Fazei 3 și după o lună de conversații reale.</li>
+          <li>Necesită WhatsApp Business Platform.</li>
+        </ul>
+      </div>
+    </div>
+    <h3 class="subh">Când predă obligatoriu unui om</h3>
+    <ul class="why">
+      <li><b>Bani și angajamente:</b> preț, negociere, ofertă, contract sau orice promisiune.</li>
+      <li><b>Nemulțumire:</b> reclamații sau ton supărat.</li>
+      <li><b>Nesiguranță:</b> subiect necunoscut sau încredere scăzută în răspuns.</li>
+      <li><b>Cererea clientului:</b> repetă întrebarea sau cere să vorbească cu o persoană.</li>
+      <li><b>Clienți importanți:</b> cei marcați de tine.</li>
+      <li><b>Date sensibile:</b> date personale, documente juridice sau bani.</li>
+      <li><b>Urgențe:</b> gaz, incendiu, inundație sau persoană rănită; sună la 112, nu la asistent.</li>
+    </ul>
+    <p class="note">Asistentul poate trimite maximum patru răspunsuri automate într-o conversație; apoi preia un om. Primul mesaj spune că este asistentul virtual al firmei tale, iar clientul poate cere o persoană oricând. Operatorul poate prelua conversația în orice moment.</p>
+
     <h3 class="subh">Reguli și limite de știut</h3>
     <ul class="why">
       <li><b>Fereastra de 24 de ore.</b> <span class="chip ok">Verificat</span> După ce un client scrie, firma poate răspunde liber 24 de ore. Pentru un mesaj început de firmă, în afara ferestrei, se folosește un șablon aprobat de Meta. Mesajele către mentenanță, care de obicei nu au scris primele, vor folosi șabloane (de exemplu „Intervenție la {casa}: {problema}”).</li>
@@ -1004,7 +1038,7 @@ details.more[open] summary { margin-bottom: 10px; }
 
     <div class="verdict">
       <h3>Ce propunem</h3>
-      <p><span class="chip ok">Recomandare</span> Începem cu treapta 1 în Faza 3, odată cu fișele caselor: ghidul casei pentru oaspete, contactele de mentenanță și butonul „Trimite electricianului”. Treapta 2 se decide după Faza 0 și după ce vedem câte mesaje circulă, câte case sunt și cât costă un furnizor autorizat. Decizia nu schimbă fișele, pentru că aceeași informație servește ambele trepte.</p>
+      <p><span class="chip ok">Recomandare</span> Începem cu treapta 1 în Faza 3, odată cu fișele caselor: ghidul casei pentru oaspete, contactele de mentenanță și butonul „Trimite electricianului”. Treapta 2 se decide după Faza 0 și după ce vedem câte mesaje circulă, câte case sunt și cât costă un furnizor autorizat. Decizia nu schimbă fișele, pentru că aceeași informație servește ambele trepte. Asistentul de răspuns începe tot cu Nivelul 1 (cu aprobare umană) în Faza 3, iar răspunsul automat din Nivelul 2 se adaugă doar dacă vezi că primul merge bine.</p>
     </div>
   </section>
 
@@ -1146,6 +1180,7 @@ details.more[open] summary { margin-bottom: 10px; }
             <li>Fișa fiecărei proprietăți din Vivienda Vacacional: intrări și ieșiri, curățenii, reparații, obiecte și facturi, completată prin copiere sau redirecționare din WhatsApp și email, cu confirmare umană.</li>
             <li>Ghidul casei pentru oaspete, pentru fiecare casă: cod de intrare, WiFi, regulile casei, ghid local și excursiile de pe site, introduse prin copiere și lipire, cu căutare rapidă.</li>
             <li>Contactele de mentenanță (electric, sanitar, feronerie, climatizare, curățenie, gardă) și incidente pregătite pentru trimitere: administratorul verifică, deschide WhatsApp cu mesajul gata scris și apasă „trimite”. Treapta 2 cu WhatsApp Business Platform se hotărăște după Faza 0.</li>
+            <li>Asistentul de răspuns, Nivelul 1: pregătește răspunsurile pentru clienți și oaspeți, iar un om le aprobă și le trimite. Predarea către operator și mesajul în afara programului sunt incluse. Răspunsul automat fără om (Nivelul 2) este opțional și se comandă separat.</li>
             <li>Rapoarte lunare și anuale, apoi zilnice și săptămânale după două săptămâni de folosire, cu export Excel și PDF pentru contabilitate.</li>
             <li>Pagina privată a proprietarului, cu rezervări și raport lunar.</li>
             <li>Raportul săptămânal pentru conducere, după două săptămâni de folosire a fișelor.</li>
@@ -1194,7 +1229,7 @@ details.more[open] summary { margin-bottom: 10px; }
     <h2>Următorul pas și întrebările pentru firma ta</h2>
     <h3 class="subh">Următorul pas</h3>
     <p class="intro">O discuție de 30 de minute cu tine, cu întrebările de mai jos. Ce primești în Faza 0 este în caseta „Ce primești sigur”.</p>
-    <h3 class="subh">Șaisprezece întrebări pentru firma ta</h3>
+    <h3 class="subh">Douăzeci de întrebări pentru firma ta</h3>
     <p class="note" style="margin-top:0">Dacă 30 de minute nu ajung, restul se discută în scris.</p>
     <div class="two">
       <div>
@@ -1209,12 +1244,19 @@ details.more[open] summary { margin-bottom: 10px; }
           <li>Câte cereri primești într-o lună obișnuită și pe ce canal?</li>
           <li>Cine răspunde pe WhatsApp, de pe ce număr și când?</li>
           <li>De unde vin cei mai mulți clienți: portaluri, recomandări sau site?</li>
+          <li>Care sunt cele zece întrebări pe care le primești cel mai des și la care răspunzi mereu la fel?</li>
+          <li>La ce tip de mesaje vrei să răspundă mereu un om, indiferent de situație (de exemplu preț, contract, reclamații)?</li>
         </ul>
         <h3>Despre instrumente</h3>
         <ul>
           <li>Ce programe folosești deja pentru lista de proprietăți?</li>
           <li>Ce contracte ai active pentru site, hosting sau domeniu?</li>
           <li>Care sunt cei trei concurenți principali în Costa Adeje?</li>
+        </ul>
+        <h3>Despre echipă și capacitate</h3>
+        <ul>
+          <li>Câți oameni de tip office lucrează acum în firmă (răspund la cereri, administrează, fac rapoarte) și cu ce rol?</li>
+          <li>Câte cereri, rezervări și proprietăți gestionează un singur operator într-o zi obișnuită, și unde se oprește?</li>
         </ul>
       </div>
       <div>
