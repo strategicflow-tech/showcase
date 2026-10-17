@@ -277,7 +277,7 @@ function createExecutionJsonErrorHandler({ pool } = {}) {
   return (err, req, res, next) => {
     const isExecutionWriteJsonError =
       req.method === 'POST' &&
-      req.path === '/api/execution/apply-fix' &&
+      ['/api/execution/apply-fix', '/api/execution/restore-fix'].includes(req.path) &&
       (err?.type === 'entity.parse.failed' || err?.type === 'entity.too.large');
     if (!isExecutionWriteJsonError) return next(err);
 
@@ -390,6 +390,58 @@ function createDecisionExecutionRouter({ pool, adminKey } = {}) {
     } catch (error) {
       console.error('[execution-write-key] issuance failed:', error.message);
       return res.status(500).json({ error: 'key_issuance_failed' });
+    }
+  });
+
+  router.get('/api/execution/records/:record_id', async (req, res) => {
+    const key = bearerKey(req);
+    if (!key) return res.status(401).json({ error: 'unauthorized' });
+
+    const recordId = typeof req.params.record_id === 'string' ? req.params.record_id.trim() : '';
+    try {
+      const keyResult = await pool.query(`
+        SELECT id, scope, revoked_at
+        FROM execution_write_api_keys
+        WHERE key_hash = $1
+        LIMIT 1
+      `, [hashWriteKey(key)]);
+      const keyRow = keyResult.rows[0] || null;
+      if (!keyRow || keyRow.scope !== WRITE_SCOPE || keyRow.revoked_at) {
+        return res.status(401).json({ error: 'unauthorized' });
+      }
+      if (!UUID_RE.test(recordId)) {
+        return res.status(400).json({ error: 'invalid_record_id' });
+      }
+
+      const recordResult = await pool.query(`
+        SELECT id, updated_at, structured_fixes, field_values
+        FROM decision_audit_records
+        WHERE id = $1
+      `, [recordId]);
+      if (recordResult.rows.length === 0) {
+        return res.status(404).json({ error: 'audit_record_not_found' });
+      }
+
+      const row = recordResult.rows[0];
+      const fieldValues = parseJsonObject(row.field_values);
+      const fixes = parseJsonArray(row.structured_fixes).map(fix => ({
+        fix_id: fix.fix_id,
+        field_name: fix.field_name,
+        before_value: fix.before_value,
+        after_value: fix.after_value,
+        current_value: Object.prototype.hasOwnProperty.call(fieldValues, fix.fix_id)
+          ? fieldValues[fix.fix_id]
+          : null,
+      }));
+
+      return res.json({
+        record_id: row.id,
+        updated_at: row.updated_at,
+        fixes,
+      });
+    } catch (error) {
+      console.error('[execution-record-read] failed:', error.message);
+      return res.status(500).json({ error: 'record_read_failed' });
     }
   });
 
@@ -611,6 +663,231 @@ function createDecisionExecutionRouter({ pool, adminKey } = {}) {
         console.error('[execution-apply-fix] failure log could not be persisted:', logError.message);
       }
       console.error('[execution-apply-fix] request failed:', error.message);
+      if (!res.headersSent) {
+        return res.status(500).json({
+          error: 'write_attempt_failed',
+          precondition_failure_reason: attempt.precondition_failure_reason,
+        });
+      }
+    } finally {
+      if (client) client.release();
+    }
+  });
+
+  router.post('/api/execution/restore-fix', async (req, res) => {
+    const body = req.body && typeof req.body === 'object' && !Array.isArray(req.body)
+      ? req.body
+      : {};
+    const recordId = typeof body.record_id === 'string' ? body.record_id.trim() : '';
+    const fixId = typeof body.fix_id === 'string' ? body.fix_id.trim() : '';
+    const attempt = makeAttempt(recordId, fixId);
+    let client;
+    let transactionOpen = false;
+
+    try {
+      client = await pool.connect();
+      await client.query('BEGIN');
+      transactionOpen = true;
+
+      const key = bearerKey(req);
+      let keyRow = null;
+      if (key) {
+        const keyResult = await client.query(`
+          SELECT id, scope, revoked_at
+          FROM execution_write_api_keys
+          WHERE key_hash = $1
+          LIMIT 1
+          FOR UPDATE
+        `, [hashWriteKey(key)]);
+        keyRow = keyResult.rows[0] || null;
+      }
+
+      const finish = async (status, payload) => {
+        attempt.http_status = status;
+        await insertAttempt(client, attempt);
+        await client.query('COMMIT');
+        transactionOpen = false;
+        return res.status(status).json({
+          precondition_failure_reason: attempt.precondition_failure_reason,
+          ...payload,
+        });
+      };
+
+      if (keyRow) attempt.write_key_id = keyRow.id;
+      if (!keyRow || keyRow.scope !== WRITE_SCOPE || keyRow.revoked_at) {
+        try {
+          await enrichAttemptFromRecord(client, recordId, fixId, attempt);
+        } catch (_) {}
+        attempt.failure_reason = 'invalid_api_key';
+        return await finish(401, { error: 'unauthorized' });
+      }
+
+      const recentAttemptsResult = await client.query(`
+        SELECT COUNT(*)::int AS call_count,
+               GREATEST(
+                 0,
+                 CEIL(EXTRACT(EPOCH FROM (MIN(created_at) + INTERVAL '1 hour' - NOW())))::int
+               ) AS retry_after_seconds
+        FROM decision_execution_attempts
+        WHERE write_key_id = $1
+          AND created_at >= NOW() - INTERVAL '1 hour'
+          AND failure_reason IS DISTINCT FROM 'rate_limited'
+      `, [keyRow.id]);
+      const recentAttempts = recentAttemptsResult.rows[0] || {};
+      if (Number(recentAttempts.call_count || 0) >= WRITE_KEY_RATE_LIMIT) {
+        attempt.failure_reason = 'rate_limited';
+        const retryAfterSeconds = Math.max(
+          1,
+          Number(recentAttempts.retry_after_seconds) || 1
+        );
+        res.set('Retry-After', String(retryAfterSeconds));
+        return await finish(429, {
+          error: 'rate_limited',
+          limit: WRITE_KEY_RATE_LIMIT,
+          window_seconds: WRITE_KEY_RATE_WINDOW_SECONDS,
+          retry_after_seconds: retryAfterSeconds,
+        });
+      }
+
+      if (!recordId || !UUID_RE.test(recordId) || !fixId || !FIX_ID_RE.test(fixId)) {
+        attempt.failure_reason = 'invalid_record_or_fix_id';
+        return await finish(400, { error: 'invalid_record_or_fix_id' });
+      }
+
+      const recordResult = await client.query(`
+        SELECT id, structured_fixes, field_values
+        FROM decision_audit_records
+        WHERE id = $1
+        FOR UPDATE
+      `, [recordId]);
+      if (recordResult.rows.length === 0) {
+        attempt.failure_reason = 'audit_record_not_found';
+        return await finish(404, { error: 'audit_record_not_found' });
+      }
+
+      const row = recordResult.rows[0];
+      const fixes = parseJsonArray(row.structured_fixes);
+      const fix = fixes.find(item => item && item.fix_id === fixId);
+      if (!fix) {
+        attempt.failure_reason = 'fix_not_found';
+        return await finish(404, { error: 'fix_not_found' });
+      }
+
+      if (!ALLOWED_FIELD_NAMES.has(fix.field_name) ||
+          typeof fix.before_value !== 'string' ||
+          typeof fix.after_value !== 'string') {
+        attempt.field_name = boundedText(fix.field_name, 80);
+        attempt.attempted_before = boundedText(fix.after_value);
+        attempt.attempted_after = boundedText(fix.before_value);
+        attempt.failure_reason = 'stored_fix_invalid';
+        return await finish(500, { error: 'stored_fix_invalid' });
+      }
+
+      attempt.field_name = fix.field_name;
+      attempt.attempted_before = boundedText(fix.after_value);
+      attempt.attempted_after = boundedText(fix.before_value);
+
+      const fieldValues = parseJsonObject(row.field_values);
+      const hasStoredValue = Object.prototype.hasOwnProperty.call(fieldValues, fixId);
+      const storedValue = hasStoredValue ? fieldValues[fixId] : null;
+      attempt.observed_before = boundedText(storedValue);
+      attempt.trigger_evaluated = true;
+      attempt.trigger_matched = storedValue === fix.after_value;
+
+      if (!attempt.trigger_matched) {
+        attempt.precondition_failure_reason = 'not_applied';
+        attempt.failure_reason = 'not_applied';
+        return await finish(409, {
+          error: 'not_applied',
+          record_id: recordId,
+          fix_id: fixId,
+          field_name: fix.field_name,
+          trigger_evaluated: true,
+          trigger_matched: false,
+          write_attempted: false,
+          write_succeeded: false,
+          verification_succeeded: false,
+          failure_reason: attempt.failure_reason,
+        });
+      }
+
+      attempt.write_attempted = true;
+      const updateResult = await client.query(`
+        UPDATE decision_audit_records
+        SET field_values = jsonb_set(
+              COALESCE(field_values, '{}'::jsonb),
+              ARRAY[$2::text],
+              to_jsonb($3::text),
+              true
+            ),
+            updated_at = NOW()
+        WHERE id = $1
+        RETURNING id
+      `, [recordId, fixId, fix.before_value]);
+      attempt.write_succeeded = updateResult.rowCount === 1;
+
+      if (attempt.write_succeeded) {
+        const verificationResult = await client.query(`
+          SELECT field_values ->> $2::text AS observed_after
+          FROM decision_audit_records
+          WHERE id = $1
+        `, [recordId, fixId]);
+        attempt.observed_after = boundedText(verificationResult.rows[0]?.observed_after);
+        attempt.verification_succeeded = attempt.observed_after === fix.before_value;
+      }
+
+      if (!attempt.write_succeeded) {
+        attempt.failure_reason = 'write_failed';
+      } else if (!attempt.verification_succeeded) {
+        attempt.failure_reason = 'read_after_write_mismatch';
+      }
+
+      const status = attempt.verification_succeeded ? 200 : 500;
+      const payload = attempt.verification_succeeded
+        ? {
+            success: true,
+            record_id: recordId,
+            fix_id: fixId,
+            field_name: fix.field_name,
+            restored_value: fix.before_value,
+            previous_value: storedValue,
+            write_attempted: true,
+            write_succeeded: true,
+            verification_succeeded: true,
+          }
+        : {
+            error: 'write_verification_failed',
+            record_id: recordId,
+            fix_id: fixId,
+            field_name: fix.field_name,
+            write_attempted: attempt.write_attempted,
+            write_succeeded: attempt.write_succeeded,
+            verification_succeeded: false,
+            failure_reason: attempt.failure_reason,
+          };
+
+      return await finish(status, payload);
+    } catch (error) {
+      if (transactionOpen && client) {
+        try {
+          await client.query('ROLLBACK');
+          transactionOpen = false;
+        } catch (_) {}
+      }
+
+      attempt.http_status = 500;
+      attempt.write_succeeded = false;
+      attempt.verification_succeeded = false;
+      attempt.observed_after = null;
+      attempt.failure_reason = attempt.write_attempted
+        ? 'database_write_error'
+        : 'database_error';
+      try {
+        await insertAttempt(pool, attempt);
+      } catch (logError) {
+        console.error('[execution-restore-fix] failure could not be logged:', logError.message);
+      }
+      console.error('[execution-restore-fix] request failed:', error.message);
       if (!res.headersSent) {
         return res.status(500).json({
           error: 'write_attempt_failed',

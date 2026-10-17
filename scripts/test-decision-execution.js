@@ -134,6 +134,20 @@ class FakePool {
       return { rows: row ? [{ structured_fixes: row.structured_fixes, field_values: row.field_values }] : [], rowCount: row ? 1 : 0 };
     }
 
+    if (normalized.startsWith('select id, updated_at, structured_fixes, field_values from decision_audit_records')) {
+      const [recordId] = params;
+      const row = this.state.records.get(recordId);
+      return {
+        rows: row ? [{
+          id: row.id,
+          updated_at: row.updated_at,
+          structured_fixes: row.structured_fixes,
+          field_values: row.field_values,
+        }] : [],
+        rowCount: row ? 1 : 0,
+      };
+    }
+
     if (normalized.startsWith('select id, structured_fixes, field_values from decision_audit_records')) {
       const [recordId] = params;
       const row = this.state.records.get(recordId);
@@ -145,6 +159,7 @@ class FakePool {
       const row = this.state.records.get(recordId);
       if (!row) return { rows: [], rowCount: 0 };
       row.field_values[fixId] = afterValue;
+      row.updated_at = new Date(Date.now() + 1).toISOString();
       return { rows: [{ id: recordId }], rowCount: 1 };
     }
 
@@ -230,6 +245,40 @@ async function startTestServer(pool, adminKey = 'admin-issuer-secret') {
   };
 }
 
+function seedExecutionKey(pool, apiKey = `sf_exec_test_${crypto.randomBytes(12).toString('hex')}`, revokedAt = null) {
+  const keyId = crypto.randomUUID();
+  pool.state.keys.push({
+    id: keyId,
+    key_hash: hashWriteKey(apiKey),
+    key_name: 'Execution test key',
+    scope: WRITE_SCOPE,
+    created_at: new Date().toISOString(),
+    revoked_at: revokedAt,
+  });
+  return { apiKey, keyId };
+}
+
+function seedAuditRecord(pool) {
+  const diagnosis = attachStructuredFixes(makeDiagnosis());
+  const recordId = crypto.randomUUID();
+  const fieldValues = Object.fromEntries(
+    diagnosis.structured_fixes.map(fix => [fix.fix_id, fix.before_value])
+  );
+  const record = {
+    id: recordId,
+    structured_fixes: diagnosis.structured_fixes,
+    field_values: fieldValues,
+    updated_at: new Date(Date.now() - 1000).toISOString(),
+  };
+  pool.state.records.set(recordId, record);
+  return {
+    diagnosis,
+    recordId,
+    record,
+    fix: diagnosis.structured_fixes.find(fix => fix.field_name === 'cta_text'),
+  };
+}
+
 test('every named DFM pattern becomes a structured fix and retains the legacy CTA string', () => {
   const diagnosis = makeDiagnosis();
   let sequence = 1;
@@ -264,6 +313,7 @@ test('admin-issued key is separate, successful writes verify, and failed trigger
     id: recordId,
     structured_fixes: diagnosis.structured_fixes,
     field_values: fieldValues,
+    updated_at: new Date(Date.now() - 1000).toISOString(),
   });
 
   const issueDenied = await fetch(`${baseUrl}/api/admin/execution-write-keys`, {
@@ -401,6 +451,219 @@ test('admin-issued key is separate, successful writes verify, and failed trigger
   assert.equal(pool.state.attempts.length, 5);
 });
 
+test('record reads are read-only and reflect apply, restore, and re-apply', async t => {
+  const pool = new FakePool();
+  const { server, baseUrl } = await startTestServer(pool);
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const { apiKey } = seedExecutionKey(pool);
+  const { recordId, record, fix } = seedAuditRecord(pool);
+  const initialUpdatedAt = record.updated_at;
+  const headers = { authorization: `Bearer ${apiKey}` };
+
+  const initialReadResponse = await fetch(`${baseUrl}/api/execution/records/${recordId}`, { headers });
+  assert.equal(initialReadResponse.status, 200);
+  const initialRead = await initialReadResponse.json();
+  assert.deepEqual(Object.keys(initialRead).sort(), ['fixes', 'record_id', 'updated_at']);
+  assert.equal(initialRead.record_id, recordId);
+  assert.equal(initialRead.updated_at, initialUpdatedAt);
+  assert.deepEqual(initialRead.fixes.find(item => item.fix_id === fix.fix_id), {
+    fix_id: fix.fix_id,
+    field_name: 'cta_text',
+    before_value: fix.before_value,
+    after_value: fix.after_value,
+    current_value: fix.before_value,
+  });
+  assert.equal(Object.hasOwn(initialRead, 'diagnosis'), false);
+  assert.equal(pool.state.attempts.length, 0);
+  assert.equal(record.updated_at, initialUpdatedAt);
+
+  const applyResponse = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+    method: 'POST',
+    headers: { ...headers, 'content-type': 'application/json' },
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(applyResponse.status, 200);
+  const appliedUpdatedAt = record.updated_at;
+
+  const appliedReadResponse = await fetch(`${baseUrl}/api/execution/records/${recordId}`, { headers });
+  assert.equal(appliedReadResponse.status, 200);
+  const appliedRead = await appliedReadResponse.json();
+  assert.equal(appliedRead.fixes.find(item => item.fix_id === fix.fix_id).current_value, fix.after_value);
+  assert.equal(appliedRead.updated_at, appliedUpdatedAt);
+  assert.equal(pool.state.attempts.length, 1);
+  assert.equal(record.updated_at, appliedUpdatedAt);
+
+  const restoreResponse = await fetch(`${baseUrl}/api/execution/restore-fix`, {
+    method: 'POST',
+    headers: { ...headers, 'content-type': 'application/json' },
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(restoreResponse.status, 200);
+  const restored = await restoreResponse.json();
+  assert.equal(restored.success, true);
+  assert.equal(restored.record_id, recordId);
+  assert.equal(restored.fix_id, fix.fix_id);
+  assert.equal(restored.field_name, 'cta_text');
+  assert.equal(restored.restored_value, fix.before_value);
+  assert.equal(restored.previous_value, fix.after_value);
+  assert.equal(restored.write_attempted, true);
+  assert.equal(restored.write_succeeded, true);
+  assert.equal(restored.verification_succeeded, true);
+  assert.equal(pool.state.attempts.at(-1).failure_reason, null);
+  assert.equal(pool.state.attempts.at(-1).attempted_before, fix.after_value);
+  assert.equal(pool.state.attempts.at(-1).attempted_after, fix.before_value);
+
+  const restoredUpdatedAt = record.updated_at;
+  const restoredReadResponse = await fetch(`${baseUrl}/api/execution/records/${recordId}`, { headers });
+  assert.equal(restoredReadResponse.status, 200);
+  const restoredRead = await restoredReadResponse.json();
+  assert.equal(restoredRead.fixes.find(item => item.fix_id === fix.fix_id).current_value, fix.before_value);
+  assert.equal(restoredRead.updated_at, restoredUpdatedAt);
+  assert.equal(pool.state.attempts.length, 2);
+  assert.equal(record.updated_at, restoredUpdatedAt);
+
+  const reapplyResponse = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+    method: 'POST',
+    headers: { ...headers, 'content-type': 'application/json' },
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(reapplyResponse.status, 200);
+  assert.equal(record.field_values[fix.fix_id], fix.after_value);
+});
+
+test('record read and restore validate ids and missing records', async t => {
+  const pool = new FakePool();
+  const { server, baseUrl } = await startTestServer(pool);
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const { apiKey } = seedExecutionKey(pool);
+  const { fix } = seedAuditRecord(pool);
+  const headers = { authorization: `Bearer ${apiKey}` };
+
+  const invalidRead = await fetch(`${baseUrl}/api/execution/records/not-a-uuid`, { headers });
+  assert.equal(invalidRead.status, 400);
+  assert.equal((await invalidRead.json()).error, 'invalid_record_id');
+
+  const missingRecordId = crypto.randomUUID();
+  const missingRead = await fetch(`${baseUrl}/api/execution/records/${missingRecordId}`, { headers });
+  assert.equal(missingRead.status, 404);
+  assert.equal((await missingRead.json()).error, 'audit_record_not_found');
+
+  const invalidRestore = await fetch(`${baseUrl}/api/execution/restore-fix`, {
+    method: 'POST',
+    headers: { ...headers, 'content-type': 'application/json' },
+    body: JSON.stringify({ record_id: 'not-a-uuid', fix_id: fix.fix_id }),
+  });
+  assert.equal(invalidRestore.status, 400);
+  assert.equal((await invalidRestore.json()).error, 'invalid_record_or_fix_id');
+
+  const missingRestore = await fetch(`${baseUrl}/api/execution/restore-fix`, {
+    method: 'POST',
+    headers: { ...headers, 'content-type': 'application/json' },
+    body: JSON.stringify({ record_id: missingRecordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(missingRestore.status, 404);
+  assert.equal((await missingRestore.json()).error, 'audit_record_not_found');
+});
+
+test('restore returns 409 when the fix is not currently applied', async t => {
+  const pool = new FakePool();
+  const { server, baseUrl } = await startTestServer(pool);
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const { apiKey } = seedExecutionKey(pool);
+  const { recordId, record, fix } = seedAuditRecord(pool);
+  const originalUpdatedAt = record.updated_at;
+
+  const response = await fetch(`${baseUrl}/api/execution/restore-fix`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(response.status, 409);
+  const result = await response.json();
+  assert.equal(result.error, 'not_applied');
+  assert.equal(result.precondition_failure_reason, 'not_applied');
+  assert.equal(record.field_values[fix.fix_id], fix.before_value);
+  assert.equal(record.updated_at, originalUpdatedAt);
+  assert.equal(pool.state.attempts.at(-1).failure_reason, 'not_applied');
+  assert.equal(pool.state.attempts.at(-1).write_attempted, false);
+});
+
+test('record read and restore reject revoked execution keys', async t => {
+  const pool = new FakePool();
+  const { server, baseUrl } = await startTestServer(pool);
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const revokedAt = new Date().toISOString();
+  const { apiKey, keyId } = seedExecutionKey(pool, undefined, revokedAt);
+  const { recordId, fix } = seedAuditRecord(pool);
+  const headers = { authorization: `Bearer ${apiKey}` };
+
+  const readResponse = await fetch(`${baseUrl}/api/execution/records/${recordId}`, { headers });
+  assert.equal(readResponse.status, 401);
+  assert.equal((await readResponse.json()).error, 'unauthorized');
+  assert.equal(pool.state.attempts.length, 0);
+
+  const restoreResponse = await fetch(`${baseUrl}/api/execution/restore-fix`, {
+    method: 'POST',
+    headers: { ...headers, 'content-type': 'application/json' },
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(restoreResponse.status, 401);
+  assert.equal((await restoreResponse.json()).error, 'unauthorized');
+  assert.equal(pool.state.attempts.at(-1).write_key_id, keyId);
+  assert.equal(pool.state.attempts.at(-1).failure_reason, 'invalid_api_key');
+});
+
+test('restore uses the same per-key rate limit and 429 response as apply-fix', async t => {
+  const pool = new FakePool();
+  const { server, baseUrl } = await startTestServer(pool);
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const { apiKey } = seedExecutionKey(pool);
+  const { recordId, fix } = seedAuditRecord(pool);
+  const headers = {
+    'content-type': 'application/json',
+    authorization: `Bearer ${apiKey}`,
+  };
+
+  const applyResponse = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(applyResponse.status, 200);
+
+  for (let call = 0; call < 58; call += 1) {
+    const response = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+    });
+    assert.equal(response.status, 409);
+  }
+
+  const restoreResponse = await fetch(`${baseUrl}/api/execution/restore-fix`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(restoreResponse.status, 200);
+
+  const limitedApplyResponse = await fetch(`${baseUrl}/api/execution/apply-fix`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ record_id: recordId, fix_id: fix.fix_id }),
+  });
+  assert.equal(limitedApplyResponse.status, 429);
+  const limited = await limitedApplyResponse.json();
+  assert.equal(limited.error, 'rate_limited');
+  assert.equal(limited.limit, 60);
+  assert.equal(limited.window_seconds, 3600);
+  assert.ok(limited.retry_after_seconds >= 1);
+  assert.equal(limitedApplyResponse.headers.get('retry-after'), String(limited.retry_after_seconds));
+});
+
 test('a write-scoped key is limited to 60 calls in a rolling hour', async t => {
   const pool = new FakePool();
   const { server, baseUrl } = await startTestServer(pool);
@@ -426,6 +689,7 @@ test('a write-scoped key is limited to 60 calls in a rolling hour', async t => {
     id: recordId,
     structured_fixes: diagnosis.structured_fixes,
     field_values: fieldValues,
+    updated_at: new Date(Date.now() - 1000).toISOString(),
   });
   const fixId = diagnosis.structured_fixes.find(fix => fix.field_name === 'cta_text').fix_id;
 
