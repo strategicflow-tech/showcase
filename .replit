@@ -58,3 +58,6 @@ channel = "stable-25_05"
 
 [userenv.production]
 SF13_SEQUENCE_ENABLED = "true"
+
+[userenv.shared]
+DEMO_REBUILD_UNLIMITED_KEY_IDS = "a508a32f-ea0b-4969-8f1c-f07d44656b5b,38b9d45b-3489-4750-baa8-2f400b8074df"

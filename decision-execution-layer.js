@@ -318,6 +318,25 @@ function bearerKey(req) {
   return match ? match[1] : '';
 }
 
+async function isAllowlistedExecutionKey(pool, req, allowlistedKeyIds) {
+  if (!(allowlistedKeyIds instanceof Set) || allowlistedKeyIds.size === 0) return false;
+  const key = bearerKey(req);
+  if (!key) return false;
+
+  const result = await pool.query(`
+    SELECT id, revoked_at
+    FROM execution_write_api_keys
+    WHERE key_hash = $1
+    LIMIT 1
+  `, [hashWriteKey(key)]);
+  const row = result.rows[0];
+  return Boolean(
+    row &&
+    !row.revoked_at &&
+    allowlistedKeyIds.has(String(row.id).toLowerCase())
+  );
+}
+
 function createDecisionExecutionRouter({ pool, adminKey } = {}) {
   if (!pool) throw new TypeError('A PostgreSQL pool is required');
   const router = express.Router();
@@ -914,6 +933,7 @@ module.exports = {
   createDecisionExecutionRouter,
   createStructuredFixes,
   hashWriteKey,
+  isAllowlistedExecutionKey,
   logUnparsedWriteAttempt,
   persistDecisionAuditRecord,
 };

@@ -12,6 +12,7 @@ const {
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
   hashWriteKey,
+  isAllowlistedExecutionKey,
   WRITE_SCOPE,
 } = require('../decision-execution-layer');
 
@@ -104,6 +105,15 @@ class FakePool {
       const row = this.state.keys.find(key => key.key_hash === keyHash);
       return {
         rows: row ? [{ id: row.id, scope: row.scope, revoked_at: row.revoked_at }] : [],
+        rowCount: row ? 1 : 0,
+      };
+    }
+
+    if (normalized.startsWith('select id, revoked_at from execution_write_api_keys')) {
+      const [keyHash] = params;
+      const row = this.state.keys.find(key => key.key_hash === keyHash);
+      return {
+        rows: row ? [{ id: row.id, revoked_at: row.revoked_at }] : [],
         rowCount: row ? 1 : 0,
       };
     }
@@ -257,6 +267,28 @@ function seedExecutionKey(pool, apiKey = `sf_exec_test_${crypto.randomBytes(12).
   });
   return { apiKey, keyId };
 }
+
+test('demo rebuild allowlist matches only valid, non-revoked bearer key IDs', async () => {
+  const pool = new FakePool();
+  const { apiKey, keyId } = seedExecutionKey(pool);
+  const request = authorization => ({
+    get(name) {
+      return name.toLowerCase() === 'authorization' ? authorization : undefined;
+    },
+  });
+
+  assert.equal(await isAllowlistedExecutionKey(pool, request(undefined), new Set([keyId])), false);
+  assert.equal(await isAllowlistedExecutionKey(pool, request('Bearer invalid-key'), new Set([keyId])), false);
+  assert.equal(await isAllowlistedExecutionKey(pool, request(`Bearer ${apiKey}`), new Set()), false);
+  assert.equal(await isAllowlistedExecutionKey(pool, request(`Bearer ${apiKey}`), new Set([keyId.toLowerCase()])), true);
+  assert.equal(await isAllowlistedExecutionKey(pool, request(`Bearer ${apiKey}`), new Set([crypto.randomUUID()])), false);
+
+  const revoked = seedExecutionKey(pool, undefined, new Date().toISOString());
+  assert.equal(
+    await isAllowlistedExecutionKey(pool, request(`Bearer ${revoked.apiKey}`), new Set([revoked.keyId])),
+    false
+  );
+});
 
 function seedAuditRecord(pool) {
   const diagnosis = attachStructuredFixes(makeDiagnosis());

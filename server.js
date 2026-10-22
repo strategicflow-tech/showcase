@@ -73,6 +73,7 @@ const {
   attachStructuredFixes,
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
+  isAllowlistedExecutionKey,
   persistDecisionAuditRecord,
 } = require('./decision-execution-layer');
 const {
@@ -29832,6 +29833,13 @@ Return ONLY valid JSON:
 // ─── END DEMO ENDPOINT ────────────────────────────────────────────────────────
 
 // ── DEMO REBUILD ENDPOINT ─────────────────────────────────────────────────────
+const DEMO_REBUILD_UNLIMITED_KEY_IDS = new Set(
+  String(process.env.DEMO_REBUILD_UNLIMITED_KEY_IDS || '')
+    .split(',')
+    .map(id => id.trim().toLowerCase())
+    .filter(Boolean)
+);
+
 app.post('/api/demo-rebuild', async (req, res) => {
   const { email_text } = req.body;
   if (!email_text || typeof email_text !== 'string' || email_text.trim().length < 10) {
@@ -29841,10 +29849,23 @@ app.post('/api/demo-rebuild', async (req, res) => {
   const normalized = email_text.trim().replace(/\s+/g, ' ').toLowerCase();
   const hash = crypto.createHash('sha256').update(normalized).digest('hex');
 
+  let bypassTextLimit = false;
   try {
-    const r = await pool.query('SELECT count FROM demo_rebuilds WHERE hash = $1', [hash]);
-    if (r.rows.length > 0 && r.rows[0].count >= 3) {
-      return res.status(429).json({ error: 'limit_reached' });
+    bypassTextLimit = await isAllowlistedExecutionKey(
+      pool,
+      req,
+      DEMO_REBUILD_UNLIMITED_KEY_IDS
+    );
+  } catch (e) {
+    console.error('[api/demo-rebuild] allowlist key check failed:', e.message);
+  }
+
+  try {
+    if (!bypassTextLimit) {
+      const r = await pool.query('SELECT count FROM demo_rebuilds WHERE hash = $1', [hash]);
+      if (r.rows.length > 0 && r.rows[0].count >= 3) {
+        return res.status(429).json({ error: 'limit_reached' });
+      }
     }
   } catch (e) {
     console.error('[api/demo-rebuild] check limit error:', e.message);
