@@ -10,6 +10,7 @@ const {
   PATTERN_FIELDS,
   attachStructuredFixes,
   checkDemoRebuildHourlyLimit,
+  createDemoRebuildHourlyGate,
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
   hashWriteKey,
@@ -327,6 +328,13 @@ test('demo rebuild allowlist matches only valid, non-revoked bearer key IDs', as
     await isAllowlistedExecutionKey(pool, request(`Bearer ${revoked.apiKey}`), new Set([revoked.keyId])),
     false
   );
+
+  const wrongScope = seedExecutionKey(pool);
+  pool.state.keys.find(key => key.id === wrongScope.keyId).scope = 'decision_audit.read';
+  assert.equal(
+    await isAllowlistedExecutionKey(pool, request(`Bearer ${wrongScope.apiKey}`), new Set([wrongScope.keyId])),
+    false
+  );
 });
 
 test('allowlisted demo rebuild hourly cap defaults to 10 and returns 429 with Retry-After at the cap', async () => {
@@ -417,6 +425,78 @@ test('hourly limiter database failures fail closed with 503 and no reservation',
   assert.equal(sendDemoRebuildHourlyDecision(response, decision), true);
   assert.equal(status, 503);
   assert.equal(body.error, 'hourly_limit_unavailable');
+});
+
+test('demo rebuild HTTP gate counts failed AI requests and blocks AI/audit work at cap or on DB failure', async () => {
+  const pool = new FakePool();
+  const { apiKey, keyId } = seedExecutionKey(pool);
+  let aiCalls = 0;
+  let auditWrites = 0;
+  const app = express();
+  app.use(express.json());
+  app.post(
+    '/api/demo-rebuild',
+    createDemoRebuildHourlyGate({
+      pool,
+      allowlistedKeyIds: new Set([keyId]),
+      capValue: '1',
+    }),
+    async (_req, res) => {
+      aiCalls++;
+      if (aiCalls === 1) return res.status(422).json({ error: 'simulated_ai_failure' });
+      auditWrites++;
+      return res.json({ success: true });
+    }
+  );
+  const server = app.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const { port } = server.address();
+
+  try {
+    const first = await fetch(`http://127.0.0.1:${port}/api/demo-rebuild`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${apiKey}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ email_text: 'A valid email long enough to reach AI.' }),
+    });
+    assert.equal(first.status, 422);
+
+    const second = await fetch(`http://127.0.0.1:${port}/api/demo-rebuild`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${apiKey}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ email_text: 'A valid email long enough to reach AI.' }),
+    });
+    assert.equal(second.status, 429);
+    assert.ok(Number(second.headers.get('retry-after')) >= 1);
+    assert.equal((await second.json()).error, 'hourly_limit_reached');
+    assert.equal(aiCalls, 1);
+    assert.equal(auditWrites, 0);
+    assert.equal(pool.state.demoRebuildAttempts.length, 1);
+
+    pool.failDemoHourlyCountQuery = true;
+    const databaseFailure = await fetch(`http://127.0.0.1:${port}/api/demo-rebuild`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${apiKey}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ email_text: 'A valid email long enough to reach AI.' }),
+    });
+    assert.equal(databaseFailure.status, 503);
+    assert.equal((await databaseFailure.json()).error, 'hourly_limit_unavailable');
+    assert.equal(aiCalls, 1);
+    assert.equal(auditWrites, 0);
+    assert.equal(pool.state.demoRebuildAttempts.length, 1);
+  } finally {
+    await new Promise((resolve, reject) => {
+      server.close(error => error ? reject(error) : resolve());
+    });
+  }
 });
 
 function seedAuditRecord(pool) {

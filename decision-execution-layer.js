@@ -325,7 +325,7 @@ async function findAllowlistedExecutionKeyId(pool, req, allowlistedKeyIds) {
   if (!key) return null;
 
   const result = await pool.query(`
-    SELECT id, revoked_at
+    SELECT id, scope, revoked_at
     FROM execution_write_api_keys
     WHERE key_hash = $1
     LIMIT 1
@@ -333,6 +333,7 @@ async function findAllowlistedExecutionKeyId(pool, req, allowlistedKeyIds) {
   const row = result.rows[0];
   return (
     row &&
+    row.scope === WRITE_SCOPE &&
     !row.revoked_at &&
     allowlistedKeyIds.has(String(row.id).toLowerCase())
   ) ? String(row.id).toLowerCase() : null;
@@ -480,6 +481,24 @@ function sendDemoRebuildHourlyDecision(res, decision) {
   }
   res.status(decision.status).json(decision.body);
   return true;
+}
+
+function createDemoRebuildHourlyGate({ pool, allowlistedKeyIds, capValue } = {}) {
+  if (!pool) throw new TypeError('A PostgreSQL pool is required');
+  return async (req, res, next) => {
+    const decision = await checkDemoRebuildHourlyLimit(
+      pool,
+      req,
+      allowlistedKeyIds,
+      capValue
+    );
+    if (decision.status === 503) {
+      console.error('[api/demo-rebuild] allowlisted hourly limit unavailable');
+    }
+    if (sendDemoRebuildHourlyDecision(res, decision)) return;
+    req.demoRebuildAllowlistedKeyId = decision.keyId || null;
+    return next();
+  };
 }
 
 function createDecisionExecutionRouter({ pool, adminKey } = {}) {
@@ -1075,6 +1094,7 @@ module.exports = {
   WRITE_KEY_RATE_WINDOW_SECONDS,
   attachStructuredFixes,
   checkDemoRebuildHourlyLimit,
+  createDemoRebuildHourlyGate,
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
   createStructuredFixes,
