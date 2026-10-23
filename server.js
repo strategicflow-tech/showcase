@@ -71,10 +71,11 @@ const {
 } = require('./agency-outreach-endpoint');
 const {
   attachStructuredFixes,
+  checkDemoRebuildHourlyLimit,
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
-  isAllowlistedExecutionKey,
   persistDecisionAuditRecord,
+  sendDemoRebuildHourlyDecision,
 } = require('./decision-execution-layer');
 const {
   buildMcpAuditResponse,
@@ -18940,6 +18941,17 @@ async function setupDB() {
     )
   `).catch(e => console.error('[DB] demo_rebuilds:', e.message));
   await pool.query(`
+    CREATE TABLE IF NOT EXISTS demo_rebuild_allowlisted_attempts (
+      id BIGSERIAL PRIMARY KEY,
+      write_key_id UUID NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `).catch(e => console.error('[DB] demo_rebuild_allowlisted_attempts:', e.message));
+  await pool.query(`
+    CREATE INDEX IF NOT EXISTS demo_rebuild_allowlisted_attempts_key_created_idx
+    ON demo_rebuild_allowlisted_attempts (write_key_id, created_at)
+  `).catch(e => console.error('[DB] demo_rebuild_allowlisted_attempts index:', e.message));
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS pro_users (
       id                      SERIAL PRIMARY KEY,
       email                   TEXT UNIQUE NOT NULL,
@@ -29849,19 +29861,20 @@ app.post('/api/demo-rebuild', async (req, res) => {
   const normalized = email_text.trim().replace(/\s+/g, ' ').toLowerCase();
   const hash = crypto.createHash('sha256').update(normalized).digest('hex');
 
-  let bypassTextLimit = false;
-  try {
-    bypassTextLimit = await isAllowlistedExecutionKey(
-      pool,
-      req,
-      DEMO_REBUILD_UNLIMITED_KEY_IDS
-    );
-  } catch (e) {
-    console.error('[api/demo-rebuild] allowlist key check failed:', e.message);
+  const hourlyDecision = await checkDemoRebuildHourlyLimit(
+    pool,
+    req,
+    DEMO_REBUILD_UNLIMITED_KEY_IDS,
+    process.env.DEMO_REBUILD_ALLOWLISTED_HOURLY_CAP
+  );
+  if (hourlyDecision.status === 503) {
+    console.error('[api/demo-rebuild] allowlisted hourly limit unavailable');
   }
+  if (sendDemoRebuildHourlyDecision(res, hourlyDecision)) return;
+  const allowlistedKeyId = hourlyDecision.keyId;
 
   try {
-    if (!bypassTextLimit) {
+    if (!allowlistedKeyId) {
       const r = await pool.query('SELECT count FROM demo_rebuilds WHERE hash = $1', [hash]);
       if (r.rows.length > 0 && r.rows[0].count >= 3) {
         return res.status(429).json({ error: 'limit_reached' });

@@ -6,6 +6,7 @@ const express = require('express');
 const WRITE_SCOPE = 'decision_audit.write';
 const WRITE_KEY_RATE_LIMIT = 60;
 const WRITE_KEY_RATE_WINDOW_SECONDS = 60 * 60;
+const DEFAULT_DEMO_REBUILD_ALLOWLISTED_HOURLY_CAP = 10;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const FIX_ID_RE = /^fx_[a-f0-9]{10}$/i;
 
@@ -318,10 +319,10 @@ function bearerKey(req) {
   return match ? match[1] : '';
 }
 
-async function isAllowlistedExecutionKey(pool, req, allowlistedKeyIds) {
-  if (!(allowlistedKeyIds instanceof Set) || allowlistedKeyIds.size === 0) return false;
+async function findAllowlistedExecutionKeyId(pool, req, allowlistedKeyIds) {
+  if (!(allowlistedKeyIds instanceof Set) || allowlistedKeyIds.size === 0) return null;
   const key = bearerKey(req);
-  if (!key) return false;
+  if (!key) return null;
 
   const result = await pool.query(`
     SELECT id, revoked_at
@@ -330,11 +331,155 @@ async function isAllowlistedExecutionKey(pool, req, allowlistedKeyIds) {
     LIMIT 1
   `, [hashWriteKey(key)]);
   const row = result.rows[0];
-  return Boolean(
+  return (
     row &&
     !row.revoked_at &&
     allowlistedKeyIds.has(String(row.id).toLowerCase())
-  );
+  ) ? String(row.id).toLowerCase() : null;
+}
+
+async function isAllowlistedExecutionKey(pool, req, allowlistedKeyIds) {
+  return Boolean(await findAllowlistedExecutionKeyId(pool, req, allowlistedKeyIds));
+}
+
+function resolveDemoRebuildHourlyCap(value) {
+  if (value === undefined || value === null || String(value).trim() === '') {
+    return DEFAULT_DEMO_REBUILD_ALLOWLISTED_HOURLY_CAP;
+  }
+  const cap = Number(String(value).trim());
+  if (!Number.isSafeInteger(cap) || cap < 1) {
+    throw new RangeError('DEMO_REBUILD_ALLOWLISTED_HOURLY_CAP must be a positive integer');
+  }
+  return cap;
+}
+
+async function reserveAllowlistedDemoRebuildCall(pool, keyId, hourlyCap) {
+  if (!UUID_RE.test(String(keyId || ''))) throw new TypeError('A valid execution key ID is required');
+  if (!Number.isSafeInteger(hourlyCap) || hourlyCap < 1) {
+    throw new RangeError('A positive hourly cap is required');
+  }
+
+  const normalizedKeyId = String(keyId).toLowerCase();
+  const client = await pool.connect();
+  let transactionOpen = false;
+  try {
+    await client.query('BEGIN');
+    transactionOpen = true;
+    await client.query(
+      'SELECT pg_advisory_xact_lock(hashtext($1))',
+      [`demo-rebuild-allowlisted:${normalizedKeyId}`]
+    );
+
+    const recentResult = await client.query(`
+      SELECT COUNT(*)::int AS call_count,
+             COALESCE(
+               GREATEST(
+                 1,
+                 CEIL(EXTRACT(EPOCH FROM (MIN(created_at) + INTERVAL '1 hour' - NOW())))::int
+               ),
+               1
+             ) AS retry_after_seconds
+      FROM demo_rebuild_allowlisted_attempts
+      WHERE write_key_id = $1
+        AND created_at >= NOW() - INTERVAL '1 hour'
+    `, [normalizedKeyId]);
+    const recent = recentResult.rows[0] || {};
+    if (Number(recent.call_count || 0) >= hourlyCap) {
+      await client.query('COMMIT');
+      transactionOpen = false;
+      return {
+        allowed: false,
+        retryAfterSeconds: Math.max(1, Number(recent.retry_after_seconds) || 1),
+      };
+    }
+
+    await client.query(`
+      INSERT INTO demo_rebuild_allowlisted_attempts (write_key_id)
+      VALUES ($1)
+    `, [normalizedKeyId]);
+    await client.query('COMMIT');
+    transactionOpen = false;
+    return { allowed: true, retryAfterSeconds: 0 };
+  } catch (error) {
+    if (transactionOpen) await client.query('ROLLBACK').catch(() => {});
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
+async function checkDemoRebuildHourlyLimit(pool, req, allowlistedKeyIds, capValue) {
+  let keyId;
+  try {
+    keyId = await findAllowlistedExecutionKeyId(pool, req, allowlistedKeyIds);
+  } catch (_) {
+    return {
+      allowlisted: false,
+      status: 503,
+      body: {
+        error: 'allowlist_check_unavailable',
+        message: 'Could not verify execution-key eligibility. Please retry shortly.',
+      },
+    };
+  }
+  if (!keyId) return { allowlisted: false, keyId: null };
+
+  let hourlyCap;
+  try {
+    hourlyCap = resolveDemoRebuildHourlyCap(capValue);
+  } catch (_) {
+    return {
+      allowlisted: true,
+      keyId,
+      status: 503,
+      body: {
+        error: 'hourly_limit_unavailable',
+        message: 'The allowlisted rebuild limit is not configured correctly.',
+      },
+    };
+  }
+
+  let reservation;
+  try {
+    reservation = await reserveAllowlistedDemoRebuildCall(pool, keyId, hourlyCap);
+  } catch (_) {
+    return {
+      allowlisted: true,
+      keyId,
+      status: 503,
+      body: {
+        error: 'hourly_limit_unavailable',
+        message: 'Could not verify the hourly rebuild limit. Please retry shortly.',
+      },
+    };
+  }
+  if (!reservation.allowed) {
+    const retryAfterSeconds = Math.max(1, reservation.retryAfterSeconds);
+    return {
+      allowlisted: true,
+      keyId,
+      status: 429,
+      retryAfterSeconds,
+      body: {
+        error: 'hourly_limit_reached',
+        message: `Hourly rebuild limit reached (${hourlyCap} per key). Try again after the oldest request expires.`,
+        limit: hourlyCap,
+        window_seconds: 3600,
+        retry_after_seconds: retryAfterSeconds,
+      },
+    };
+  }
+
+  return { allowlisted: true, keyId, limit: hourlyCap };
+}
+
+function sendDemoRebuildHourlyDecision(res, decision) {
+  if (!decision || !decision.status) return false;
+  if (decision.retryAfterSeconds) {
+    res.set('Retry-After', String(decision.retryAfterSeconds));
+  }
+  res.status(decision.status).json(decision.body);
+  return true;
 }
 
 function createDecisionExecutionRouter({ pool, adminKey } = {}) {
@@ -929,11 +1074,16 @@ module.exports = {
   WRITE_KEY_RATE_LIMIT,
   WRITE_KEY_RATE_WINDOW_SECONDS,
   attachStructuredFixes,
+  checkDemoRebuildHourlyLimit,
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
   createStructuredFixes,
+  findAllowlistedExecutionKeyId,
   hashWriteKey,
   isAllowlistedExecutionKey,
   logUnparsedWriteAttempt,
   persistDecisionAuditRecord,
+  reserveAllowlistedDemoRebuildCall,
+  resolveDemoRebuildHourlyCap,
+  sendDemoRebuildHourlyDecision,
 };

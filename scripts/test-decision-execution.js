@@ -9,10 +9,13 @@ const test = require('node:test');
 const {
   PATTERN_FIELDS,
   attachStructuredFixes,
+  checkDemoRebuildHourlyLimit,
   createExecutionJsonErrorHandler,
   createDecisionExecutionRouter,
   hashWriteKey,
   isAllowlistedExecutionKey,
+  resolveDemoRebuildHourlyCap,
+  sendDemoRebuildHourlyDecision,
   WRITE_SCOPE,
 } = require('../decision-execution-layer');
 
@@ -37,7 +40,9 @@ class FakePool {
       keys: [],
       records: new Map(),
       attempts: [],
+      demoRebuildAttempts: [],
     };
+    this.failDemoHourlyCountQuery = false;
   }
 
   async query(sql, params = []) {
@@ -118,7 +123,8 @@ class FakePool {
       };
     }
 
-    if (normalized.startsWith('select count(*)::int as call_count')) {
+    if (normalized.startsWith('select count(*)::int as call_count') &&
+        normalized.includes('from decision_execution_attempts')) {
       const [keyId] = params;
       const cutoff = Date.now() - 60 * 60 * 1000;
       const recent = this.state.attempts.filter(attempt =>
@@ -136,6 +142,39 @@ class FakePool {
         rows: [{ call_count: recent.length, retry_after_seconds: retryAfterSeconds }],
         rowCount: 1,
       };
+    }
+
+    if (normalized.startsWith('select count(*)::int as call_count, coalesce(')) {
+      if (this.failDemoHourlyCountQuery) throw new Error('simulated hourly counter database failure');
+      const [keyId] = params;
+      const cutoff = Date.now() - 60 * 60 * 1000;
+      const recent = this.state.demoRebuildAttempts.filter(attempt =>
+        attempt.write_key_id === keyId &&
+        new Date(attempt.created_at).getTime() >= cutoff
+      );
+      const oldest = recent
+        .map(attempt => new Date(attempt.created_at).getTime())
+        .sort((left, right) => left - right)[0];
+      const retryAfterSeconds = oldest
+        ? Math.max(1, Math.ceil((oldest + 60 * 60 * 1000 - Date.now()) / 1000))
+        : 1;
+      return {
+        rows: [{ call_count: recent.length, retry_after_seconds: retryAfterSeconds }],
+        rowCount: 1,
+      };
+    }
+
+    if (normalized.startsWith('select pg_advisory_xact_lock')) {
+      return { rows: [], rowCount: 0 };
+    }
+
+    if (normalized.startsWith('insert into demo_rebuild_allowlisted_attempts')) {
+      const [keyId] = params;
+      this.state.demoRebuildAttempts.push({
+        write_key_id: keyId,
+        created_at: new Date().toISOString(),
+      });
+      return { rows: [], rowCount: 1 };
     }
 
     if (normalized.startsWith('select structured_fixes, field_values from decision_audit_records')) {
@@ -288,6 +327,96 @@ test('demo rebuild allowlist matches only valid, non-revoked bearer key IDs', as
     await isAllowlistedExecutionKey(pool, request(`Bearer ${revoked.apiKey}`), new Set([revoked.keyId])),
     false
   );
+});
+
+test('allowlisted demo rebuild hourly cap defaults to 10 and returns 429 with Retry-After at the cap', async () => {
+  assert.equal(resolveDemoRebuildHourlyCap(undefined), 10);
+  assert.equal(resolveDemoRebuildHourlyCap(''), 10);
+  assert.equal(resolveDemoRebuildHourlyCap('3'), 3);
+
+  const pool = new FakePool();
+  const { apiKey, keyId } = seedExecutionKey(pool);
+  const request = { get: name => name.toLowerCase() === 'authorization' ? `Bearer ${apiKey}` : undefined };
+  const allowlist = new Set([keyId]);
+
+  const first = await checkDemoRebuildHourlyLimit(pool, request, allowlist, '2');
+  const second = await checkDemoRebuildHourlyLimit(pool, request, allowlist, '2');
+  assert.equal(first.allowlisted, true);
+  assert.equal(second.allowlisted, true);
+  assert.equal(pool.state.demoRebuildAttempts.length, 2);
+
+  const limited = await checkDemoRebuildHourlyLimit(pool, request, allowlist, '2');
+  assert.equal(limited.status, 429);
+  assert.equal(limited.body.error, 'hourly_limit_reached');
+  assert.equal(limited.body.limit, 2);
+  assert.ok(limited.retryAfterSeconds >= 1);
+  assert.equal(pool.state.demoRebuildAttempts.length, 2);
+
+  const headers = {};
+  let status;
+  let body;
+  const response = {
+    set(name, value) { headers[name] = value; return this; },
+    status(value) { status = value; return this; },
+    json(value) { body = value; return this; },
+  };
+  assert.equal(sendDemoRebuildHourlyDecision(response, limited), true);
+  assert.equal(status, 429);
+  assert.equal(headers['Retry-After'], String(limited.retryAfterSeconds));
+  assert.equal(body.error, 'hourly_limit_reached');
+});
+
+test('allowlisted hourly cap is isolated by execution key ID', async () => {
+  const pool = new FakePool();
+  const firstKey = seedExecutionKey(pool);
+  const secondKey = seedExecutionKey(pool);
+  const allowlist = new Set([firstKey.keyId, secondKey.keyId]);
+  const requestFor = apiKey => ({
+    get(name) { return name.toLowerCase() === 'authorization' ? `Bearer ${apiKey}` : undefined; },
+  });
+
+  assert.equal((await checkDemoRebuildHourlyLimit(pool, requestFor(firstKey.apiKey), allowlist, 1)).allowlisted, true);
+  assert.equal((await checkDemoRebuildHourlyLimit(pool, requestFor(firstKey.apiKey), allowlist, 1)).status, 429);
+  const secondKeyDecision = await checkDemoRebuildHourlyLimit(pool, requestFor(secondKey.apiKey), allowlist, 1);
+  assert.equal(secondKeyDecision.allowlisted, true);
+  assert.equal(secondKeyDecision.status, undefined);
+  assert.equal(pool.state.demoRebuildAttempts.length, 2);
+});
+
+test('non-allowlisted execution keys keep the existing per-text path without hourly reservations', async () => {
+  const pool = new FakePool();
+  const { apiKey } = seedExecutionKey(pool);
+  const request = { get: name => name.toLowerCase() === 'authorization' ? `Bearer ${apiKey}` : undefined };
+  const decision = await checkDemoRebuildHourlyLimit(pool, request, new Set([crypto.randomUUID()]), 1);
+
+  assert.equal(decision.allowlisted, false);
+  assert.equal(decision.keyId, null);
+  assert.equal(decision.status, undefined);
+  assert.equal(pool.state.demoRebuildAttempts.length, 0);
+});
+
+test('hourly limiter database failures fail closed with 503 and no reservation', async () => {
+  const pool = new FakePool();
+  pool.failDemoHourlyCountQuery = true;
+  const { apiKey, keyId } = seedExecutionKey(pool);
+  const request = { get: name => name.toLowerCase() === 'authorization' ? `Bearer ${apiKey}` : undefined };
+  const decision = await checkDemoRebuildHourlyLimit(pool, request, new Set([keyId]), 10);
+
+  assert.equal(decision.allowlisted, true);
+  assert.equal(decision.status, 503);
+  assert.equal(decision.body.error, 'hourly_limit_unavailable');
+  assert.equal(pool.state.demoRebuildAttempts.length, 0);
+
+  let status;
+  let body;
+  const response = {
+    set() { return this; },
+    status(value) { status = value; return this; },
+    json(value) { body = value; return this; },
+  };
+  assert.equal(sendDemoRebuildHourlyDecision(response, decision), true);
+  assert.equal(status, 503);
+  assert.equal(body.error, 'hourly_limit_unavailable');
 });
 
 function seedAuditRecord(pool) {
