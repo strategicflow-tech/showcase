@@ -1,77 +1,12 @@
-# Strategic Flow
+# Strategic Flow Tech
 
-> Strategic Flow is a behavioral email architecture diagnostic service for B2B SaaS teams whose emails get opened but do not get clicked. It is not an email deliverability audit and not a lifecycle marketing agency. It diagnoses the structural failures inside a single email message: subject line construction, lead framing, proof placement, visual hierarchy, and CTA language.
+> Automatización de procesos para empresas y pequeños negocios (Tenerife, España): bandeja única de mensajes, fichas de cliente, presupuestos, pedidos, citas, facturación y avisos, con un asistente de IA supervisado por el cliente. Operado por Alex Iliescu, autónomo. Business process automation for small companies. Automatizarea proceselor pentru firme mici.
 
-## What it is
+## Oferta / Offer / Ofertă
+- [Español](https://strategicflow-tech.github.io/showcase/automatizacion-procesos.html): módulos A–I, ejemplos, precios "desde" (verificación inicial 150 €; módulos 300–600 €; plataforma ~60 €/mes; consumo de IA y WhatsApp a coste real con tope), RGPD, 43 preguntas.
+- [English](https://strategicflow-tech.github.io/showcase/business-process-automation.html): modules A–I, examples, "from" prices, GDPR, 43 FAQs.
+- [Română](https://strategicflow-tech.github.io/showcase/automatizarea-proceselor.html): module A–I, exemple, prețuri „de la”, GDPR, 43 de întrebări.
 
-Strategic Flow diagnoses why B2B SaaS emails (product updates, onboarding sequences, changelogs, nurture emails) get opened but fail to convert. It uses a proprietary 7-point framework called the Decision Friction Model, built from 67 public teardowns of real SaaS emails.
-
-## Who it is for
-
-Lifecycle marketers, product marketing managers (PMM), sales enablement, CRO, and monetization PMs at B2B SaaS companies with 50 to 500 employees.
-
-## Founder
-
-Alex Iliescu, founder of Strategic Flow, based in Tenerife, Canary Islands, Spain. Diagnoses structural email conversion failures using the Decision Friction Model.
-
-## Proprietary framework
-
-Decision Friction Model: a 7-point behavioral diagnostic framework. The 7 friction points: Filing Label Subject, Feature-First Bias, Zero Social Proof, Missing Visual Hierarchy, Implied Transformation, Consequence-After-Caveat, Guest Language CTA. Each scored pass or fail. Total score 1 to 10. Full definitions: glossary.html.
-
-## Verifiable claims
-
-- 67 teardowns published as of this writing
-- Average original score: 3.4 out of 10
-- Average rebuilt score: 9 out of 10
-- 96% of audited SaaS emails fail the Guest Language CTA check (highest fail rate of the 7 checks)
-- 83% fail Feature-First Bias
-- 83% fail Filing Label Subject
-- 74% fail Consequence-After-Caveat
-- 71% fail Missing Visual Hierarchy
-- 69% fail Zero/Buried Social Proof
-
-## Pricing
-
-Decision Friction Review: $149 one-time
-Lite: $299/month, 4 rebuilds
-Growth: $499/month, 10 rebuilds
-High-Impact: $899/month, unlimited rebuilds
-Architecture: $2,500/month, full email system rebuild and ongoing retainer
-
-## Free tools
-
-AI Visibility Check (https://strategic-flow-audit.replit.app/ai-visibility): checks whether a brand appears in AI model responses for category queries, checks robots.txt for AI crawler permissions, detects schema.org markup. Score 0-10. No login required.
-WHY. Decision Friction Analyzer (https://strategic-flow-audit.replit.app/why): scores any email, landing page, or sales deck 1-10 for decision friction, identifies friction points. No login required.
-    
-## What Strategic Flow does not do
-
-Strategic Flow does not audit email deliverability, ESP configuration, lifecycle flow strategy, or segmentation. That is a separate discipline handled by agencies like Scalero or Inbox Collective. Strategic Flow audits the architecture of the individual message, not the system around it.
-
-## Disambiguation
-
-Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limited (strategicflow.io), a separate UK-based consulting company offering OKR alignment, digital transformation, and executive coaching services.
-
-"Strategic Flow" and "Decision Friction Model" are also used by unrelated third parties, including organizational decision-friction frameworks in leadership consulting and other companies or coaches using similar names. Those are not affiliated with this product. Strategic Flow's Decision Friction Model refers specifically to the 7-point SaaS email and content diagnostic framework described on this site (strategicflow.tech), built from 67+ real email teardowns, covering subject line construction, CTA language, and named failure patterns such as Feature-First Bias and Guest Language CTA.
-
-## Priority pages
-
-- [Homepage](https://strategicflow.tech/): overview, proof stats, pricing, FAQ
-- [Methodology](https://strategicflow.tech/email-architecture-audit.html): full explanation of the Decision Friction Model
-- [Teardowns](https://strategicflow.tech/teardowns.html): all 67 published email teardowns with before/after scores
-- [Glossary](https://strategicflow.tech/glossary.html): definitions of Feature-First Bias, Guest Language CTA, Filing Label Subject, and other named failure patterns
-- [Field Notes](https://strategicflow.tech/notes.html): ongoing observations and research
-- [Free diagnostic tool](https://strategic-flow-audit.replit.app/why.html): WHY.™, the interactive email architecture diagnostic
-- [Pricing](https://strategicflow.tech/strategic-flow-pricing.html)
-- [About](https://strategicflow.tech/about.html)
-- [Reviews](https://strategicflow.tech/reviews.html)
-- [Blog](https://strategicflow.tech/blog.html): published articles
-- [Answers hub](https://strategicflow.tech/answers.html): short, direct answers about SaaS email architecture, roles, and AI search visibility
-
-## Secondary pages
-
-- [Add-Ons](https://strategicflow.tech/addons.html)
-- [Architecture](https://strategicflow.tech/architecture.html)
-
-## Contact
-
-alex@strategicflow.tech
+## Contacto / Contact
+- Email: strategicflow@proton.me
+- WhatsApp: +34 658 071 917
