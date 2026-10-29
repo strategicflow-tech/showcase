@@ -997,7 +997,8 @@ self:{name:L('sens și direcție în viață','meaning and direction in life','s
 };
 var CONTRAST=K(['dar$','insa$','totusi$','cu toate astea'],['but$','however$','yet$','although$','though$'],['pero$','aunque$','sin embargo','no obstante']);
 
-Object.assign(UI,{rd_t:L('Ce citesc în textul tău','What I read in your text','Lo que leo en tu texto'),
+Object.assign(UI,{
+rd_t:L('Ce citesc în textul tău','What I read in your text','Lo que leo en tu texto'),
 rd_p:L('Nu e nevoie să folosești cuvinte anume. Citesc tonul, zonele de viață și felul în care e construit textul.','You do not need to use specific words. I read the tone, the areas of life and how the text is built.','No hace falta usar palabras concretas. Leo el tono, las áreas de la vida y cómo está construido el texto.'),
 rd_tone_mixed:L('Textul poartă două lucruri deodată: greutate ({neg}) și speranță ({pos}). Ambele sunt reale, iar planul de mai jos le ține pe amândouă.','The text carries two things at once: heaviness ({neg}) and hope ({pos}). Both are real, and the plan below holds both.','El texto lleva dos cosas a la vez: pesadez ({neg}) y esperanza ({pos}). Ambas son reales, y el plan de abajo sostiene las dos.'),
 rd_tone_heavy:L('Citesc mai ales greutate ({neg}). Contează tonul, nu cuvintele alese, și planul pornește de la el.','I mostly read heaviness ({neg}). The tone matters more than the words you chose, and the plan starts from it.','Leo sobre todo pesadez ({neg}). Importa el tono, no las palabras elegidas, y el plan parte de él.'),
@@ -1996,7 +1997,8 @@ function reportHTML(r,meta){
   if(r.det.length){h+=r.det.slice(0,3).map(function(t){return themeCard(t,r.sc,true);}).join('');h+=lingHTML(r.sc);h+='<h4>'+ui('f_yours')+'</h4><p class="yours">'+highlight(r.text,r.sc.ranges)+'</p>';}
   else h+='<p class="muted">'+ui('cx_nowords')+'</p>';}
  h+='<h2>'+ui('rp_cross')+'</h2>'+resHTML(r)+timingHTML(r);
- h+='<h2>'+ui('rp_plan')+'</h2>'+planHTML(r)+reportExtras(r); (P.sections||[]).forEach(function(s){h+='<h2>'+esc(tr(s.t))+'</h2><p>'+esc(tr(s.p))+'</p>';});
+ h+='<h2>'+ui('rp_plan')+'</h2>'+planHTML(r)+reportExtras(r);
+ (P.sections||[]).forEach(function(s){h+='<h2>'+esc(tr(s.t))+'</h2><p>'+esc(tr(s.p))+'</p>';});
  if(meta.notes)h+='<h2>'+ui('rp_notes')+'</h2><div class="notes">'+esc(meta.notes)+'</div>';
  if(P.closing)h+='<p>'+esc(tr(P.closing))+'</p>';
  h+='<footer>'+ui('rp_foot')+' · '+esc(CFG.brand||'Strategic Flow Tech')+(CFG.site?' · '+esc(CFG.site.replace(/^https?:\/\//,'')):'')+'<br>'+ui('cx_disc')+'</footer>';
