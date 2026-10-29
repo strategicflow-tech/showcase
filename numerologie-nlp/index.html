@@ -495,6 +495,26 @@ html{overflow-x:hidden}
 :root .ntab[aria-selected="true"],:root[data-theme] .ntab[aria-selected="true"],:root:not([data-theme="light"]) .ntab[aria-selected="true"]{color:var(--ink)}
 :root .btn.primary,:root[data-theme] .btn.primary,:root:not([data-theme="light"]) .btn.primary{color:var(--ink)}
 :root .badge.ok,:root[data-theme] .badge.ok,:root:not([data-theme="light"]) .badge.ok{color:var(--ink)}
+
+/* footer tiles + FAQ */
+.faq{max-width:900px;margin:clamp(56px,8vw,100px) auto 0;padding:0 clamp(16px,5vw,48px)}
+.faq h2{font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.05;margin:0 0 6px}
+.faq-l{margin-top:22px;display:grid;gap:10px}
+.faq details{background:var(--surface);border:1px solid var(--edge);border-radius:14px;padding:0 18px;transition:border-color .2s,box-shadow .2s}
+.faq details[open]{border-color:var(--gold);box-shadow:0 0 22px -8px var(--gold)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 28px 16px 0;font-weight:600;position:relative;line-height:1.35}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:0;top:50%;transform:translateY(-50%);font-family:var(--f-mono);font-size:1.3rem;color:var(--gold)}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{margin:0 0 16px;color:var(--muted);line-height:1.65}
+.ft{border-top:0;position:relative}
+.ft-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0 20px}
+.ft-tile{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 18px;border-radius:14px;background:var(--surface);border:1px solid var(--edge);color:var(--fg);text-decoration:none;font-size:.95rem;line-height:1.3;overflow-wrap:anywhere;transition:border-color .2s,box-shadow .25s,transform .2s}
+.ft-tile i{font-style:normal;color:var(--gold);flex:none;transition:transform .2s}
+.ft-tile:hover,.ft-tile:focus-visible{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 26px -4px var(--gold);transform:translateY(-2px)}
+.ft-tile:hover i{transform:translateX(4px)}
+:root[data-theme="light"] .ft-tile:hover{box-shadow:0 0 0 1px var(--gold),0 6px 22px -6px var(--gold)}
+@media(max-width:560px){.ft-grid{grid-template-columns:1fr 1fr}.ft-tile{padding:14px;font-size:.88rem}.ft-tile:last-child:nth-child(odd){grid-column:1/-1}}
 </style></head><body><div id="app"></div><noscript><p style="padding:24px;font-family:sans-serif">This tool needs JavaScript.</p></noscript><script>/* Strategic Flow Numerology & NLP - numerology data (own wording, trilingual) */
 var L=function(ro,en,es){return {ro:ro,en:en,es:es}};
 
@@ -1418,6 +1438,29 @@ pr_buy:L(`Cumpără`,`Buy`,`Comprar`),pr_det:L(`Ce conține`,`What's inside`,`Qu
 st_t:L(`Trei mișcări`,`Three moves`,`Tres movimientos`),
 fin_t:L(`Începe cu ce ai la îndemână`,`Start with what you have`,`Empieza con lo que tienes`),fin_cta:L(`Creează-ți profilul gratuit`,`Create your free profile`,`Crea tu perfil gratis`)
 });
+
+/* FAQ content, trilingual */
+var FAQ=[
+{q:L('Ce este aplicația și cui se adresează?','What is this app and who is it for?','¿Qué es esta aplicación y a quién va dirigida?'),
+ a:L('Un instrument de reflecție personală care combină numerologia (numere calculate din nume și dată) cu NLP (tipare în felul în care vorbești). Este pentru oricine vrea o oglindă clară, nu o prezicere.','A personal-reflection tool that combines numerology (numbers calculated from your name and date) with NLP (patterns in the way you speak). It is for anyone who wants a clear mirror, not a prediction.','Una herramienta de reflexión personal que combina la numerología (números calculados con tu nombre y fecha) con PNL (patrones en tu forma de hablar). Es para quien busca un espejo claro, no una predicción.')},
+{q:L('Ce primesc gratuit?','What do I get for free?','¿Qué recibo gratis?'),
+ a:L('Calculul numerelor de bază, descrierile lor, glosarul, ghidul de start și un profil salvat pe dispozitivul tău. Nu ai nevoie de card.','The basic number calculations, their descriptions, the glossary, the start guide and a profile saved on your device. No card needed.','El cálculo de los números básicos, sus descripciones, el glosario, la guía de inicio y un perfil guardado en tu dispositivo. No necesitas tarjeta.')},
+{q:L('Ce conțin pachetele plătite?','What do the paid packs include?','¿Qué incluyen los paquetes de pago?'),
+ a:L('Numerologie Deep (49 €), NLP Deep (59 €) și Profil încrucișat Pro (69 €) adaugă lecturi mai adânci, programe pe zile și previziuni. Pachetul Bundle (99 €) le conține pe toate trei. Detaliile fiecăruia sunt la secțiunea Pachete.','Numerology Deep (€49), NLP Deep (€59) and Cross Profile Pro (€69) add deeper readings, day-by-day programmes and forecasts. The Bundle (€99) contains all three. Each one is detailed in the Packs section.','Numerología Deep (49 €), PNL Deep (59 €) y Perfil cruzado Pro (69 €) añaden lecturas más profundas, programas por días y previsiones. El Bundle (99 €) incluye los tres. Cada uno se detalla en la sección Paquetes.')},
+{q:L('Cum primesc pachetul după plată?','How do I receive a pack after paying?','¿Cómo recibo el paquete tras pagar?'),
+ a:L('Plătești prin Stripe și primești pe e-mail fișierul pachetului și un cod de activare. Dacă nu ajunge în câteva minute, verifică Spam și scrie-ne.','You pay through Stripe and receive the pack file and an activation code by e-mail. If nothing arrives within a few minutes, check Spam and write to us.','Pagas con Stripe y recibes por correo el archivo del paquete y un código de activación. Si no llega en unos minutos, revisa Spam y escríbenos.')},
+{q:L('Cum activez pachetul?','How do I activate a pack?','¿Cómo activo el paquete?'),
+ a:L('Deschide Contul meu, apoi Pachete, încarcă fișierul primit și scrie codul. Pachetul se deschide pe loc și funcționează apoi și fără internet.','Open My profile, then Packs, load the file you received and type the code. The pack opens right away and then also works without internet.','Abre Mi perfil, luego Paquetes, carga el archivo recibido y escribe el código. El paquete se abre al instante y luego funciona también sin internet.')},
+{q:L('Unde sunt păstrate datele mele?','Where is my data stored?','¿Dónde se guardan mis datos?'),
+ a:L('În browserul dispozitivului tău, nu pe un server. Dacă ștergi datele browserului sau schimbi telefonul, profilul și pachetele trebuie reîncărcate: păstrează fișierul și codul.','In your device browser, not on a server. If you clear browser data or change phone, you have to reload your profile and packs: keep the file and the code.','En el navegador de tu dispositivo, no en un servidor. Si borras los datos del navegador o cambias de móvil, tendrás que volver a cargar tu perfil y tus paquetes: guarda el archivo y el código.')},
+{q:L('Numerologia și NLP prezic viitorul?','Do numerology and NLP predict the future?','¿La numerología y la PNL predicen el futuro?'),
+ a:L('Nu. Numerologia este o tradiție simbolică fără validare științifică, iar NLP are sprijin limitat în cercetare. Previziunile sunt teme de planificare, nu evenimente. Aplicația nu diagnostichează și nu înlocuiește un medic sau un psiholog.','No. Numerology is a symbolic tradition without scientific validation, and NLP has limited research support. Forecasts are planning themes, not events. The app does not diagnose and does not replace a doctor or psychologist.','No. La numerología es una tradición simbólica sin validación científica y la PNL tiene un respaldo limitado en la investigación. Las previsiones son temas de planificación, no sucesos. La aplicación no diagnostica ni sustituye a un médico o psicólogo.')},
+{q:L('Pot cere banii înapoi?','Can I get a refund?','¿Puedo pedir el reembolso?'),
+ a:L('Pachetele sunt conținut digital livrat imediat, iar dreptul de retragere este tratat în Termeni și condiții, secțiunea 7. Dacă ai o problemă cu fișierul sau codul, scrie-ne și o rezolvăm.','Packs are digital content delivered immediately, and the right of withdrawal is covered in the Terms and Conditions, section 7. If you have a problem with the file or the code, write to us and we will sort it out.','Los paquetes son contenido digital entregado de inmediato, y el derecho de desistimiento se trata en los Términos y condiciones, sección 7. Si tienes un problema con el archivo o el código, escríbenos y lo resolvemos.')},
+{q:L('Cum vă contactez?','How can I contact you?','¿Cómo os contacto?'),
+ a:L('Scrie la strategicflow@proton.me. Răspundem în română, engleză sau spaniolă.','Write to strategicflow@proton.me. We reply in Romanian, English or Spanish.','Escribe a strategicflow@proton.me. Respondemos en rumano, inglés o español.')}
+];
+Object.assign(UI,{faq_t:L('Întrebări frecvente','Frequently asked questions','Preguntas frecuentes'),faq_p:L('Răspunsuri scurte, înainte să te decizi.','Short answers before you decide.','Respuestas breves antes de decidir.')});
 
 /* Glossary: g = group (num | nlp | tool), m = text patterns auto-linked in chapters, d = definition */
 var GLOSS_GROUPS={
@@ -2829,6 +2872,7 @@ function isDark(){var t=sget('theme',null);if(t)return t==='dark';return true;}
 function parseRoute(){var h=(location.hash||'').replace(/^#\/?/,'');var p=h.split('/');var v=p[0];if(VIEWS.indexOf(v)<0)v='home';return {view:v,ch:p[1]||''};}
 function chaptersFor(area){return CHAPTERS.filter(function(c){return c.area===area;}).concat(packChapters(area));}
 
+function faqHTML(){return '<section class="faq" id="faq"><h2>'+ui('faq_t')+'</h2><p class="muted">'+ui('faq_p')+'</p><div class="faq-l">'+FAQ.map(function(f){return '<details><summary>'+esc(tr(f.q))+'</summary><p>'+esc(tr(f.a))+'</p></details>';}).join('')+'</div></section>';}
 function shell(){
  document.documentElement.lang=lang;document.title=ui('app_title');
  var h='<a class="skip" href="#main">'+ui('skip')+'</a>';
@@ -2836,7 +2880,11 @@ function shell(){
  h+='<nav class="tabs" aria-label="'+ui('nav_main')+'">'+TABS.map(function(v){return '<a href="#/'+v+'" data-view="'+v+'"><span>'+ui('tab_'+v)+'</span></a>';}).join('')+'</nav>';
  h+='<div class="ctl"><div class="langs" role="group" aria-label="Language">'+['ro','en','es'].map(function(l){return '<button type="button" data-lang="'+l+'" aria-pressed="'+(l===lang)+'">'+l.toUpperCase()+'</button>';}).join('')+'</div><button type="button" class="thbtn" id="thbtn" aria-label="'+esc(ui('theme'))+'" title="'+esc(ui('theme'))+'">◐</button></div></header>';
  h+='<main id="main" tabindex="-1"></main>';
- h+='<footer class="ft"><div class="by">'+brandMark()+'<b>'+ui('by')+'</b></div><p class="muted small">'+ui('ft_disc')+'</p><p class="small"><a href="#/start">'+ui('ft_start')+'</a> · <a href="#/gloss">'+ui('ft_gloss')+'</a> · <a href="#/terms">'+ui('ft_terms')+'</a> · <a href="#/about">'+ui('ft_about')+'</a>'+(CFG.site?' · <a target="_blank" rel="noopener" href="'+esc(CFG.site)+'">'+esc(CFG.site.replace(/^https?:\/\//,''))+'</a>':'')+(CFG.contact?' · <a href="mailto:'+esc(CFG.contact)+'">'+esc(CFG.contact)+'</a>':'')+' · v'+VERSION+'</p></footer>';
+ h+=faqHTML();
+ var fl=[['#/start',ui('ft_start')],['#/gloss',ui('ft_gloss')],['#/terms',ui('ft_terms')],['#/about',ui('ft_about')]];
+ if(CFG.site)fl.push([CFG.site,CFG.site.replace(/^https?:\/\//,''),1]);
+ if(CFG.contact)fl.push(['mailto:'+CFG.contact,CFG.contact,1]);
+ h+='<footer class="ft"><div class="by">'+brandMark()+'<b>'+ui('by')+'</b></div><nav class="ft-grid" aria-label="Links">'+fl.map(function(x){return '<a class="ft-tile" href="'+esc(x[0])+'"'+(x[2]&&x[0].indexOf('http')===0?' target="_blank" rel="noopener"':'')+'><span>'+esc(x[1])+'</span><i aria-hidden="true">\u2192</i></a>';}).join('')+'</nav><p class="muted small">'+ui('ft_disc')+' \u00b7 v'+VERSION+'</p></footer>';
  document.getElementById('app').innerHTML=h;
 }
 function setActive(view){$$('.tabs a').forEach(function(a){var on=a.getAttribute('data-view')===view;if(on)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});}
