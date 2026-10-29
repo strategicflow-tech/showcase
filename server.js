@@ -9868,6 +9868,65 @@ app.post('/admin/purge-toolindex-owner-removal-20261029', async (req, res) => {
       return res.status(409).json({ error: 'target_listings_changed' });
     }
 
+    const emailResult = await client.query(
+      `SELECT DISTINCT lower(trim(candidate.email)) AS email
+         FROM (
+           SELECT submitter_email AS email
+             FROM directory_listings WHERE id = ANY($1::int[])
+           UNION ALL
+           SELECT contact_email AS email
+             FROM directory_listings WHERE id = ANY($1::int[])
+           UNION ALL
+           SELECT claimed_by AS email
+             FROM directory_listings WHERE id = ANY($1::int[])
+           UNION ALL
+           SELECT owner_email AS email
+             FROM dir_claims WHERE listing_id = ANY($1::int[])
+         ) candidate
+        WHERE candidate.email IS NOT NULL
+          AND trim(candidate.email) <> ''`,
+      [ids]
+    );
+    const suppressionEmails = [...new Set(
+      emailResult.rows
+        .map(row => String(row.email || '').trim().toLowerCase())
+        .filter(email => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))
+    )];
+    if (!suppressionEmails.length) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ error: 'no_valid_owner_email_found' });
+    }
+
+    await client.query(
+      `INSERT INTO email_unsubscribes (email, source)
+       SELECT unnest($1::text[]), 'owner_removal'
+       ON CONFLICT (email) DO NOTHING`,
+      [suppressionEmails]
+    );
+    const stoppedSequences = await client.query(
+      `UPDATE outreach_seq_contacts
+          SET stop_sequence = TRUE,
+              engaged_at = COALESCE(engaged_at, NOW()),
+              engaged_reason = COALESCE(engaged_reason, 'owner_removal')
+        WHERE lower(trim(to_email)) = ANY($1::text[])`,
+      [suppressionEmails]
+    );
+    const suppressedNewsletters = await client.query(
+      `UPDATE toolindex_newsletter_contacts
+          SET status = 'unsubscribed',
+              unsubscribed_at = COALESCE(unsubscribed_at, NOW()),
+              updated_at = NOW()
+        WHERE lower(trim(email)) = ANY($1::text[])`,
+      [suppressionEmails]
+    );
+    const suppressedCampaigns = await client.query(
+      `UPDATE toolindex_outreach_campaign_contacts
+          SET last_error = 'owner_removal',
+              updated_at = NOW()
+        WHERE lower(trim(email)) = ANY($1::text[])`,
+      [suppressionEmails]
+    );
+
     await client.query(
       `UPDATE directory_listings
           SET redirects_to = NULL
@@ -9911,6 +9970,10 @@ app.post('/admin/purge-toolindex-owner-removal-20261029', async (req, res) => {
       ok: true,
       deletedListings: deleted.rows.length,
       deletedAuditEntries: deletedRelated.security_audit_log || 0,
+      blockedOutreachAddresses: suppressionEmails.length,
+      stoppedSequenceRows: stoppedSequences.rowCount,
+      suppressedNewsletterRows: suppressedNewsletters.rowCount,
+      suppressedCampaignRows: suppressedCampaigns.rowCount,
     });
   } catch (error) {
     await client.query('ROLLBACK').catch(() => {});
