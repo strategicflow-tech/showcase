@@ -8,6 +8,7 @@ const Anthropic  = require('@anthropic-ai/sdk');
 const { Resend } = require('resend');
 const Stripe = require('stripe');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const { createNumerologieDeliveryService } = require('./numerologie-delivery');
 const session = require('express-session');
 const crypto  = require('crypto');
 const pgSession = require('connect-pg-simple')(session);
@@ -858,6 +859,7 @@ app.use('/stripe/webhook',          express.raw({ type: 'application/json' }));
 app.use('/webhook/stripe',          express.raw({ type: 'application/json' }));
 app.use('/api/why-stripe-webhook',  express.raw({ type: 'application/json' }));
 app.use('/api/ai-visibility-index/stripe-webhook', express.raw({ type: 'application/json' }));
+app.use('/api/numerologie/stripe-webhook', express.raw({ type: 'application/json' }));
 app.use('/webhooks/resend',         express.raw({ type: 'application/json' }));
 // Skip JSON body-parsing for multipart upload routes (multer handles those)
 app.use((req, res, next) => {
@@ -33727,6 +33729,74 @@ full HTML body here
     } catch (err) {
       console.error('[distribb-publish]', err.message);
       res.status(500).json({ error: err.message });
+    }
+  });
+
+  const numerologieDeliveries = createNumerologieDeliveryService({ pool, resend, stripe });
+  app.post('/api/numerologie/stripe-webhook', (req, res) => {
+    void numerologieDeliveries.handleWebhook(req, res);
+  });
+  void numerologieDeliveries.retryPending();
+  const numerologieDeliveryPoll = setInterval(() => {
+    void numerologieDeliveries.retryPending();
+  }, 60000);
+  if (typeof numerologieDeliveryPoll.unref === 'function') numerologieDeliveryPoll.unref();
+
+  app.get('/admin/numerologie-deliveries', async (req, res) => {
+    try {
+      const { rows } = await pool.query(
+        `SELECT id, stripe_event_id, checkout_session_id, buyer_email, pack, status,
+                resend_message_id, error_message, created_at, updated_at, sent_at
+         FROM numerologie_deliveries ORDER BY created_at DESC LIMIT 200`
+      );
+      const h = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[c]);
+      const csrf = getAdminCsrfToken(req);
+      const tableRows = rows.map(row => `<tr>
+        <td>${h(row.created_at?.toISOString?.() || row.created_at)}</td>
+        <td>${h(row.buyer_email)}</td><td>${h(row.pack)}</td><td>${h(row.status)}</td>
+        <td>${h(row.resend_message_id || '')}</td><td>${h(row.error_message || '')}</td>
+        <td><button type="button" data-id="${Number(row.id)}">Resend</button></td>
+      </tr>`).join('');
+      res.type('html').send(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Numerologie deliveries</title><style>
+        body{margin:0;background:#081426;color:#edf1f7;font:15px Arial,sans-serif;padding:24px}main{max-width:1200px;margin:auto}h1{color:#f3d68a}table{width:100%;border-collapse:collapse;background:#10213a}th,td{text-align:left;padding:10px;border:1px solid #2c4058;overflow-wrap:anywhere}th{color:#f3d68a}button{background:#c5a45e;color:#081426;border:0;border-radius:5px;padding:8px 12px;cursor:pointer}form{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}input,select{padding:9px;border-radius:5px;border:1px solid #52647a}#message{color:#f3d68a}
+      </style></head><body><main><h1>Numerologie pack deliveries</h1><form id="test"><input type="email" name="email" placeholder="Recipient email" required><select name="pack">${['numdeep','nlpdeep','crosspro','bundle'].map(p => `<option>${p}</option>`).join('')}</select><button>Send test pack</button></form><p id="message"></p><table><thead><tr><th>Created</th><th>Buyer</th><th>Pack</th><th>Status</th><th>Resend ID</th><th>Error</th><th>Action</th></tr></thead><tbody>${tableRows || '<tr><td colspan="7">No deliveries yet</td></tr>'}</tbody></table></main><script>
+        const csrf=${JSON.stringify(csrf)}; const message=document.querySelector('#message');
+        document.querySelectorAll('button[data-id]').forEach(button=>button.addEventListener('click',async()=>{button.disabled=true;try{const r=await fetch('/admin/numerologie-deliveries/'+button.dataset.id+'/resend',{method:'POST',headers:{'x-csrf-token':csrf}});const j=await r.json();message.textContent=r.ok?'Resend queued. Refresh to see status.':(j.error||'Request failed');}catch(e){message.textContent='Request failed';}finally{button.disabled=false;}}));
+        document.querySelector('#test').addEventListener('submit',async e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.currentTarget));const r=await fetch('/admin/numerologie-deliveries/test',{method:'POST',headers:{'content-type':'application/json','x-csrf-token':csrf},body:JSON.stringify(data)});const j=await r.json();message.textContent=r.ok?'Test delivery queued. Refresh to see status.':(j.error||'Request failed');});
+      </script></body></html>`);
+    } catch (err) {
+      console.error('[numerologie-admin] list failed:', err.message);
+      res.status(500).send('Unable to load deliveries');
+    }
+  });
+
+  app.post('/admin/numerologie-deliveries/test', async (req, res) => {
+    try {
+      const id = await numerologieDeliveries.sendTest(String(req.body?.email || '').trim(), String(req.body?.pack || ''));
+      res.status(202).json({ queued: true, id });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  app.post('/admin/numerologie-deliveries/:id/resend', async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id < 1) return res.status(400).json({ error: 'Invalid delivery id' });
+    try {
+      const result = await pool.query(
+        `UPDATE numerologie_deliveries
+         SET status='pending', error_message=NULL, sent_at=NULL, updated_at=NOW()
+         WHERE id=$1 AND status <> 'sending' RETURNING id`,
+        [id]
+      );
+      if (!result.rows.length) return res.status(409).json({ error: 'Delivery is missing or already sending' });
+      numerologieDeliveries.processDelivery(id).catch(() => {});
+      res.status(202).json({ queued: true, id });
+    } catch (err) {
+      console.error('[numerologie-admin] resend failed:', err.message);
+      res.status(500).json({ error: 'Unable to queue resend' });
     }
   });
 

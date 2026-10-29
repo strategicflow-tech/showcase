@@ -12,7 +12,8 @@
     "test:founder-pack": "node scripts/test-founder-pack.js",
     "test:email-send-preflight": "node --test scripts/test-email-send-preflight.js",
     "test:directory-submit": "node --test scripts/test-directory-submit.js",
-    "test:ai-visibility-questions": "node --test scripts/test-ai-visibility-question-engine.js"
+    "test:ai-visibility-questions": "node --test scripts/test-ai-visibility-question-engine.js",
+    "test:numerologie-delivery": "node --test scripts/test-numerologie-delivery.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.86.1",
