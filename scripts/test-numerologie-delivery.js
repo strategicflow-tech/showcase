@@ -2,7 +2,10 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { packForPaymentLink, emailLanguage, buildEmail, PACKS, createNumerologieDeliveryService } = require('../numerologie-delivery');
+const {
+  packForPaymentLink, emailLanguage, buildEmail, PACKS, tokenMatches,
+  createNumerologieDeliveryService
+} = require('../numerologie-delivery');
 
 test('maps only the four exact Stripe payment links', () => {
   assert.equal(packForPaymentLink('plink_1UVy37DpTwoDeZJnPhVDbxGW').key, 'numdeep');
@@ -129,4 +132,107 @@ test('webhook verifies raw request and queues only paid allowlisted sessions', a
   assert.equal(response.code, 200);
   assert.deepEqual(response.body, { received: true, queued: true });
   assert.equal(inserts, 1);
+});
+
+test('test token comparison accepts only the exact token', () => {
+  assert.equal(tokenMatches('a-long-test-token', 'a-long-test-token'), true);
+  assert.equal(tokenMatches('a-long-test-token', 'a-long-test-token-x'), false);
+  assert.equal(tokenMatches('', 'anything'), false);
+});
+
+test('test delivery sends all four allowlisted packs through the shared delivery function', async () => {
+  const insertedRows = [];
+  const attempts = [];
+  const sent = [];
+  let nextId = 1;
+  const client = { query: async (sql, params = []) => {
+    if (sql === 'BEGIN' || sql === 'COMMIT' || sql === 'ROLLBACK' || sql.includes('pg_advisory_xact_lock')) return { rows: [] };
+    if (sql.includes('COUNT(*)')) return { rows: [{ sends: 0 }] };
+    if (sql.includes('INSERT INTO numerologie_deliveries')) {
+      const row = {
+        id: nextId++, checkout_session_id: params[1], buyer_email: params[2], pack: params[3],
+        locale: params[4], billing_country: null, updated_at: new Date(), is_test: true
+      };
+      insertedRows.push(row);
+      return { rows: [row] };
+    }
+    if (sql.includes('INSERT INTO numerologie_test_send_attempts')) {
+      attempts.push(params[0]);
+      return { rows: [] };
+    }
+    throw new Error(`Unexpected client query: ${sql}`);
+  }, release() {} };
+  const pool = {
+    connect: async () => client,
+    query: async (sql, params) => {
+      if (sql.includes("SET status='sent'")) return { rows: [], params };
+      throw new Error(`Unexpected pool query: ${sql}`);
+    }
+  };
+  const service = createNumerologieDeliveryService({
+    pool,
+    resend: { emails: { send: async payload => { sent.push(payload); return { data: { id: `re_test_${sent.length}` } }; } } },
+    stripe: {},
+    env: {
+      NUMEROLOGIE_CODE_NUMDEEP: 'SFNN-AAAA-BBBB-CCCC',
+      NUMEROLOGIE_CODE_NLPDEEP: 'SFNN-DDDD-EEEE-FFFF',
+      NUMEROLOGIE_CODE_CROSSPRO: 'SFNN-GGGG-HHHH-IIII',
+      NUMEROLOGIE_CODE_BUNDLE: 'SFNN-JJJJ-KKKK-LLLL'
+    },
+    fetchImpl: async () => ({ ok: true, arrayBuffer: async () => Buffer.from('pack-binary') }),
+    sleep: async () => {}
+  });
+
+  const results = await service.sendTestDeliveries({
+    to: 'consultantcalatorii@gmail.com',
+    packKeys: ['numdeep', 'nlpdeep', 'crosspro', 'bundle'],
+    language: 'ro'
+  });
+  assert.equal(results.length, 4);
+  assert.deepEqual(results.map(result => result.status), ['sent', 'sent', 'sent', 'sent']);
+  assert.deepEqual(results.map(result => result.attachmentFilename), ['numdeep.sfpack', 'nlpdeep.sfpack', 'crosspro.sfpack', 'bundle.sfpack']);
+  assert.ok(results.every(result => result.attachmentSizeBytes === Buffer.byteLength('pack-binary')));
+  assert.ok(results.every(result => result.language === 'ro' && result.codeFormatPresent));
+  assert.equal(insertedRows.length, 4);
+  assert.ok(insertedRows.every(row => row.is_test));
+  assert.equal(attempts.length, 4);
+  assert.equal(sent.length, 4);
+  assert.ok(sent.every(message => message.to === 'consultantcalatorii@gmail.com'));
+});
+
+test('test delivery refuses non-allowlisted recipients without touching the database', async () => {
+  let connected = false;
+  const service = createNumerologieDeliveryService({
+    pool: { connect: async () => { connected = true; throw new Error('should not connect'); } },
+    resend: { emails: { send: async () => ({ data: { id: 'unused' } }) } },
+    stripe: {}, env: {}
+  });
+  await assert.rejects(
+    service.sendTestDeliveries({ to: 'other@example.com', packKeys: ['numdeep'] }),
+    error => error.code === 'recipient_not_allowed'
+  );
+  assert.equal(connected, false);
+});
+
+test('test delivery rate limit reserves all pack sends atomically', async () => {
+  let deliveryInserts = 0;
+  const client = { query: async sql => {
+    if (sql === 'BEGIN' || sql === 'ROLLBACK' || sql.includes('pg_advisory_xact_lock')) return { rows: [] };
+    if (sql.includes('COUNT(*)')) return { rows: [{ sends: 8 }] };
+    if (sql.includes('INSERT INTO numerologie_deliveries')) deliveryInserts++;
+    return { rows: [] };
+  }, release() {} };
+  const service = createNumerologieDeliveryService({
+    pool: { connect: async () => client },
+    resend: { emails: { send: async () => ({ data: { id: 'unused' } }) } },
+    stripe: {}, env: {}
+  });
+  await assert.rejects(
+    service.sendTestDeliveries({
+      to: 'consultantcalatorii@gmail.com',
+      packKeys: ['numdeep', 'nlpdeep', 'crosspro']
+    }),
+    error => error.code === 'rate_limited'
+  );
+  assert.equal(deliveryInserts, 0);
 });

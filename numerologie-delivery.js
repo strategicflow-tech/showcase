@@ -17,9 +17,31 @@ const PACKS = Object.freeze({
   }
 });
 const DEFAULT_PACKS_BASE_URL = 'https://strategicflow.tech/numerologie-nlp/packs/';
-const PRODUCT_URL = 'https://strategicflow.tech/numerologie-nlp/';
 const FROM = 'Strategic Flow <noreply@strategicflow.tech>';
 const REPLY_TO = 'strategicflow@proton.me';
+const TEST_RECIPIENTS = new Set(['consultantcalatorii@gmail.com', 'strategicflow@proton.me']);
+const TEST_PACKS = new Set(['numdeep', 'nlpdeep', 'crosspro', 'bundle']);
+const CODE_FORMAT_RE = /SFNN-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}/;
+
+function tokenMatches(expected, supplied) {
+  if (!expected || !supplied) return false;
+  const expectedDigest = crypto.createHash('sha256').update(String(expected)).digest();
+  const suppliedDigest = crypto.createHash('sha256').update(String(supplied)).digest();
+  return crypto.timingSafeEqual(expectedDigest, suppliedDigest);
+}
+
+function safeErrorText(error, env) {
+  let message = String(error?.message || error || 'Unknown delivery failure');
+  for (const name of [
+    'NUMEROLOGIE_TEST_TOKEN', 'NUMEROLOGIE_STRIPE_WEBHOOK_SECRET',
+    'NUMEROLOGIE_CODE_NUMDEEP', 'NUMEROLOGIE_CODE_NLPDEEP',
+    'NUMEROLOGIE_CODE_CROSSPRO', 'NUMEROLOGIE_CODE_BUNDLE'
+  ]) {
+    const secret = env[name];
+    if (secret) message = message.split(String(secret)).join('[REDACTED]');
+  }
+  return message.slice(0, 1000);
+}
 
 function packForPaymentLink(paymentLink) {
   const id = typeof paymentLink === 'string' ? paymentLink : paymentLink?.id;
@@ -98,23 +120,49 @@ function createNumerologieDeliveryService({ pool, resend, stripe, env = process.
     return String(code).trim();
   }
 
-  async function sendBuyerEmail(delivery) {
+  async function prepareBuyerEmail(delivery) {
     const pack = Object.values(PACKS).find(item => item.key === delivery.pack);
     if (!pack) throw new Error(`Unknown pack ${delivery.pack}`);
-    const code = getActivationCode(pack);
-    const bytes = await downloadPack(pack);
+    let code;
+    try {
+      code = getActivationCode(pack);
+    } catch (err) {
+      err.deliveryFailure = 'missing_code';
+      throw err;
+    }
+    let bytes;
+    try {
+      bytes = await downloadPack(pack);
+    } catch (err) {
+      err.deliveryFailure = 'missing_file';
+      throw err;
+    }
     const downloadUrl = new URL(encodeURIComponent(pack.file), (env.NUMEROLOGIE_PACKS_BASE_URL || DEFAULT_PACKS_BASE_URL).endsWith('/')
       ? (env.NUMEROLOGIE_PACKS_BASE_URL || DEFAULT_PACKS_BASE_URL)
       : `${env.NUMEROLOGIE_PACKS_BASE_URL || DEFAULT_PACKS_BASE_URL}/`).toString();
     const language = emailLanguage(delivery.locale, delivery.billing_country);
     const email = buildEmail(pack, code, language, downloadUrl);
+    return {
+      pack, bytes, language, email,
+      codeFormatPresent: CODE_FORMAT_RE.test(email.text)
+    };
+  }
+
+  async function sendBuyerEmail(delivery, prepared = null) {
+    const content = prepared || await prepareBuyerEmail(delivery);
     const result = await resend.emails.send({
-      from: FROM, replyTo: REPLY_TO, to: delivery.buyer_email, subject: email.subject,
-      html: email.html, text: email.text,
-      attachments: [{ filename: pack.file, content: bytes.toString('base64') }]
+      from: FROM, replyTo: REPLY_TO, to: delivery.buyer_email, subject: content.email.subject,
+      html: content.email.html, text: content.email.text,
+      attachments: [{ filename: content.pack.file, content: content.bytes.toString('base64') }]
     }, { idempotencyKey: `numerologie-${delivery.checkout_session_id}-${new Date(delivery.updated_at).getTime()}` });
     if (result?.error) throw new Error(result.error.message || 'Resend rejected the email');
-    return result?.data?.id || null;
+    return {
+      resendMessageId: result?.data?.id || null,
+      attachmentFilename: content.pack.file,
+      attachmentSizeBytes: content.bytes.length,
+      language: content.language,
+      codeFormatPresent: content.codeFormatPresent
+    };
   }
 
   async function sendAlert(delivery, error) {
@@ -122,12 +170,62 @@ function createNumerologieDeliveryService({ pool, resend, stripe, env = process.
       const result = await resend.emails.send({
         from: FROM, to: REPLY_TO, replyTo: REPLY_TO,
         subject: `Numerologie pack delivery failed: ${delivery.pack}`,
-        text: `Delivery failed.\nBuyer: ${delivery.buyer_email}\nPack: ${delivery.pack}\nError: ${String(error.message || error).slice(0, 1000)}`
+        text: `Delivery failed.\nBuyer: ${delivery.buyer_email}\nPack: ${delivery.pack}\nError: ${safeErrorText(error, env)}`
       });
-      if (result?.error) console.error('[numerologie-delivery] failure alert rejected:', result.error.message);
+      if (result?.error) console.error('[numerologie-delivery] failure alert rejected');
     } catch (alertError) {
-      console.error('[numerologie-delivery] failure alert could not be sent:', alertError.message);
+      console.error('[numerologie-delivery] failure alert could not be sent:', safeErrorText(alertError, env));
     }
+  }
+
+  async function deliverStoredRow(delivery) {
+    let prepared = null;
+    let result = null;
+    let lastError = null;
+    try {
+      prepared = await prepareBuyerEmail(delivery);
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          result = await sendBuyerEmail(delivery, prepared);
+          lastError = null;
+          break;
+        } catch (err) {
+          lastError = err;
+          if (attempt < 3) await sleep(attempt * 1000);
+        }
+      }
+    } catch (err) {
+      lastError = err;
+    }
+
+    if (!lastError) {
+      await pool.query(
+        `UPDATE numerologie_deliveries
+         SET status='sent', resend_message_id=$2, error_message=NULL, sent_at=NOW(), updated_at=NOW()
+         WHERE id=$1`,
+        [delivery.id, result.resendMessageId]
+      );
+      return { ...result, status: 'sent' };
+    }
+
+    const safeError = safeErrorText(lastError, env);
+    await pool.query(
+      `UPDATE numerologie_deliveries SET status='failed', error_message=$2, updated_at=NOW() WHERE id=$1`,
+      [delivery.id, safeError]
+    );
+    await sendAlert(delivery, new Error(safeError));
+    const pack = Object.values(PACKS).find(item => item.key === delivery.pack);
+    const language = emailLanguage(delivery.locale, delivery.billing_country);
+    return {
+      status: lastError.deliveryFailure === 'missing_code'
+        ? 'failed_missing_code'
+        : lastError.deliveryFailure === 'missing_file' ? 'failed_missing_file' : 'failed',
+      resendMessageId: null,
+      attachmentFilename: pack?.file || null,
+      attachmentSizeBytes: 0,
+      language,
+      codeFormatPresent: false
+    };
   }
 
   async function processDelivery(id) {
@@ -142,37 +240,14 @@ function createNumerologieDeliveryService({ pool, resend, stripe, env = process.
       );
       if (!claim.rows.length) return;
       delivery = claim.rows[0];
-      let messageId = null;
-      let lastError = null;
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          messageId = await sendBuyerEmail(delivery);
-          lastError = null;
-          break;
-        } catch (err) {
-          lastError = err;
-          if (/^Missing secret |^Pack download returned HTTP|^Pack file is empty|^Pack base URL/.test(err.message)) break;
-          if (attempt < 3) await sleep(attempt * 1000);
-        }
-      }
-      if (!lastError) {
-        await pool.query(
-          `UPDATE numerologie_deliveries SET status='sent', resend_message_id=$2, error_message=NULL, sent_at=NOW(), updated_at=NOW() WHERE id=$1`,
-          [id, messageId]
-        );
-        return;
-      }
-      await pool.query(
-        `UPDATE numerologie_deliveries SET status='failed', error_message=$2, updated_at=NOW() WHERE id=$1`,
-        [id, String(lastError.message || lastError).slice(0, 1000)]
-      );
-      await sendAlert(delivery, lastError);
+      return await deliverStoredRow(delivery);
     } catch (err) {
-      console.error('[numerologie-delivery] processing error:', err.message);
+      console.error('[numerologie-delivery] processing error:', safeErrorText(err, env));
       if (delivery) {
-        await pool.query(`UPDATE numerologie_deliveries SET status='failed', error_message=$2, updated_at=NOW() WHERE id=$1`, [id, err.message.slice(0, 1000)]).catch(() => {});
+        await pool.query(`UPDATE numerologie_deliveries SET status='failed', error_message=$2, updated_at=NOW() WHERE id=$1`, [id, safeErrorText(err, env)]).catch(() => {});
         await sendAlert(delivery, err);
       }
+      return { status: 'failed', resendMessageId: null, attachmentFilename: null, attachmentSizeBytes: 0, language: emailLanguage(delivery?.locale, delivery?.billing_country), codeFormatPresent: false };
     } finally {
       activeDeliveries.delete(id);
     }
@@ -243,22 +318,134 @@ function createNumerologieDeliveryService({ pool, resend, stripe, env = process.
     }
   }
 
-  async function sendTest(to, packKey) {
-    const pack = Object.values(PACKS).find(item => item.key === packKey);
-    if (!pack) throw new Error('Invalid pack');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) throw new Error('Invalid recipient email');
-    const id = crypto.randomUUID();
-    const result = await pool.query(
-      `INSERT INTO numerologie_deliveries
-        (stripe_event_id, checkout_session_id, buyer_email, pack, status, locale)
-       VALUES ($1,$2,$3,$4,'pending','ro') RETURNING id`,
-      [`test_${id}`, `test_${id}`, to.toLowerCase(), pack.key]
-    );
-    enqueue(result.rows[0].id);
-    return result.rows[0].id;
+  async function runTestDeliveries({ to, packKeys, language, allowAnyRecipient = false }) {
+    const normalizedEmail = String(to || '').trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      const err = new Error('Invalid test email');
+      err.code = 'invalid_email';
+      throw err;
+    }
+    if (!allowAnyRecipient && !TEST_RECIPIENTS.has(normalizedEmail)) {
+      const err = new Error('Recipient is not allowed for test delivery');
+      err.code = 'recipient_not_allowed';
+      throw err;
+    }
+    if (!Array.isArray(packKeys) || !packKeys.length || packKeys.some(key => !TEST_PACKS.has(key))) {
+      const err = new Error('Invalid test pack');
+      err.code = 'invalid_pack';
+      throw err;
+    }
+    if (language !== undefined && !['ro', 'es', 'en'].includes(language)) {
+      const err = new Error('Invalid test language');
+      err.code = 'invalid_language';
+      throw err;
+    }
+
+    const client = await pool.connect();
+    const rows = [];
+    try {
+      await client.query('BEGIN');
+      await client.query(`SELECT pg_advisory_xact_lock(hashtext('numerologie-test-delivery-rate-limit'))`);
+      const count = await client.query(
+        `SELECT COUNT(*)::int AS sends
+         FROM numerologie_test_send_attempts
+         WHERE created_at > NOW() - INTERVAL '1 hour'`
+      );
+      if (Number(count.rows[0]?.sends || 0) + packKeys.length > 10) {
+        await client.query('ROLLBACK');
+        const err = new Error('Hourly test delivery limit reached');
+        err.code = 'rate_limited';
+        throw err;
+      }
+      for (const packKey of packKeys) {
+        const id = crypto.randomUUID();
+        const inserted = await client.query(
+          `INSERT INTO numerologie_deliveries
+            (stripe_event_id, checkout_session_id, buyer_email, pack, status, locale, is_test)
+           VALUES ($1,$2,$3,$4,'sending',$5,TRUE) RETURNING *`,
+          [`test_${id}`, `test_${id}`, normalizedEmail, packKey, language || null]
+        );
+        const row = inserted.rows[0];
+        rows.push(row);
+        await client.query(
+          `INSERT INTO numerologie_test_send_attempts (delivery_id) VALUES ($1)`,
+          [row.id]
+        );
+      }
+      await client.query('COMMIT');
+    } catch (err) {
+      await client.query('ROLLBACK').catch(() => {});
+      throw err;
+    } finally {
+      client.release();
+    }
+
+    const results = [];
+    for (const row of rows) {
+      activeDeliveries.add(row.id);
+      try {
+        results.push({ pack: row.pack, ...(await deliverStoredRow(row)) });
+      } finally {
+        activeDeliveries.delete(row.id);
+      }
+    }
+    return results;
   }
 
-  return { handleWebhook, processDelivery, retryPending, sendTest };
+  async function sendTestDeliveries(args) {
+    return runTestDeliveries(args);
+  }
+
+  async function sendAdminTest(to, packKey) {
+    const results = await runTestDeliveries({ to, packKeys: [packKey], language: 'ro', allowAnyRecipient: true });
+    return results[0];
+  }
+
+  async function queueResend(id) {
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      const rowResult = await client.query(
+        `SELECT id, is_test, status FROM numerologie_deliveries WHERE id=$1 FOR UPDATE`,
+        [id]
+      );
+      const row = rowResult.rows[0];
+      if (!row || row.status === 'sending') {
+        await client.query('ROLLBACK');
+        return { queued: false, reason: 'not_available' };
+      }
+      if (row.is_test) {
+        await client.query(`SELECT pg_advisory_xact_lock(hashtext('numerologie-test-delivery-rate-limit'))`);
+        const count = await client.query(
+          `SELECT COUNT(*)::int AS sends FROM numerologie_test_send_attempts
+           WHERE created_at > NOW() - INTERVAL '1 hour'`
+        );
+        if (Number(count.rows[0]?.sends || 0) >= 10) {
+          await client.query('ROLLBACK');
+          return { queued: false, reason: 'rate_limited' };
+        }
+        await client.query(`INSERT INTO numerologie_test_send_attempts (delivery_id) VALUES ($1)`, [id]);
+      }
+      await client.query(
+        `UPDATE numerologie_deliveries
+         SET status='pending', error_message=NULL, sent_at=NULL, updated_at=NOW()
+         WHERE id=$1`,
+        [id]
+      );
+      await client.query('COMMIT');
+      return { queued: true };
+    } catch (err) {
+      await client.query('ROLLBACK').catch(() => {});
+      throw err;
+    } finally {
+      client.release();
+    }
+  }
+
+  return { handleWebhook, processDelivery, retryPending, sendTestDeliveries, sendAdminTest, queueResend };
 }
 
-module.exports = { PACKS, packForPaymentLink, emailLanguage, buildEmail, createNumerologieDeliveryService };
+module.exports = {
+  PACKS, TEST_RECIPIENTS, packForPaymentLink, emailLanguage, buildEmail,
+  tokenMatches, createNumerologieDeliveryService
+};
