@@ -1135,6 +1135,7 @@ const ADMIN_JOB_POST_PATHS = new Set([
   '/seq-send-step3-strict',
   '/run-followup2-batch',
   '/sf13-send-test',
+  '/purge-toolindex-owner-removal-20261029',
 ]);
 
 function hasMatchingAdminJobToken(req) {
@@ -9834,6 +9835,90 @@ app.post('/admin/bulk-delete', express.json({ limit: '256kb' }), async (req, res
     );
     res.json({ deleted: r.rows.length, rows: r.rows });
   } catch(e) { res.status(500).json({ error: e.message }); }
+});
+
+// One-time, narrowly scoped owner-removal purge. Remove this route after use.
+app.post('/admin/purge-toolindex-owner-removal-20261029', async (req, res) => {
+  if (!hasMatchingAdminJobToken(req)) return res.status(403).json({ error: 'forbidden' });
+
+  const targets = [
+    { id: 10076, name: 'IL Automation Starter Kit' },
+    { id: 10097, name: 'IL Automation Starter Kit (DIY)' },
+    { id: 10123, name: 'IL Automation Starter Kit' },
+  ];
+  const ids = targets.map(target => target.id);
+  const deletedRelated = {};
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const found = await client.query(
+      `SELECT id, name
+         FROM directory_listings
+        WHERE id = ANY($1::int[])
+        FOR UPDATE`,
+      [ids]
+    );
+    const rowsMatchExactly =
+      found.rows.length === targets.length &&
+      targets.every(target => found.rows.some(row =>
+        Number(row.id) === target.id && row.name === target.name
+      ));
+    if (!rowsMatchExactly) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ error: 'target_listings_changed' });
+    }
+
+    await client.query(
+      `UPDATE directory_listings
+          SET redirects_to = NULL
+        WHERE redirects_to = ANY($1::int[])`,
+      [ids]
+    );
+
+    // Remove non-FK references and personal audit rows before the listing rows.
+    for (const tableName of [
+      'security_audit_log',
+      'dir_listing_clicks',
+      'dir_listing_views',
+      'weekly_spotlight_log',
+      'sotw_notifications_log',
+      'toolindex_newsletter_contacts',
+      'toolindex_outreach_campaign_contacts',
+    ]) {
+      const columnName = tableName === 'toolindex_newsletter_contacts' ||
+        tableName === 'toolindex_outreach_campaign_contacts'
+        ? 'source_listing_id'
+        : 'listing_id';
+      const removed = await client.query(
+        `DELETE FROM ${tableName} WHERE ${columnName} = ANY($1::int[])`,
+        [ids]
+      );
+      deletedRelated[tableName] = removed.rowCount;
+    }
+
+    const deleted = await client.query(
+      `DELETE FROM directory_listings
+        WHERE id = ANY($1::int[])
+        RETURNING id`,
+      [ids]
+    );
+    if (deleted.rows.length !== targets.length) {
+      throw new Error('target_listing_delete_count_mismatch');
+    }
+
+    await client.query('COMMIT');
+    return res.json({
+      ok: true,
+      deletedListings: deleted.rows.length,
+      deletedAuditEntries: deletedRelated.security_audit_log || 0,
+    });
+  } catch (error) {
+    await client.query('ROLLBACK').catch(() => {});
+    console.error('[admin/purge-toolindex-owner-removal] transaction failed');
+    return res.status(500).json({ error: 'purge_failed' });
+  } finally {
+    client.release();
+  }
 });
 
 // POST /admin/block-directory-contact — permanently block a contact/domain,
