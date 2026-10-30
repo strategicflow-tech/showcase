@@ -49,9 +49,18 @@ function packForPaymentLink(paymentLink) {
 }
 
 function emailLanguage(locale, country) {
-  const lang = String(locale || '').toLowerCase().split(/[-_]/)[0];
-  if (lang === 'ro' || (!locale || lang === 'auto') && String(country || '').toUpperCase() === 'RO') return 'ro';
-  if (lang === 'es' || (!locale || lang === 'auto') && String(country || '').toUpperCase() === 'ES') return 'es';
+  const normalizedLocale = String(locale || '').trim().toLowerCase().replace(/_/g, '-');
+  const lang = normalizedLocale.split('-')[0];
+  if (['pt', 'es', 'ro', 'en'].includes(lang) && normalizedLocale !== 'auto') return lang;
+  if (!normalizedLocale || normalizedLocale === 'auto') {
+    const billingCountry = String(country || '').trim().toUpperCase();
+    if (billingCountry === 'BR' || billingCountry === 'PT') return 'pt';
+    if (billingCountry === 'ES') return 'es';
+    if (billingCountry === 'RO' || billingCountry === 'MD') return 'ro';
+  }
+  // Preserve the former fallback for unsupported or missing locale/country data.
+  if (lang === 'ro') return 'ro';
+  if (lang === 'es') return 'es';
   return 'en';
 }
 
@@ -79,6 +88,25 @@ function buildEmail(pack, activationCode, language, downloadUrl) {
       backup: 'Enlace de descarga alternativo',
       offline: 'El archivo también funciona sin conexión. Responde a este correo si necesitas ayuda.'
     },
+    pt: {
+      subject: 'Seu pacote Strategic Flow e o código de ativação',
+      thanks: 'Obrigado pela compra! O arquivo .sfpack está anexado e o código de ativação está neste email.',
+      packLabel: 'Pacote',
+      packName: ({
+        numdeep: 'Numerologia Deep',
+        nlpdeep: 'PNL Deep',
+        crosspro: 'Perfil Cruzado Pro',
+        bundle: 'Bundle completo'
+      })[pack.key] || pack.name,
+      code: 'Seu código de ativação',
+      steps: [
+        'Abra o app em https://strategicflow.tech/numerologie-nlp/.',
+        'Acesse “Meu perfil” e depois “Pacotes”.',
+        'Escolha o arquivo anexado, digite o código e pressione “Desbloquear”.'
+      ],
+      backup: 'Link para baixar o arquivo novamente',
+      offline: 'Depois de ativado, funciona offline. Guarde o arquivo e o código para reinstalar. Se algo não funcionar, escreva para strategicflow@proton.me.'
+    },
     en: {
       subject: 'Your Strategic Flow pack and activation code',
       thanks: 'Thank you for your purchase! Your pack is ready.',
@@ -88,29 +116,31 @@ function buildEmail(pack, activationCode, language, downloadUrl) {
       offline: 'The file also works offline. Reply to this email if you need help.'
     }
   }[language];
+  const packName = copy.packName || pack.name;
   const text = [
-    copy.thanks, '', `Pack: ${pack.name}`, `${copy.code}: ${activationCode}`, '',
+    copy.thanks, '', `${copy.packLabel || 'Pack'}: ${packName}`, `${copy.code}: ${activationCode}`, '',
     `1. ${copy.steps[0]}`, `2. ${copy.steps[1]}`, `3. ${copy.steps[2]}`, '',
     `${copy.backup}: ${downloadUrl}`, '', copy.offline
   ].join('\n');
-  const html = `<div style="margin:0;background:#081426;padding:24px 12px;color:#f7f4ed;font-family:Arial,sans-serif"><div style="max-width:520px;margin:auto;background:#10213a;border:1px solid #b99755;padding:28px 24px;border-radius:12px"><p style="color:#c5a45e;font-size:12px;letter-spacing:.12em;text-transform:uppercase">Strategic Flow</p><h1 style="font-size:22px;line-height:1.35;color:#f3d68a">${escapeHtml(pack.name)}</h1><p style="font-size:16px;line-height:1.6">${escapeHtml(copy.thanks)}</p><p style="color:#d7bd78">${escapeHtml(copy.code)}</p><p style="font-size:20px;font-weight:bold;letter-spacing:.08em;background:#081426;padding:14px;border-radius:6px;overflow-wrap:anywhere">${escapeHtml(activationCode)}</p><ol style="padding-left:22px;line-height:1.8">${copy.steps.map(step => `<li>${escapeHtml(step)}</li>`).join('')}</ol><p><a style="color:#f3d68a;overflow-wrap:anywhere" href="${escapeHtml(downloadUrl)}">${escapeHtml(copy.backup)}</a></p><p style="font-size:14px;line-height:1.6;color:#cbd5e1">${escapeHtml(copy.offline)}</p></div></div>`;
+  const html = `<div style="margin:0;background:#081426;padding:24px 12px;color:#f7f4ed;font-family:Arial,sans-serif"><div style="max-width:520px;margin:auto;background:#10213a;border:1px solid #b99755;padding:28px 24px;border-radius:12px"><p style="color:#c5a45e;font-size:12px;letter-spacing:.12em;text-transform:uppercase">Strategic Flow</p><h1 style="font-size:22px;line-height:1.35;color:#f3d68a">${escapeHtml(packName)}</h1><p style="font-size:16px;line-height:1.6">${escapeHtml(copy.thanks)}</p><p style="color:#d7bd78">${escapeHtml(copy.code)}</p><p style="font-size:20px;font-weight:bold;letter-spacing:.08em;background:#081426;padding:14px;border-radius:6px;overflow-wrap:anywhere">${escapeHtml(activationCode)}</p><ol style="padding-left:22px;line-height:1.8">${copy.steps.map(step => `<li>${escapeHtml(step)}</li>`).join('')}</ol><p><a style="color:#f3d68a;overflow-wrap:anywhere" href="${escapeHtml(downloadUrl)}">${escapeHtml(copy.backup)}</a></p><p style="font-size:14px;line-height:1.6;color:#cbd5e1">${escapeHtml(copy.offline)}</p></div></div>`;
   return { subject: copy.subject, text, html };
 }
 
 function createNumerologieDeliveryService({ pool, resend, stripe, env = process.env, fetchImpl = globalThis.fetch, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)) }) {
-  const packCache = new Map();
   const activeDeliveries = new Set();
 
   async function downloadPack(pack) {
-    if (packCache.has(pack.file)) return packCache.get(pack.file);
     const base = env.NUMEROLOGIE_PACKS_BASE_URL || DEFAULT_PACKS_BASE_URL;
     const url = new URL(encodeURIComponent(pack.file), base.endsWith('/') ? base : `${base}/`);
     if (url.protocol !== 'https:') throw new Error('Pack base URL must use HTTPS');
-    const response = await fetchImpl(url, { redirect: 'error' });
+    const response = await fetchImpl(url, {
+      redirect: 'error',
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' }
+    });
     if (!response.ok) throw new Error(`Pack download returned HTTP ${response.status}`);
     const bytes = Buffer.from(await response.arrayBuffer());
     if (!bytes.length || bytes.length > 25 * 1024 * 1024) throw new Error('Pack file is empty or exceeds the 25 MB limit');
-    packCache.set(pack.file, bytes);
     return bytes;
   }
 
@@ -335,7 +365,7 @@ function createNumerologieDeliveryService({ pool, resend, stripe, env = process.
       err.code = 'invalid_pack';
       throw err;
     }
-    if (language !== undefined && !['ro', 'es', 'en'].includes(language)) {
+    if (language !== undefined && !['ro', 'es', 'en', 'pt'].includes(language)) {
       const err = new Error('Invalid test language');
       err.code = 'invalid_language';
       throw err;

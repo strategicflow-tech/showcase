@@ -22,6 +22,16 @@ test('selects buyer language from locale and country fallback', () => {
   assert.equal(emailLanguage('auto', 'RO'), 'ro');
   assert.equal(emailLanguage(null, 'ES'), 'es');
   assert.equal(emailLanguage('auto', 'US'), 'en');
+  assert.equal(emailLanguage('pt', 'ES'), 'pt');
+  assert.equal(emailLanguage('pt-BR', 'US'), 'pt');
+  assert.equal(emailLanguage('pt_BR', 'US'), 'pt');
+  assert.equal(emailLanguage('en-US', 'BR'), 'en');
+  assert.equal(emailLanguage(null, 'BR'), 'pt');
+  assert.equal(emailLanguage('auto', 'PT'), 'pt');
+  assert.equal(emailLanguage('', 'ES'), 'es');
+  assert.equal(emailLanguage('auto', 'MD'), 'ro');
+  assert.equal(emailLanguage(null, 'US'), 'en');
+  assert.equal(emailLanguage('fr-FR', 'BR'), 'en');
 });
 
 test('email contains requested steps, backup link, and pack details safely', () => {
@@ -35,7 +45,27 @@ test('email contains requested steps, backup link, and pack details safely', () 
   assert.match(email.text, /offline/);
 });
 
-test('delivery attaches the cached pack and records Resend message id', async () => {
+test('Portuguese emails use the requested subject, localized pack names, activation steps and support', () => {
+  const expectedNames = {
+    numdeep: 'Numerologia Deep',
+    nlpdeep: 'PNL Deep',
+    crosspro: 'Perfil Cruzado Pro',
+    bundle: 'Bundle completo'
+  };
+  for (const pack of Object.values(PACKS)) {
+    const email = buildEmail(pack, 'test-code-placeholder', 'pt', `https://example.test/${pack.file}`);
+    assert.equal(email.subject, 'Seu pacote Strategic Flow e o código de ativação');
+    assert.match(email.text, new RegExp(expectedNames[pack.key]));
+    assert.match(email.text, /Meu perfil/);
+    assert.match(email.text, /Pacotes/);
+    assert.match(email.text, /Desbloquear/);
+    assert.match(email.text, /offline/);
+    assert.match(email.text, /strategicflow@proton\.me/);
+    assert.match(email.text, new RegExp(pack.file));
+  }
+});
+
+test('delivery fetches current pack bytes without cache and records Resend message id', async () => {
   const queries = [];
   const delivery = {
     id: 5, checkout_session_id: 'cs_example', buyer_email: 'buyer@example.test',
@@ -46,18 +76,27 @@ test('delivery attaches the cached pack and records Resend message id', async ()
     return sql.includes("SET status='sending'") ? { rows: [delivery] } : { rows: [] };
   } };
   let sent;
+  let fetchCount = 0;
+  const fetchRequests = [];
   const service = createNumerologieDeliveryService({
     pool,
     resend: { emails: { send: async (payload, options) => { sent = { payload, options }; return { data: { id: 're_test' } }; } } },
     stripe: {},
     env: { NUMEROLOGIE_CODE_NUMDEEP: 'code-123' },
-    fetchImpl: async () => ({ ok: true, arrayBuffer: async () => Buffer.from('fake-pack') }),
+    fetchImpl: async (url, options) => {
+      fetchCount++;
+      fetchRequests.push({ url: String(url), options });
+      return { ok: true, arrayBuffer: async () => Buffer.from(`fresh-pack-${fetchCount}`) };
+    },
     sleep: async () => {}
   });
   await service.processDelivery(5);
   assert.equal(sent.payload.to, delivery.buyer_email);
   assert.equal(sent.payload.attachments[0].filename, 'numdeep.sfpack');
-  assert.equal(Buffer.from(sent.payload.attachments[0].content, 'base64').toString(), 'fake-pack');
+  assert.equal(Buffer.from(sent.payload.attachments[0].content, 'base64').toString(), 'fresh-pack-1');
+  assert.equal(fetchRequests[0].url, 'https://strategicflow.tech/numerologie-nlp/packs/numdeep.sfpack');
+  assert.equal(fetchRequests[0].options.cache, 'no-store');
+  assert.equal(fetchRequests[0].options.headers['Cache-Control'], 'no-cache');
   assert.match(sent.payload.subject, /Pachetul tău/);
   assert.equal(sent.options.idempotencyKey, `numerologie-cs_example-${delivery.updated_at.getTime()}`);
   assert.ok(queries.some(query => query.sql.includes("SET status='sent'") && query.params[1] === 're_test'));
@@ -144,6 +183,8 @@ test('test delivery sends all four allowlisted packs through the shared delivery
   const insertedRows = [];
   const attempts = [];
   const sent = [];
+  let fetchCount = 0;
+  const fetchRequests = [];
   let nextId = 1;
   const client = { query: async (sql, params = []) => {
     if (sql === 'BEGIN' || sql === 'COMMIT' || sql === 'ROLLBACK' || sql.includes('pg_advisory_xact_lock')) return { rows: [] };
@@ -179,24 +220,36 @@ test('test delivery sends all four allowlisted packs through the shared delivery
       NUMEROLOGIE_CODE_CROSSPRO: 'SFNN-GGGG-HHHH-IIII',
       NUMEROLOGIE_CODE_BUNDLE: 'SFNN-JJJJ-KKKK-LLLL'
     },
-    fetchImpl: async () => ({ ok: true, arrayBuffer: async () => Buffer.from('pack-binary') }),
+    fetchImpl: async (url, options) => {
+      fetchCount++;
+      fetchRequests.push({ url: String(url), options });
+      return { ok: true, arrayBuffer: async () => Buffer.from(`pack-binary-${fetchCount}`) };
+    },
     sleep: async () => {}
   });
 
   const results = await service.sendTestDeliveries({
     to: 'consultantcalatorii@gmail.com',
     packKeys: ['numdeep', 'nlpdeep', 'crosspro', 'bundle'],
-    language: 'ro'
+    language: 'pt'
   });
   assert.equal(results.length, 4);
   assert.deepEqual(results.map(result => result.status), ['sent', 'sent', 'sent', 'sent']);
   assert.deepEqual(results.map(result => result.attachmentFilename), ['numdeep.sfpack', 'nlpdeep.sfpack', 'crosspro.sfpack', 'bundle.sfpack']);
-  assert.ok(results.every(result => result.attachmentSizeBytes === Buffer.byteLength('pack-binary')));
-  assert.ok(results.every(result => result.language === 'ro' && result.codeFormatPresent));
-  assert.equal(insertedRows.length, 4);
+  assert.ok(results.every(result => result.language === 'pt' && result.codeFormatPresent));
+  assert.ok(sent.slice(0, 4).every(message => message.subject === 'Seu pacote Strategic Flow e o código de ativação'));
+  assert.deepEqual(fetchRequests.map(request => request.url.split('/').at(-1)), ['numdeep.sfpack', 'nlpdeep.sfpack', 'crosspro.sfpack', 'bundle.sfpack']);
+  assert.ok(fetchRequests.every(request => request.options.cache === 'no-store'));
+  const repeatResults = await service.sendTestDeliveries({
+    to: 'consultantcalatorii@gmail.com', packKeys: ['numdeep'], language: 'pt'
+  });
+  assert.equal(repeatResults[0].status, 'sent');
+  assert.equal(fetchCount, 5);
+  assert.equal(Buffer.from(sent[4].attachments[0].content, 'base64').toString(), 'pack-binary-5');
+  assert.equal(insertedRows.length, 5);
   assert.ok(insertedRows.every(row => row.is_test));
-  assert.equal(attempts.length, 4);
-  assert.equal(sent.length, 4);
+  assert.equal(attempts.length, 5);
+  assert.equal(sent.length, 5);
   assert.ok(sent.every(message => message.to === 'consultantcalatorii@gmail.com'));
 });
 
