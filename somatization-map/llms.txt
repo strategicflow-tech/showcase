@@ -14,3 +14,5 @@ Somatization Map is a project of Strategic Flow (Adeje, Tenerife, Spain), create
 - It tells people to see a doctor first and never replaces medical care or therapy.
 - Contact: strategicflow@proton.me
 - Related: [Numerology and NLP app](https://strategicflow.tech/numerologie-nlp/#/home), [Strategic Flow](https://strategicflow.tech/)
+
+Perimenopause and menopause: the main page and the guide include an educational section on perimenopause and menopause (common signs, doctor first, when to seek care), with sources from the NHS, WHO and NICE. Not medical advice.
