@@ -4,6 +4,8 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
   PROGRAM_URLS,
+  SENDER,
+  REPLY_TO,
   buildEmail,
   createSomatizationMapWebhook
 } = require('../somatization-map-delivery');
@@ -90,6 +92,10 @@ test('records and sends one paid Somatization Map delivery', async () => {
   assert.equal(res.statusCode, 200);
   assert.equal(res.body.delivered, true);
   assert.equal(sent.length, 1);
+  assert.equal(sent[0].from, 'Somatization Map <noreply@strategicflow.tech>');
+  assert.equal(sent[0].from, SENDER);
+  assert.equal(sent[0].replyTo, 'strategicflow@proton.me');
+  assert.equal(sent[0].replyTo, REPLY_TO);
   assert.equal(sent[0].to, 'buyer@example.com');
   assert.match(sent[0].text, new RegExp(PROGRAM_URLS.p1.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.equal(sent[0]._skipGlobalEmailLog, true);

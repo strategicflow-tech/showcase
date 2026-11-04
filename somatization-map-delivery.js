@@ -8,7 +8,7 @@ const PROGRAM_URLS = Object.freeze({
   pack: 'https://strategicflow.tech/somatization-map/programs/pack-03e1f052d749/'
 });
 
-const SENDER = 'Strategic Flow <noreply@strategicflow.tech>';
+const SENDER = 'Somatization Map <noreply@strategicflow.tech>';
 const REPLY_TO = 'strategicflow@proton.me';
 
 function buildEmail(programUrl) {

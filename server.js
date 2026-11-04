@@ -18705,16 +18705,6 @@ app.get('/dead-email-resurrector.html', (req, res) => res.redirect('/dead-email-
 app.get('/audience-mirror.html', (req, res) => res.redirect('/audience-mirror'));
 app.get('/best-send-window.html', (req, res) => res.redirect('/best-send-window'));
 
-const somatizationMapRoot = path.join(__dirname, 'somatization-map');
-app.use(
-  '/somatization-map/programs',
-  (req, res, next) => {
-    res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
-    next();
-  },
-  express.static(path.join(somatizationMapRoot, 'programs'), { index: 'index.html' })
-);
-app.use('/somatization-map', express.static(somatizationMapRoot, { index: 'index.html' }));
 app.use(express.static('public'));
 
 // ── ROOT — always serve app (no auth wall for free users) ─────────────────────

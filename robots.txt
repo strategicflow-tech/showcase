@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /somatization-map/programs/
 
 User-agent: GPTBot
 Allow: /
@@ -30,4 +29,3 @@ User-agent: Bytespider
 Allow: /
 
 Sitemap: https://strategicflow.tech/sitemap.xml
-Sitemap: https://strategicflow.tech/somatization-map/sitemap.xml
