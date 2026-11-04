@@ -9,6 +9,7 @@ const { Resend } = require('resend');
 const Stripe = require('stripe');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const { createNumerologieDeliveryService, tokenMatches } = require('./numerologie-delivery');
+const { createSomatizationMapWebhook } = require('./somatization-map-delivery');
 const session = require('express-session');
 const crypto  = require('crypto');
 const pgSession = require('connect-pg-simple')(session);
@@ -860,6 +861,7 @@ app.use('/webhook/stripe',          express.raw({ type: 'application/json' }));
 app.use('/api/why-stripe-webhook',  express.raw({ type: 'application/json' }));
 app.use('/api/ai-visibility-index/stripe-webhook', express.raw({ type: 'application/json' }));
 app.use('/api/numerologie/stripe-webhook', express.raw({ type: 'application/json' }));
+app.use('/api/somatization-map/stripe-webhook', express.raw({ type: 'application/json' }));
 app.use('/webhooks/resend',         express.raw({ type: 'application/json' }));
 // Skip JSON body-parsing for multipart upload routes (multer handles those)
 app.use((req, res, next) => {
@@ -18703,6 +18705,16 @@ app.get('/dead-email-resurrector.html', (req, res) => res.redirect('/dead-email-
 app.get('/audience-mirror.html', (req, res) => res.redirect('/audience-mirror'));
 app.get('/best-send-window.html', (req, res) => res.redirect('/best-send-window'));
 
+const somatizationMapRoot = path.join(__dirname, 'somatization-map');
+app.use(
+  '/somatization-map/programs',
+  (req, res, next) => {
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+    next();
+  },
+  express.static(path.join(somatizationMapRoot, 'programs'), { index: 'index.html' })
+);
+app.use('/somatization-map', express.static(somatizationMapRoot, { index: 'index.html' }));
 app.use(express.static('public'));
 
 // ── ROOT — always serve app (no auth wall for free users) ─────────────────────
@@ -33735,6 +33747,10 @@ full HTML body here
   const numerologieDeliveries = createNumerologieDeliveryService({ pool, resend, stripe });
   app.post('/api/numerologie/stripe-webhook', (req, res) => {
     void numerologieDeliveries.handleWebhook(req, res);
+  });
+  const somatizationMapWebhook = createSomatizationMapWebhook({ pool, resend, stripe });
+  app.post('/api/somatization-map/stripe-webhook', (req, res) => {
+    void somatizationMapWebhook.handleWebhook(req, res);
   });
   app.post('/api/numerologie/test-delivery', async (req, res) => {
     const expected = process.env.NUMEROLOGIE_TEST_TOKEN || '';
