@@ -6,13 +6,25 @@ const PACKS = Object.freeze({
   plink_1UVy37DpTwoDeZJnPhVDbxGW: {
     key: 'numdeep', name: 'Numerologie Deep', file: 'numdeep.sfpack', codeSecret: 'NUMEROLOGIE_CODE_NUMDEEP'
   },
+  plink_1UY4w0DpTwoDeZJnzcunk4di: {
+    key: 'numdeep', name: 'Numerologie Deep', file: 'numdeep.sfpack', codeSecret: 'NUMEROLOGIE_CODE_NUMDEEP'
+  },
   plink_1UVy38DpTwoDeZJnnWdw2gCL: {
+    key: 'nlpdeep', name: 'NLP Deep', file: 'nlpdeep.sfpack', codeSecret: 'NUMEROLOGIE_CODE_NLPDEEP'
+  },
+  plink_1UY4w3DpTwoDeZJnp8NpAnCD: {
     key: 'nlpdeep', name: 'NLP Deep', file: 'nlpdeep.sfpack', codeSecret: 'NUMEROLOGIE_CODE_NLPDEEP'
   },
   plink_1UVy38DpTwoDeZJnWJLPKySP: {
     key: 'crosspro', name: 'Profil încrucișat Pro', file: 'crosspro.sfpack', codeSecret: 'NUMEROLOGIE_CODE_CROSSPRO'
   },
+  plink_1UY4w7DpTwoDeZJnmFljIXbV: {
+    key: 'crosspro', name: 'Profil încrucișat Pro', file: 'crosspro.sfpack', codeSecret: 'NUMEROLOGIE_CODE_CROSSPRO'
+  },
   plink_1UVy39DpTwoDeZJnAJ7b59UP: {
+    key: 'bundle', name: 'Bundle all three', file: 'bundle.sfpack', codeSecret: 'NUMEROLOGIE_CODE_BUNDLE'
+  },
+  plink_1UY4wADpTwoDeZJntC0bcOWR: {
     key: 'bundle', name: 'Bundle all three', file: 'bundle.sfpack', codeSecret: 'NUMEROLOGIE_CODE_BUNDLE'
   }
 });

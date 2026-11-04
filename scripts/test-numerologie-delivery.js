@@ -7,11 +7,31 @@ const {
   createNumerologieDeliveryService
 } = require('../numerologie-delivery');
 
-test('maps only the four exact Stripe payment links', () => {
+test('maps old and new Stripe payment links to the same four packs', () => {
   assert.equal(packForPaymentLink('plink_1UVy37DpTwoDeZJnPhVDbxGW').key, 'numdeep');
   assert.equal(packForPaymentLink('plink_1UVy38DpTwoDeZJnnWdw2gCL').key, 'nlpdeep');
   assert.equal(packForPaymentLink('plink_1UVy38DpTwoDeZJnWJLPKySP').key, 'crosspro');
   assert.equal(packForPaymentLink('plink_1UVy39DpTwoDeZJnAJ7b59UP').key, 'bundle');
+  assert.equal(packForPaymentLink('plink_1UY4w0DpTwoDeZJnzcunk4di').key, 'numdeep');
+  assert.equal(packForPaymentLink('plink_1UY4w3DpTwoDeZJnp8NpAnCD').key, 'nlpdeep');
+  assert.equal(packForPaymentLink('plink_1UY4w7DpTwoDeZJnmFljIXbV').key, 'crosspro');
+  assert.equal(packForPaymentLink('plink_1UY4wADpTwoDeZJntC0bcOWR').key, 'bundle');
+  assert.deepEqual(
+    packForPaymentLink('plink_1UY4w0DpTwoDeZJnzcunk4di'),
+    packForPaymentLink('plink_1UVy37DpTwoDeZJnPhVDbxGW')
+  );
+  assert.deepEqual(
+    packForPaymentLink('plink_1UY4w3DpTwoDeZJnp8NpAnCD'),
+    packForPaymentLink('plink_1UVy38DpTwoDeZJnnWdw2gCL')
+  );
+  assert.deepEqual(
+    packForPaymentLink('plink_1UY4w7DpTwoDeZJnmFljIXbV'),
+    packForPaymentLink('plink_1UVy38DpTwoDeZJnWJLPKySP')
+  );
+  assert.deepEqual(
+    packForPaymentLink('plink_1UY4wADpTwoDeZJntC0bcOWR'),
+    packForPaymentLink('plink_1UVy39DpTwoDeZJnAJ7b59UP')
+  );
   assert.equal(packForPaymentLink('plink_other'), null);
   assert.equal(packForPaymentLink({ id: 'plink_1UVy37DpTwoDeZJnPhVDbxGW' }).file, 'numdeep.sfpack');
 });
