@@ -65,6 +65,36 @@ test('email contains requested steps, backup link, and pack details safely', () 
   assert.match(email.text, /offline/);
 });
 
+test('includes the legal confirmation in text and HTML for all four languages', () => {
+  const pack = PACKS.plink_1UVy37DpTwoDeZJnPhVDbxGW;
+  const expected = {
+    ro: {
+      offline: 'Răspunde la acest email dacă ai nevoie de ajutor.',
+      paragraph: 'Confirmare: ai cerut livrarea imediată a acestui conținut digital și ai recunoscut că, odată începută livrarea, pierzi dreptul de retragere de 14 zile. Termeni și condiții: https://strategicflow.tech/numerologie-nlp/#/terms. Vânzător: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.'
+    },
+    es: {
+      offline: 'Responde a este correo si necesitas ayuda.',
+      paragraph: 'Confirmación: pediste la entrega inmediata de este contenido digital y reconociste que, iniciada la entrega, pierdes el derecho de desistimiento de 14 días. Términos y condiciones: https://strategicflow.tech/numerologie-nlp/#/terms. Vendedor: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.'
+    },
+    pt: {
+      offline: 'Se algo não funcionar, escreva para strategicflow@proton.me.',
+      paragraph: 'Confirmação: você pediu a entrega imediata deste conteúdo digital e reconheceu que, iniciada a entrega, perde o direito de desistência de 14 dias. Termos e condições: https://strategicflow.tech/numerologie-nlp/#/terms. Vendedor: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.'
+    },
+    en: {
+      offline: 'Reply to this email if you need help.',
+      paragraph: 'Confirmation: you asked for immediate delivery of this digital content and acknowledged that, once delivery has begun, you lose the 14-day right of withdrawal. Terms and conditions: https://strategicflow.tech/numerologie-nlp/#/terms. Seller: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.'
+    }
+  };
+  for (const [language, copy] of Object.entries(expected)) {
+    const email = buildEmail(pack, 'activation-code', language, 'https://example.test/numdeep.sfpack');
+    const legalUrl = 'https://strategicflow.tech/numerologie-nlp/#/terms';
+    assert.ok(email.text.includes(copy.paragraph), `${language} confirmation missing from text`);
+    assert.ok(email.html.includes(copy.paragraph.replace(legalUrl, `<a style="color:#f3d68a;overflow-wrap:anywhere" href="${legalUrl}">${legalUrl}</a>`)), `${language} escaped HTML confirmation missing`);
+    assert.ok(email.html.includes(`href="${legalUrl}"`), `${language} clickable terms URL missing`);
+    assert.ok(email.text.indexOf(copy.paragraph) > email.text.indexOf(copy.offline), `${language} confirmation should follow the offline/help line`);
+  }
+});
+
 test('Portuguese emails use the requested subject, localized pack names, activation steps and support', () => {
   const expectedNames = {
     numdeep: 'Numerologia Deep',

@@ -83,6 +83,7 @@ function escapeHtml(value) {
 }
 
 function buildEmail(pack, activationCode, language, downloadUrl) {
+  const termsUrl = 'https://strategicflow.tech/numerologie-nlp/#/terms';
   const copy = {
     ro: {
       subject: 'Pachetul tău Strategic Flow + codul de activare',
@@ -90,7 +91,8 @@ function buildEmail(pack, activationCode, language, downloadUrl) {
       code: 'Codul tău de activare',
       steps: ['Deschide https://strategicflow.tech/numerologie-nlp/.', 'Mergi la „Contul meu”, apoi „Pachete”.', 'Încarcă fișierul atașat și introdu codul de mai sus.'],
       backup: 'Link de descărcare de rezervă',
-      offline: 'Fișierul funcționează și offline. Răspunde la acest email dacă ai nevoie de ajutor.'
+      offline: 'Fișierul funcționează și offline. Răspunde la acest email dacă ai nevoie de ajutor.',
+      confirmation: `Confirmare: ai cerut livrarea imediată a acestui conținut digital și ai recunoscut că, odată începută livrarea, pierzi dreptul de retragere de 14 zile. Termeni și condiții: ${termsUrl}. Vânzător: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.`
     },
     es: {
       subject: 'Tu paquete de Strategic Flow y tu código de activación',
@@ -98,7 +100,8 @@ function buildEmail(pack, activationCode, language, downloadUrl) {
       code: 'Tu código de activación',
       steps: ['Abre https://strategicflow.tech/numerologie-nlp/.', 'Ve a «Mi perfil» y después a «Paquetes».', 'Carga el archivo adjunto e introduce el código.'],
       backup: 'Enlace de descarga alternativo',
-      offline: 'El archivo también funciona sin conexión. Responde a este correo si necesitas ayuda.'
+      offline: 'El archivo también funciona sin conexión. Responde a este correo si necesitas ayuda.',
+      confirmation: `Confirmación: pediste la entrega inmediata de este contenido digital y reconociste que, iniciada la entrega, pierdes el derecho de desistimiento de 14 días. Términos y condiciones: ${termsUrl}. Vendedor: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.`
     },
     pt: {
       subject: 'Seu pacote Strategic Flow e o código de ativação',
@@ -117,7 +120,8 @@ function buildEmail(pack, activationCode, language, downloadUrl) {
         'Escolha o arquivo anexado, digite o código e pressione “Desbloquear”.'
       ],
       backup: 'Link para baixar o arquivo novamente',
-      offline: 'Depois de ativado, funciona offline. Guarde o arquivo e o código para reinstalar. Se algo não funcionar, escreva para strategicflow@proton.me.'
+      offline: 'Depois de ativado, funciona offline. Guarde o arquivo e o código para reinstalar. Se algo não funcionar, escreva para strategicflow@proton.me.',
+      confirmation: `Confirmação: você pediu a entrega imediata deste conteúdo digital e reconheceu que, iniciada a entrega, perde o direito de desistência de 14 dias. Termos e condições: ${termsUrl}. Vendedor: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.`
     },
     en: {
       subject: 'Your Strategic Flow pack and activation code',
@@ -125,16 +129,21 @@ function buildEmail(pack, activationCode, language, downloadUrl) {
       code: 'Your activation code',
       steps: ['Open https://strategicflow.tech/numerologie-nlp/.', 'Go to “My profile”, then “Packs”.', 'Load the attached file and enter the code above.'],
       backup: 'Backup download link',
-      offline: 'The file also works offline. Reply to this email if you need help.'
+      offline: 'The file also works offline. Reply to this email if you need help.',
+      confirmation: `Confirmation: you asked for immediate delivery of this digital content and acknowledged that, once delivery has begun, you lose the 14-day right of withdrawal. Terms and conditions: ${termsUrl}. Seller: Adrian Alexandru Iliescu (Strategic Flow Tech), strategicflow@proton.me.`
     }
   }[language];
   const packName = copy.packName || pack.name;
+  const confirmationHtml = escapeHtml(copy.confirmation).replace(
+    escapeHtml(termsUrl),
+    `<a style="color:#f3d68a;overflow-wrap:anywhere" href="${escapeHtml(termsUrl)}">${escapeHtml(termsUrl)}</a>`
+  );
   const text = [
     copy.thanks, '', `${copy.packLabel || 'Pack'}: ${packName}`, `${copy.code}: ${activationCode}`, '',
     `1. ${copy.steps[0]}`, `2. ${copy.steps[1]}`, `3. ${copy.steps[2]}`, '',
-    `${copy.backup}: ${downloadUrl}`, '', copy.offline
+    `${copy.backup}: ${downloadUrl}`, '', copy.offline, '', copy.confirmation
   ].join('\n');
-  const html = `<div style="margin:0;background:#081426;padding:24px 12px;color:#f7f4ed;font-family:Arial,sans-serif"><div style="max-width:520px;margin:auto;background:#10213a;border:1px solid #b99755;padding:28px 24px;border-radius:12px"><p style="color:#c5a45e;font-size:12px;letter-spacing:.12em;text-transform:uppercase">Strategic Flow</p><h1 style="font-size:22px;line-height:1.35;color:#f3d68a">${escapeHtml(packName)}</h1><p style="font-size:16px;line-height:1.6">${escapeHtml(copy.thanks)}</p><p style="color:#d7bd78">${escapeHtml(copy.code)}</p><p style="font-size:20px;font-weight:bold;letter-spacing:.08em;background:#081426;padding:14px;border-radius:6px;overflow-wrap:anywhere">${escapeHtml(activationCode)}</p><ol style="padding-left:22px;line-height:1.8">${copy.steps.map(step => `<li>${escapeHtml(step)}</li>`).join('')}</ol><p><a style="color:#f3d68a;overflow-wrap:anywhere" href="${escapeHtml(downloadUrl)}">${escapeHtml(copy.backup)}</a></p><p style="font-size:14px;line-height:1.6;color:#cbd5e1">${escapeHtml(copy.offline)}</p></div></div>`;
+  const html = `<div style="margin:0;background:#081426;padding:24px 12px;color:#f7f4ed;font-family:Arial,sans-serif"><div style="max-width:520px;margin:auto;background:#10213a;border:1px solid #b99755;padding:28px 24px;border-radius:12px"><p style="color:#c5a45e;font-size:12px;letter-spacing:.12em;text-transform:uppercase">Strategic Flow</p><h1 style="font-size:22px;line-height:1.35;color:#f3d68a">${escapeHtml(packName)}</h1><p style="font-size:16px;line-height:1.6">${escapeHtml(copy.thanks)}</p><p style="color:#d7bd78">${escapeHtml(copy.code)}</p><p style="font-size:20px;font-weight:bold;letter-spacing:.08em;background:#081426;padding:14px;border-radius:6px;overflow-wrap:anywhere">${escapeHtml(activationCode)}</p><ol style="padding-left:22px;line-height:1.8">${copy.steps.map(step => `<li>${escapeHtml(step)}</li>`).join('')}</ol><p><a style="color:#f3d68a;overflow-wrap:anywhere" href="${escapeHtml(downloadUrl)}">${escapeHtml(copy.backup)}</a></p><p style="font-size:14px;line-height:1.6;color:#cbd5e1">${escapeHtml(copy.offline)}</p><p style="font-size:13px;line-height:1.6;color:#cbd5e1">${confirmationHtml}</p></div></div>`;
   return { subject: copy.subject, text, html };
 }
 
