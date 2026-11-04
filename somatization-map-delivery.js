@@ -25,24 +25,56 @@ function buildEmail(programUrl) {
   };
 }
 
+function checkoutSessionIdFromRawBody(rawBody) {
+  let payload;
+  try {
+    const json = Buffer.isBuffer(rawBody) ? rawBody.toString('utf8') : rawBody;
+    if (typeof json !== 'string' || json.length > 1024 * 1024) return null;
+    payload = JSON.parse(json);
+  } catch {
+    return null;
+  }
+  const id = payload?.data?.object?.id;
+  return typeof id === 'string' && id.length <= 255 && /^cs_[A-Za-z0-9_]+$/.test(id)
+    ? id
+    : null;
+}
+
 function createSomatizationMapWebhook({ pool, resend, stripe, env = process.env, logger = console }) {
   async function handleWebhook(req, res) {
     const secret = env.STRIPE_SOMATIZATION_WEBHOOK_SECRET;
-    if (!secret) return res.status(503).send('Somatization Map webhook secret is not configured');
-
-    let event;
-    try {
-      event = stripe.webhooks.constructEvent(req.body, req.get('stripe-signature'), secret);
-    } catch {
-      logger.warn('[somatization-map-webhook] signature verification failed');
-      return res.status(400).send('Webhook signature verification failed');
+    let session;
+    let eventId;
+    if (secret) {
+      let event;
+      try {
+        event = stripe.webhooks.constructEvent(req.body, req.get('stripe-signature'), secret);
+      } catch {
+        logger.warn('[somatization-map-webhook] signature verification failed');
+        return res.status(400).send('Webhook signature verification failed');
+      }
+      if (event.type !== 'checkout.session.completed') {
+        return res.status(200).json({ received: true, ignored: true });
+      }
+      session = event.data?.object;
+      eventId = event.id;
+    } else {
+      const checkoutSessionId = checkoutSessionIdFromRawBody(req.body);
+      if (!checkoutSessionId) {
+        return res.status(400).json({ error: 'invalid_checkout_session_event' });
+      }
+      try {
+        session = await stripe.checkout.sessions.retrieve(checkoutSessionId);
+      } catch {
+        logger.warn('[somatization-map-webhook] Stripe checkout session lookup failed');
+        return res.status(503).json({ error: 'checkout_session_verification_unavailable' });
+      }
+      if (session?.id !== checkoutSessionId) {
+        return res.status(200).json({ received: true, ignored: true });
+      }
+      eventId = `fallback:${checkoutSessionId}`;
     }
 
-    if (event.type !== 'checkout.session.completed') {
-      return res.status(200).json({ received: true, ignored: true });
-    }
-
-    const session = event.data?.object;
     const metadata = session?.metadata || {};
     if (metadata.project !== 'somatization-map') {
       return res.status(200).json({ received: true, ignored: true });
@@ -66,7 +98,7 @@ function createSomatizationMapWebhook({ pool, resend, stripe, env = process.env,
          VALUES ($1,$2,$3,'sending')
          ON CONFLICT (checkout_session_id) DO NOTHING
          RETURNING checkout_session_id`,
-        [session.id, event.id, metadata.program]
+        [session.id, eventId, metadata.program]
       );
     } catch {
       logger.error('[somatization-map-webhook] unable to record checkout');
@@ -110,4 +142,11 @@ function createSomatizationMapWebhook({ pool, resend, stripe, env = process.env,
   return { handleWebhook };
 }
 
-module.exports = { PROGRAM_URLS, SENDER, REPLY_TO, buildEmail, createSomatizationMapWebhook };
+module.exports = {
+  PROGRAM_URLS,
+  SENDER,
+  REPLY_TO,
+  buildEmail,
+  checkoutSessionIdFromRawBody,
+  createSomatizationMapWebhook
+};

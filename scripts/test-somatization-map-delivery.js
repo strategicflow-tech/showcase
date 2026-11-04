@@ -118,21 +118,64 @@ test('a repeated checkout session does not send another email', async () => {
   assert.equal(sends, 0);
 });
 
-test('missing webhook secret returns 503 without verifying or sending', async () => {
-  let verified = false;
-  let sends = 0;
+test('without a webhook secret, retrieves the trusted session, deduplicates it, and ignores other projects', async () => {
+  const queries = [];
+  const sent = [];
+  const sessions = {
+    cs_test_1: paidEvent().data.object,
+    cs_test_other: paidEvent({
+      id: 'cs_test_other',
+      metadata: { project: 'another-project', program: 'p1' }
+    }).data.object
+  };
+  const insertedSessions = new Set();
   const service = createSomatizationMapWebhook({
-    pool: { query: async () => ({ rows: [] }) },
-    resend: { emails: { send: async () => { sends++; } } },
-    stripe: { webhooks: { constructEvent: () => { verified = true; } } },
+    pool: {
+      query: async (sql, params = []) => {
+        queries.push({ sql, params });
+        if (sql.includes('INSERT')) {
+          if (insertedSessions.has(params[0])) return { rows: [] };
+          insertedSessions.add(params[0]);
+          return { rows: [{ checkout_session_id: params[0] }] };
+        }
+        return { rows: [] };
+      }
+    },
+    resend: { emails: { send: async params => { sent.push(params); return { data: { id: 're_test_1' } }; } } },
+    stripe: {
+      webhooks: { constructEvent: () => { throw new Error('must use Stripe retrieval fallback'); } },
+      checkout: { sessions: { retrieve: async id => sessions[id] } }
+    },
     env: {},
     logger: { warn() {}, error() {} }
   });
-  const res = responseRecorder();
-  await service.handleWebhook(request(), res);
-  assert.equal(res.statusCode, 503);
-  assert.equal(verified, false);
-  assert.equal(sends, 0);
+
+  const makeFallbackRequest = (id, spoofedProject = 'spoofed-project') => ({
+    body: Buffer.from(JSON.stringify({
+      type: 'not-trusted',
+      data: { object: { id, metadata: { project: spoofedProject }, customer_details: { email: 'spoof@example.com' } } }
+    })),
+    get() { return 'invalid-or-missing-signature'; }
+  });
+
+  const first = responseRecorder();
+  await service.handleWebhook(makeFallbackRequest('cs_test_1'), first);
+  assert.equal(first.body.delivered, true);
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].to, 'buyer@example.com');
+  assert.equal(sent[0].from, 'Somatization Map <noreply@strategicflow.tech>');
+  assert.equal(sent[0].replyTo, 'strategicflow@proton.me');
+
+  const duplicate = responseRecorder();
+  await service.handleWebhook(makeFallbackRequest('cs_test_1'), duplicate);
+  assert.equal(duplicate.body.duplicate, true);
+  assert.equal(sent.length, 1);
+
+  const otherProject = responseRecorder();
+  await service.handleWebhook(makeFallbackRequest('cs_test_other', 'somatization-map'), otherProject);
+  assert.equal(otherProject.body.ignored, true);
+  assert.equal(sent.length, 1);
+  assert.equal(queries.filter(query => query.sql.includes('INSERT')).length, 2);
 });
 
 test('send failures are stored without logging the buyer email', async () => {
