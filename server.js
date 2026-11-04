@@ -10,6 +10,7 @@ const Stripe = require('stripe');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const { createNumerologieDeliveryService, tokenMatches } = require('./numerologie-delivery');
 const { createSomatizationMapWebhook } = require('./somatization-map-delivery');
+const { createSomatizationMapSubscribeService } = require('./somatization-map-subscribe');
 const session = require('express-session');
 const crypto  = require('crypto');
 const pgSession = require('connect-pg-simple')(session);
@@ -33742,6 +33743,9 @@ full HTML body here
   app.post('/api/somatization-map/stripe-webhook', (req, res) => {
     void somatizationMapWebhook.handleWebhook(req, res);
   });
+  const somatizationMapSubscribe = createSomatizationMapSubscribeService({ pool, resend });
+  app.options('/api/somatization-map/subscribe', somatizationMapSubscribe.handleOptions);
+  app.post('/api/somatization-map/subscribe', somatizationMapSubscribe.handleSubscribe);
   app.post('/api/numerologie/test-delivery', async (req, res) => {
     const expected = process.env.NUMEROLOGIE_TEST_TOKEN || '';
     if (!expected) return res.status(503).json({ error: 'test_mode_unavailable' });
