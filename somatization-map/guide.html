@@ -232,6 +232,16 @@ details .a{padding:0 24px 22px;color:var(--muted);max-width:70ch}
 .ctab h2{color:#fff;font-size:clamp(2rem,6vw,3.4rem)}.ctab p{color:var(--hero-muted);max-width:56ch}
 .mail{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin-top:10px}
 .mail code{font:700 1.08rem ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);padding:15px 20px;border-radius:14px;user-select:all;overflow-wrap:anywhere}
+.subf{display:grid;gap:12px;width:min(100%,520px);text-align:left;margin-top:8px}
+.subf label.l{font-weight:700;font-size:.95rem;color:#fff}
+.subf input[type=email]{font:inherit;color:#0B1B33;background:#fff;border:2px solid transparent;border-radius:14px;padding:15px 18px;min-height:54px;width:100%}
+.subf input[type=email]:focus{outline:3px solid #FFB36B;outline-offset:2px}
+.subf .chk{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;font-size:.9rem;color:var(--hero-muted);cursor:pointer}
+.subf .chk input{width:22px;height:22px;accent-color:#FF7A4C;margin:0}
+.subf .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.subf .btn{justify-content:center;width:100%}
+.subf .smsg{min-height:1.4em;font-weight:700;color:#9CF0E4}.subf .smsg.err{color:#FFB3A0}
+.or{color:var(--hero-muted);font-size:.9rem}
 /* related */
 .rel{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:34px}
 .rel a{display:block;text-decoration:none;color:var(--fg);transition:transform .25s,border-color .25s}
@@ -503,6 +513,10 @@ try{var T=document.querySelectorAll('input[data-k]');T.forEach(function(i){try{v
 document.addEventListener('input',function(ev){var i=ev.target;if(!i.getAttribute||!i.getAttribute('data-k'))return;var k=i.getAttribute('data-k');
 document.querySelectorAll('input[data-k="'+k+'"]').forEach(function(o){if(o!==i)o.value=i.value});try{localStorage.setItem('sm-t-'+k,i.value)}catch(x){}})}catch(x){}
 init();setTimeout(function(){document.querySelectorAll('.L:not([hidden]) .rv').forEach(function(x){if(x.getBoundingClientRect().top<innerHeight)x.classList.add('in')})},50)})();
+document.addEventListener('submit',function(ev){var f=ev.target;if(!f.classList||!f.classList.contains('subf'))return;ev.preventDefault();var m=f.querySelector('.smsg'),em=f.querySelector('input[name=email]').value.trim(),ck=f.querySelector('input[name=consent]').checked,hp=f.querySelector('input[name=website]').value;m.className='smsg';
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)||!ck){m.textContent=f.getAttribute('data-bad');m.className='smsg err';return}
+var b=f.querySelector('button');b.disabled=true;var lg=(document.documentElement.lang||'en').slice(0,2);
+fetch('https://strategic-flow-audit.replit.app/api/somatization-map/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,lang:lg,consent:true,website:hp})}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(){m.textContent=f.getAttribute('data-ok');f.querySelector('input[name=email]').value='';b.disabled=false}).catch(function(){m.textContent=f.getAttribute('data-err');m.className='smsg err';b.disabled=false})});
 </script>
 <script>
 (function(){var CIM={"en": {"ok": "Added to the next free day in your tracker.", "okc": "Copied.", "full": "Your 7 days are all filled in. Copied instead.", "zone0": "Choose a zone first."}, "ro": {"ok": "Adăugat în prima zi liberă din jurnal.", "okc": "Copiat.", "full": "Cele 7 zile sunt completate. Am copiat în loc.", "zone0": "Alege mai întâi o zonă."}, "es": {"ok": "Añadido al siguiente día libre de tu diario.", "okc": "Copiado.", "full": "Tus 7 días están completos. He copiado en su lugar.", "zone0": "Elige primero una zona."}, "fr": {"ok": "Ajouté au prochain jour libre de votre journal.", "okc": "Copié.", "full": "Vos 7 jours sont remplis. J’ai copié à la place.", "zone0": "Choisissez d’abord une zone."}};
