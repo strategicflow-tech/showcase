@@ -36,7 +36,9 @@ function paidEvent(overrides = {}) {
       object: {
         id: 'cs_test_1',
         payment_status: 'paid',
-        metadata: { project: 'somatization-map', program: 'p1' },
+        metadata: { project: 'somatization-map', program: 'p1', consent: 'v2' },
+        consent: { terms_of_service: 'accepted' },
+        created: 1_800_000_000,
         customer_details: { email: 'buyer@example.com' },
         ...overrides
       }
@@ -100,7 +102,37 @@ test('records and sends one paid Somatization Map delivery', async () => {
   assert.match(sent[0].text, new RegExp(PROGRAM_URLS.p1.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.equal(sent[0]._skipGlobalEmailLog, true);
   assert.match(queries[0].sql, /ON CONFLICT \(checkout_session_id\) DO NOTHING/);
+  assert.match(queries[0].sql, /terms_of_service_accepted_at/);
+  assert.equal(queries[0].params[3], true);
+  assert.equal(queries[0].params[4].toISOString(), new Date(1_800_000_000_000).toISOString());
   assert.match(queries[1].sql, /resend_message_id/);
+});
+
+test('stores null consent fields when acceptance is absent or metadata is not v2', async () => {
+  for (const override of [
+    { metadata: { project: 'somatization-map', program: 'p1', consent: 'v2' }, consent: {} },
+    { metadata: { project: 'somatization-map', program: 'p1' }, consent: { terms_of_service: 'accepted' } }
+  ]) {
+    let insertParams;
+    const service = createSomatizationMapWebhook({
+      pool: {
+        query: async (sql, params) => {
+          if (sql.includes('INSERT')) {
+            insertParams = params;
+            return { rows: [{ checkout_session_id: 'cs_test_1' }] };
+          }
+          return { rows: [] };
+        }
+      },
+      resend: { emails: { send: async () => ({ data: { id: 're_test_1' } }) } },
+      stripe: { webhooks: { constructEvent: () => paidEvent(override) } },
+      env: { STRIPE_SOMATIZATION_WEBHOOK_SECRET: 'test-secret' },
+      logger: { warn() {}, error() {} }
+    });
+    await service.handleWebhook(request(), responseRecorder());
+    assert.equal(insertParams[3], null);
+    assert.equal(insertParams[4], null);
+  }
 });
 
 test('a repeated checkout session does not send another email', async () => {

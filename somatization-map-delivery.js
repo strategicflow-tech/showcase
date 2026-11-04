@@ -90,15 +90,23 @@ function createSomatizationMapWebhook({ pool, resend, stripe, env = process.env,
       return res.status(200).json({ received: true, ignored: true });
     }
 
+    const termsAccepted = metadata.consent === 'v2'
+      && session.consent?.terms_of_service === 'accepted';
+    const termsAcceptedAt = termsAccepted
+      && Number.isFinite(session.created)
+      ? new Date(session.created * 1000)
+      : null;
+
     let inserted;
     try {
       inserted = await pool.query(
         `INSERT INTO somatization_map_deliveries
-           (checkout_session_id, stripe_event_id, program, status)
-         VALUES ($1,$2,$3,'sending')
+           (checkout_session_id, stripe_event_id, program, status,
+            terms_of_service_accepted, terms_of_service_accepted_at)
+         VALUES ($1,$2,$3,'sending',$4,$5)
          ON CONFLICT (checkout_session_id) DO NOTHING
          RETURNING checkout_session_id`,
-        [session.id, eventId, metadata.program]
+        [session.id, eventId, metadata.program, termsAccepted ? true : null, termsAcceptedAt]
       );
     } catch {
       logger.error('[somatization-map-webhook] unable to record checkout');
