@@ -13,15 +13,15 @@ const REPLY_TO = 'strategicflow@proton.me';
 
 function buildEmail(programUrl) {
   const blocks = [
-    `EN — Thank you for your purchase. Your Somatization Map program: ${programUrl}. This content is educational and is not medical advice.`,
-    `RO — Îți mulțumim pentru achiziție. Programul tău Somatization Map: ${programUrl}. Conținutul este educațional și nu reprezintă sfat medical.`,
-    `ES — Gracias por tu compra. Tu programa Somatization Map: ${programUrl}. Este contenido es educativo y no constituye consejo médico.`,
-    `FR — Merci pour votre achat. Votre programme Somatization Map : ${programUrl}. Ce contenu est éducatif et ne constitue pas un avis médical.`
+    `EN — Thank you for your purchase. Your Somatization Map program: ${programUrl}\n\nYou requested immediate access to this digital content during the 14-day withdrawal period and acknowledged that your right of withdrawal ends when access begins. Terms: https://strategicflow.tech/somatization-map/legal.html\n\nThis content is educational and is not medical advice.`,
+    `RO — Îți mulțumim pentru achiziție. Programul tău Somatization Map: ${programUrl}\n\nAi cerut acces imediat la acest conținut digital în perioada de retragere de 14 zile și ai luat act că dreptul de retragere se încheie când începe accesul. Termeni: https://strategicflow.tech/somatization-map/legal.html\n\nConținutul este educațional și nu reprezintă sfat medical.`,
+    `ES — Gracias por tu compra. Tu programa Somatization Map: ${programUrl}\n\nHas solicitado acceso inmediato a este contenido digital durante el plazo de desistimiento de 14 días y has reconocido que el derecho de desistimiento termina cuando comienza el acceso. Términos: https://strategicflow.tech/somatization-map/legal.html\n\nEste contenido es educativo y no constituye consejo médico.`,
+    `FR — Merci pour votre achat. Votre programme Somatization Map : ${programUrl}\n\nVous avez demandé l’accès immédiat à ce contenu numérique pendant le délai de rétractation de 14 jours et reconnu que le droit de rétractation prend fin dès le début de l’accès. Conditions : https://strategicflow.tech/somatization-map/legal.html\n\nCe contenu est éducatif et ne constitue pas un avis médical.`
   ];
   return {
     subject: 'Your Somatization Map program',
     text: blocks.join('\n\n'),
-    html: `<div data-readable-email="v2" style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#172033;line-height:1.6"><p>${blocks[0]}</p><p>${blocks[1]}</p><p>${blocks[2]}</p><p>${blocks[3]}</p></div>`
+    html: `<div data-readable-email="v2" style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#172033;line-height:1.6">${blocks.map(block => `<p>${block.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</p>`).join('')}</div>`
   };
 }
 

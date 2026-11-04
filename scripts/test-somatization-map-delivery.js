@@ -55,6 +55,12 @@ test('maps every supported program and includes four language blocks', () => {
   assert.match(email.text, /ES —/);
   assert.match(email.text, /FR —/);
   assert.equal((email.html.match(/<p>/g) || []).length, 4);
+  assert.match(email.text, /You requested immediate access.*14-day withdrawal period.*Terms: https:\/\/strategicflow\.tech\/somatization-map\/legal\.html/);
+  assert.match(email.text, /Ai cerut acces imediat.*14 zile.*Termeni: https:\/\/strategicflow\.tech\/somatization-map\/legal\.html/);
+  assert.match(email.text, /Has solicitado acceso inmediato.*14 días.*Términos: https:\/\/strategicflow\.tech\/somatization-map\/legal\.html/);
+  assert.match(email.text, /Vous avez demandé l’accès immédiat.*14 jours.*Conditions : https:\/\/strategicflow\.tech\/somatization-map\/legal\.html/);
+  assert.match(email.html, /<br>You requested immediate access/);
+  assert.match(email.html, /<br>Ai cerut acces imediat/);
 });
 
 test('ignores other events and sessions outside the project without touching the database', async () => {
