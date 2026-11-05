@@ -2,6 +2,8 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const express = require('express');
+const { once } = require('node:events');
 const { createSomatizationMapReviewsService } = require('../somatization-map-reviews');
 
 function responseRecorder() {
@@ -144,6 +146,43 @@ test('confirmation triggers moderator email; moderation changes state only after
   assert.equal(publicList.body.average, 5);
   assert.equal(publicList.body.reviews[0].first_name, 'Ana');
   assert.equal(Object.hasOwn(publicList.body.reviews[0], 'email'), false);
+});
+
+test('Express parses urlencoded moderation forms and applies approve/reject only on POST', async () => {
+  for (const action of ['approve', 'reject']) {
+    const { service, emails, getReview } = harness();
+    await service.handleSubmit(request({ ...validReview, email: `${action}@example.com` }), responseRecorder());
+    const token = emails[0].text.match(/confirm\?token=([a-f0-9]{64})/)[1];
+    await service.handleConfirm(request({}, { query: { token } }), responseRecorder());
+    assert.equal(getReview().status, 'confirmed');
+
+    const moderationLabel = action === 'approve' ? 'Approve' : 'Reject';
+    const moderationLine = emails[1].text.split('\n').find(line => line.startsWith(`${moderationLabel}: `));
+    assert.ok(moderationLine, `expected a signed ${action} link in the moderator email`);
+    const moderationLink = moderationLine.slice(moderationLabel.length + 2);
+    const link = new URL(moderationLink);
+    const app = express();
+    app.post(
+      '/api/somatization-map/reviews/moderate',
+      express.urlencoded({ extended: false, limit: '2kb' }),
+      service.handleModerationPost
+    );
+    const server = app.listen(0, '127.0.0.1');
+    await once(server, 'listening');
+    try {
+      const response = await fetch(`http://127.0.0.1:${server.address().port}/api/somatization-map/reviews/moderate`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(Object.fromEntries(link.searchParams.entries()))
+      });
+      assert.equal(response.status, 200);
+      assert.match(await response.text(), /Review moderation saved/);
+      assert.equal(getReview().status, action === 'approve' ? 'approved' : 'rejected');
+    } finally {
+      server.close();
+      await once(server, 'close');
+    }
+  }
 });
 
 test('CORS is limited to the approved origins and public list has a short cache', async () => {

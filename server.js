@@ -33760,7 +33760,11 @@ full HTML body here
   app.get('/api/somatization-map/reviews/public', somatizationMapReviews.handlePublicList);
   app.get('/api/somatization-map/reviews/confirm', somatizationMapReviews.handleConfirm);
   app.get('/api/somatization-map/reviews/moderate', somatizationMapReviews.handleModerationGet);
-  app.post('/api/somatization-map/reviews/moderate', somatizationMapReviews.handleModerationPost);
+  app.post(
+    '/api/somatization-map/reviews/moderate',
+    express.urlencoded({ extended: false, limit: '2kb' }),
+    somatizationMapReviews.handleModerationPost
+  );
   app.post('/admin/somatization-map/reviews/delete', async (req, res) => {
     if (!isAdmin(req.session?.userEmail)) return res.status(403).json({ ok: false, error: 'forbidden' });
     if (!hasValidAdminCsrfToken(req)) return res.status(403).json({ ok: false, error: 'invalid_csrf' });
