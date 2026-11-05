@@ -14,7 +14,8 @@
     "test:directory-submit": "node --test scripts/test-directory-submit.js",
     "test:ai-visibility-questions": "node --test scripts/test-ai-visibility-question-engine.js",
     "test:numerologie-delivery": "node --test scripts/test-numerologie-delivery.js",
-    "test:somatization-map-subscribe": "node --test scripts/test-somatization-map-subscribe.js"
+    "test:somatization-map-subscribe": "node --test scripts/test-somatization-map-subscribe.js",
+    "test:somatization-map-reviews": "node --test scripts/test-somatization-map-reviews.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.86.1",

@@ -11,6 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const { createNumerologieDeliveryService, tokenMatches } = require('./numerologie-delivery');
 const { createSomatizationMapWebhook } = require('./somatization-map-delivery');
 const { createSomatizationMapSubscribeService } = require('./somatization-map-subscribe');
+const { createSomatizationMapReviewsService } = require('./somatization-map-reviews');
 const session = require('express-session');
 const crypto  = require('crypto');
 const pgSession = require('connect-pg-simple')(session);
@@ -33746,6 +33747,25 @@ full HTML body here
   const somatizationMapSubscribe = createSomatizationMapSubscribeService({ pool, resend });
   app.options('/api/somatization-map/subscribe', somatizationMapSubscribe.handleOptions);
   app.post('/api/somatization-map/subscribe', somatizationMapSubscribe.handleSubscribe);
+  const somatizationMapReviews = createSomatizationMapReviewsService({ pool, resend });
+  // Startup initialization is best-effort; request handlers also await the same schema promise.
+  void somatizationMapReviews.ensureSchema().catch(() => {});
+  const somatizationReviewCleanup = setInterval(() => {
+    somatizationMapReviews.cleanupExpired().catch(() => {});
+  }, 24 * 60 * 60 * 1000);
+  if (typeof somatizationReviewCleanup.unref === 'function') somatizationReviewCleanup.unref();
+  app.options('/api/somatization-map/reviews', somatizationMapReviews.handleOptions);
+  app.post('/api/somatization-map/reviews', somatizationMapReviews.handleSubmit);
+  app.options('/api/somatization-map/reviews/public', somatizationMapReviews.handlePublicOptions);
+  app.get('/api/somatization-map/reviews/public', somatizationMapReviews.handlePublicList);
+  app.get('/api/somatization-map/reviews/confirm', somatizationMapReviews.handleConfirm);
+  app.get('/api/somatization-map/reviews/moderate', somatizationMapReviews.handleModerationGet);
+  app.post('/api/somatization-map/reviews/moderate', somatizationMapReviews.handleModerationPost);
+  app.post('/admin/somatization-map/reviews/delete', async (req, res) => {
+    if (!isAdmin(req.session?.userEmail)) return res.status(403).json({ ok: false, error: 'forbidden' });
+    if (!hasValidAdminCsrfToken(req)) return res.status(403).json({ ok: false, error: 'invalid_csrf' });
+    return somatizationMapReviews.handleDeleteByEmail(req, res);
+  });
   app.post('/api/numerologie/test-delivery', async (req, res) => {
     const expected = process.env.NUMEROLOGIE_TEST_TOKEN || '';
     if (!expected) return res.status(503).json({ error: 'test_mode_unavailable' });
