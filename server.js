@@ -2679,7 +2679,7 @@ h1{font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}
   <p class="url">🔗 ${esc(d.url)}</p>
   <hr class="divider"/>
   <p class="cta-title">Is this your product?</p>
-  <p class="cta-sub">Claim this listing to publish it on ToolIndex, correct the description, add your logo, and get a permanent dofollow backlink from strategicflow.tech (DR&nbsp;86).</p>
+  <p class="cta-sub">Claim this listing to publish it on ToolIndex, correct the description, add your logo, and get a permanent dofollow backlink from strategicflow.tech.</p>
   <a href="/directory?claim=${d.id}" class="btn-claim">Claim &amp; publish free →</a>
 </div>
 </body>
@@ -16916,7 +16916,7 @@ app.post('/api/directory/claim/confirm-backlink', async (req, res) => {
             <div style="font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#00d4c8;margin-bottom:10px;">ToolIndex — Strategic Flow Directory</div>
             <h2 style="font-size:22px;font-weight:800;color:#ffffff;margin:0 0 8px;">Listing claimed ✓</h2>
             <p style="font-size:14px;color:#7a9ab8;margin:0 0 6px;">You're now the verified owner of <strong style="color:#e8f0fa;">${name}</strong>.</p>
-            <p style="font-size:13px;color:#7a9ab8;margin:0 0 16px;">Your dofollow backlink from ToolIndex (DR 86) is live. You can edit your description, logo, and screenshots directly on your listing card.</p>
+            <p style="font-size:13px;color:#7a9ab8;margin:0 0 16px;">Your dofollow backlink from ToolIndex is live. You can edit your description, logo, and screenshots directly on your listing card.</p>
             <a href="https://strategic-flow-audit.replit.app/directory/${toListingSlug(name, listing_id)}" style="display:inline-block;background:#00d4c8;color:#041214;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;text-decoration:none;font-family:monospace;letter-spacing:.04em;">View my listing →</a>
           </div>
           ${promotionHtml}
