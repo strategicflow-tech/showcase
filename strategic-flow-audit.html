@@ -1305,6 +1305,37 @@
 .cookie-btn.accept{background:#00e5a0;color:#07090f;border-color:#00e5a0;}
 .cookie-btn.accept:hover{background:#00c88a;}
 @media(max-width:640px){#cookie-banner{padding:16px 18px;}.cookie-inner{flex-direction:column;align-items:stretch;gap:14px;}.cookie-actions{justify-content:flex-end;}}
+
+/* Raise secondary-text contrast without changing the page palette or layout. */
+:root { --text-readable: #e8e4dd; }
+nav a:not(.nav-cta),
+.hero-subline,
+.btn-ghost,
+.mock-url,
+.mock-label,
+.mock-input[style*="color"],
+.result-label,
+.stat-desc,
+.section-sub,
+.step-desc,
+.output-text p,
+.audit-timestamp,
+.sb-key,
+.rebuild-before,
+.ab-text,
+.diag-desc,
+.footer-tagline,
+.footer-col a,
+.footer-copy,
+.ticker-item,
+header .logo > span:last-child,
+footer .footer-brand > div[style*="color"],
+.cookie-text,
+.cookie-btn:not(.accept),
+.sf-close {
+  color: var(--text-readable) !important;
+}
+.btn-ghost:hover { color: var(--white) !important; }
 </style>
 
 <div id="sf-sticky-bar">
