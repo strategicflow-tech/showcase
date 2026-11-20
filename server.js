@@ -18707,6 +18707,13 @@ app.get('/dead-email-resurrector.html', (req, res) => res.redirect('/dead-email-
 app.get('/audience-mirror.html', (req, res) => res.redirect('/audience-mirror'));
 app.get('/best-send-window.html', (req, res) => res.redirect('/best-send-window'));
 
+app.get('/download-carousel-pages.html', (req, res, next) => {
+  const file = path.join(__dirname, 'generated-artifacts', 'carousel-pages.html');
+  res.download(file, 'strategic-flow-carousel-pages.html', (error) => {
+    if (error && !res.headersSent) next(error);
+  });
+});
+
 app.use(express.static('public'));
 
 // ── ROOT — always serve app (no auth wall for free users) ─────────────────────
