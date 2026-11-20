@@ -831,7 +831,7 @@
     const status = document.getElementById('scraperStatus');
     const btn = document.querySelector('.scraper-btn');
 
-    const SYSTEM_PROMPT = \`You are the Strategic Flow Changelog Audit engine.
+    const SYSTEM_PROMPT = `You are the Strategic Flow Changelog Audit engine.
 You analyze SaaS changelog pages and apply the Strategic Flow Method: 7 structural bug diagnostics + full rebuild.
 
 Return ONLY valid JSON. No markdown, no backticks, no preamble.
@@ -891,14 +891,14 @@ The 7 bugs to diagnose (in order):
 6. Dead-End CTA — no ownership language, sends reader to docs
 7. Buried Before/After — contrast implied not explicit
 
-Apply Strategic Flow vocabulary: consequence, ownership language, curiosity gap, stat cards, named proof.\`;
+Apply Strategic Flow vocabulary: consequence, ownership language, curiosity gap, stat cards, named proof.`;
 
-    const USER_PROMPT = \`Analyze this changelog content from \${companyName || 'this SaaS company'}.
+    const USER_PROMPT = `Analyze this changelog content from ${companyName || 'this SaaS company'}.
 Apply all 7 Strategic Flow bug diagnostics. Rebuild everything.
 Return only the JSON object.
 
 CHANGELOG CONTENT:
-\${pageText}\`;
+${pageText}`;
 
     try {
       const response = await fetch('https://strategic-flow-audit.replit.app/changelog-audit', {

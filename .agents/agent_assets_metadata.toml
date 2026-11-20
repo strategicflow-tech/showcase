@@ -56,3 +56,17 @@ mtime_ms = 1790616581732
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:c9181a19-fb11-45cc-8b09-db6ff8bbbd8a/49b5406c-443e-4673-84cc-76b44ffd7914/93ffcd76-24e1-4dda-aec5-70c276313900"
 storage_version_token = "1790616587182046"
 content_type = "image/png"
+
+[[outputs]]
+id = "ApMZzvtRTV9kHRY4guyaI"
+uri = "file://generated-artifacts/carousel-pages.html"
+type = "html"
+title = "Strategic Flow — carousel pages by sales priority"
+description = "Updated searchable HTML inventory of 265 carousel pages, ranked by sales priority and labeled by publication status."
+logical_id = "5133c1d4-10b4-40a9-9486-c2fc34fbda96"
+content_hash = "sha256:28c033beb529d3ef637b5046a629232cf845c63fa15ca0f561ff372e50968dde"
+size = 159605
+mtime_ms = 1795137291821
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:c9181a19-fb11-45cc-8b09-db6ff8bbbd8a/5133c1d4-10b4-40a9-9486-c2fc34fbda96/fa13901e-31ed-4fbe-af8a-fd45828329c4"
+storage_version_token = "1795137292211415"
+content_type = "text/html"
