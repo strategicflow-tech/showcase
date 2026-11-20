@@ -70,3 +70,17 @@ mtime_ms = 1795137291821
 storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:c9181a19-fb11-45cc-8b09-db6ff8bbbd8a/5133c1d4-10b4-40a9-9486-c2fc34fbda96/0b78899f-7be8-430d-bb0c-d00d4b531acc"
 storage_version_token = "1795149251451259"
 content_type = "text/html"
+
+[[outputs]]
+id = "rKpBJvWOBVjIX2seIuioT"
+uri = "file://generated-artifacts/download-carousel-pages.html"
+type = "html"
+title = "Descarcă raportul HTML"
+description = "Deschide această pagină și apasă butonul „Descarcă fișierul HTML” pentru a salva raportul pe dispozitiv."
+logical_id = "c1389db0-087f-4396-a64a-0874261fd105"
+content_hash = "sha256:35d9032415c68f9c613053daf82c29ef236a966df9d875329127a6363b8404d8"
+size = 214750
+mtime_ms = 1795149375084
+storage_uri = "gcs://replit-rams-assets-worf/rams/assets/repl:c9181a19-fb11-45cc-8b09-db6ff8bbbd8a/c1389db0-087f-4396-a64a-0874261fd105/1716b798-8626-41a4-86dd-aa843b3291e5"
+storage_version_token = "1795149375672641"
+content_type = "text/html"
