@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "last_verified": "2026-11-23",
+  "mailgun": {
+    "basic": {
+      "monthly_usd": "99",
+      "free_trial_months": 1,
+      "link_validation": false,
+      "spam_checks": false
+    },
+    "premium": {
+      "monthly_usd": "199",
+      "free_trial_months": 1,
+      "link_validation": true,
+      "spam_checks": true
+    }
+  },
+  "litmus": {
+    "pricing_published": false,
+    "contact_sales_required": true,
+    "prices": [],
+    "pricing_summary": "Pricing is not published on the page; sales contact is required.",
+    "final_url": "https://www.litmus.com/contact-sales"
+  },
+  "email_on_acid": {
+    "legacy_pricing_url_status": 404,
+    "state": "unavailable",
+    "final_url": "https://www.emailonacid.com/plans-pricing/"
+  },
+  "sources": {
+    "mailgun": "https://www.mailgun.com/pricing/inspect/",
+    "litmus": "https://www.litmus.com/pricing-litmus",
+    "email_on_acid": "https://www.emailonacid.com/plans-pricing/"
+  }
+}

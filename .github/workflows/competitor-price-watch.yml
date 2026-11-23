@@ -1,0 +1,105 @@
+name: Competitor price watch
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+
+concurrency:
+  group: competitor-price-watch-main
+  cancel-in-progress: false
+
+jobs:
+  check-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run offline safety tests
+        run: python -m unittest scripts.test_competitor_prices
+
+      - name: Check official pricing sources and render safe updates
+        id: update
+        run: python scripts/update_competitor_prices.py --report run-report.json
+
+      - name: Commit and push verified updates
+        id: commit
+        if: steps.update.outputs.changed == 'true' && steps.update.outputs.status != 'manual_review'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add competitor-prices.json free-pre-send-check.html sitemap.xml
+          if git diff --cached --quiet; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            echo "The verified files already match the checked-in versions."
+          else
+            git commit -m "Update verified competitor pricing"
+            git push origin HEAD:main
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Request the GitHub Pages build
+        id: pages
+        if: steps.commit.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          response_file="$RUNNER_TEMP/pages-build-response.json"
+          status=$(curl --silent --show-error --output "$response_file" --write-out '%{http_code}' \
+            --request POST \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/pages/builds")
+          if [ "$status" != "201" ]; then
+            cat "$response_file"
+            echo "GitHub Pages rejected the build request with HTTP $status."
+            exit 1
+          fi
+          echo "GitHub Pages accepted the build request."
+
+      - name: Notify on changes, manual review, or failed publishing
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          UPDATE_STATUS: ${{ steps.update.outcome }}
+          PUSH_STATUS: ${{ steps.commit.outcome }}
+          PAGES_STATUS: ${{ steps.pages.outcome }}
+        run: |
+          python scripts/notify_competitor_prices.py \
+            --event auto \
+            --update-status "$UPDATE_STATUS" \
+            --push-status "$PUSH_STATUS" \
+            --pages-status "$PAGES_STATUS"
+
+      - name: Mark unclear source results for manual review
+        if: steps.update.outputs.status == 'manual_review'
+        run: |
+          echo "Source data was unclear; prices and verification dates were not changed."
+          exit 1
+
+      - name: Save the run report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: competitor-price-check-${{ github.run_number }}
+          path: run-report.json
+          if-no-files-found: warn
+          retention-days: 90

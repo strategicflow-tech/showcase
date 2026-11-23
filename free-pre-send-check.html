@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script type="application/ld+json">
+  <script type="application/ld+json" data-competitor-price-jsonld>
   {
     "@context":"https://schema.org",
     "@graph":[
@@ -33,7 +33,7 @@
       {"@type":"FAQPage","mainEntity":[
         {"@type":"Question","name":"What does the pre-send checker check?","acceptedAnswer":{"@type":"Answer","text":"It checks extracted HTTP(S) links for reachable, redirected, broken, timed-out, blocked, or error responses; flags common spam-risk wording patterns; extracts numbers, prices, percentages, durations, dates, and selected claims for human verification; and, for HTML, estimates image-to-text balance and notes when a separate text alternative was not provided. These checks do not verify factual truth, run an inbox placement test, or include email-client previews."}},
         {"@type":"Question","name":"Is this pre-send email checker truly free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Strategic Flow's pre-send checker costs $0 and requires no account. Link checks send only extracted HTTP(S) URLs to the checker endpoint; the subject and email body are not sent."}},
-      {"@type":"Question","name":"How is this different from Email on Acid, Litmus, or Mailgun Inspect?","acceptedAnswer":{"@type":"Answer","text":"This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026."}},
+        {"@type":"Question","name":"How is this different from Email on Acid, Litmus, or Mailgun Inspect?","acceptedAnswer":{"@type":"Answer","text":"This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026."}},
         {"@type":"Question","name":"Is my email stored or sent to a server?","acceptedAnswer":{"@type":"Answer","text":"The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests."}},
         {"@type":"Question","name":"Does this checker guarantee deliverability?","acceptedAnswer":{"@type":"Answer","text":"No. Spam-risk patterns are simple local signals, not a deliverability prediction or guarantee. Inbox placement also depends on factors this tool does not test, including sender reputation, authentication, recipient engagement, and mailbox-provider decisions."}},
         {"@type":"Question","name":"What are facts-to-verify?","acceptedAnswer":{"@type":"Answer","text":"They are numbers and claim patterns that may deserve a human source check, including prices, percentages, durations, dates, and wording such as only, #1, or free for X days. The tool extracts them for review; it does not verify whether any claim is true."}}
@@ -195,7 +195,7 @@
   <header class="hero">
     <div class="wrap hero-inner">
       <div class="eyebrow">Pre-send checks · no account</div>
-        <h1>Mailgun Inspect Premium is $199 a month after its free month for link and spam checks. <em>This pre-send check is free.</em></h1>
+      <h1>Mailgun Inspect Premium is <span data-price-slot="premium_hero_phrase">$199 a month after its free month</span> for link and spam checks. <em>This pre-send check is free.</em></h1>
       <div class="price-spotlight" aria-label="Strategic Flow pre-send check costs zero dollars or euros">
         <span class="price-spotlight-label">Strategic Flow pre-send check</span>
         <span class="price-spotlight-amount">$0 / €0</span>
@@ -216,21 +216,21 @@
         <div class="compare-shell">
           <div class="compare-title">
             <div><h3>Pre-send checking options</h3><p>Official pricing-page status and supported checks</p></div>
-            <div class="stamp">SOURCE CHECKED<br>23 NOV 2026</div>
+            <div class="stamp">SOURCE CHECKED<br><span data-price-slot="source_date_stamp">23 NOV 2026</span></div>
           </div>
           <div class="table-wrap" role="region" aria-label="Pre-send tool pricing comparison" tabindex="0">
             <table>
               <thead><tr><th scope="col">Tool</th><th scope="col">Listed price</th><th scope="col">Link and spam checks</th><th scope="col">Source</th></tr></thead>
               <tbody>
                 <tr class="own-row"><td>Strategic Flow pre-send check <span class="free-badge">FREE</span></td><td><span class="own-price">$0 / €0</span><span class="own-price-note">No account</span></td><td>Extracted URL checks, local spam-risk patterns, claims to verify, and HTML image/text estimate. No client previews.</td><td class="source-links"><a href="#checker">Run the free check below</a></td></tr>
-                <tr><td>Mailgun Inspect Basic</td><td><strong>$99/mo</strong> after the first free month</td><td>Basic does not include link validation or spam content checks.</td><td class="source-links"><a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Official Mailgun Inspect pricing</a></td></tr>
-                <tr><td>Mailgun Inspect Premium</td><td><strong>$199/mo</strong> after the first free month</td><td>Includes link validation and spam content checks.</td><td class="source-links"><a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Official Mailgun Inspect pricing</a></td></tr>
-                <tr><td>Litmus</td><td>Pricing is not published on the page; sales contact is required.</td><td>See its current plan details directly; this page does not infer unpublished prices.</td><td class="source-links"><a href="https://www.litmus.com/pricing-litmus" target="_blank" rel="noopener noreferrer">Official Litmus pricing page</a></td></tr>
+                <tr><td>Mailgun Inspect Basic</td><td><strong data-price-slot="basic_monthly_price">$99/mo</strong> <span data-price-slot="basic_trial_phrase">after the first free month</span></td><td data-price-slot="basic_feature_summary">Basic does not include link validation or spam content checks.</td><td class="source-links"><a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Official Mailgun Inspect pricing</a></td></tr>
+                <tr><td>Mailgun Inspect Premium</td><td><strong data-price-slot="premium_monthly_price">$199/mo</strong> <span data-price-slot="premium_trial_phrase">after the first free month</span></td><td data-price-slot="premium_feature_summary">Includes link validation and spam content checks.</td><td class="source-links"><a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Official Mailgun Inspect pricing</a></td></tr>
+                <tr><td>Litmus</td><td data-price-slot="litmus_price_summary">Pricing is not published on the page; sales contact is required.</td><td>See its current plan details directly; this page does not infer unpublished prices.</td><td class="source-links"><a href="https://www.litmus.com/pricing-litmus" target="_blank" rel="noopener noreferrer">Official Litmus pricing page</a></td></tr>
                 <tr><td>Email on Acid</td><td>Its former pricing URL is currently unavailable.</td><td>Mailgun’s official transition announcement says Inspect succeeds Email on Acid. Current Inspect pricing is listed separately above; older Email on Acid prices are not repeated.</td><td class="source-links"><a href="https://www.mailgun.com/blog/product/mailgun-inspect-next-generation/" target="_blank" rel="noopener noreferrer">Official product transition announcement</a></td></tr>
               </tbody>
             </table>
           </div>
-          <div class="source-note"><strong>Price context:</strong> Prices as listed on their official pricing pages, 23 Nov 2026. Email on Acid’s former pricing URL is currently unavailable, and Mailgun’s official transition announcement says Inspect succeeds Email on Acid; older Email on Acid prices are not verified here and are intentionally omitted. Mailgun’s first-month offer is stated alongside its monthly prices. <a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Mailgun Inspect</a> · <a href="https://www.litmus.com/pricing-litmus" target="_blank" rel="noopener noreferrer">Litmus</a> · <a href="https://www.mailgun.com/blog/product/mailgun-inspect-next-generation/" target="_blank" rel="noopener noreferrer">Email on Acid transition announcement</a>.</div>
+          <div class="source-note"><strong>Price context:</strong> Prices as listed on their official pricing pages, <span data-price-slot="source_date_long">23 Nov 2026</span>. Email on Acid’s former pricing URL is currently unavailable, and Mailgun’s official transition announcement says Inspect succeeds Email on Acid; older Email on Acid prices are not verified here and are intentionally omitted. Mailgun’s first-month offer is stated alongside its monthly prices. <a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Mailgun Inspect</a> · <a href="https://www.litmus.com/pricing-litmus" target="_blank" rel="noopener noreferrer">Litmus</a> · <a href="https://www.mailgun.com/blog/product/mailgun-inspect-next-generation/" target="_blank" rel="noopener noreferrer">Email on Acid transition announcement</a>.</div>
         </div>
       </div>
     </section>
@@ -315,12 +315,12 @@
       <div class="wrap">
         <div class="section-head">
           <div class="kicker">FAQ</div>
-          <h2 id="faq-heading">What this check can—and can’t—tell you.</h2>
+          <h2 id="faq-heading">What this check can and can’t tell you.</h2>
         </div>
         <div class="faq-list">
           <details><summary>What does the pre-send checker check?</summary><p>It checks extracted HTTP(S) links for reachable, redirected, broken, timed-out, blocked, or error responses; flags common spam-risk wording patterns; extracts numbers, prices, percentages, durations, dates, and selected claims for human verification; and, for HTML, estimates image-to-text balance and notes when a separate text alternative was not provided. These checks do not verify factual truth, run an inbox placement test, or include email-client previews.</p></details>
           <details><summary>Is this pre-send email checker truly free?</summary><p>Yes. Strategic Flow's pre-send checker costs $0 and requires no account. Link checks send only extracted HTTP(S) URLs to the checker endpoint; the subject and email body are not sent.</p></details>
-           <details><summary>How is this different from Email on Acid, Litmus, or Mailgun Inspect?</summary><p>This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026.</p></details>
+           <details><summary>How is this different from Email on Acid, Litmus, or Mailgun Inspect?</summary><p data-price-slot="competitor_faq">This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026.</p></details>
           <details><summary>Is my email stored or sent to a server?</summary><p>The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests.</p></details>
           <details><summary>Does this checker guarantee deliverability?</summary><p>No. Spam-risk patterns are simple local signals, not a deliverability prediction or guarantee. Inbox placement also depends on factors this tool does not test, including sender reputation, authentication, recipient engagement, and mailbox-provider decisions.</p></details>
           <details><summary>What are facts-to-verify?</summary><p>They are numbers and claim patterns that may deserve a human source check, including prices, percentages, durations, dates, and wording such as only, #1, or free for X days. The tool extracts them for review; it does not verify whether any claim is true.</p></details>
@@ -332,7 +332,7 @@
     <div class="wrap footer-line">
       <div>Strategic Flow · strategicflow.tech · Founded by Alex Iliescu</div>
       <div class="footer-links"><a href="/">Home</a><a href="/decision-friction-model.html">The model</a><a href="/teardowns.html">Teardowns</a><a href="/strategic-flow-pricing.html">Pricing</a><a href="/strategic-flow-reviews.html">Reviews</a></div>
-      <div class="updated">Last updated: 2026-11-23</div>
+      <div class="updated">Last updated: <span data-price-slot="last_updated">2026-11-23</span></div>
     </div>
   </footer>
   <script>
@@ -384,7 +384,7 @@
         var tests=[
           {label:"Price",re:/(?:[$€£]\s?\d[\d,.]*(?:\s?(?:\/|per)\s?(?:mo(?:nth)?|yr|year|user))?|\b\d[\d,.]*\s?(?:USD|EUR|GBP)\b)/gi},
           {label:"Percentage",re:/\b\d+(?:\.\d+)?\s?%/g},
-           {label:"Duration",re:/\b\d+(?:\.\d+)?\s*[-–—]?\s*(?:days?|weeks?|months?|years?|hours?|minutes?|mins?|seconds?|secs?)\b/gi},
+           {label:"Duration",re:/\b\d+(?:\.\d+)?\s*[-\u2013\u2014]?\s*(?:days?|weeks?|months?|years?|hours?|minutes?|mins?|seconds?|secs?)\b/gi},
           {label:"Date",re:/\b(?:\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?|\d{4}-\d{2}-\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:,\s*\d{4})?)\b/gi},
           {label:"Specific number",re:/\b\d[\d,.]*(?:\s?(?:x|×))?\b/g},
           {label:"Claim wording",re:/\b(?:only|#1|number one|free for \d+\s+(?:days?|weeks?|months?))\b/gi}
