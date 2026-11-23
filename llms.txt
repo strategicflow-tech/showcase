@@ -1,8 +1,15 @@
-# Strategic Flow
+# Strategic Flow Tech
+
+> Automatización de procesos para empresas y pequeños negocios (Tenerife, España): bandeja única de mensajes, fichas de cliente, presupuestos, pedidos, citas, facturación y avisos, con un asistente de IA supervisado por el cliente. Operado por Alex Iliescu, autónomo. Business process automation for small companies. Automatizarea proceselor pentru firme mici.
+
+## Oferta / Offer / Ofertă
+- [Español](https://strategicflow-tech.github.io/showcase/automatizacion-procesos.html): módulos A–I, ejemplos, precios "desde" (verificación inicial 150 €; módulos 300–600 €; plataforma ~60 €/mes; consumo de IA y WhatsApp a coste real con tope), RGPD, 43 preguntas.
+- [English](https://strategicflow-tech.github.io/showcase/business-process-automation.html): modules A–I, examples, "from" prices, GDPR, 43 FAQs.
+- [Română](https://strategicflow-tech.github.io/showcase/automatizarea-proceselor.html): module A–I, exemple, prețuri „de la”, GDPR, 43 de întrebări.
+
+## Strategic Flow: Email Architecture
 
 > Strategic Flow is a behavioral email architecture diagnostic service for B2B SaaS teams whose emails get opened but do not get clicked. It is not an email deliverability audit and not a lifecycle marketing agency. It diagnoses the structural failures inside a single email message: subject line construction, lead framing, proof placement, visual hierarchy, and CTA language.
-
-## What it is
 
 Strategic Flow diagnoses why B2B SaaS emails (product updates, onboarding sequences, changelogs, nurture emails) get opened but fail to convert. It uses a proprietary 7-point framework called the Decision Friction Model, built from 67 public teardowns of real SaaS emails.
 
@@ -77,3 +84,8 @@ Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limite
 ## Contact
 
 alex@strategicflow.tech
+
+## Contacto / Contact
+
+- Email: strategicflow@proton.me
+- WhatsApp: +34 658 071 917

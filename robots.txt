@@ -29,3 +29,7 @@ User-agent: Bytespider
 Allow: /
 
 Sitemap: https://strategicflow.tech/sitemap.xml
+
+# Somatization Map: private program pages
+User-agent: *
+Disallow: /somatization-map/programs/
