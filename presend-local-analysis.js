@@ -675,7 +675,7 @@
     );
   }
 
-  function makeHtmlCheck(content) {
+  function makeHtmlCheck(content, options) {
     if (!content.isHtml) {
       return makeCheck(
         'HTML images and layout',
@@ -689,21 +689,31 @@
     const missingAlt = content.images.filter(image => !image.altPresent);
     const missingDimensions = content.images.filter(image => !image.hasDimensions);
     const hasIssue = missingAlt.length > 0;
-    const status = hasIssue ? 'issue' : 'review';
+    const hasTextAlternative = options && options.hasTextAlternative === true;
+    const status = hasIssue ? 'issue' : (missingDimensions.length || !hasTextAlternative ? 'review' : 'passed');
     const ratio = Math.round(content.imageMarkupLength / Math.max(1, content.text.length + content.imageMarkupLength) * 100);
     const parts = [
       `${content.images.length} image${content.images.length === 1 ? '' : 's'} found`,
       `${ratio}% estimated image markup by source size`,
       missingAlt.length ? `${missingAlt.length} missing alt text` : 'alt attributes present',
       missingDimensions.length ? `${missingDimensions.length} without an explicit width or height` : 'dimensions specified or styled',
-      'a separate plain-text email version was not supplied to this check',
+      hasTextAlternative
+        ? 'the uploaded EML included a text/plain alternative'
+        : 'a separate plain-text email version was not supplied to this check',
     ];
+    const actions = [];
+    if (missingAlt.length) actions.push('Add useful alt text to meaningful images.');
+    if (missingDimensions.length) actions.push('Add suitable image dimensions.');
+    if (!hasTextAlternative) actions.push('Confirm that your sending platform supplies a separate plain-text part when needed.');
+    if (!actions.length) actions.push('The uploaded EML included both HTML and plain-text alternatives; review a test send in your email platform.');
     return makeCheck(
       'HTML images and layout',
       status,
       `${parts.join('; ')}.`,
-      'Alternative text helps explain meaningful images when they are not displayed and supports assistive technology. Explicit dimensions can reduce layout shifts, while a separate text part can help when HTML is not rendered.',
-      'Add concise alt text and suitable image dimensions. Confirm that your sending platform supplies a separate plain-text part when needed, then review a test send because this tool does not preview email clients.',
+      hasTextAlternative
+        ? 'Alternative text helps explain meaningful images when they are not displayed and supports assistive technology. Explicit dimensions can reduce layout shifts; the uploaded EML also contains a text/plain part for systems or readers that use it.'
+        : 'Alternative text helps explain meaningful images when they are not displayed and supports assistive technology. Explicit dimensions can reduce layout shifts, while a separate text part can help when HTML is not rendered.',
+      `${actions.join(' ')} This tool does not preview email clients.`,
       {
         evidence: [
           ...missingAlt.slice(0, 8).map((image, index) => evidence(`Image ${index + 1} has no alt attribute.`, 'no alt attribute')),
@@ -780,7 +790,8 @@
     return sentenceRanges(content.text)[0]?.text || lines[0] || '';
   }
 
-  function analyze(subject, rawBody) {
+  function analyze(subject, rawBody, options) {
+    options = options || {};
     const content = parseContent(rawBody);
     const bodyText = content.text;
     const copyText = `${subject}\n${bodyText}`.replace(/https?:\/\/[^\s<>"'`]+/gi, ' ');
@@ -815,7 +826,7 @@
       makeReadabilityCheck(copyContent),
       makeSpamCheck(subject, copyBody),
       makePlaceholderCheck(copyText),
-      makeHtmlCheck(content),
+      makeHtmlCheck(content, options),
       marketing,
       makeRepetitionCheck(copyText),
       ...facts,

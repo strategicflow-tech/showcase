@@ -37,7 +37,8 @@
         {"@type":"Question","name":"How is this different from Email on Acid, Litmus, or Mailgun Inspect?","acceptedAnswer":{"@type":"Answer","text":"This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026."}},
         {"@type":"Question","name":"Is my email stored or sent to a server?","acceptedAnswer":{"@type":"Answer","text":"The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests."}},
         {"@type":"Question","name":"Does this checker guarantee deliverability?","acceptedAnswer":{"@type":"Answer","text":"No. Spam-risk patterns are simple local signals, not a deliverability prediction or guarantee. Inbox placement also depends on factors this tool does not test, including sender reputation, authentication, recipient engagement, and mailbox-provider decisions."}},
-        {"@type":"Question","name":"What are facts-to-verify?","acceptedAnswer":{"@type":"Answer","text":"They are numbers and claim patterns that may deserve a human source check, including prices, percentages, durations, dates, and wording such as only, #1, or free for X days. The tool extracts them for review; it does not verify whether any claim is true."}}
+        {"@type":"Question","name":"What are facts-to-verify?","acceptedAnswer":{"@type":"Answer","text":"They are numbers and claim patterns that may deserve a human source check, including prices, percentages, durations, dates, and wording such as only, #1, or free for X days. The tool extracts them for review; it does not verify whether any claim is true."}},
+        {"@type":"Question","name":"Can I upload an email file?","acceptedAnswer":{"@type":"Answer","text":"Paste the email or upload an .html, .txt or .eml file. Files are read in your browser and not uploaded. The .htm extension is also accepted, up to 2 MB. For multipart .eml files, the HTML body is preferred and a text/plain alternative is noted when present."}}
       ]}
     ]
   }
@@ -110,6 +111,19 @@
     textarea{min-height:220px}
     input::placeholder,textarea::placeholder{color:#6f879f}
     .field-help{font-size:11px;color:var(--muted);margin:7px 0 0}
+    .email-field-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+    .email-field-head label{margin:0}
+    .upload-button{appearance:none;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 12px;border:1px solid rgba(0,212,200,.55);border-radius:7px;background:rgba(0,212,200,.1);color:var(--teal);font:700 11px var(--sans);cursor:pointer}
+    .upload-button:hover{background:rgba(0,212,200,.17)}
+    .upload-button:focus-visible{outline:3px solid rgba(0,212,200,.45);outline-offset:2px}
+    .upload-zone{margin:0 0 9px;padding:12px 14px;border:1px dashed #42607e;border-radius:8px;background:rgba(6,17,31,.42);transition:border-color .16s,background .16s}
+    .upload-zone.is-dragover{border-color:var(--teal);background:rgba(0,212,200,.09)}
+    .upload-zone p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+    .upload-zone .upload-formats{margin-top:3px;color:var(--sub);font-size:10px}
+    .upload-zone .file-status{min-height:0;margin-top:7px;color:var(--teal);font-size:11px}
+    .upload-zone .file-status:empty{display:none}
+    .upload-zone .file-status[data-state="error"]{color:#ff9c9c}
+    .file-input-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .form-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
     .button{appearance:none;border:0;border-radius:8px;min-height:48px;padding:12px 20px;background:var(--teal);color:#071b24;font:700 13px var(--sans);cursor:pointer;transition:transform .16s,filter .16s}
     .button:hover{filter:brightness(1.08);transform:translateY(-1px)}
@@ -199,7 +213,7 @@
     .updated{font:10px var(--mono);letter-spacing:.04em}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     @media(max-width:800px){.navlinks{gap:12px}.navlinks li:nth-child(2),.navlinks li:nth-child(3){display:none}.tool-shell{grid-template-columns:1fr}.side-card{position:static}.link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:600px){.wrap{width:min(100% - 32px,1100px)}.nav{min-height:56px}.navlinks li:nth-child(1){display:none}.hero{padding:54px 0 38px}.hero p{font-size:15px}.section{padding:46px 0}.compare-title{display:block;padding:18px}.compare-title .stamp{text-align:left;margin-top:10px}.table-wrap{overflow:visible}table{display:block;min-width:0}thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}tbody,tr{display:block;width:100%}tr{padding:13px 16px;border-bottom:1px solid var(--line)}tr:last-child{border-bottom:0}th,td{display:block;width:100%;padding:7px 0;border:0}td:first-child{width:100%;padding-top:0;margin-bottom:2px;font-size:14px}td:nth-child(2):before,td:nth-child(3):before,td:nth-child(4):before{display:block;margin-bottom:3px;font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}td:nth-child(2):before{content:"Listed price"}td:nth-child(3):before{content:"Link and spam checks"}td:nth-child(4):before{content:"Source"}tr:last-child td{border-bottom:0}.tool-shell{gap:13px}.form-card{padding:18px}.next-cta{align-items:stretch;flex-direction:column}.text-button{width:100%}.cta-links{min-width:0}.tools-grid{grid-template-columns:1fr}.tool-tile{min-height:0}.link-grid{grid-template-columns:1fr 1fr}.link-grid a{padding:13px;font-size:11px}textarea{min-height:190px}footer{padding-bottom:28px}}
+    @media(max-width:600px){.wrap{width:min(100% - 32px,1100px)}.nav{min-height:56px}.navlinks li:nth-child(1){display:none}.hero{padding:54px 0 38px}.hero p{font-size:15px}.section{padding:46px 0}.compare-title{display:block;padding:18px}.compare-title .stamp{text-align:left;margin-top:10px}.table-wrap{overflow:visible}table{display:block;min-width:0}thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}tbody,tr{display:block;width:100%}tr{padding:13px 16px;border-bottom:1px solid var(--line)}tr:last-child{border-bottom:0}th,td{display:block;width:100%;padding:7px 0;border:0}td:first-child{width:100%;padding-top:0;margin-bottom:2px;font-size:14px}td:nth-child(2):before,td:nth-child(3):before,td:nth-child(4):before{display:block;margin-bottom:3px;font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}td:nth-child(2):before{content:"Listed price"}td:nth-child(3):before{content:"Link and spam checks"}td:nth-child(4):before{content:"Source"}tr:last-child td{border-bottom:0}.tool-shell{gap:13px}.form-card{padding:18px}.email-field-head{align-items:flex-start;flex-wrap:wrap}.upload-button{width:100%}.upload-zone{padding:11px 12px}.next-cta{align-items:stretch;flex-direction:column}.text-button{width:100%}.cta-links{min-width:0}.tools-grid{grid-template-columns:1fr}.tool-tile{min-height:0}.link-grid{grid-template-columns:1fr 1fr}.link-grid a{padding:13px;font-size:11px}textarea{min-height:190px}footer{padding-bottom:28px}}
      @media(max-width:600px){
       .price-spotlight{width:100%;max-width:420px;margin-bottom:19px;padding:13px 14px 12px}
       .price-spotlight-label{font-size:13px}
@@ -290,9 +304,19 @@
               <input type="text" id="email-subject" name="subject" autocomplete="off" maxlength="300" placeholder="A subject line to include in local checks" required>
             </div>
             <div class="field">
-              <label for="email-body">Email body <span>text or HTML</span></label>
+              <div class="email-field-head">
+                <label for="email-body">Email body <span>text or HTML</span></label>
+                <button class="upload-button" id="upload-email-button" type="button" aria-controls="email-file">Upload email file</button>
+              </div>
+              <div class="upload-zone" id="email-upload-zone" role="region" aria-label="Email file upload area" aria-describedby="email-upload-help">
+                <input class="file-input-visually-hidden" type="file" id="email-file" accept=".html,.htm,.txt,.eml,text/html,text/plain,message/rfc822" aria-label="Choose an email file" tabindex="-1">
+                <p id="email-upload-help">Drag and drop a file here on desktop, or use the button. On mobile, the button opens your file picker.</p>
+                <p class="upload-formats">Accepted: .html, .htm, .txt, .eml. Maximum size: 2 MB.</p>
+                <p class="file-status" id="email-file-status" role="status" aria-live="polite"></p>
+              </div>
               <textarea id="email-body" name="body" spellcheck="true" maxlength="100000" placeholder="Paste email copy here. HTML is fine; it is processed in your browser." required></textarea>
-              <p class="field-help">Up to 12 unique links are checked per request. Link requests are limited to 5 per minute. Each visitor gets 10 free checks per rolling 7 days. No email text or subject is sent to the link-check service.</p>
+              <p class="field-help">Paste the email or upload an .html, .txt or .eml file. Files are read in your browser and not uploaded.</p>
+              <p class="field-help">The .htm extension is also accepted, up to 2 MB. Uploading does not use a free check. Each check uses one of your 10 weekly checks. Up to 12 unique links are checked per request, with a separate limit of 5 link requests per minute. No email text or subject is sent to the link-check service.</p>
             </div>
             <div class="form-actions">
               <button class="button" id="analyze-button" type="submit">Check this email</button>
@@ -371,6 +395,7 @@
           <details><summary>Is my email stored or sent to a server?</summary><p>The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests.</p></details>
           <details><summary>Does this checker guarantee deliverability?</summary><p>No. Spam-risk patterns are simple local signals, not a deliverability prediction or guarantee. Inbox placement also depends on factors this tool does not test, including sender reputation, authentication, recipient engagement, and mailbox-provider decisions.</p></details>
           <details><summary>What are facts-to-verify?</summary><p>They are numbers and claim patterns that may deserve a human source check, including prices, percentages, durations, dates, and wording such as only, #1, or free for X days. The tool extracts them for review; it does not verify whether any claim is true.</p></details>
+           <details><summary>Can I upload an email file?</summary><p>Paste the email or upload an .html, .txt or .eml file. Files are read in your browser and not uploaded. The .htm extension is also accepted, up to 2 MB. For multipart .eml files, the HTML body is preferred and a text/plain alternative is noted when present.</p></details>
         </div>
       </div>
     </section>
@@ -383,6 +408,7 @@
     </div>
   </footer>
   <script src="/presend-local-analysis.js"></script>
+  <script src="/presend-file-upload.js"></script>
   <script>
     (function(){
       "use strict";
@@ -397,12 +423,65 @@
       var statusBox=document.getElementById("form-status");
       var resultsBox=document.getElementById("results");
        var quotaCounter=document.getElementById("quota-counter");
+       var fileInput=document.getElementById("email-file");
+       var uploadButton=document.getElementById("upload-email-button");
+       var uploadZone=document.getElementById("email-upload-zone");
+       var fileStatus=document.getElementById("email-file-status");
+       var uploadedTextAlternative=false;
       function esc(value){return String(value).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
       function setStatus(message,type){
         statusBox.hidden=false;
         statusBox.className="status"+(type?" "+type:"");
         statusBox.textContent=message;
       }
+       function setFileStatus(message,isError){
+         fileStatus.textContent=message;
+         if(isError)fileStatus.setAttribute("data-state","error");
+         else fileStatus.removeAttribute("data-state");
+       }
+       async function importEmailFile(file){
+         if(!file)return;
+         if(!window.StrategicFlowEmailUpload){
+           setFileStatus("File upload is unavailable. Reload the page and try again.",true);
+           return;
+         }
+         setFileStatus("Reading the file locally...");
+         try{
+           var parsed=await window.StrategicFlowEmailUpload.readFileLocally(file);
+           bodyInput.value=parsed.body;
+           if(parsed.subject)subjectInput.value=parsed.subject;
+           uploadedTextAlternative=parsed.hasTextAlternative===true;
+           var message=file.name+" loaded in your browser. No free check used.";
+           if(parsed.subject)message+=" Subject extracted.";
+           if(uploadedTextAlternative)message+=" HTML and text alternatives found.";
+           setFileStatus(message,false);
+         }catch(error){
+           setFileStatus(error&&error.message?error.message:"The browser could not read the file.",true);
+         }finally{
+           fileInput.value="";
+         }
+       }
+       uploadButton.addEventListener("click",function(){fileInput.click();});
+       fileInput.addEventListener("change",function(){if(fileInput.files&&fileInput.files[0])importEmailFile(fileInput.files[0]);});
+       bodyInput.addEventListener("input",function(){uploadedTextAlternative=false;});
+       ["dragenter","dragover"].forEach(function(eventName){
+         uploadZone.addEventListener(eventName,function(event){
+           event.preventDefault();
+           uploadZone.classList.add("is-dragover");
+         });
+       });
+       ["dragleave","dragend"].forEach(function(eventName){
+         uploadZone.addEventListener(eventName,function(event){
+           event.preventDefault();
+           if(eventName==="dragend"||!uploadZone.contains(event.relatedTarget))uploadZone.classList.remove("is-dragover");
+         });
+       });
+       uploadZone.addEventListener("drop",function(event){
+         event.preventDefault();
+         uploadZone.classList.remove("is-dragover");
+         var dropped=event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0];
+         if(dropped)importEmailFile(dropped);
+       });
        function updateQuotaCounter(remaining){
          var left=Math.max(0,Math.min(10,Number(remaining)||0));
          quotaCounter.hidden=false;
@@ -563,7 +642,7 @@
            if(!subject){setStatus("Add a subject line to run the check.");subjectInput.focus();return;}
            if(!body){setStatus("Paste an email body to run the check.");bodyInput.focus();return;}
 
-            var analysis=window.StrategicFlowPreSendAnalyzer.analyze(subject,body);
+             var analysis=window.StrategicFlowPreSendAnalyzer.analyze(subject,body,{hasTextAlternative:uploadedTextAlternative});
             var urls=analysis.linkUrls;
            var checkedUrls=urls.slice(0,12);
            setStatus(urls.length?"Analyzing copy locally and checking "+checkedUrls.length+" of "+urls.length+" extracted URL"+(urls.length===1?"":"s")+"…":"Analyzing copy locally…");
