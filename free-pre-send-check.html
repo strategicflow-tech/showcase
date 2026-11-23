@@ -32,7 +32,7 @@
       {"@type":"Organization","@id":"https://strategicflow.tech/#organization","name":"Strategic Flow","url":"https://strategicflow.tech/","founder":{"@type":"Person","name":"Alex Iliescu"},"disambiguatingDescription":"Strategic Flow at strategicflow.tech, founded by Alex Iliescu, is not affiliated with Strategic Flow Limited (strategicflow.io)."},
       {"@type":"FAQPage","mainEntity":[
         {"@type":"Question","name":"What does the pre-send checker check?","acceptedAnswer":{"@type":"Answer","text":"It checks extracted HTTP(S) links for reachable, redirected, broken, timed-out, blocked, or error responses; flags common spam-risk wording patterns; extracts numbers, prices, percentages, durations, dates, and selected claims for human verification; and, for HTML, estimates image-to-text balance and notes when a separate text alternative was not provided. These checks do not verify factual truth, run an inbox placement test, or include email-client previews."}},
-        {"@type":"Question","name":"Is this pre-send email checker truly free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Strategic Flow's pre-send checker costs $0 and requires no account. Link checks send only extracted HTTP(S) URLs to the checker endpoint; the subject and email body are not sent."}},
+        {"@type":"Question","name":"Is this pre-send email checker truly free?","acceptedAnswer":{"@type":"Answer","text":"Yes, $0 and no account. Each visitor gets 10 free checks per week."}},
         {"@type":"Question","name":"How is this different from Email on Acid, Litmus, or Mailgun Inspect?","acceptedAnswer":{"@type":"Answer","text":"This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026."}},
         {"@type":"Question","name":"Is my email stored or sent to a server?","acceptedAnswer":{"@type":"Answer","text":"The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests."}},
         {"@type":"Question","name":"Does this checker guarantee deliverability?","acceptedAnswer":{"@type":"Answer","text":"No. Spam-risk patterns are simple local signals, not a deliverability prediction or guarantee. Inbox placement also depends on factors this tool does not test, including sender reputation, authentication, recipient engagement, and mailbox-provider decisions."}},
@@ -114,6 +114,8 @@
     .button:hover{filter:brightness(1.08);transform:translateY(-1px)}
     .button:disabled{opacity:.55;cursor:wait;transform:none}
     .privacy{font-size:11px;color:var(--muted);max-width:360px}
+    .quota-counter{flex-basis:100%;margin:0;color:var(--teal);font-size:12px;font-weight:700}
+    .quota-counter[hidden]{display:none}
     .side-card{padding:22px;position:sticky;top:20px}
     .side-card h3{font-size:15px;margin:0 0 13px}
     .check-list{list-style:none;padding:0;margin:0;display:grid;gap:13px}
@@ -242,7 +244,7 @@
           <p>Paste the subject and plain-text or HTML body. The subject and body are analyzed locally; only extracted HTTP(S) URLs are sent to the link-check service.</p>
         </div>
         <div class="tool-shell">
-          <form class="form-card" id="presend-form">
+          <form class="form-card" id="presend-form" novalidate>
             <div class="field">
               <label for="email-subject">Subject line <span>required</span></label>
               <input type="text" id="email-subject" name="subject" autocomplete="off" maxlength="300" placeholder="A subject line to include in local checks" required>
@@ -250,12 +252,13 @@
             <div class="field">
               <label for="email-body">Email body <span>text or HTML</span></label>
               <textarea id="email-body" name="body" spellcheck="true" maxlength="100000" placeholder="Paste email copy here. HTML is fine; it is processed in your browser." required></textarea>
-              <p class="field-help">Up to 12 unique links are checked per request, with a limit of 5 requests per minute. No email text or subject is sent to the link-check service.</p>
+              <p class="field-help">Up to 12 unique links are checked per request. Link requests are limited to 5 per minute. Each visitor gets 10 free checks per rolling 7 days. No email text or subject is sent to the link-check service.</p>
             </div>
             <div class="form-actions">
               <button class="button" id="analyze-button" type="submit">Check this email</button>
-              <span class="privacy">No account. No email storage. Only extracted HTTP(S) links leave this browser for link checks.</span>
+              <span class="privacy">Yes, $0 and no account. Each visitor gets 10 free checks per week. Subject and body stay in your browser; only extracted HTTP(S) links leave for link checks.</span>
             </div>
+            <p class="quota-counter" id="quota-counter" role="status" aria-live="polite" hidden></p>
             <div class="status" id="form-status" role="status" aria-live="polite" hidden></div>
           </form>
           <aside class="side-card" aria-label="What the tool checks">
@@ -319,7 +322,7 @@
         </div>
         <div class="faq-list">
           <details><summary>What does the pre-send checker check?</summary><p>It checks extracted HTTP(S) links for reachable, redirected, broken, timed-out, blocked, or error responses; flags common spam-risk wording patterns; extracts numbers, prices, percentages, durations, dates, and selected claims for human verification; and, for HTML, estimates image-to-text balance and notes when a separate text alternative was not provided. These checks do not verify factual truth, run an inbox placement test, or include email-client previews.</p></details>
-          <details><summary>Is this pre-send email checker truly free?</summary><p>Yes. Strategic Flow's pre-send checker costs $0 and requires no account. Link checks send only extracted HTTP(S) URLs to the checker endpoint; the subject and email body are not sent.</p></details>
+          <details><summary>Is this pre-send email checker truly free?</summary><p>Yes, $0 and no account. Each visitor gets 10 free checks per week.</p></details>
            <details><summary>How is this different from Email on Acid, Litmus, or Mailgun Inspect?</summary><p data-price-slot="competitor_faq">This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026.</p></details>
           <details><summary>Is my email stored or sent to a server?</summary><p>The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests.</p></details>
           <details><summary>Does this checker guarantee deliverability?</summary><p>No. Spam-risk patterns are simple local signals, not a deliverability prediction or guarantee. Inbox placement also depends on factors this tool does not test, including sender reputation, authentication, recipient engagement, and mailbox-provider decisions.</p></details>
@@ -339,13 +342,16 @@
     (function(){
       "use strict";
        var isMarketingHost=location.hostname==="strategicflow.tech"||location.hostname==="www.strategicflow.tech";
-       var endpoint=(isMarketingHost?"https://strategic-flow-audit.replit.app":location.origin)+"/api/presend/links";
+       var apiBase=(isMarketingHost?"https://strategic-flow-audit.replit.app":location.origin)+"/api/presend";
+       var endpoint=apiBase+"/links";
+       var quotaEndpoint=apiBase+"/quota";
       var form=document.getElementById("presend-form");
       var subjectInput=document.getElementById("email-subject");
       var bodyInput=document.getElementById("email-body");
       var button=document.getElementById("analyze-button");
       var statusBox=document.getElementById("form-status");
       var resultsBox=document.getElementById("results");
+       var quotaCounter=document.getElementById("quota-counter");
       var spamPatterns=[
         {label:"Urgency or pressure language",re:/\b(act now|urgent|limited time|last chance|expires today|don't miss out|immediately)\b/gi},
         {label:"Overstated guarantee language",re:/\b(guaranteed|100%\s+(?:free|safe|risk[- ]free)|risk[- ]free|no obligation)\b/gi},
@@ -407,6 +413,18 @@
         statusBox.className="status"+(type?" "+type:"");
         statusBox.textContent=message;
       }
+       function updateQuotaCounter(remaining){
+         var left=Math.max(0,Math.min(10,Number(remaining)||0));
+         quotaCounter.hidden=false;
+         quotaCounter.textContent=left+" of 10 free checks left this week";
+       }
+       function showWeeklyLimit(resetAt){
+         var resetDate=new Date(resetAt);
+         var formatted=Number.isNaN(resetDate.getTime())?"the next reset":new Intl.DateTimeFormat(undefined,{dateStyle:"medium",timeStyle:"short"}).format(resetDate);
+         statusBox.hidden=false;
+         statusBox.className="status error";
+         statusBox.innerHTML=esc("You've used your 10 free checks this week. They reset on "+formatted+". Need more? ")+"<a href=\"/strategic-flow-pricing.html\">See the Decision Friction Review</a>.";
+       }
       function renderResults(data){
         var raw=bodyInput.value;
         var content=makeLocalContent(raw);
@@ -438,30 +456,58 @@
       }
       form.addEventListener("submit",async function(event){
         event.preventDefault();
-        var body=bodyInput.value.trim();
-        if(!body){setStatus("Paste an email body to run the check.");bodyInput.focus();return;}
-         var urls=extractLinks(subjectInput.value+"\n"+body);
-         var checkedUrls=urls.slice(0,12);
         button.disabled=true;
         button.textContent="Checking…";
         resultsBox.hidden=true;
-         setStatus(urls.length?"Analyzing copy locally and checking "+checkedUrls.length+" of "+urls.length+" extracted URL"+(urls.length===1?"":"s")+"…":"Analyzing copy locally…");
+         setStatus("Confirming your free check…");
         try{
-          var responseData={results:[]};
-           if(checkedUrls.length){
-             var response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({links:checkedUrls})});
-            if(!response.ok)throw new Error("The link-check service returned HTTP "+response.status+". Your local copy checks are still available.");
-            responseData=await response.json();
+           var quotaResponse=await fetch(quotaEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});
+           var quota=await quotaResponse.json().catch(function(){return {};});
+           if(quotaResponse.status===429&&quota.error==="weekly_limit"){
+             updateQuotaCounter(0);
+             showWeeklyLimit(quota.resetAt);
+             return;
           }
+           if(!quotaResponse.ok)throw new Error(quota.message||"The free-check limit could not be confirmed. Please try again shortly.");
+           if(typeof quota.checkToken!=="string"||!quota.checkToken)throw new Error("The free-check reservation could not be confirmed. Please try again shortly.");
+           updateQuotaCounter(quota.remaining);
+
+           var subject=subjectInput.value.trim();
+           var body=bodyInput.value.trim();
+           if(!subject){setStatus("Add a subject line to run the check.");subjectInput.focus();return;}
+           if(!body){setStatus("Paste an email body to run the check.");bodyInput.focus();return;}
+
+           var urls=extractLinks(subject+"\n"+body);
+           var checkedUrls=urls.slice(0,12);
+           setStatus(urls.length?"Analyzing copy locally and checking "+checkedUrls.length+" of "+urls.length+" extracted URL"+(urls.length===1?"":"s")+"…":"Analyzing copy locally…");
+           var responseData={results:[]};
+           var linkError="";
+           if(checkedUrls.length){
+             try{
+               var response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({links:checkedUrls,checkToken:quota.checkToken})});
+               var linkPayload=await response.json().catch(function(){return {};});
+               if(response.status===429&&linkPayload.error==="weekly_limit"){
+                 updateQuotaCounter(0);
+                 showWeeklyLimit(linkPayload.resetAt);
+                 return;
+               }
+               if(!response.ok)throw new Error(linkPayload.message||"The link-check service returned HTTP "+response.status+".");
+               responseData=linkPayload;
+             }catch(error){
+               linkError=(error&&error.message?error.message:"The link-check service could not be reached.")+" Local checks are shown below; retry to check links.";
+             }
+           }
            renderResults(responseData);
-           setStatus(urls.length>checkedUrls.length
-             ?"Check complete. Only the first 12 of "+urls.length+" links were sent. Subject and body stayed in your browser."
-             :"Check complete. Subject and body stayed in your browser; only extracted HTTP(S) links were sent for link checks.");
-          resultsBox.scrollIntoView({behavior:"smooth",block:"start"});
-        }catch(error){
-          renderResults({results:[]});
-          setStatus((error&&error.message?error.message:"The link-check service could not be reached.")+" Local checks are shown below; retry to check links.","error");
-          resultsBox.scrollIntoView({behavior:"smooth",block:"start"});
+           if(linkError){
+             setStatus(linkError+" "+quota.remaining+" of 10 free checks left this week.","error");
+           }else{
+             setStatus(urls.length>checkedUrls.length
+               ?"Check complete. Only the first 12 of "+urls.length+" links were sent. Subject and body stayed in your browser. "+quota.remaining+" of 10 free checks left this week."
+               :"Check complete. Subject and body stayed in your browser; only extracted HTTP(S) links were sent for link checks. "+quota.remaining+" of 10 free checks left this week.");
+           }
+           resultsBox.scrollIntoView({behavior:"smooth",block:"start"});
+         }catch(error){
+           setStatus((error&&error.message?error.message:"The free-check limit could not be confirmed.")+" No email text was sent; please retry.","error");
         }finally{
           button.disabled=false;
           button.textContent="Check this email";

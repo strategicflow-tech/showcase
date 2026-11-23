@@ -2,6 +2,7 @@
 
 const express = require('express');
 const { safeFetchPublicUrl } = require('./safe-url-fetch');
+const { WEEKLY_LIMIT } = require('./presend-weekly-quota');
 
 const MAX_LINKS = 12;
 const MAX_URL_LENGTH = 2048;
@@ -132,6 +133,8 @@ function createPreSendCheckRouter(options = {}) {
   const allowedOrigins = options.allowedOrigins || new Set();
   const fetchPublicUrl = options.safeFetchPublicUrl || safeFetchPublicUrl;
   const takeRateLimitSlot = options.takeRateLimitSlot || createRateLimiter();
+  const takeQuotaRateLimitSlot = options.takeQuotaRateLimitSlot || createRateLimiter();
+  const weeklyQuota = options.weeklyQuota;
   const linkTotalTimeoutMs = options.linkTotalTimeoutMs || LINK_TOTAL_TIMEOUT_MS;
 
   function isSameOriginRequest(req, origin) {
@@ -159,9 +162,53 @@ function createPreSendCheckRouter(options = {}) {
     return true;
   }
 
-  router.options('/links', (req, res) => {
+  router.options(['/links', '/quota'], (req, res) => {
     if (!cors(req, res)) return res.status(403).end();
     return res.status(204).end();
+  });
+
+  function weeklyLimitResponse(res, quota) {
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(429).json({
+      error: 'weekly_limit',
+      limit: WEEKLY_LIMIT,
+      remaining: 0,
+      resetAt: quota.resetAt,
+      message: `You've used your ${WEEKLY_LIMIT} free checks this week. They reset on ${quota.resetAt}. Need more? See the Decision Friction Review.`,
+    });
+  }
+
+  router.post('/quota', async (req, res) => {
+    if (!cors(req, res)) return res.status(403).json({ error: 'Origin not allowed.' });
+    res.setHeader('Cache-Control', 'no-store');
+
+    const rate = takeQuotaRateLimitSlot(clientKey(req));
+    if (!rate.allowed) {
+      res.setHeader('Retry-After', String(rate.retryAfter));
+      return res.status(429).json({
+        error: 'rate_limited',
+        message: 'Too many check attempts. Please try again shortly.',
+      });
+    }
+    if (!weeklyQuota || typeof weeklyQuota.reserve !== 'function') {
+      return res.status(503).json({ error: 'quota_unavailable', message: 'The free-check limit could not be confirmed. Please try again shortly.' });
+    }
+
+    try {
+      const quota = await weeklyQuota.reserve(clientKey(req));
+      if (!quota.allowed) return weeklyLimitResponse(res, quota);
+      return res.json({
+        limit: WEEKLY_LIMIT,
+        remaining: quota.remaining,
+        resetAt: quota.resetAt,
+        checkToken: quota.checkToken,
+      });
+    } catch {
+      return res.status(503).json({
+        error: 'quota_unavailable',
+        message: 'The free-check limit could not be confirmed. Please try again shortly.',
+      });
+    }
   });
 
   router.post('/links', async (req, res) => {
@@ -170,7 +217,28 @@ function createPreSendCheckRouter(options = {}) {
     const quota = takeRateLimitSlot(clientKey(req));
     if (!quota.allowed) {
       res.setHeader('Retry-After', String(quota.retryAfter));
-      return res.status(429).json({ error: 'Too many checks. Please try again shortly.' });
+      return res.status(429).json({ error: 'rate_limited', message: 'Too many checks. Please try again shortly.' });
+    }
+    if (!weeklyQuota || typeof weeklyQuota.reserve !== 'function' || typeof weeklyQuota.consumeReservation !== 'function') {
+      return res.status(503).json({ error: 'quota_unavailable', message: 'The free-check limit could not be confirmed. Please try again shortly.' });
+    }
+
+    res.setHeader('Cache-Control', 'no-store');
+    try {
+      if (Object.prototype.hasOwnProperty.call(req.body || {}, 'checkToken')) {
+        const redeemed = await weeklyQuota.consumeReservation(clientKey(req), req.body.checkToken);
+        if (!redeemed.allowed) {
+          return res.status(403).json({ error: 'invalid_check_token', message: 'This check could not be confirmed. Please start a new check.' });
+        }
+      } else {
+        const weekly = await weeklyQuota.reserve(clientKey(req));
+        if (!weekly.allowed) return weeklyLimitResponse(res, weekly);
+      }
+    } catch {
+      return res.status(503).json({
+        error: 'quota_unavailable',
+        message: 'The free-check limit could not be confirmed. Please try again shortly.',
+      });
     }
 
     const links = req.body?.links;
@@ -184,7 +252,6 @@ function createPreSendCheckRouter(options = {}) {
       return res.status(400).json({ error: 'Each URL must be a string no longer than 2,048 characters.' });
     }
 
-    res.setHeader('Cache-Control', 'no-store');
     try {
       const results = await mapWithConcurrency(
         links,

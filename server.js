@@ -29,6 +29,7 @@ const { runAggregation } = require('./aggregator');
 const { generateShowcaseHtml, extractVisualAssets } = require('./showcase-generator.js');
 const { enrichListingWithAI } = require('./listing-enricher');
 const { createPreSendCheckRouter } = require('./presend-check');
+const { createPresendQuotaService } = require('./presend-weekly-quota');
 const {
   FRESH_PRODUCT_HUNT_VOTE_INTERVAL_MS,
   freshProductHuntVoteTarget,
@@ -112,6 +113,16 @@ const pool = new Pool({
   connectionTimeoutMillis: DB_CONNECT_TIMEOUT_MS,
   idleTimeoutMillis: 30000,
   keepAlive: true
+});
+const presendQuotaHashSource = process.env.PRESEND_IP_HASH_SALT || process.env.SESSION_SECRET;
+const presendQuotaHashKey = presendQuotaHashSource
+  ? crypto.createHmac('sha256', presendQuotaHashSource).update('strategic-flow:presend-ip-quota-key:v1').digest('hex')
+  : '';
+const presendQuota = createPresendQuotaService({
+  pool,
+  // Derive a purpose-specific HMAC key from a dedicated secret or the existing
+  // Replit session secret. No raw IP or plain hash is persisted.
+  hashSalt: presendQuotaHashKey
 });
 const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -894,6 +905,7 @@ function applyTrustedCors(req, res, methods = 'GET, POST, OPTIONS') {
 
 app.use('/api/presend', createPreSendCheckRouter({
   allowedOrigins: browserOrigins,
+  weeklyQuota: presendQuota,
 }));
 
 app.use('/api/outreach', createAgencyOutreachRouter({
@@ -33989,6 +34001,13 @@ full HTML body here
   } else {
     console.log('[decision-friction-mcp] target time has passed; one-time send not scheduled');
   }
+
+  // ── Daily 03:10 UTC: remove expired pre-send quota records ─────────────────
+  cron.schedule('10 3 * * *', () => {
+    presendQuota.cleanupExpired().catch(error => {
+      console.error('[presend-quota-cleanup]', error.message);
+    });
+  }, { timezone: 'UTC' });
 
   // ── Daily 01:30 UTC: refresh the permanent 10-app Daily leaderboard cohort
   cron.schedule('30 1 * * *', () => {
