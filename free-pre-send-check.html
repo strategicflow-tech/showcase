@@ -27,11 +27,12 @@
   {
     "@context":"https://schema.org",
     "@graph":[
-      {"@type":"WebApplication","name":"Strategic Flow Free Pre-Send Email Checker","url":"https://strategicflow.tech/free-pre-send-check.html","applicationCategory":"BusinessApplication","operatingSystem":"Any","description":"A free browser-based pre-send email checker for HTTP(S) links, common spam-risk patterns, factual claims to verify, and HTML image-to-text balance. It does not run the Decision Friction Model or guarantee deliverability.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://strategicflow.tech/#organization"}},
+      {"@type":"WebApplication","name":"Strategic Flow Free Pre-Send Email Checker","url":"https://strategicflow.tech/free-pre-send-check.html","applicationCategory":"BusinessApplication","operatingSystem":"Any","description":"A free browser-based pre-send email checker for local copy, subject, readability, link, and HTML checks. The subject and body stay in the browser. It does not predict deliverability or run the Decision Friction Model.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://strategicflow.tech/#organization"}},
       {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Strategic Flow","item":"https://strategicflow.tech/"},{"@type":"ListItem","position":2,"name":"Free pre-send email checker","item":"https://strategicflow.tech/free-pre-send-check.html"}]},
       {"@type":"Organization","@id":"https://strategicflow.tech/#organization","name":"Strategic Flow","url":"https://strategicflow.tech/","founder":{"@type":"Person","name":"Alex Iliescu"},"disambiguatingDescription":"Strategic Flow at strategicflow.tech, founded by Alex Iliescu, is not affiliated with Strategic Flow Limited (strategicflow.io)."},
       {"@type":"FAQPage","mainEntity":[
         {"@type":"Question","name":"What does the pre-send checker check?","acceptedAnswer":{"@type":"Answer","text":"It checks extracted HTTP(S) links for reachable, redirected, broken, timed-out, blocked, or error responses; flags common spam-risk wording patterns; extracts numbers, prices, percentages, durations, dates, and selected claims for human verification; and, for HTML, estimates image-to-text balance and notes when a separate text alternative was not provided. These checks do not verify factual truth, run an inbox placement test, or include email-client previews."}},
+        {"@type":"Question","name":"What else does the local email review check?","acceptedAnswer":{"@type":"Answer","text":"Alongside links and spam-risk wording, the browser reviews subject length and mobile truncation risk, generic first lines, CTA count and wording, sender-to-reader pronouns, readability, unresolved personalization and draft markers, repeated words and questions, HTML image alt text and dimensions, marketing unsubscribe and postal-address clues, and numbers or absolute claims that need a source check. The subject and body stay in your browser. These checks do not provide a deliverability score."}},
         {"@type":"Question","name":"Is this pre-send email checker truly free?","acceptedAnswer":{"@type":"Answer","text":"Yes, $0 and no account. Each visitor gets 10 free checks per week."}},
         {"@type":"Question","name":"How is this different from Email on Acid, Litmus, or Mailgun Inspect?","acceptedAnswer":{"@type":"Answer","text":"This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026."}},
         {"@type":"Question","name":"Is my email stored or sent to a server?","acceptedAnswer":{"@type":"Answer","text":"The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests."}},
@@ -125,11 +126,28 @@
     .status{margin-top:16px;padding:12px 14px;border-radius:8px;background:var(--inner);border:1px solid var(--line);font-size:12px;color:var(--sub)}
     .status[hidden],.results[hidden]{display:none}
     .results{margin-top:24px;display:grid;gap:12px}
+    .results,.result-card,.readiness-panel{min-width:0;overflow-wrap:anywhere}
     .results-heading{display:flex;align-items:end;justify-content:space-between;gap:16px}
     .results-heading h3{margin:0;font-size:22px}
     .results-heading p{margin:0;color:var(--muted);font:10px var(--mono);text-transform:uppercase}
+    .readiness-panel{padding:clamp(18px,3vw,28px);border:2px solid rgba(0,212,200,.55);border-radius:16px;background:linear-gradient(135deg,rgba(0,212,200,.12),rgba(15,32,53,.96) 60%);box-shadow:0 12px 34px rgba(0,0,0,.18)}
+    .readiness-top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:22px}
+    .readiness-kicker{font:500 10px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+    .readiness-panel h3{margin:5px 0;font-size:clamp(22px,3vw,30px);line-height:1.15}
+    .readiness-intro{margin:0;color:var(--sub);font-size:12px}
+    .readiness-stats{display:grid;grid-template-columns:repeat(3,minmax(76px,auto));gap:8px}
+    .readiness-stat{min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(5,15,28,.38);text-align:center}
+    .readiness-stat strong{display:block;font-size:25px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+    .readiness-stat span{display:block;margin-top:6px;font:9px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+    .readiness-stat.passed strong{color:#92e5c4}
+    .readiness-stat.review strong{color:var(--amber)}
+    .readiness-stat.issues strong{color:var(--red)}
+    .readiness-priority{margin-top:19px;padding-top:16px;border-top:1px solid rgba(0,212,200,.22)}
+    .readiness-priority h4{margin:0 0 8px;font-size:13px}
+    .readiness-priority ol{margin:0;padding-left:20px;color:var(--sub);font-size:12px}
+    .readiness-priority li+li{margin-top:6px}
     .result-card{padding:20px 22px}
-    .result-card h4{margin:0 0 10px;font-size:14px}
+    .result-card h4{margin:0;font-size:14px}
     .result-card p{margin:0;color:var(--sub);font-size:12px}
     .result-card ul{margin:0;padding-left:19px;color:var(--sub);font-size:12px}
     .result-card li+li{margin-top:7px}
@@ -137,6 +155,21 @@
     .result-card .warn{color:var(--amber)}
     .result-card .bad{color:var(--red)}
     .result-card .mono{font-family:var(--mono);font-size:10px;overflow-wrap:anywhere;color:var(--muted)}
+    .check-card[data-status="issue"]{border-color:rgba(255,136,136,.55)}
+    .check-card[data-status="review"]{border-color:rgba(244,199,123,.42)}
+    .check-card[data-status="passed"]{border-color:rgba(26,48,80,.9)}
+    .check-top{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:14px}
+    .check-status{flex-shrink:0;padding:5px 8px;border-radius:99px;font:9px/1.2 var(--mono);letter-spacing:.05em;text-transform:uppercase;background:rgba(255,255,255,.06);color:var(--sub)}
+    .check-status.passed{color:#92e5c4;background:rgba(146,229,196,.09)}
+    .check-status.review{color:var(--amber);background:rgba(244,199,123,.09)}
+    .check-status.issue{color:var(--red);background:rgba(255,136,136,.09)}
+    .check-field+.check-field{margin-top:12px}
+    .check-field>strong{display:block;margin-bottom:3px;font:600 10px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+    .check-field p{line-height:1.65}
+    .check-evidence{display:grid;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+    .check-evidence li{padding:9px 11px;border-left:2px solid rgba(0,212,200,.55);border-radius:0 7px 7px 0;background:var(--inner);color:var(--sub);font-size:11px;line-height:1.65;overflow-wrap:anywhere;white-space:pre-wrap}
+    .check-evidence mark{padding:1px 2px;border-radius:3px;background:rgba(0,212,200,.24);color:var(--ink);font-weight:700}
+    .readiness-priority mark{background:rgba(0,212,200,.18);color:var(--ink)}
     .next-cta{padding:24px;border:1px solid rgba(0,212,200,.35);background:linear-gradient(110deg,rgba(0,212,200,.09),rgba(18,36,64,.7));border-radius:13px;display:flex;justify-content:space-between;align-items:center;gap:20px}
     .next-cta h3{font-size:18px;margin:0 0 5px}
     .next-cta p{margin:0;color:var(--sub);font-size:12px}
@@ -167,7 +200,7 @@
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     @media(max-width:800px){.navlinks{gap:12px}.navlinks li:nth-child(2),.navlinks li:nth-child(3){display:none}.tool-shell{grid-template-columns:1fr}.side-card{position:static}.link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:600px){.wrap{width:min(100% - 32px,1100px)}.nav{min-height:56px}.navlinks li:nth-child(1){display:none}.hero{padding:54px 0 38px}.hero p{font-size:15px}.section{padding:46px 0}.compare-title{display:block;padding:18px}.compare-title .stamp{text-align:left;margin-top:10px}.table-wrap{overflow:visible}table{display:block;min-width:0}thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}tbody,tr{display:block;width:100%}tr{padding:13px 16px;border-bottom:1px solid var(--line)}tr:last-child{border-bottom:0}th,td{display:block;width:100%;padding:7px 0;border:0}td:first-child{width:100%;padding-top:0;margin-bottom:2px;font-size:14px}td:nth-child(2):before,td:nth-child(3):before,td:nth-child(4):before{display:block;margin-bottom:3px;font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}td:nth-child(2):before{content:"Listed price"}td:nth-child(3):before{content:"Link and spam checks"}td:nth-child(4):before{content:"Source"}tr:last-child td{border-bottom:0}.tool-shell{gap:13px}.form-card{padding:18px}.next-cta{align-items:stretch;flex-direction:column}.text-button{width:100%}.cta-links{min-width:0}.tools-grid{grid-template-columns:1fr}.tool-tile{min-height:0}.link-grid{grid-template-columns:1fr 1fr}.link-grid a{padding:13px;font-size:11px}textarea{min-height:190px}footer{padding-bottom:28px}}
-    @media(max-width:600px){
+     @media(max-width:600px){
       .price-spotlight{width:100%;max-width:420px;margin-bottom:19px;padding:13px 14px 12px}
       .price-spotlight-label{font-size:13px}
       .price-spotlight-amount{font-size:clamp(56px,16vw,76px)}
@@ -178,6 +211,13 @@
       .own-row td:nth-child(2):before{color:var(--teal)}
       .own-row .own-price{font-size:34px}
       .own-row .free-badge{font-size:9px}
+       .readiness-top{grid-template-columns:1fr;gap:16px}
+       .readiness-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+       .readiness-stat{padding:9px 5px}
+       .readiness-stat strong{font-size:22px}
+       .check-top{align-items:start}
+       .check-status{white-space:nowrap}
+       .check-card{padding:16px}
     }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
   </style>
@@ -264,12 +304,15 @@
           <aside class="side-card" aria-label="What the tool checks">
             <h3>What this pass covers</h3>
             <ul class="check-list">
-              <li>Links: response status, redirects, and final destinations</li>
-              <li>Spam-risk wording patterns, flagged as prompts to review</li>
-              <li>Prices, percentages, durations, dates, numbers, and selected claims to verify</li>
-              <li>For HTML: rough image-to-text estimate and separate text-alternative note</li>
+              <li><strong>Subject and first line.</strong> Checks approximate mobile truncation, labels, emphasis, urgency, and familiar sender-first openings.</li>
+              <li><strong>CTA and links.</strong> Counts distinct actions and flags empty targets, generic labels, HTTP links, and common shorteners.</li>
+              <li><strong>Reader focus and readability.</strong> Compares sender and reader pronouns, counts words, estimates reading time, and finds long sentences or paragraphs.</li>
+              <li><strong>Facts and wording.</strong> Shows the full sentence around prices, percentages, dates, durations, figures, and absolute claims so you can check the source.</li>
+              <li><strong>Draft cleanup.</strong> Looks for unresolved personalization tokens, filler, repeated words, and several questions in one message.</li>
+              <li><strong>HTML and images.</strong> Checks image alt text and explicit dimensions, and estimates image markup compared with text.</li>
+              <li><strong>Marketing email reminders.</strong> Looks for an unsubscribe path and postal address. Rules vary; this is a checklist, not legal advice.</li>
             </ul>
-            <p class="side-warning">A pattern flag is not a verdict. Factual claims are not verified, and this is not an inbox placement or deliverability test.</p>
+            <p class="side-warning">Copy checks run locally. A pattern flag is not a verdict, factual claims are not verified, and this is not an inbox placement or deliverability test.</p>
           </aside>
         </div>
         <div class="results" id="results" aria-live="polite" hidden></div>
@@ -322,6 +365,7 @@
         </div>
         <div class="faq-list">
           <details><summary>What does the pre-send checker check?</summary><p>It checks extracted HTTP(S) links for reachable, redirected, broken, timed-out, blocked, or error responses; flags common spam-risk wording patterns; extracts numbers, prices, percentages, durations, dates, and selected claims for human verification; and, for HTML, estimates image-to-text balance and notes when a separate text alternative was not provided. These checks do not verify factual truth, run an inbox placement test, or include email-client previews.</p></details>
+          <details><summary>What else does the local email review check?</summary><p>Alongside links and spam-risk wording, the browser reviews subject length and mobile truncation risk, generic first lines, CTA count and wording, sender-to-reader pronouns, readability, unresolved personalization and draft markers, repeated words and questions, HTML image alt text and dimensions, marketing unsubscribe and postal-address clues, and numbers or absolute claims that need a source check. The subject and body stay in your browser. These checks do not provide a deliverability score.</p></details>
           <details><summary>Is this pre-send email checker truly free?</summary><p>Yes, $0 and no account. Each visitor gets 10 free checks per week.</p></details>
            <details><summary>How is this different from Email on Acid, Litmus, or Mailgun Inspect?</summary><p data-price-slot="competitor_faq">This free checker covers only the checks listed on this page and does not provide email-client previews or the Decision Friction Model audit. Mailgun Inspect Premium is listed at $199 per month after the first free month and includes link validation and spam content checks; its Basic plan is $99 per month after the first free month and does not include those checks. Litmus pricing is not published on its pricing page, which requires contacting sales. Mailgun's official transition announcement says Inspect succeeds Email on Acid; the former Email on Acid pricing URL is currently unavailable, so older Email on Acid prices are not repeated here. Prices as listed on their official pricing pages, 23 Nov 2026.</p></details>
           <details><summary>Is my email stored or sent to a server?</summary><p>The subject and email body are analyzed locally in your browser and are not sent or stored by this checker. Only HTTP(S) links extracted from the email are sent to the link-check endpoint. The destination websites may receive ordinary link-check requests.</p></details>
@@ -338,6 +382,7 @@
       <div class="updated">Last updated: <span data-price-slot="last_updated">2026-11-23</span></div>
     </div>
   </footer>
+  <script src="/presend-local-analysis.js"></script>
   <script>
     (function(){
       "use strict";
@@ -352,62 +397,7 @@
       var statusBox=document.getElementById("form-status");
       var resultsBox=document.getElementById("results");
        var quotaCounter=document.getElementById("quota-counter");
-      var spamPatterns=[
-        {label:"Urgency or pressure language",re:/\b(act now|urgent|limited time|last chance|expires today|don't miss out|immediately)\b/gi},
-        {label:"Overstated guarantee language",re:/\b(guaranteed|100%\s+(?:free|safe|risk[- ]free)|risk[- ]free|no obligation)\b/gi},
-        {label:"Common promotional trigger wording",re:/\b(once in a lifetime|winner|you have been selected|claim your prize|cash bonus)\b/gi},
-        {label:"Excessive punctuation or all-caps emphasis",re:/(?:!{2,}|\b[A-Z]{5,}\b)/g}
-      ];
       function esc(value){return String(value).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
-      function unique(items){return Array.from(new Set(items));}
-       function extractLinks(source){
-         var isHtml=/<[a-z][\s\S]*>/i.test(source);
-         var found=isHtml?[]:(source.match(/https?:\/\/[^\s<>"'`]+/gi)||[]);
-         if(isHtml){
-           var parsed=new DOMParser().parseFromString(source,"text/html");
-           parsed.querySelectorAll("script,style,noscript").forEach(function(node){node.remove();});
-           parsed.querySelectorAll("a[href],area[href]").forEach(function(node){var href=node.getAttribute("href");if(href&&/^https?:\/\//i.test(href))found.push(href);});
-           var visibleText=parsed.body.textContent||"";
-           found=found.concat(visibleText.match(/https?:\/\/[^\s<>"'`]+/gi)||[]);
-         }
-        return unique(found.map(function(raw){return raw.replace(/[),.;!?}\]]+$/,"");}).filter(function(raw){
-          try{var u=new URL(raw);return u.protocol==="http:"||u.protocol==="https:";}catch(e){return false;}
-        }));
-      }
-      function makeLocalContent(raw){
-        var isHtml=/<[a-z][\s\S]*>/i.test(raw);
-         if(!isHtml)return {text:raw,isHtml:false,imageCount:0,imageRatio:0};
-        var doc=new DOMParser().parseFromString(raw,"text/html");
-        var images=Array.from(doc.querySelectorAll("img"));
-        var imageCount=images.length;
-        images.forEach(function(img){img.replaceWith(doc.createTextNode(" "+(img.getAttribute("alt")||"")+" "));});
-        var text=(doc.body.textContent||"").replace(/\s+/g," ").trim();
-        var imageChars=images.reduce(function(total,img){return total+(img.outerHTML||"").length;},0);
-        var denominator=Math.max(1,text.length+imageChars);
-         return {text:text,isHtml:true,imageCount:imageCount,imageRatio:Math.round(imageChars/denominator*100)};
-      }
-      function findFacts(source){
-        var tests=[
-          {label:"Price",re:/(?:[$€£]\s?\d[\d,.]*(?:\s?(?:\/|per)\s?(?:mo(?:nth)?|yr|year|user))?|\b\d[\d,.]*\s?(?:USD|EUR|GBP)\b)/gi},
-          {label:"Percentage",re:/\b\d+(?:\.\d+)?\s?%/g},
-           {label:"Duration",re:/\b\d+(?:\.\d+)?\s*[-\u2013\u2014]?\s*(?:days?|weeks?|months?|years?|hours?|minutes?|mins?|seconds?|secs?)\b/gi},
-          {label:"Date",re:/\b(?:\d{1,2}[/-]\d{1,2}(?:[/-]\d{2,4})?|\d{4}-\d{2}-\d{2}|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s+\d{1,2}(?:,\s*\d{4})?)\b/gi},
-          {label:"Specific number",re:/\b\d[\d,.]*(?:\s?(?:x|×))?\b/g},
-          {label:"Claim wording",re:/\b(?:only|#1|number one|free for \d+\s+(?:days?|weeks?|months?))\b/gi}
-        ];
-        var out=[];
-        tests.forEach(function(test){
-          var matches=source.match(test.re)||[];
-          unique(matches).forEach(function(match){out.push({label:test.label,value:match.trim()});});
-        });
-        return out.slice(0,60);
-      }
-      function spamFindings(source){
-        return spamPatterns.map(function(pattern){
-          var matches=unique(source.match(pattern.re)||[]);
-          return matches.length?{label:pattern.label,matches:matches.slice(0,8)}:null;
-        }).filter(Boolean);
-      }
       function setStatus(message,type){
         statusBox.hidden=false;
         statusBox.className="status"+(type?" "+type:"");
@@ -425,35 +415,131 @@
          statusBox.className="status error";
          statusBox.innerHTML=esc("You've used your 10 free checks this week. They reset on "+formatted+". Need more? ")+"<a href=\"/strategic-flow-pricing.html\">See the Decision Friction Review</a>.";
        }
-      function renderResults(data){
-        var raw=bodyInput.value;
-        var content=makeLocalContent(raw);
-        var combined=(subjectInput.value+"\n"+content.text);
-         var urls=extractLinks(subjectInput.value+"\n"+raw);
-        var findings=spamFindings(combined);
-        var facts=findFacts(combined);
-         var htmlNote=content.isHtml?
-           "<li>HTML detected. Rough source-size estimate: <strong>"+content.imageRatio+"%</strong> image markup, "+(100-content.imageRatio)+"% extracted text.</li><li>No separate plain-text email version was supplied in this check; this tool does not inspect multipart MIME alternatives.</li>":
-           "<li>Plain-text email detected. The pasted body is the text version; paste HTML to estimate image-to-text balance.</li>";
-        var linkResults=data&&Array.isArray(data.results)?data.results:[];
-        var linkHtml;
-        if(!urls.length)linkHtml="<p>No HTTP(S) links found in the body.</p>";
-        else if(!linkResults.length)linkHtml="<p class=\"warn\">The link service returned no results for "+urls.length+" extracted URL"+(urls.length===1?"":"s")+". You can retry this check.</p>";
-        else linkHtml="<ul>"+linkResults.map(function(item){
-          var label=item.status||"error";
-          var cls=label==="ok"?"good":(label==="redirect"?"warn":"bad");
-          return "<li><span class=\""+cls+"\"><strong>"+esc(label.toUpperCase())+"</strong></span> <span class=\"mono\">"+esc(item.url||"")+"</span>"+(item.code?" · "+esc(item.code):"")+(item.finalUrl&&item.finalUrl!==item.url?"<br><span class=\"mono\">Final: "+esc(item.finalUrl)+"</span>":"")+(item.message?"<br>"+esc(item.message):"")+"</li>";
-        }).join("")+"</ul>";
-        var spamHtml=findings.length?"<ul>"+findings.map(function(item){return "<li><strong>"+esc(item.label)+":</strong> "+item.matches.map(esc).join(", ")+"</li>";}).join("")+"</ul>":"<p class=\"good\">No patterns from this small local list were found. This is not a spam or deliverability guarantee.</p>";
-        var factsHtml=facts.length?"<ul>"+facts.map(function(item){return "<li><strong>"+esc(item.label)+":</strong> "+esc(item.value)+"</li>";}).join("")+"</ul>":"<p>No selected claim patterns or numeric facts detected. Review claims manually; extraction is not fact-checking.</p>";
-        resultsBox.innerHTML="<div class=\"results-heading\"><h3>Check results</h3><p>Local copy checks + URL response data</p></div>"+
-          "<section class=\"result-card\"><h4>Links</h4>"+linkHtml+"</section>"+
-          "<section class=\"result-card\"><h4>Spam-risk patterns</h4><p class=\"field-help\">These are heuristic review prompts, not deliverability scoring.</p>"+spamHtml+"</section>"+
-          "<section class=\"result-card\"><h4>Facts to verify</h4><p class=\"field-help\">Extracted from your copy; truth is not checked.</p>"+factsHtml+"</section>"+
-           "<section class=\"result-card\"><h4>HTML balance</h4><ul>"+htmlNote+"</ul></section>"+
-           "<div class=\"next-cta\"><div><h3>The check is free. The full rebuild is the Decision Friction Review.</h3><p>See the paid review options, or use the separate full audit for subject, first-line, CTA, Guest Language CTA, and Filing Label Subject diagnosis.</p></div><div style=\"display:grid;gap:8px\"><a class=\"text-button\" href=\"/strategic-flow-pricing.html\">See the Decision Friction Review</a><a href=\"https://strategic-flow-audit.replit.app/\" target=\"_blank\" rel=\"noopener noreferrer\">Run the separate free audit</a></div></div>";
-        resultsBox.hidden=false;
-      }
+       function formatEvidence(item){
+         var text=String(item&&item.text||"");
+         var matches=Array.isArray(item&&item.matches)?item.matches:[item&&item.match];
+         var ranges=[];
+         matches.filter(Boolean).forEach(function(needle){
+           needle=String(needle);
+           var from=0;
+           while(needle&&from<text.length){
+             var index=text.toLowerCase().indexOf(needle.toLowerCase(),from);
+             if(index<0)break;
+             ranges.push({start:index,end:index+needle.length});
+             from=index+needle.length;
+           }
+         });
+         ranges.sort(function(a,b){return a.start-b.start||a.end-b.end;});
+         var merged=[];
+         ranges.forEach(function(range){
+           var last=merged[merged.length-1];
+           if(last&&range.start<=last.end)last.end=Math.max(last.end,range.end);
+           else merged.push({start:range.start,end:range.end});
+         });
+         if(!merged.length)return esc(text);
+         var output="",cursor=0;
+         merged.forEach(function(range){
+           output+=esc(text.slice(cursor,range.start))+"<mark>"+esc(text.slice(range.start,range.end))+"</mark>";
+           cursor=range.end;
+         });
+         return output+esc(text.slice(cursor));
+       }
+       function evidenceList(items){
+         if(!Array.isArray(items)||!items.length)return "";
+         var grouped=new Map();
+         items.forEach(function(item){
+           var text=String(item&&item.text||"");
+           if(!text)return;
+           if(!grouped.has(text))grouped.set(text,{text:text,matches:[]});
+           if(item&&item.match)grouped.get(text).matches.push(item.match);
+           if(item&&Array.isArray(item.matches))grouped.get(text).matches.push.apply(grouped.get(text).matches,item.matches);
+         });
+         return "<ul class=\"check-evidence\">"+Array.from(grouped.values()).map(function(item){return "<li>"+formatEvidence(item)+"</li>";}).join("")+"</ul>";
+       }
+       function linkHealthCheck(analysis,data,linkError){
+         var urls=analysis.linkUrls||[];
+         var results=data&&Array.isArray(data.results)?data.results:[];
+         var missing=Math.max(0,urls.length-results.length);
+         var broken=results.filter(function(item){return /^(?:broken|error|404)$/i.test(String(item.status||""));});
+         var review=results.filter(function(item){return /^(?:redirect|timeout|timed_out|blocked)$/i.test(String(item.status||""));});
+         var status="passed";
+         var found;
+         var evidenceItems=results.map(function(item){
+           var state=String(item.status||"unknown").toUpperCase();
+           var summary=state+" "+String(item.url||"")+(item.code?" ("+item.code+")":"")+(item.finalUrl&&item.finalUrl!==item.url?"; final URL "+item.finalUrl:"")+(item.message?"; "+item.message:"");
+           return {text:summary,match:String(item.url||state)};
+         });
+         if(!urls.length){
+           found="Passed. No HTTP(S) links were found, so no destination request was needed.";
+         }else if(linkError){
+           status="review";
+           found=results.length
+             ?"The service returned "+results.length+" of "+urls.length+" link results. Some destinations may not have been checked."
+             :"The link service did not return a check result for "+urls.length+" extracted URL"+(urls.length===1?"":"s")+".";
+         }else{
+           if(broken.length)status="issue";
+           else if(review.length||missing)status="review";
+           found=results.length+" of "+urls.length+" extracted URL"+(urls.length===1?" was":"s were")+" checked. "+
+             (broken.length?broken.length+" error or broken response"+(broken.length===1?"":"s")+". ":"")+
+             (review.length?review.length+" redirect, timeout, or blocked result"+(review.length===1?"":"s")+". ":"")+
+             (missing?missing+" URL"+(missing===1?" was":"s were")+" not checked. ":"")+
+             (!broken.length&&!review.length&&!missing?"All checked destinations returned OK.":"");
+         }
+         if(missing&&urls.length>12){
+           status=status==="issue"?"issue":"review";
+         }
+         if(broken.length)status="issue";
+         return {
+           title:"Link destinations",
+           status:status,
+           found:found,
+           why:"A destination can be unavailable, redirect to another place, or fail only when requested. This check reports the observed response and cannot guarantee that a reader will reach the same result later.",
+           action:linkError
+             ?"Retry the link check when the service is available. The subject and body remain local."
+             :"Open every redirected or uncertain destination and confirm the final page is the one intended. Replace broken links before sending.",
+           evidence:evidenceItems.slice(0,16),
+           priority:broken.length?1:3
+         };
+       }
+       function renderCheck(check){
+         var statusText=check.status==="passed"?"Passed":(check.status==="issue"?"Issue":"To review");
+         return "<section class=\"result-card check-card\" data-status=\""+esc(check.status)+"\">"+
+           "<div class=\"check-top\"><h4>"+esc(check.title)+"</h4><span class=\"check-status "+esc(check.status)+"\">"+statusText+"</span></div>"+
+           "<div class=\"check-field\"><strong>Found</strong><p>"+esc(check.found)+"</p>"+evidenceList(check.evidence)+"</div>"+
+           "<div class=\"check-field\"><strong>Why it matters</strong><p>"+esc(check.why)+"</p></div>"+
+           "<div class=\"check-field\"><strong>What to check</strong><p>"+esc(check.action)+"</p></div>"+
+           "</section>";
+       }
+       function renderResults(analysis,data,linkError){
+         var checks=analysis.checks.slice();
+         checks.splice(3,0,linkHealthCheck(analysis,data,linkError));
+         var counts=checks.reduce(function(total,check){
+           if(check.status==="passed")total.passed++;
+           else if(check.status==="issue")total.issues++;
+           else total.review++;
+           return total;
+         },{passed:0,review:0,issues:0});
+         var priorities=checks.filter(function(check){return check.status!=="passed";}).sort(function(a,b){
+           var statusA=a.status==="issue"?0:1;
+           var statusB=b.status==="issue"?0:1;
+           return statusA-statusB||(a.priority||9)-(b.priority||9);
+         }).slice(0,3);
+         var priorityHtml=priorities.length
+           ?"<ol>"+priorities.map(function(check){return "<li><strong>"+esc(check.title)+":</strong> "+esc(check.action)+"</li>";}).join("")+"</ol>"
+           :"<p>No priority issues surfaced in these checks. Review the message before sending.</p>";
+         var summary="<section class=\"readiness-panel\" aria-labelledby=\"readiness-title\">"+
+           "<div class=\"readiness-top\"><div><div class=\"readiness-kicker\">Local copy review</div><h3 id=\"readiness-title\">Pre-send readiness</h3><p class=\"readiness-intro\">Counts show the checks that passed, need review, or found an issue. They are not a deliverability score.</p></div>"+
+           "<div class=\"readiness-stats\" aria-label=\"Check summary\">"+
+           "<div class=\"readiness-stat passed\"><strong>"+counts.passed+"</strong><span>Passed</span></div>"+
+           "<div class=\"readiness-stat review\"><strong>"+counts.review+"</strong><span>To review</span></div>"+
+           "<div class=\"readiness-stat issues\"><strong>"+counts.issues+"</strong><span>Issues</span></div>"+
+           "</div></div><div class=\"readiness-priority\"><h4>Check these first</h4>"+priorityHtml+"</div></section>";
+         resultsBox.innerHTML=summary+
+           "<div class=\"results-heading\"><h3>Detailed checks</h3><p>Copy stays in this browser</p></div>"+
+           checks.map(renderCheck).join("")+
+           "<div class=\"next-cta\"><div><h3>The check is free. The full rebuild is the Decision Friction Review.</h3><p>See the paid review options, or use the separate full audit for subject, first-line, CTA, Guest Language CTA, and Filing Label Subject diagnosis.</p></div><div class=\"cta-links\"><a class=\"text-button\" href=\"/strategic-flow-pricing.html\">See the Decision Friction Review</a><a href=\"https://strategic-flow-audit.replit.app/\" target=\"_blank\" rel=\"noopener noreferrer\">Run the separate free audit</a></div></div>";
+         resultsBox.hidden=false;
+       }
       form.addEventListener("submit",async function(event){
         event.preventDefault();
         button.disabled=true;
@@ -477,7 +563,8 @@
            if(!subject){setStatus("Add a subject line to run the check.");subjectInput.focus();return;}
            if(!body){setStatus("Paste an email body to run the check.");bodyInput.focus();return;}
 
-           var urls=extractLinks(subject+"\n"+body);
+            var analysis=window.StrategicFlowPreSendAnalyzer.analyze(subject,body);
+            var urls=analysis.linkUrls;
            var checkedUrls=urls.slice(0,12);
            setStatus(urls.length?"Analyzing copy locally and checking "+checkedUrls.length+" of "+urls.length+" extracted URL"+(urls.length===1?"":"s")+"…":"Analyzing copy locally…");
            var responseData={results:[]};
@@ -497,7 +584,7 @@
                linkError=(error&&error.message?error.message:"The link-check service could not be reached.")+" Local checks are shown below; retry to check links.";
              }
            }
-           renderResults(responseData);
+            renderResults(analysis,responseData,linkError);
            if(linkError){
              setStatus(linkError+" "+quota.remaining+" of 10 free checks left this week.","error");
            }else{
