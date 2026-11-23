@@ -161,9 +161,13 @@ async function requestOnce(parsed, { method, headers, timeoutMs, maxBytes }) {
       headers: requestHeaders,
       agent: false,
       servername: net.isIP(hostname) ? undefined : hostname,
-      lookup(requestHostname, _options, callback) {
+      lookup(requestHostname, lookupOptions, callback) {
         if (normalizedHostname(requestHostname) !== hostname) {
           callback(new SafeFetchError('dns_changed', 'The destination hostname changed unexpectedly.'));
+          return;
+        }
+        if (lookupOptions && lookupOptions.all) {
+          callback(null, [{ address: resolved.address, family: resolved.family }]);
           return;
         }
         callback(null, resolved.address, resolved.family);

@@ -35,6 +35,24 @@ test('allows the strategicflow.tech origin and responds to preflight', async () 
   });
 });
 
+test('allows a same-origin request from the running preview host', async () => {
+  const app = express();
+  app.use(express.json());
+  app.use('/api/presend', createPreSendCheckRouter({
+    safeFetchPublicUrl: async url => ({ status: 200, url }),
+  }));
+
+  await withServer(app, async baseUrl => {
+    const response = await fetch(`${baseUrl}/api/presend/links`, {
+      method: 'POST',
+      headers: { Origin: baseUrl, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ links: ['https://example.com/'] }),
+    });
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('access-control-allow-origin'), baseUrl);
+  });
+});
+
 test('returns OK, redirect, broken, and timeout statuses without storing submitted content', async () => {
   const app = express();
   app.use(express.json());

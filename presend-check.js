@@ -134,9 +134,21 @@ function createPreSendCheckRouter(options = {}) {
   const takeRateLimitSlot = options.takeRateLimitSlot || createRateLimiter();
   const linkTotalTimeoutMs = options.linkTotalTimeoutMs || LINK_TOTAL_TIMEOUT_MS;
 
+  function isSameOriginRequest(req, origin) {
+    try {
+      const forwardedProtocol = String(req.get('x-forwarded-proto') || '').split(',')[0].trim().toLowerCase();
+      const forwardedHost = String(req.get('x-forwarded-host') || '').split(',')[0].trim();
+      const protocol = forwardedProtocol || req.protocol;
+      const host = forwardedHost || req.get('host');
+      return new URL(origin).origin === new URL(`${protocol}://${host}`).origin;
+    } catch {
+      return false;
+    }
+  }
+
   function cors(req, res) {
     const origin = req.get('origin');
-    if (origin && !allowedOrigins.has(origin)) return false;
+    if (origin && !allowedOrigins.has(origin) && !isSameOriginRequest(req, origin)) return false;
     if (origin) {
       res.setHeader('Access-Control-Allow-Origin', origin);
       res.setHeader('Vary', 'Origin');
