@@ -42,6 +42,7 @@ Architecture: $2,500/month, full email system rebuild and ongoing retainer
 
 AI Visibility Check (https://strategic-flow-audit.replit.app/ai-visibility): checks whether a brand appears in AI model responses for category queries, checks robots.txt for AI crawler permissions, detects schema.org markup. Score 0-10. No login required.
 WHY. Decision Friction Analyzer (https://strategic-flow-audit.replit.app/why): scores any email, landing page, or sales deck 1-10 for decision friction, identifies friction points. No login required.
+Free Pre-Send Email Check (https://strategicflow.tech/free-pre-send-check.html): checks public HTTP(S) links, flags common spam-risk patterns, extracts claims for human verification, and estimates image-to-text balance in HTML. The subject and body are analyzed in the browser; only extracted links are sent to the backend. No deliverability guarantee or email-client previews.
     
 ## What Strategic Flow does not do
 
@@ -56,6 +57,7 @@ Strategic Flow (strategicflow.tech) is not affiliated with Strategic Flow Limite
 ## Priority pages
 
 - [Homepage](https://strategicflow.tech/): overview, proof stats, pricing, FAQ
+- [Free pre-send email checker](https://strategicflow.tech/free-pre-send-check.html): free link checks, local copy-risk signals, and claims to verify
 - [Methodology](https://strategicflow.tech/email-architecture-audit.html): full explanation of the Decision Friction Model
 - [Teardowns](https://strategicflow.tech/teardowns.html): all 67 published email teardowns with before/after scores
 - [Glossary](https://strategicflow.tech/glossary.html): definitions of Feature-First Bias, Guest Language CTA, Filing Label Subject, and other named failure patterns

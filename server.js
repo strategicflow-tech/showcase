@@ -28,6 +28,7 @@ const { extractBrandDNA } = require('./brand-dna.js');
 const { runAggregation } = require('./aggregator');
 const { generateShowcaseHtml, extractVisualAssets } = require('./showcase-generator.js');
 const { enrichListingWithAI } = require('./listing-enricher');
+const { createPreSendCheckRouter } = require('./presend-check');
 const {
   FRESH_PRODUCT_HUNT_VOTE_INTERVAL_MS,
   freshProductHuntVoteTarget,
@@ -890,6 +891,10 @@ function applyTrustedCors(req, res, methods = 'GET, POST, OPTIONS') {
   res.header('Access-Control-Allow-Methods', methods);
   res.header('Access-Control-Allow-Headers', 'Content-Type');
 }
+
+app.use('/api/presend', createPreSendCheckRouter({
+  allowedOrigins: browserOrigins,
+}));
 
 app.use('/api/outreach', createAgencyOutreachRouter({
   authorizationToken: OUTREACH_SEND_TOKEN,
@@ -18712,6 +18717,11 @@ app.get('/download-carousel-pages.html', (req, res, next) => {
   res.download(file, 'strategic-flow-carousel-pages.html', (error) => {
     if (error && !res.headersSent) next(error);
   });
+});
+
+app.get('/free-pre-send-check.html', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(path.join(__dirname, 'free-pre-send-check.html'));
 });
 
 app.use(express.static('public'));
