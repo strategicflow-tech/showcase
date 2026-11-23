@@ -64,6 +64,10 @@
     .eyebrow{display:inline-flex;border:1px solid rgba(0,212,200,.3);background:rgba(0,212,200,.08);padding:7px 13px;border-radius:99px;margin-bottom:22px}
     h1{font-size:clamp(32px,5.6vw,58px);line-height:1.08;letter-spacing:-.045em;margin:0 auto 20px;max-width:880px;font-weight:800}
     h1 em{font-style:normal;color:var(--teal)}
+    .price-spotlight{display:grid;justify-items:center;gap:4px;width:fit-content;max-width:100%;margin:0 auto 22px;padding:15px 28px 14px;border:1px solid rgba(0,212,200,.48);border-radius:18px;background:linear-gradient(135deg,rgba(0,212,200,.13),rgba(18,36,64,.72));box-shadow:0 12px 36px rgba(0,0,0,.18)}
+    .price-spotlight-label{font-size:clamp(13px,2vw,17px);font-weight:800;letter-spacing:.015em;color:var(--ink)}
+    .price-spotlight-amount{font-size:clamp(56px,12vw,110px);font-weight:800;line-height:.94;letter-spacing:-.075em;white-space:nowrap;color:var(--teal);font-variant-numeric:tabular-nums}
+    .price-spotlight-subtitle{font-size:clamp(13px,1.8vw,16px);font-weight:700;color:var(--ink)}
     .hero p{max-width:720px;margin:0 auto;color:var(--sub);font-size:17px}
     .quick-proof{display:flex;justify-content:center;gap:10px 26px;flex-wrap:wrap;margin:28px auto 0;color:var(--muted);font:11px var(--mono);text-transform:uppercase;letter-spacing:.05em}
     .quick-proof span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--teal);margin:0 9px 1px 0}
@@ -85,7 +89,12 @@
     td:first-child{font-weight:700;color:var(--ink);width:21%}
     td strong{color:var(--ink)}
     tr:last-child td{border-bottom:0}
-    .own-row td{background:rgba(0,212,200,.055)}
+    .own-row td{background:rgba(0,212,200,.15);border-top:2px solid var(--teal);border-bottom:2px solid var(--teal)}
+    .own-row td:first-child{border-left:2px solid var(--teal)}
+    .own-row td:last-child{border-right:2px solid var(--teal)}
+    .free-badge{display:inline-flex;align-items:center;justify-content:center;margin-left:8px;padding:4px 8px;border-radius:99px;background:var(--teal);color:#061c24;font:800 10px/1 var(--mono);letter-spacing:.06em;vertical-align:middle}
+    .own-price{display:inline-block;color:var(--teal);font-size:40px;line-height:1;font-weight:800;letter-spacing:-.06em;white-space:nowrap}
+    .own-price-note{display:block;margin-top:5px;font-size:11px;color:var(--ink)}
     .source-links{font-size:11px;line-height:1.8}
     .source-note{padding:17px 22px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);line-height:1.7}
     .source-note strong{color:var(--sub)}
@@ -156,6 +165,18 @@
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     @media(max-width:800px){.navlinks{gap:12px}.navlinks li:nth-child(2),.navlinks li:nth-child(3){display:none}.tool-shell{grid-template-columns:1fr}.side-card{position:static}.link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:600px){.wrap{width:min(100% - 32px,1100px)}.nav{min-height:56px}.navlinks li:nth-child(1){display:none}.hero{padding:54px 0 38px}.hero p{font-size:15px}.section{padding:46px 0}.compare-title{display:block;padding:18px}.compare-title .stamp{text-align:left;margin-top:10px}.table-wrap{overflow:visible}table{display:block;min-width:0}thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}tbody,tr{display:block;width:100%}tr{padding:13px 16px;border-bottom:1px solid var(--line)}tr:last-child{border-bottom:0}th,td{display:block;width:100%;padding:7px 0;border:0}td:first-child{width:100%;padding-top:0;margin-bottom:2px;font-size:14px}td:nth-child(2):before,td:nth-child(3):before,td:nth-child(4):before{display:block;margin-bottom:3px;font:10px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}td:nth-child(2):before{content:"Listed price"}td:nth-child(3):before{content:"Link and spam checks"}td:nth-child(4):before{content:"Source"}tr:last-child td{border-bottom:0}.tool-shell{gap:13px}.form-card{padding:18px}.next-cta{align-items:stretch;flex-direction:column}.text-button{width:100%}.cta-links{min-width:0}.tools-grid{grid-template-columns:1fr}.tool-tile{min-height:0}.link-grid{grid-template-columns:1fr 1fr}.link-grid a{padding:13px;font-size:11px}textarea{min-height:190px}footer{padding-bottom:28px}}
+    @media(max-width:600px){
+      .price-spotlight{width:100%;max-width:420px;margin-bottom:19px;padding:13px 14px 12px}
+      .price-spotlight-label{font-size:13px}
+      .price-spotlight-amount{font-size:clamp(56px,16vw,76px)}
+      .own-row{margin:8px 0 14px;padding:15px 16px;border:2px solid var(--teal);border-radius:14px;background:rgba(0,212,200,.15);box-shadow:0 8px 24px rgba(0,0,0,.16)}
+      .own-row td{border:0;background:transparent}
+      .own-row td:first-child{border:0;padding-top:0}
+      .own-row td:last-child{border:0}
+      .own-row td:nth-child(2):before{color:var(--teal)}
+      .own-row .own-price{font-size:34px}
+      .own-row .free-badge{font-size:9px}
+    }
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
   </style>
 </head>
@@ -175,6 +196,11 @@
     <div class="wrap hero-inner">
       <div class="eyebrow">Pre-send checks · no account</div>
         <h1>Mailgun Inspect Premium is $199 a month after its free month for link and spam checks. <em>This pre-send check is free.</em></h1>
+      <div class="price-spotlight" aria-label="Strategic Flow pre-send check costs zero dollars or euros">
+        <span class="price-spotlight-label">Strategic Flow pre-send check</span>
+        <span class="price-spotlight-amount">$0 / €0</span>
+        <span class="price-spotlight-subtitle">Free. No account. No card.</span>
+      </div>
       <p>A practical last pass for B2B SaaS email: check links, spot common spam-risk wording, gather claims to verify, and estimate the balance of images and text in HTML. No email-client previews. No pretend deliverability score.</p>
       <div class="quick-proof"><span>$0, no account</span><span>Subject and body stay in your browser</span><span>Only extracted links are sent for link checks</span></div>
     </div>
@@ -196,11 +222,11 @@
             <table>
               <thead><tr><th scope="col">Tool</th><th scope="col">Listed price</th><th scope="col">Link and spam checks</th><th scope="col">Source</th></tr></thead>
               <tbody>
+                <tr class="own-row"><td>Strategic Flow pre-send check <span class="free-badge">FREE</span></td><td><span class="own-price">$0 / €0</span><span class="own-price-note">No account</span></td><td>Extracted URL checks, local spam-risk patterns, claims to verify, and HTML image/text estimate. No client previews.</td><td class="source-links"><a href="#checker">Run the free check below</a></td></tr>
                 <tr><td>Mailgun Inspect Basic</td><td><strong>$99/mo</strong> after the first free month</td><td>Basic does not include link validation or spam content checks.</td><td class="source-links"><a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Official Mailgun Inspect pricing</a></td></tr>
                 <tr><td>Mailgun Inspect Premium</td><td><strong>$199/mo</strong> after the first free month</td><td>Includes link validation and spam content checks.</td><td class="source-links"><a href="https://www.mailgun.com/pricing/inspect/" target="_blank" rel="noopener noreferrer">Official Mailgun Inspect pricing</a></td></tr>
                 <tr><td>Litmus</td><td>Pricing is not published on the page; sales contact is required.</td><td>See its current plan details directly; this page does not infer unpublished prices.</td><td class="source-links"><a href="https://www.litmus.com/pricing-litmus" target="_blank" rel="noopener noreferrer">Official Litmus pricing page</a></td></tr>
                 <tr><td>Email on Acid</td><td>Its former pricing URL is currently unavailable.</td><td>Mailgun’s official transition announcement says Inspect succeeds Email on Acid. Current Inspect pricing is listed separately above; older Email on Acid prices are not repeated.</td><td class="source-links"><a href="https://www.mailgun.com/blog/product/mailgun-inspect-next-generation/" target="_blank" rel="noopener noreferrer">Official product transition announcement</a></td></tr>
-                <tr class="own-row"><td>Strategic Flow pre-send check</td><td><strong>$0</strong>, no account</td><td>Extracted URL checks, local spam-risk patterns, claims to verify, and HTML image/text estimate. No client previews.</td><td class="source-links"><a href="#checker">Run the free check below</a></td></tr>
               </tbody>
             </table>
           </div>
