@@ -297,13 +297,148 @@ section{scroll-margin-top:70px}
 @media (max-width:560px){.pk-grid,.pk-in,.pk-steps{grid-template-columns:minmax(0,1fr)}.pk-hero{padding:46px 18px 24px}.pk-cta{width:100%;padding:0 16px}.pk-ribbon{left:18px}}
 @media (prefers-reduced-motion:reduce){.pk-cta{animation:none}}
 @media print{.pk-hero{background:#fff;color:#000;border-color:#000;box-shadow:none}.pk-hero h3,.pk-price b,.pk-price s,.pk-in li,.pk-in li b,.pk-start,.pk-sub,.pk-was,.pk-fine,.pk-trust li{color:#000}.pk-cta{display:none}}
+
+/* ---- sales layer (sx) ---- */
+.sx{--sx-ink:#06121A;--sx-ink2:#0B2230;--sx-neon:#3EE6CF;--sx-neon2:#7AB8FF;--sx-soft:#CFE7EA}
+.sx-hero,.sx-band{position:relative;isolation:isolate;overflow:hidden;color:#E9F6F6;border-radius:28px;background:radial-gradient(120% 90% at 85% -10%,rgba(62,230,207,.28),transparent 55%),radial-gradient(90% 80% at -10% 110%,rgba(122,184,255,.22),transparent 60%),linear-gradient(160deg,#06121A 0%,#0B2230 100%);box-shadow:0 30px 80px -40px rgba(6,18,26,.6)}
+.sx-hero{margin-top:28px;padding:clamp(28px,6vw,64px) clamp(20px,5vw,56px)}
+.sx-grid{position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(62,230,207,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(62,230,207,.09) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(ellipse at 70% 20%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 70% 20%,#000 20%,transparent 75%)}
+.sx-kick{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:0;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sx-neon)}
+.sx-dot{width:9px;height:9px;border-radius:50%;background:var(--sx-neon);box-shadow:0 0 0 0 rgba(62,230,207,.7);animation:sxp 2.4s infinite}
+@keyframes sxp{0%{box-shadow:0 0 0 0 rgba(62,230,207,.6)}70%{box-shadow:0 0 0 12px rgba(62,230,207,0)}100%{box-shadow:0 0 0 0 rgba(62,230,207,0)}}
+.sx-upd{color:#8FB3BA;letter-spacing:.08em}
+.sx-h1{margin:22px 0 0;font-family:var(--f-display);font-weight:700;font-size:clamp(2rem,5.2vw,3.4rem);line-height:1.06;letter-spacing:-.02em;color:#fff;max-width:20ch}
+.sx-pos{margin:22px 0 0;font-family:var(--f-display);font-size:clamp(1.15rem,2.3vw,1.45rem);line-height:1.35;color:var(--sx-neon);max-width:38ch}
+.sx-lead{margin:14px 0 0;font-size:1.05rem;line-height:1.7;color:var(--sx-soft);max-width:60ch}
+.sx-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:30px;max-width:720px}
+.sx-chip{display:grid;gap:6px;padding:18px 20px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(62,230,207,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sx-hot{border-color:rgba(62,230,207,.6);background:linear-gradient(150deg,rgba(62,230,207,.16),rgba(255,255,255,.04))}
+.sx-cl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#9CC4CA}
+.sx-cv{font-family:var(--f-display);font-size:clamp(2rem,4.5vw,2.6rem);line-height:1;color:#fff}
+.sx-cv s,.sx-pv s{font-size:.45em;font-weight:500;color:#8FA9AE;margin-left:6px}
+.sx-cs{font-size:.95rem;line-height:1.45;color:var(--sx-soft)}
+.sx-hnote{margin:14px 0 0;font-size:.92rem;color:#9CC4CA}
+.sx-btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.sx-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:var(--f-display);font-weight:700;font-size:1.02rem;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease,background .15s}
+.sx-btn:hover{transform:translateY(-2px)}
+.sx-btn:focus-visible{outline:3px solid var(--sx-neon2);outline-offset:3px}
+.sx-p{background:var(--sx-neon);color:#03231F;box-shadow:0 10px 30px -10px rgba(62,230,207,.8)}
+.sx-o{border:1.5px solid rgba(233,246,246,.55);color:#E9F6F6}
+.sx-g{color:#9CC4CA;padding:0 8px}
+.sx-badges{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:30px 0 0;padding:22px 0 0;border-top:1px solid rgba(62,230,207,.18)}
+.sx-badges li{font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.06);color:#CFE7EA}
+.sx-sec{margin-top:clamp(64px,9vw,104px)}
+.sx-lab{margin:0;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink)}
+.sx-h2{margin:10px 0 0;font-family:var(--f-display);font-size:clamp(1.65rem,3.6vw,2.4rem);line-height:1.12;letter-spacing:-.015em;max-width:24ch}
+.sx-ba{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}
+.sx-card{display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:20px;background:var(--surface);border:1px solid var(--line);box-shadow:0 14px 40px -28px rgba(15,37,48,.45)}
+.sx-time{margin:0;font-family:var(--f-mono);font-size:13px;color:var(--accent-ink)}
+.sx-card h3{margin:0;font-family:var(--f-display);font-size:1.22rem;line-height:1.25}
+.sx-no,.sx-yes{margin:0;padding:12px 14px;border-radius:12px;font-size:.98rem;line-height:1.5}
+.sx-no{background:var(--no-tint)}.sx-yes{background:var(--ok-tint)}
+.sx-no span,.sx-yes span{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.sx-no span{color:var(--no)}.sx-yes span{color:var(--ok)}
+.sx-inline{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;margin-top:28px;padding:20px 24px;border-radius:20px;background:var(--tint)}
+.sx-inline p{margin:0;font-family:var(--f-display);font-weight:700;font-size:1.15rem}
+.sx-inline .sx-btns{margin-top:0}
+.sx-inline .sx-o,.sx-sec .sx-o{color:var(--fg);border-color:var(--fg)}
+.sx-steps{list-style:none;margin:30px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:none}
+.sx-steps li{position:relative;padding:24px 22px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.sx-n{font-family:var(--f-mono);font-weight:500;font-size:2rem;line-height:1;background:linear-gradient(120deg,var(--accent),#3A7BD5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sx-steps h3{margin:14px 0 0;font-family:var(--f-display);font-size:1.18rem;line-height:1.25}
+.sx-steps p{margin:8px 0 0;font-size:1rem;line-height:1.55;color:var(--muted)}
+.sx-ctrl{margin:20px 0 0;padding:18px 22px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 14px 14px 0;font-size:1.02rem;line-height:1.6}
+.sx-pg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:18px;margin-top:30px}
+.sx-pc{padding:26px 24px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}
+.sx-pc-hot{border:2px solid var(--accent);box-shadow:0 20px 50px -30px rgba(12,138,134,.7)}
+.sx-pc h3{margin:0;font-family:var(--f-mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.sx-pc .sx-pv{margin:10px 0 6px;font-family:var(--f-display);font-weight:700;font-size:clamp(2.3rem,5vw,3rem);line-height:1}
+.sx-pc p{font-size:1rem;line-height:1.55}
+.sx-in,.sx-out{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:.96rem}
+.sx-in{background:var(--ok-tint)}.sx-out{background:var(--warn-tint)}
+.sx-fix{margin:18px 0 0;font-size:1.02rem;line-height:1.6}
+.sx-mo{margin-top:22px;padding:24px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}
+.sx-mo h3{margin:0 0 8px;font-family:var(--f-display);font-size:1.2rem}
+.sx-mo dl{margin:0}
+.sx-mo dl div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.sx-mo dt{font-size:1rem;color:var(--muted)}
+.sx-mo dd{margin:0;font-family:var(--f-mono);font-size:1rem;white-space:nowrap}
+.sx-mo .sx-tot{border-bottom:0;margin:4px 0;padding:12px 14px;border-radius:12px;background:var(--fg)}
+.sx-mo .sx-tot dt{color:#CFE3E5;font-weight:600}.sx-mo .sx-tot dd{color:#fff;font-family:var(--f-display);font-weight:700;font-size:1.15rem}
+.sx-mon{margin:10px 0 0;font-size:.92rem;color:var(--muted)}
+.sx-warn{margin-top:22px;padding:22px 24px;border-radius:20px;background:var(--warn-tint);border:1.5px solid #E0A21A}
+.sx-warn h3{margin:0;font-family:var(--f-display);font-size:1.15rem;color:var(--warn)}
+.sx-warn p{margin:10px 0 0;font-size:1rem;line-height:1.6}
+.sx #calc-s{margin-top:clamp(64px,9vw,104px)}
+.sx-band{margin-top:clamp(64px,9vw,104px);padding:clamp(30px,6vw,56px) clamp(20px,5vw,48px);text-align:left}
+.sx-band h2{margin:0;font-family:var(--f-display);font-size:clamp(1.6rem,3.6vw,2.3rem);line-height:1.12;color:#fff;max-width:22ch}
+.sx-band p{margin:14px 0 0;color:var(--sx-soft);max-width:58ch}
+.sx-band .sx-contact{font-family:var(--f-mono);font-size:13px;margin-top:22px}
+.sx-band a:not(.sx-btn){color:var(--sx-neon)}
+details.fulldoc{margin-top:clamp(56px,8vw,88px);border-radius:22px;border:1px solid var(--line);background:var(--surface)}
+details.fulldoc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 24px}
+details.fulldoc>summary::-webkit-details-marker{display:none}
+details.fulldoc>summary b{display:block;font-family:var(--f-display);font-size:1.3rem}
+details.fulldoc>summary small{display:block;margin-top:4px;color:var(--muted);font-size:.95rem}
+details.fulldoc>summary::after{content:"+";flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--tint);color:var(--accent-ink);font-family:var(--f-mono);font-size:1.5rem}
+details.fulldoc[open]>summary::after{content:"−"}
+details.fulldoc>.fd-in{padding:0 clamp(14px,3vw,24px) 24px}
+@media (max-width:820px){.sx-ba,.sx-steps,.sx-pg{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.sx-chips{grid-template-columns:minmax(0,1fr)}.sx-btn{width:100%}.sx-g{width:auto}.sx-hero,.sx-band{border-radius:22px}.sx-mo dl div{flex-direction:column;gap:2px}.sx-inline{padding:18px}}
+@media (prefers-reduced-motion:reduce){.sx-dot{animation:none}.sx-btn{transition:none}}
+@media print{.sx-hero,.sx-band{background:#fff;color:#000;box-shadow:none;border:1px solid #000}.sx-hero *,.sx-band *{color:#000!important}.sx-btns{display:none}details.fulldoc>.fd-in{display:block}}
 </style></head><body><nav class="langbar" aria-label="Idioma / Language / Limbă"><span class="lb-t">Idioma · Language · Limbă</span><a href="automatizacion-procesos.html" hreflang="es" lang="es">Español</a><a href="business-process-automation.html" hreflang="en" lang="en">English</a><a href="automatizarea-proceselor.html" hreflang="ro" lang="ro" aria-current="true">Română</a></nav>
 <div class="wrap" role="main">
 <div class="top" id="sus"><span class="logo" role="img" aria-label="Strategic Flow"></span>
 <div class="top-t"><span class="tt-kicker">Ofertă generală</span><span class="tt-client">Companii și firme mici</span><span class="tt-place">Automatizarea proceselor cu asistent AI</span>
 <span class="tt-meta"><span>Pregătit de <a href="https://strategicflow.tech">Strategic Flow Tech</a></span><span></span></span><address class=tt-issuer><b>Strategic Flow Tech</b>, operat de Alex Iliescu, autónomo<br><a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a> · WhatsApp <a href="https://wa.me/34658071917">+34 658 071 917</a></address></div></div>
-<div class="hero"><h1>Mai puțină muncă repetitivă. <em><span class="nb">Mai mult timp</span> pentru afacerea dumneavoastră.</em></h1><p class="lead">Pentru companii și firme mici: fiecare mesaj de la client, comandă, programare, ofertă, factură și memento într-un singur sistem. Un asistent de inteligență artificială face munca repetitivă; dumneavoastră și echipa decideți ce contează.</p><p class="ver">Versiunea 31.10.2026 (v2) · Ofertă generală</p>
-<div class="hero-cta"><a class="btn-p" href="https://wa.me/34658071917?text=Bun%C4%83%2C%20m%C4%83%20intereseaz%C4%83%20automatizarea%20proceselor%20pentru%20afacerea%20mea.">WhatsApp</a><a class="btn-s" href="mailto:strategicflow@proton.me">Email</a><a class="btn-s" href="#cuprins">Vezi cuprinsul</a></div><a class="pk-banner" href="#precios"><span class="pk-b1">Pachet complet</span><span class="pk-b2"><s>1.800 €</s><b>999 €</b></span><span class="pk-b3">Toate cele 8 module · plătiți pe măsură ce fiecare este livrat →</span></a></div>
+<div class="sx">
+<div class="sx-hero"><div class="sx-grid" aria-hidden="true"></div>
+<p class="sx-kick"><span class="sx-dot" aria-hidden="true"></span>Automatizare cu agenți AI · Tenerife<span class="sx-upd">Actualizat 24.11.2026</span></p>
+<h1 class="sx-h1">Firma dumneavoastră pierde timp cu mesaje, programări și sarcini repetitive?</h1>
+<p class="sx-pos">Vă automatizăm munca repetitivă din firmă, fără să schimbați programele pe care le folosiți deja.</p><p class="sx-lead">Construim un sistem care adună cererile clienților, pregătește ofertele și urmărește programările și facturile. Asistentul AI răspunde la întrebările simple, iar echipa dumneavoastră păstrează controlul asupra deciziilor importante.</p>
+<div class="sx-chips">
+<div class="sx-chip"><span class="sx-cl">Pasul 1 · Analiza inițială</span><b class="sx-cv">150 €</b><span class="sx-cs">2 zile, pe cazuri reale. Se scad din avans dacă mergeți mai departe.</span></div>
+<div class="sx-chip sx-hot"><span class="sx-cl">Pasul 2 · Pachetul complet A–H</span><b class="sx-cv">999 € <s>1.800 €</s></b><span class="sx-cs">8 module, construite pe rând. Plătiți fiecare modul când funcționează.</span></div>
+</div>
+<p class="sx-hnote">Costurile lunare și IGIC/TVA sunt separate. Le găsiți complet mai jos, la „Cât costă”.</p>
+<div class="sx-btns"><a class="sx-btn sx-p" href="https://wa.me/34658071917?text=Bun%C4%83%2C%20a%C8%99%20dori%20analiza%20ini%C8%9Bial%C4%83%20pentru%20firma%20mea.">Solicitați analiza firmei <span aria-hidden="true">→</span></a><a class="sx-btn sx-o" href="mailto:strategicflow@proton.me">Scrieți-ne pe e-mail</a><a class="sx-btn sx-g" href="#sx-cost">Vedeți toate costurile ↓</a></div>
+<ul class="sx-badges"><li>Asistent supravegheat de om</li><li>Plătiți doar ce funcționează</li><li>GDPR · acord scris</li><li>RO · ES · EN</li></ul>
+</div>
+<div class="sx-sec" id="sx-ba"><p class="sx-lab">Înainte și după</p><h2 class="sx-h2">Trei momente pe care le recunoaște orice patron</h2><div class="sx-ba">
+<article class="sx-card"><p class="sx-time">12:00</p><h3>Apeluri pierdute la prânz</h3><p class="sx-no"><span>Fără sistem</span>Trei apeluri pierdute și zece mesaje necitite când vă întoarceți.</p><p class="sx-yes"><span>Cu sistem</span>Asistentul a răspuns la cele simple. Restul vă așteaptă în ordine, cu un rezumat de două rânduri.</p></article>
+<article class="sx-card"><p class="sx-time">14:30</p><h3>„Cum stă comanda mea?”</h3><p class="sx-no"><span>Fără sistem</span>Căutați notița și sunați clientul înapoi.</p><p class="sx-yes"><span>Cu sistem</span>Clientul primește starea reală a comenzii. Ce e delicat trece la o persoană.</p></article>
+<article class="sx-card"><p class="sx-time">19:00</p><h3>Facturi uitate</h3><p class="sx-no"><span>Fără sistem</span>Facturi amânate „pentru vineri”. Nimeni nu mai știe care.</p><p class="sx-yes"><span>Cu sistem</span>Seara aveți lista facturilor de pregătit și a plăților de cerut. Aprobați dumneavoastră.</p></article>
+</div><div class="sx-inline"><p>Recunoașteți una dintre situații?</p><div class="sx-btns"><a class="sx-btn sx-p" href="https://wa.me/34658071917?text=Bun%C4%83%2C%20a%C8%99%20dori%20analiza%20ini%C8%9Bial%C4%83%20pentru%20firma%20mea.">Solicitați analiza firmei <span aria-hidden="true">→</span></a><a class="sx-btn sx-o" href="mailto:strategicflow@proton.me">Scrieți-ne pe e-mail</a></div></div></div>
+<div class="sx-sec" id="sx-how"><p class="sx-lab">Cum lucrăm</p><h2 class="sx-h2">Trei pași, fără surprize</h2><ol class="sx-steps">
+<li><span class="sx-n">01</span><h3>Scrieți-ne</h3><p>Un mesaj pe WhatsApp sau pe e-mail: ce face firma și ce vă consumă cel mai mult timp. Fără obligații.</p></li>
+<li><span class="sx-n">02</span><h3>Analiza inițială · 150 €</h3><p>Două zile în care măsurăm pe cazuri reale. Primiți o listă de priorități și o ofertă fermă, cu preț fix, în scris.</p></li>
+<li><span class="sx-n">03</span><h3>Implementăm modul cu modul</h3><p>Începem cu ce economisește cele mai multe ore. Plătiți fiecare modul după ce îl vedeți funcționând.</p></li>
+</ol><p class="sx-ctrl"><b>Controlul rămâne la dumneavoastră.</b> Asistentul se prezintă mereu ca asistent automat. La început, toate mesajele lui trec printr-o persoană, iar nimic important nu pleacă fără aprobarea dumneavoastră.</p></div>
+<div class="sx-sec" id="sx-cost"><p class="sx-lab">Cât costă</p><h2 class="sx-h2">Tot costul, pe o singură pagină</h2><div class="sx-pg">
+<div class="sx-pc"><h3>Analiza inițială</h3><p class="sx-pv">150 €</p><p>Două zile de măsurare pe cazuri reale. Dacă mergeți mai departe, cei 150 € se scad din avans. Dacă nu, păstrați lista de priorități.</p></div>
+<div class="sx-pc sx-pc-hot"><h3>Pachetul complet A–H</h3><p class="sx-pv">999 € <s>1.800 € separat</s></p><p>Toate cele 8 module, construite pe rând. 200 € la început, apoi câte o plată la livrarea fiecărui modul.</p><p class="sx-in"><b>Ce acoperă:</b> modulele A–H pentru o firmă mică, cu canalele obișnuite (WhatsApp, e-mail, formular web).</p><p class="sx-out"><b>Ce nu acoperă:</b> conexiunile la alte programe (modulul I, de la 150 € fiecare) și costul mesajelor WhatsApp, stabilit de Meta și transmis la cost real.</p></div>
+</div>
+<p class="sx-fix"><b>Cum se stabilește prețul.</b> Sumele de pe pagină sunt prețuri de pornire. După analiză primiți oferta fermă, cu preț fix în scris. Nicio lucrare nu începe fără această ofertă.</p>
+<div class="sx-mo"><h3>În fiecare lună, după punerea în funcțiune</h3><dl>
+<div><dt>Platformă: găzduire, bază de date, copii de siguranță</dt><dd>≈ 60 €</dd></div>
+<div><dt>AI și WhatsApp, la cost real, cu plafon de 60 €</dt><dd>5–60 €</dd></div>
+<div class="sx-tot"><dt>Total fără mentenanță</dt><dd>65–120 €/lună</dd></div>
+<div><dt>Mentenanță opțională (1 oră pe săptămână)</dt><dd>+ 90 €</dd></div>
+<div class="sx-tot"><dt>Total cu mentenanță</dt><dd>155–210 €/lună</dd></div>
+</dl><p class="sx-mon">Fără IGIC/TVA. Vă anunțăm înainte să se atingă plafonul de consum.</p></div>
+<div class="sx-warn" role="note"><h3>⚠ Important înainte să cumpărați</h3><p>Prețul de 999 € se aplică dacă finalizați pachetul. Vă puteți opri după orice modul, dar atunci modulele livrate se calculează la prețul lor separat, iar ce ați plătit deja se scade.</p><p><b>Exemplu:</b> vă opriți după modulele A și B. Ați plătit 200 + 178 + 134 = 512 €. Separat, A și B costă 400 + 300 = 700 €. Mai aveți de plătit 188 €.</p></div>
+<div class="sx-inline"><div class="sx-btns"><a class="sx-btn sx-p" href="https://wa.me/34658071917?text=Bun%C4%83%2C%20a%C8%99%20dori%20analiza%20ini%C8%9Bial%C4%83%20pentru%20firma%20mea.">Solicitați analiza firmei <span aria-hidden="true">→</span></a><a class="sx-btn sx-o" href="mailto:strategicflow@proton.me">Scrieți-ne pe e-mail</a></div></div></div>
+<section id="calc-s">
+<span class="label">Calculator</span>
+<h2>Câte ore se pierd azi pe munca repetitivă</h2>
+<p class="intro">Schimbați cifrele cu ale afacerii dumneavoastră. Valorile de pornire sunt orientative. Rezultatul este o estimare a dumneavoastră, nu o promisiune din partea noastră. Cifra reală se măsoară în Faza 0.</p>
+<form class="calc" id="calc" onsubmit="return false"><div class="g"><label>Cereri noi pe săptămână<input type="number" min="0" step="1" value="30" inputmode="decimal"><small>Toate cele care sosesc pe orice canal.</small></label><label>Minute de muncă repetitivă pe cerere<input type="number" min="0" step="1" value="10" inputmode="decimal"><small>Cerut date, propus programare, sunat înapoi.</small></label><label>Clienți sau comenzi active<input type="number" min="0" step="1" value="60" inputmode="decimal"><small>Cele aflate în lucru acum.</small></label><label>Minute pe client și pe săptămână<input type="number" min="0" step="1" value="8" inputmode="decimal"><small>Căutat date, anunțat, cerut plata, informat despre stare.</small></label><label>% pe care credeți că se poate automatiza<input type="number" min="0" step="5" value="40" inputmode="decimal"><small>Alegeți dumneavoastră, cu prudență.</small></label><label>Valoarea orei dumneavoastră (euro)<input type="number" min="0" step="5" value="35" inputmode="decimal"><small>Doar pentru comparație, nu este un preț.</small></label></div><div class="res" id="calcout" aria-live="polite"></div></form>
+<div class="qnav"><a href="#cuprins">&#9776; Cuprins</a><a class="up" href="#sus">&#8593; Sus</a></div>
+</section>
+<div class="sx-band"><div class="sx-grid" aria-hidden="true"></div><h2>Primul pas: analiza firmei dumneavoastră</h2><p>150 €, două zile, pe cazuri reale. Primiți lista de priorități și oferta fermă. Răspundem în maxim două ore, în română, spaniolă sau engleză.</p><div class="sx-btns"><a class="sx-btn sx-p" href="https://wa.me/34658071917?text=Bun%C4%83%2C%20a%C8%99%20dori%20analiza%20ini%C8%9Bial%C4%83%20pentru%20firma%20mea.">Solicitați analiza firmei <span aria-hidden="true">→</span></a><a class="sx-btn sx-o" href="mailto:strategicflow@proton.me">Scrieți-ne pe e-mail</a></div><p class="sx-contact">WhatsApp <a href="https://wa.me/34658071917">+34 658 071 917</a> · <a href="mailto:strategicflow@proton.me">strategicflow@proton.me</a></p></div>
+</div>
+<details class="fulldoc" id="oferta-completa"><summary><span><b>Oferta completă</b><small>Module A–I, agentul AI, sectoare, securitate, plan, 43 de întrebări și glosar</small></span></summary><div class="fd-in">
 <nav class="toc" id="cuprins" aria-label="Cuprins rapid"><h2>Cuprins rapid</h2><p class="intro" style="margin-top:10px">Totul pe o singură pagină. Apăsați pe o secțiune pentru a merge direct la ea.</p><div class="toc-cols"><div><div class="grp">A înțelege</div><ol><li><a href="#resumen"><span class="n">01</span><span><b>Pe scurt</b><small>Ce este și ce obțineți</small></span></a></li><li><a href="#problema"><span class="n">02</span><span><b>Unde se pierd ore și clienți</b><small>Cinci puncte obișnuite</small></span></a></li><li><a href="#dia"><span class="n">03</span><span><b>O zi cu și fără sistem</b><small>Înainte și după</small></span></a></li></ol></div><div><div class="grp">Ce construim</div><ol><li><a href="#que"><span class="n">04</span><span><b>Ce construim</b><small>Modulele A–I</small></span></a></li><li><a href="#ejemplos"><span class="n">05</span><span><b>Exemple</b><small>Chat, tablou, liste</small></span></a></li><li><a href="#agente"><span class="n">06</span><span><b>Agentul AI</b><small>Ce face, ce cere, ce nu face niciodată</small></span></a></li><li><a href="#sectores"><span class="n">07</span><span><b>Pentru ce fel de afacere</b><small>Șapte domenii</small></span></a></li></ol></div><div><div class="grp">Încredere și plan</div><ol><li><a href="#seguridad"><span class="n">08</span><span><b>Date și securitate</b><small>GDPR și bune practici</small></span></a></li><li><a href="#plan"><span class="n">09</span><span><b>Cum pornim</b><small>Faze și termene</small></span></a></li></ol></div><div><div class="grp">A decide</div><ol><li><a href="#precios"><span class="n">10</span><span><b>Prețuri clare</b><small>De la, fără surprize</small></span></a></li><li><a href="#ganas"><span class="n">11</span><span><b>Ce câștigă afacerea dumneavoastră</b><small>Zece câștiguri concrete</small></span></a></li><li><a href="#calc-s"><span class="n">12</span><span><b>Calculator</b><small>Orele care se pierd azi</small></span></a></li><li><a href="#empezar"><span class="n">13</span><span><b>Cum începem</b><small>Trei pași și contact</small></span></a></li></ol></div><div><div class="grp">De consultat</div><ol><li><a href="#faq-s"><span class="n">14</span><span><b>Întrebări și răspunsuri</b><small>Cu căutare</small></span></a></li><li><a href="#glosario"><span class="n">15</span><span><b>Glosar</b><small>Cuvinte simple</small></span></a></li></ol></div></div></nav>
 
 <section class="offer" id="resumen" aria-labelledby="rs-h">
@@ -472,13 +607,7 @@ section{scroll-margin-top:70px}
 <div class="qnav"><a href="#cuprins">&#9776; Cuprins</a><a class="up" href="#sus">&#8593; Sus</a></div>
 </section>
 
-<section id="calc-s">
-<span class="label">Calculator</span>
-<h2>Câte ore se pierd azi pe munca repetitivă</h2>
-<p class="intro">Schimbați cifrele cu ale afacerii dumneavoastră. Valorile de pornire sunt orientative. Rezultatul este o estimare a dumneavoastră, nu o promisiune din partea noastră. Cifra reală se măsoară în Faza 0.</p>
-<form class="calc" id="calc" onsubmit="return false"><div class="g"><label>Cereri noi pe săptămână<input type="number" min="0" step="1" value="30" inputmode="decimal"><small>Toate cele care sosesc pe orice canal.</small></label><label>Minute de muncă repetitivă pe cerere<input type="number" min="0" step="1" value="10" inputmode="decimal"><small>Cerut date, propus programare, sunat înapoi.</small></label><label>Clienți sau comenzi active<input type="number" min="0" step="1" value="60" inputmode="decimal"><small>Cele aflate în lucru acum.</small></label><label>Minute pe client și pe săptămână<input type="number" min="0" step="1" value="8" inputmode="decimal"><small>Căutat date, anunțat, cerut plata, informat despre stare.</small></label><label>% pe care credeți că se poate automatiza<input type="number" min="0" step="5" value="40" inputmode="decimal"><small>Alegeți dumneavoastră, cu prudență.</small></label><label>Valoarea orei dumneavoastră (euro)<input type="number" min="0" step="5" value="35" inputmode="decimal"><small>Doar pentru comparație, nu este un preț.</small></label></div><div class="res" id="calcout" aria-live="polite"></div></form>
-<div class="qnav"><a href="#cuprins">&#9776; Cuprins</a><a class="up" href="#sus">&#8593; Sus</a></div>
-</section>
+
 
 <section id="empezar">
 <span class="label">Cum începem</span>
@@ -569,6 +698,7 @@ section{scroll-margin-top:70px}
 .langs a{margin-inline:4px}
 .issuer-f a,.tt-issuer a{word-break:break-word}
 </style>
+</div></details>
 <footer><p>Ofertă generală Strategic Flow Tech. Exemplele sunt ilustrative. Prețurile sunt orientative („de la”), fără impozite indirecte (IGIC/TVA, după caz) și se confirmă după verificarea inițială. Nu reprezintă consultanță juridică, fiscală sau de muncă.</p><p class=issuer-f>Strategic Flow Tech, operat de Alex Iliescu, autónomo · strategicflow@proton.me · WhatsApp +34 658 071 917</p></footer>
 </div>
 <div class="fab"><a href="#cuprins">&#9776; Cuprins</a><a class="up" href="#sus">&#8593; Sus</a></div>
@@ -615,5 +745,13 @@ window.__calc=function(v){
    [].forEach.call(els,function(i){i.addEventListener('input',run)});run();
   }
  }catch(e){}
+})();
+</script><script>
+(function(){
+ function openFor(id){try{var t=id&&document.getElementById(id);if(!t)return;var d=t.closest&&t.closest('details.fulldoc');if(d&&!d.open)d.open=true;}catch(e){}}
+ document.addEventListener('click',function(e){var a=e.target&&e.target.closest&&e.target.closest('a[href^="#"]');if(a)openFor(decodeURIComponent(a.getAttribute('href').slice(1)));},true);
+ function fromHash(){if(location.hash){var id=decodeURIComponent(location.hash.slice(1));openFor(id);var t=document.getElementById(id);if(t)setTimeout(function(){t.scrollIntoView()},30);}}
+ window.addEventListener('hashchange',fromHash);
+ if(document.readyState!=='loading')setTimeout(fromHash,60);else document.addEventListener('DOMContentLoaded',function(){setTimeout(fromHash,60)});
 })();
 </script></body></html>
