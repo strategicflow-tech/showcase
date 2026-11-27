@@ -168,6 +168,14 @@ input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent-ink);flex:
 .libout{margin-top:6px}
 /* tables */
 .tbl{overflow-x:auto;margin-top:14px}
+.py-list{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.py-row{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow-wrap:normal;word-break:normal}
+.py-row.cur{border-color:var(--accent-ink,var(--fg));box-shadow:inset 0 0 0 1px var(--accent-ink,var(--fg))}
+.py-n{flex:0 0 34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;font-family:var(--f-mono);font-size:.9rem}
+.py-b{display:flex;flex-direction:column;gap:3px;min-width:0}
+.py-b b{text-transform:capitalize;font-weight:600}
+.py-b span{color:var(--muted);font-size:.93rem;line-height:1.5}
+@media (max-width:760px){.py-list{grid-template-columns:1fr}}
 table{width:100%;border-collapse:collapse;font-size:.97rem}
 th,td{padding:10px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 thead th{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -2322,8 +2330,8 @@ function toolNumlib(el){
 }
 function toolPytable(el){
  var cur=parseDob(S.profile.dob)?numbers('',parseDob(S.profile.dob)).py.v:null;
- var rows='';for(var i=1;i<=9;i++){rows+='<tr'+(cur===i?' class="cur"':'')+'><th scope="row">'+i+'</th><td>'+esc(tr(PY[i].kw))+'</td><td>'+esc(tr(PY[i].txt))+'</td></tr>';}
- el.innerHTML='<div class="tbl"><table><thead><tr><th>#</th><th>'+ui('py_kw')+'</th><th>'+ui('py_txt')+'</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+(cur?'<p class="muted small">'+fmt(ui('py_cur'),{n:cur,y:new Date().getFullYear()})+'</p>':'');
+ var rows='';for(var i=1;i<=9;i++){rows+='<li class="py-row'+(cur===i?' cur':'')+'"><span class="py-n">'+i+'</span><div class="py-b"><b>'+esc(tr(PY[i].kw))+'</b><span>'+esc(tr(PY[i].txt))+'</span></div></li>';}
+ el.innerHTML='<ol class="py-list">'+rows+'</ol>'+(cur?'<p class="muted small">'+fmt(ui('py_cur'),{n:cur,y:new Date().getFullYear()})+'</p>':'');
 }
 function toolLetters(el){
  var rows=['AJS','BKT','CLU','DMV','ENW','FOX','GPY','HQZ','IR'];
