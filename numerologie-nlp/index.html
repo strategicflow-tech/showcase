@@ -455,6 +455,15 @@ a.gl{text-decoration-color:var(--gold)}
 .v-t{font-family:"Instrument Serif",serif;font-size:24px;fill:var(--fg);text-anchor:middle}.v-xt{font-size:14px;font-family:"Geist Mono",monospace}
 .v-a,.v-b{transition:transform .7s cubic-bezier(.2,.7,.2,1)}.venn:hover .v-a{transform:translateX(16px)}.venn:hover .v-b{transform:translateX(-16px)}
 .doors,.plans-home,.steps3,.final{margin-top:clamp(56px,9vw,120px)}
+.compat-home{margin-top:clamp(56px,9vw,120px)}
+.compat-home h2{font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.02;letter-spacing:-.02em;max-width:18ch}
+.compat-card{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;margin-top:32px;padding:30px;background:var(--surface);color:var(--fg);border:1px solid var(--edge);border-radius:16px}
+.compat-card ul{margin:0;padding-left:1.1em;display:grid;gap:8px}
+.compat-card .cnote{font-size:.88rem;color:var(--muted);margin-top:12px}
+.compat-card .cprice{font-size:2rem;font-weight:600;margin:0 0 6px}
+.compat-card .cwas{font-size:1.1rem;font-weight:400;color:var(--muted)}
+.compat-card .cbadge{font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink,var(--fg))}
+@media(max-width:760px){.compat-card{grid-template-columns:1fr;padding:22px}}
 .doors h2,.plans-home h2,.steps3 h2,.final h2{font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.02;letter-spacing:-.02em;max-width:18ch}
 .dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
 .door{position:relative;display:flex;flex-direction:column;gap:8px;padding:24px;border:1px solid var(--edge);border-radius:14px;text-decoration:none;color:var(--fg);background:var(--surface);transition:border-color .25s,background .25s,transform .25s;min-height:200px;--mod:var(--gold)}
@@ -1903,6 +1912,7 @@ window.SF_CONFIG={
   nif:'',               /* NIF / NIE of the autónomo */
   addr:L('Adeje, Santa Cruz de Tenerife, Spania, 38660','Adeje, Santa Cruz de Tenerife, Spain, 38660','Adeje, Santa Cruz de Tenerife, España, 38660')               /* full postal address in Spain */
  },
+ compat:{price:'9,99 €',was:'19,99 €',buy:'https://buy.stripe.com/cNicN56rS6JjfJP8tl7wA0B',buyStandard:'https://buy.stripe.com/eVq00jeYo6Jj2X37ph7wA0C'},  /* intro offer 9,99 € now; when it ends set price:'19,99 €', was:'' and buy:<buyStandard> */
  bundle:{id:'bundle',price:'49 €',buy:'https://buy.stripe.com/9B614n5nO3x79lr3917wA0p',
   name:L('Toate cele trei pachete','All three packages','Los tres paquetes'),
   desc:L('Numerologie Deep, NLP Deep și Profil încrucișat Pro, la preț redus.','Numerology Deep, NLP Deep and Cross Profile Pro at a reduced price.','Numerología Deep, PNL Deep y Perfil cruzado Pro a precio reducido.'),
@@ -3286,6 +3296,17 @@ function homeHTML(){
  var cat=CFG.catalog||[],sum=0;cat.forEach(function(c){sum+=priceNum(c.price);});var B=CFG.bundle||{},save=sum-priceNum(B.price);
  function card(c,isB){var pr=priceNum(c.price);return '<article class="plan'+(isB?' plan-b':'')+'">'+(isB?'<span class="ribn">'+ui('pr_best')+(save>0?' · '+fmt(ui('pr_save'),{n:save}):'')+'</span>':'')+'<h3>'+esc(tr(c.name))+'</h3><p class="pnum"><span>'+pr+'</span><small>€</small></p><p class="pdesc">'+esc(tr(c.desc))+'</p><p class="pact">'+(c.buy?'<a class="btn primary" target="_blank" rel="noopener" href="'+esc(c.buy)+'">'+ui('pr_buy')+'</a> ':'')+'<a class="btn" href="#/start/s-plans">'+ui('pr_det')+'</a></p></article>';}
  h+='<section class="plans-home"><h2>'+ui('pr_t')+'</h2><p class="lead2">'+ui('pr_p')+'</p><div class="pgrid">'+cat.map(function(c){return card(c,false);}).join('')+card(B,true)+'</div></section>';
+ /* compatibility reading (personal report, made in Admin) */
+ var CP=CFG.compat||{};
+ var cT={ro:'Citire de compatibilitate',en:'Compatibility reading',es:'Lectura de compatibilidad',pt:'Leitura de compatibilidade'};
+ var cH={ro:'Un raport PDF personal pentru voi doi',en:'A personal PDF report for the two of you',es:'Un informe PDF personal para los dos',pt:'Um relatório PDF pessoal para os dois'};
+ var cP={ro:'Numerele celor două date de naștere, citite împreună, nu separat. Un document pe care îl poți păstra și reciti.',en:'The numbers from both birth dates, read together, not apart. A document you can keep and reread.',es:'Los números de las dos fechas de nacimiento, leídos juntos, no por separado. Un documento que puedes guardar y releer.',pt:'Os números das duas datas de nascimento, lidos em conjunto, não em separado. Um documento que você pode guardar e reler.'};
+ var cL={ro:['Drumul vieții și numărul zilei de naștere ale amândurora, puse față în față','Felul în care reacționează fiecare sub presiune, în minte și în corp','Citit diferit pentru un potențial cuplu sau pentru un cuplu existent','Ce îți trebuie: prenumele și data nașterii, ale tale și ale partenerului'],en:['Both people\'s Life Path and Birthday number, side by side','How each one reacts under pressure, in mind and in body','Read differently for a potential couple or an existing one','All you need: first name and birth date, yours and your partner\'s'],es:['El Camino de vida y el número del día de nacimiento de ambos, frente a frente','La forma de reaccionar de cada uno bajo presión, en la mente y en el cuerpo','Se lee distinto para una posible pareja o para una pareja ya formada','Lo que necesitas: nombre y fecha de nacimiento, los tuyos y los de tu pareja'],pt:['O Caminho de vida e o número do dia de nascimento dos dois, frente a frente','A forma como cada um reage sob pressão, na mente e no corpo','Lido de forma diferente para um potencial casal ou para um casal já formado','O que você precisa: nome e data de nascimento, os seus e os do seu parceiro']};
+ var cN={ro:'Hartă simbolică de reflecție, nu o prezicere. Numerologia nu are validare științifică. Raportul se livrează digital, pe e-mail.',en:'A symbolic map for reflection, not a prediction. Numerology has no scientific validation. The report is delivered digitally, by e-mail.',es:'Un mapa simbólico de reflexión, no una predicción. La numerología no tiene validación científica. El informe se entrega en digital, por correo.',pt:'Um mapa simbólico de reflexão, não uma previsão. A numerologia não tem validação científica. O relatório é entregue em formato digital, por e-mail.'};
+ var cB={ro:'Cumpără citirea',en:'Get the reading',es:'Comprar la lectura',pt:'Comprar a leitura'};
+ var cI={ro:'Ofertă de intrare',en:'Intro offer',es:'Oferta de lanzamiento',pt:'Oferta de lançamento'};
+ var cHref=CP.buy||('mailto:'+(CFG.contact||''));
+ h+='<section class="compat-home" id="compat"><h2>'+esc(tr(cT))+'</h2><div class="compat-card"><div><h3>'+esc(tr(cH))+'</h3><p>'+esc(tr(cP))+'</p></div><div><ul>'+listOf(cL).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>'+(CP.price?'<p class="cprice">'+(CP.was?'<s class="cwas">'+esc(CP.was)+'</s> ':'')+esc(CP.price)+(CP.was?' <span class="cbadge">'+esc(tr(cI))+'</span>':'')+'</p>':'')+'<p class="pact"><a class="btn primary" target="_blank" rel="noopener" href="'+esc(cHref)+'">'+esc(tr(cB))+'</a></p><p class="cnote">'+esc(tr(cN))+'</p></div></div></section>';
  /* steps + final */
  h+='<section class="steps3"><h2>'+ui('st_t')+'</h2><ol>'+[1,2,3].map(function(i){return '<li><b>'+ui('how'+i+'_t')+'</b><span>'+ui('how'+i+'_p')+'</span></li>';}).join('')+'</ol></section>';
  h+='<section class="final"><h2>'+ui('fin_t')+'</h2><p><a class="btn primary big" href="#/me">'+ui('fin_cta')+'</a></p></section>';
